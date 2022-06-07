@@ -2,7 +2,7 @@ import { InputRule } from "prosemirror-inputrules";
 import ReactDOM from "react-dom";
 import * as React from "react";
 import { Plugin } from "prosemirror-state";
-import { isInTable } from "prosemirror-tables";
+import { isInTable } from "prosemirror-tables-contently";
 import { findParentNode } from "prosemirror-utils";
 import { PlusIcon } from "outline-icons";
 import { Decoration, DecorationSet, EditorView } from "prosemirror-view";

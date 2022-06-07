@@ -14,7 +14,7 @@ import {
   toggleHeaderCell,
   toggleHeaderColumn,
   toggleHeaderRow,
-} from "prosemirror-tables";
+} from "prosemirror-tables-contently";
 import {
   addRowAt,
   createTable,
