@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Node_1 = __importDefault(require("./Node"));
 const prosemirror_view_1 = require("prosemirror-view");
-const prosemirror_tables_contently_1 = require("prosemirror-tables-contently");
+const prosemirror_tables_1 = require("prosemirror-tables");
 const prosemirror_utils_1 = require("prosemirror-utils");
 const prosemirror_state_1 = require("prosemirror-state");
 const tables_1 = __importDefault(require("../rules/tables"));
@@ -56,9 +56,9 @@ class Table extends Node_1.default {
                 });
                 dispatch(transaction);
             },
-            addColumnBefore: () => prosemirror_tables_contently_1.addColumnBefore,
-            addColumnAfter: () => prosemirror_tables_contently_1.addColumnAfter,
-            deleteColumn: () => prosemirror_tables_contently_1.deleteColumn,
+            addColumnBefore: () => prosemirror_tables_1.addColumnBefore,
+            addColumnAfter: () => prosemirror_tables_1.addColumnAfter,
+            deleteColumn: () => prosemirror_tables_1.deleteColumn,
             addRowAfter: ({ index }) => (state, dispatch) => {
                 if (index === 0) {
                     const tr = prosemirror_utils_1.addRowAt(index + 2, true)(state.tr);
@@ -68,21 +68,21 @@ class Table extends Node_1.default {
                     dispatch(prosemirror_utils_1.addRowAt(index + 1, true)(state.tr));
                 }
             },
-            deleteRow: () => prosemirror_tables_contently_1.deleteRow,
-            deleteTable: () => prosemirror_tables_contently_1.deleteTable,
-            toggleHeaderColumn: () => prosemirror_tables_contently_1.toggleHeaderColumn,
-            toggleHeaderRow: () => prosemirror_tables_contently_1.toggleHeaderRow,
-            toggleHeaderCell: () => prosemirror_tables_contently_1.toggleHeaderCell,
-            setCellAttr: () => prosemirror_tables_contently_1.setCellAttr,
-            fixTables: () => prosemirror_tables_contently_1.fixTables,
+            deleteRow: () => prosemirror_tables_1.deleteRow,
+            deleteTable: () => prosemirror_tables_1.deleteTable,
+            toggleHeaderColumn: () => prosemirror_tables_1.toggleHeaderColumn,
+            toggleHeaderRow: () => prosemirror_tables_1.toggleHeaderRow,
+            toggleHeaderCell: () => prosemirror_tables_1.toggleHeaderCell,
+            setCellAttr: () => prosemirror_tables_1.setCellAttr,
+            fixTables: () => prosemirror_tables_1.fixTables,
         };
     }
     keys() {
         return {
-            Tab: prosemirror_tables_contently_1.goToNextCell(1),
-            "Shift-Tab": prosemirror_tables_contently_1.goToNextCell(-1),
+            Tab: prosemirror_tables_1.goToNextCell(1),
+            "Shift-Tab": prosemirror_tables_1.goToNextCell(-1),
             Enter: (state, dispatch) => {
-                if (!prosemirror_tables_contently_1.isInTable(state))
+                if (!prosemirror_tables_1.isInTable(state))
                     return false;
                 const cells = prosemirror_utils_1.getCellsInColumn(0)(state.selection) || [];
                 dispatch(prosemirror_utils_1.addRowAt(cells.length, true)(state.tr));
@@ -99,7 +99,7 @@ class Table extends Node_1.default {
     }
     get plugins() {
         return [
-            prosemirror_tables_contently_1.tableEditing(),
+            prosemirror_tables_1.tableEditing(),
             new prosemirror_state_1.Plugin({
                 props: {
                     decorations: state => {

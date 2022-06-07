@@ -1,5 +1,5 @@
 import Node from "./Node";
-import { addColumnAfter, addColumnBefore, deleteColumn, deleteRow, deleteTable, fixTables, setCellAttr, toggleHeaderCell, toggleHeaderColumn, toggleHeaderRow } from "prosemirror-tables-contently";
+import { addColumnAfter, addColumnBefore, deleteColumn, deleteRow, deleteTable, fixTables, setCellAttr, toggleHeaderCell, toggleHeaderColumn, toggleHeaderRow } from "prosemirror-tables";
 import { Plugin } from "prosemirror-state";
 import tablesRule from "../rules/tables";
 export default class Table extends Node {
