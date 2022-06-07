@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_state_1 = require("prosemirror-state");
-const prosemirror_tables_1 = require("prosemirror-tables");
+const prosemirror_tables_contently_1 = require("prosemirror-tables-contently");
 const prosemirror_commands_1 = require("prosemirror-commands");
 const Extension_1 = __importDefault(require("../lib/Extension"));
 const isUrl_1 = __importDefault(require("../lib/isUrl"));
@@ -42,7 +42,7 @@ class PasteHandler extends Extension_1.default {
                                 return true;
                             }
                             const { embeds } = this.editor.props;
-                            if (embeds && !prosemirror_tables_1.isInTable(state)) {
+                            if (embeds && !prosemirror_tables_contently_1.isInTable(state)) {
                                 for (const embed of embeds) {
                                     const matches = embed.matcher(text);
                                     if (matches) {
