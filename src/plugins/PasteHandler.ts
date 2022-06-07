@@ -1,5 +1,5 @@
 import { Plugin } from "prosemirror-state";
-import { isInTable } from "prosemirror-tables-contently";
+import { isInTable } from "prosemirror-tables";
 import { toggleMark } from "prosemirror-commands";
 import Extension from "../lib/Extension";
 import isUrl from "../lib/isUrl";
