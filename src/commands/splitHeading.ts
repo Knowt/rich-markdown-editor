@@ -1,5 +1,5 @@
 import { EditorState, TextSelection } from "prosemirror-state";
-import { findBlockNodes } from "prosemirror-utils";
+import { findBlockNodes } from "prosemirror-utils-knowt";
 import { NodeType } from "prosemirror-model";
 import findCollapsedNodes from "../queries/findCollapsedNodes";
 
@@ -23,9 +23,9 @@ export default function splitHeading(type: NodeType) {
     const allBlocks = findBlockNodes(state.doc);
     const collapsedBlocks = findCollapsedNodes(state.doc);
     const visibleBlocks = allBlocks.filter(
-      a => !collapsedBlocks.find(b => b.pos === a.pos)
+      (a) => !collapsedBlocks.find((b) => b.pos === a.pos)
     );
-    const nextVisibleBlock = visibleBlocks.find(a => a.pos > from);
+    const nextVisibleBlock = visibleBlocks.find((a) => a.pos > from);
     const pos = nextVisibleBlock
       ? nextVisibleBlock.pos
       : state.doc.content.size;

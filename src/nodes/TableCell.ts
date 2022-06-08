@@ -4,7 +4,7 @@ import {
   isTableSelected,
   isRowSelected,
   getCellsInColumn,
-} from "prosemirror-utils";
+} from "prosemirror-utils-knowt";
 import Node from "./Node";
 
 export default class TableCell extends Node {
@@ -42,7 +42,7 @@ export default class TableCell extends Node {
   parseMarkdown() {
     return {
       block: "td",
-      getAttrs: tok => ({ alignment: tok.info }),
+      getAttrs: (tok) => ({ alignment: tok.info }),
     };
   }
 
@@ -50,7 +50,7 @@ export default class TableCell extends Node {
     return [
       new Plugin({
         props: {
-          decorations: state => {
+          decorations: (state) => {
             const { doc, selection } = state;
             const decorations: Decoration[] = [];
             const cells = getCellsInColumn(0)(selection);
@@ -67,7 +67,7 @@ export default class TableCell extends Node {
                       }
                       const grip = document.createElement("a");
                       grip.className = className;
-                      grip.addEventListener("mousedown", event => {
+                      grip.addEventListener("mousedown", (event) => {
                         event.preventDefault();
                         event.stopImmediatePropagation();
                         this.options.onSelectTable(state);
@@ -92,7 +92,7 @@ export default class TableCell extends Node {
                     }
                     const grip = document.createElement("a");
                     grip.className = className;
-                    grip.addEventListener("mousedown", event => {
+                    grip.addEventListener("mousedown", (event) => {
                       event.preventDefault();
                       event.stopImmediatePropagation();
                       this.options.onSelectRow(index, state);

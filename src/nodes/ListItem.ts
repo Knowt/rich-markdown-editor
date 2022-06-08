@@ -6,7 +6,7 @@ import {
   TextSelection,
 } from "prosemirror-state";
 import { DecorationSet, Decoration } from "prosemirror-view";
-import { findParentNodeClosestToPos } from "prosemirror-utils";
+import { findParentNodeClosestToPos } from "prosemirror-utils-knowt";
 
 import Node from "./Node";
 import isList from "../queries/isList";

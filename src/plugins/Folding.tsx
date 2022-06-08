@@ -1,7 +1,7 @@
 import { Plugin } from "prosemirror-state";
 import { Decoration, DecorationSet } from "prosemirror-view";
 import Extension from "../lib/Extension";
-import { findBlockNodes } from "prosemirror-utils";
+import { findBlockNodes } from "prosemirror-utils-knowt";
 import findCollapsedNodes from "../queries/findCollapsedNodes";
 import { headingToPersistenceKey } from "../lib/headingToSlug";
 
@@ -15,7 +15,7 @@ export default class Folding extends Extension {
 
     return [
       new Plugin({
-        view: view => {
+        view: (view) => {
           loaded = false;
           view.dispatch(view.state.tr.setMeta("folding", { loaded: true }));
           return {};
@@ -23,7 +23,7 @@ export default class Folding extends Extension {
         appendTransaction: (transactions, oldState, newState) => {
           if (loaded) return;
           if (
-            !transactions.some(transaction => transaction.getMeta("folding"))
+            !transactions.some((transaction) => transaction.getMeta("folding"))
           ) {
             return;
           }
@@ -54,10 +54,10 @@ export default class Folding extends Extension {
           return modified ? tr : null;
         },
         props: {
-          decorations: state => {
+          decorations: (state) => {
             const { doc } = state;
             const decorations: Decoration[] = findCollapsedNodes(doc).map(
-              block =>
+              (block) =>
                 Decoration.node(block.pos, block.pos + block.node.nodeSize, {
                   class: "folded-content",
                 })

@@ -2,7 +2,7 @@ import * as React from "react";
 import capitalize from "lodash/capitalize";
 import { Portal } from "react-portal";
 import { EditorView } from "prosemirror-view";
-import { findDomRefAtPos, findParentNode } from "prosemirror-utils";
+import { findDomRefAtPos, findParentNode } from "prosemirror-utils-knowt";
 import styled from "styled-components";
 import {
   EmbedDescriptor,

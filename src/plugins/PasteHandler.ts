@@ -1,5 +1,5 @@
 import { Plugin } from "prosemirror-state";
-import { isInTable } from "prosemirror-tables";
+import { isInTable } from "prosemirror-tables-contently";
 import { toggleMark } from "prosemirror-commands";
 import Extension from "../lib/Extension";
 import isUrl from "../lib/isUrl";
@@ -18,7 +18,7 @@ function normalizePastedMarkdown(text: string): string {
   const CHECKBOX_REGEX = /^\s?(\[(X|\s|_|-)\]\s(.*)?)/gim;
 
   while (text.match(CHECKBOX_REGEX)) {
-    text = text.replace(CHECKBOX_REGEX, match => `- ${match.trim()}`);
+    text = text.replace(CHECKBOX_REGEX, (match) => `- ${match.trim()}`);
   }
 
   return text;
