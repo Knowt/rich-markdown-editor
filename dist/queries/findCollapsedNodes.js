@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 function findCollapsedNodes(doc) {
-    const blocks = prosemirror_utils_knowt_1.findBlockNodes(doc);
+    const blocks = prosemirror_utils_1.findBlockNodes(doc);
     const nodes = [];
     let withinCollapsedHeading;
     for (const block of blocks) {

@@ -9,7 +9,14 @@ export declare type Props = {
     onClick: () => void;
     containerId?: string;
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<Props, "disabled" | "title" | "onClick" | "selected" | "innerRef" | "containerId"> & {
+declare const _default: React.ForwardRefExoticComponent<{
+    disabled?: boolean | undefined;
+    title: string;
+    onClick: () => void;
+    selected: boolean;
+    innerRef?: ((ref: HTMLDivElement) => void) | undefined;
+    containerId?: string | undefined;
+} & {
     theme?: any;
 }>;
 export default _default;

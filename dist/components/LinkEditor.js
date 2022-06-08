@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const outline_icons_1 = require("outline-icons");
 const styled_components_1 = __importStar(require("styled-components"));
 const isUrl_1 = __importDefault(require("../lib/isUrl"));
@@ -193,7 +193,7 @@ class LinkEditor extends React.Component {
         this.moveSelectionToEnd = () => {
             const { to, view } = this.props;
             const { state, dispatch } = view;
-            dispatch(prosemirror_utils_knowt_1.setTextSelection(to)(state.tr));
+            dispatch(prosemirror_utils_1.setTextSelection(to)(state.tr));
             view.focus();
         };
     }

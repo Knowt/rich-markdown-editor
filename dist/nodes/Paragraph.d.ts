@@ -12,11 +12,11 @@ export default class Paragraph extends Node {
     keys({ type }: {
         type: any;
     }): {
-        "Shift-Ctrl-0": (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
+        "Shift-Ctrl-0": import("prosemirror-state").Command;
     };
     commands({ type }: {
         type: any;
-    }): () => (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
+    }): () => import("prosemirror-state").Command;
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;

@@ -50,10 +50,10 @@ export default class CodeFence extends Node {
     };
     handleCopyToClipboard: (event: any) => void;
     handleLanguageChange: (event: any) => void;
-    get plugins(): import("prosemirror-state").Plugin<any, any>[];
+    get plugins(): import("prosemirror-state").Plugin<any>[];
     inputRules({ type }: {
         type: any;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     toMarkdown(state: any, node: any): void;
     get markdownToken(): string;
     parseMarkdown(): {

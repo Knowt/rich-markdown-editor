@@ -6,6 +6,6 @@ export default class Placeholder extends Extension {
         emptyNodeClass: string;
         placeholder: string;
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): Plugin<any>[];
 }
 //# sourceMappingURL=Placeholder.d.ts.map

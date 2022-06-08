@@ -1,4 +1,4 @@
-import { Transaction, EditorState, Plugin } from "prosemirror-state";
+import { Plugin } from "prosemirror-state";
 import { DecorationSet } from "prosemirror-view";
 import Node from "./Node";
 export default class ListItem extends Node {
@@ -12,15 +12,15 @@ export default class ListItem extends Node {
         }[];
         toDOM: () => (string | number)[];
     };
-    get plugins(): Plugin<DecorationSet<any>, any>[];
+    get plugins(): Plugin<DecorationSet<any>>[];
     keys({ type }: {
         type: any;
     }): {
         Enter: (state: any, dispatch: any) => boolean;
-        Tab: (state: EditorState<any>, dispatch?: ((tr: Transaction<any>) => void) | undefined) => boolean;
-        "Shift-Tab": (state: EditorState<any>, dispatch?: ((tr: Transaction<any>) => void) | undefined) => boolean;
-        "Mod-]": (state: EditorState<any>, dispatch?: ((tr: Transaction<any>) => void) | undefined) => boolean;
-        "Mod-[": (state: EditorState<any>, dispatch?: ((tr: Transaction<any>) => void) | undefined) => boolean;
+        Tab: import("prosemirror-state").Command;
+        "Shift-Tab": import("prosemirror-state").Command;
+        "Mod-]": import("prosemirror-state").Command;
+        "Mod-[": import("prosemirror-state").Command;
         "Shift-Enter": (state: any, dispatch: any) => boolean;
         "Alt-ArrowUp": (state: any, dispatch: any) => boolean;
         "Alt-ArrowDown": (state: any, dispatch: any) => boolean;

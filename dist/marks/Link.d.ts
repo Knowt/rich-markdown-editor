@@ -20,18 +20,18 @@ export default class Link extends Mark {
     };
     inputRules({ type }: {
         type: any;
-    }): InputRule<any>[];
+    }): InputRule[];
     commands({ type }: {
         type: any;
     }): ({ href }?: {
         href: string;
-    }) => (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
+    }) => import("prosemirror-state").Command;
     keys({ type }: {
         type: any;
     }): {
         "Mod-k": (state: any, dispatch: any) => boolean;
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): Plugin<any>[];
     get toMarkdown(): {
         open(_state: any, mark: any, parent: any, index: any): "[" | "<";
         close(state: any, mark: any, parent: any, index: any): string;

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_view_1 = require("prosemirror-view");
 const prosemirror_state_1 = require("prosemirror-state");
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const Node_1 = __importDefault(require("./Node"));
 class TableHeadCell extends Node_1.default {
     get name() {
@@ -48,11 +48,11 @@ class TableHeadCell extends Node_1.default {
                     decorations: (state) => {
                         const { doc, selection } = state;
                         const decorations = [];
-                        const cells = prosemirror_utils_knowt_1.getCellsInRow(0)(selection);
+                        const cells = prosemirror_utils_1.getCellsInRow(0)(selection);
                         if (cells) {
                             cells.forEach(({ pos }, index) => {
                                 decorations.push(prosemirror_view_1.Decoration.widget(pos + 1, () => {
-                                    const colSelected = prosemirror_utils_knowt_1.isColumnSelected(index)(selection);
+                                    const colSelected = prosemirror_utils_1.isColumnSelected(index)(selection);
                                     let className = "grip-column";
                                     if (colSelected) {
                                         className += " selected";

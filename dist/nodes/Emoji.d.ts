@@ -38,7 +38,7 @@ export default class Emoji extends Node {
     }): (attrs: any) => (state: any, dispatch: any) => boolean;
     inputRules({ type }: {
         type: any;
-    }): InputRule<any>[];
+    }): InputRule[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         node: string;

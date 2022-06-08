@@ -33,6 +33,6 @@ export default class TableCell extends Node {
             alignment: any;
         };
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): Plugin<any>[];
 }
 //# sourceMappingURL=TableCell.d.ts.map

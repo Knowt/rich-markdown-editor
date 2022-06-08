@@ -6,6 +6,6 @@ export default class TrailingNode extends Extension {
         node: string;
         notAfter: string[];
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): Plugin<any>[];
 }
 //# sourceMappingURL=TrailingNode.d.ts.map

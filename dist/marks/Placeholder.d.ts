@@ -20,6 +20,6 @@ export default class Placeholder extends Mark {
     parseMarkdown(): {
         mark: string;
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): Plugin<any>[];
 }
 //# sourceMappingURL=Placeholder.d.ts.map

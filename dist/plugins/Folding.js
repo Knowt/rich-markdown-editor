@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_view_1 = require("prosemirror-view");
 const Extension_1 = __importDefault(require("../lib/Extension"));
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const findCollapsedNodes_1 = __importDefault(require("../queries/findCollapsedNodes"));
 const headingToSlug_1 = require("../lib/headingToSlug");
 class Folding extends Extension_1.default {
@@ -30,7 +30,7 @@ class Folding extends Extension_1.default {
                     }
                     let modified = false;
                     const tr = newState.tr;
-                    const blocks = prosemirror_utils_knowt_1.findBlockNodes(newState.doc);
+                    const blocks = prosemirror_utils_1.findBlockNodes(newState.doc);
                     for (const block of blocks) {
                         if (block.node.type.name === "heading") {
                             const persistKey = headingToSlug_1.headingToPersistenceKey(block.node, this.editor.props.id);

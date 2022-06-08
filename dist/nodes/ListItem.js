@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_schema_list_1 = require("prosemirror-schema-list");
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_view_1 = require("prosemirror-view");
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const Node_1 = __importDefault(require("./Node"));
 const isList_1 = __importDefault(require("../queries/isList"));
 const isInList_1 = __importDefault(require("../queries/isInList"));
@@ -40,12 +40,12 @@ class ListItem extends Node_1.default {
                         set = set.map(tr.mapping, tr.doc);
                         switch (action === null || action === void 0 ? void 0 : action.event) {
                             case "mouseover": {
-                                const result = prosemirror_utils_knowt_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
+                                const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
                                     node.type.name === "checkbox_item");
                                 if (!result) {
                                     return set;
                                 }
-                                const list = prosemirror_utils_knowt_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => isList_1.default(node, this.editor.schema));
+                                const list = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => isList_1.default(node, this.editor.schema));
                                 if (!list) {
                                     return set;
                                 }
@@ -69,7 +69,7 @@ class ListItem extends Node_1.default {
                                 ]);
                             }
                             case "mouseout": {
-                                const result = prosemirror_utils_knowt_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
+                                const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
                                     node.type.name === "checkbox_item");
                                 if (!result) {
                                     return set;

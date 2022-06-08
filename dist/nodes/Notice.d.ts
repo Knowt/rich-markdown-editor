@@ -36,7 +36,7 @@ export default class Notice extends Node {
     handleStyleChange: (event: any) => void;
     inputRules({ type }: {
         type: any;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;

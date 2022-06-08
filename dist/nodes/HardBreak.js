@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Node_1 = __importDefault(require("./Node"));
-const prosemirror_tables_contently_1 = require("prosemirror-tables-contently");
+const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
 const breaks_1 = __importDefault(require("../rules/breaks"));
 class HardBreak extends Node_1.default {
     get name() {
@@ -33,7 +33,7 @@ class HardBreak extends Node_1.default {
     keys({ type }) {
         return {
             "Shift-Enter": (state, dispatch) => {
-                if (!prosemirror_tables_contently_1.isInTable(state))
+                if (!prosemirror_tables_1.isInTable(state))
                     return false;
                 dispatch(state.tr.replaceSelectionWith(type.create()).scrollIntoView());
                 return true;

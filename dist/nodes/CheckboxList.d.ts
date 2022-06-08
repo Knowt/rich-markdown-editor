@@ -15,15 +15,15 @@ export default class CheckboxList extends Node {
         type: any;
         schema: any;
     }): {
-        "Shift-Ctrl-7": (state: import("prosemirror-state").EditorState<any>, dispatch: (tr: import("prosemirror-state").Transaction<any>) => void) => boolean;
+        "Shift-Ctrl-7": (state: import("prosemirror-state").EditorState, dispatch: (tr: import("prosemirror-state").Transaction) => void) => boolean;
     };
     commands({ type, schema }: {
         type: any;
         schema: any;
-    }): () => (state: import("prosemirror-state").EditorState<any>, dispatch: (tr: import("prosemirror-state").Transaction<any>) => void) => boolean;
+    }): () => (state: import("prosemirror-state").EditorState, dispatch: (tr: import("prosemirror-state").Transaction) => void) => boolean;
     inputRules({ type }: {
         type: any;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;

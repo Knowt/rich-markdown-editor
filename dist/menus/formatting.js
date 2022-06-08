@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const outline_icons_1 = require("outline-icons");
-const prosemirror_tables_contently_1 = require("prosemirror-tables-contently");
+const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
 const isInList_1 = __importDefault(require("../queries/isInList"));
 const isMarkActive_1 = __importStar(require("../queries/isMarkActive"));
 const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
@@ -32,7 +32,7 @@ const icons_1 = require("../icons");
 function formattingMenuItems(view, isTemplate, dictionary) {
     const { state } = view;
     const { schema } = state;
-    const isTable = prosemirror_tables_contently_1.isInTable(state);
+    const isTable = prosemirror_tables_1.isInTable(state);
     const isList = isInList_1.default(state);
     const allowBlocks = !isTable && !isList;
     const allMarks = [

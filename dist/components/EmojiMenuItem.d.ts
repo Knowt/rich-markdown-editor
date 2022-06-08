@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Props as BlockMenuItemProps } from "./BlockMenuItem";
 declare type EmojiMenuItemProps = Omit<BlockMenuItemProps, "shortcut" | "theme"> & {
     emoji: string;

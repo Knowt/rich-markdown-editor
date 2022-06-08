@@ -23,5 +23,5 @@ export declare const LANGUAGES: {
 };
 export default function Prism({ name }: {
     name: any;
-}): Plugin<any, any>;
+}): Plugin<any>;
 //# sourceMappingURL=Prism.d.ts.map

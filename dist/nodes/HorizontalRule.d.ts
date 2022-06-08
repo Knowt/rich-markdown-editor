@@ -26,7 +26,7 @@ export default class HorizontalRule extends Node {
     };
     inputRules({ type }: {
         type: any;
-    }): InputRule<any>[];
+    }): InputRule[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         node: string;

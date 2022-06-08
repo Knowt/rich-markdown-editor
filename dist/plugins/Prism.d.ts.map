@@ -1,1 +1,1 @@
-{"version":3,"file":"Prism.d.ts","sourceRoot":"","sources":["../../src/plugins/Prism.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,MAAM,EAA0B,MAAM,mBAAmB,CAAC;AAKnE,eAAO,MAAM,SAAS;;;;;;;;;;;;;;;;;;;;;CAqBrB,CAAC;AAgFF,MAAM,CAAC,OAAO,UAAU,KAAK,CAAC,EAAE,IAAI,EAAE;;CAAA,oBA0CrC"}
+{"version":3,"file":"Prism.d.ts","sourceRoot":"","sources":["../../src/plugins/Prism.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,MAAM,EAA0B,MAAM,mBAAmB,CAAC;AAKnE,eAAO,MAAM,SAAS;;;;;;;;;;;;;;;;;;;;;CAqBrB,CAAC;AAgFF,MAAM,CAAC,OAAO,UAAU,KAAK,CAAC,EAAE,IAAI,EAAE;;CAAA,eA0CrC"}

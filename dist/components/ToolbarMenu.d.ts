@@ -12,7 +12,14 @@ declare type Props = {
 declare class ToolbarMenu extends React.Component<Props> {
     render(): JSX.Element;
 }
-declare const _default: React.ForwardRefExoticComponent<Pick<Props & React.RefAttributes<ToolbarMenu>, "view" | "tooltip" | "ref" | "key" | "commands" | "items"> & {
+declare const _default: React.ForwardRefExoticComponent<{
+    view: EditorView<any>;
+    tooltip: typeof React.Component | React.FC<any>;
+    ref?: ((instance: ToolbarMenu | null) => void) | React.RefObject<ToolbarMenu> | null | undefined;
+    key?: string | number | null | undefined;
+    commands: Record<string, any>;
+    items: MenuItem[];
+} & {
     theme?: any;
 }>;
 export default _default;

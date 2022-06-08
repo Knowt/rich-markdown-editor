@@ -15,14 +15,14 @@ export default class ExtensionManager {
         plugins?: PluginSimple[];
     }): MarkdownParser;
     get marks(): {};
-    get plugins(): import("prosemirror-state").Plugin<any, any>[];
+    get plugins(): import("prosemirror-state").Plugin<any>[];
     get rulePlugins(): PluginSimple[];
     keymaps({ schema }: {
         schema: Schema;
-    }): import("prosemirror-state").Plugin<any, any>[];
+    }): import("prosemirror-state").Plugin<any>[];
     inputRules({ schema }: {
         schema: Schema;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     commands({ schema, view }: {
         schema: any;
         view: any;

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import Node from "./Node";
 export default class Embed extends Node {
     get name(): string;

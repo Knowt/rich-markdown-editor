@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_state_1 = require("prosemirror-state");
-const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const findCollapsedNodes_1 = __importDefault(require("../queries/findCollapsedNodes"));
 function splitHeading(type) {
     return (state, dispatch) => {
@@ -16,7 +16,7 @@ function splitHeading(type) {
             return false;
         if (!$from.parent.attrs.collapsed)
             return false;
-        const allBlocks = prosemirror_utils_knowt_1.findBlockNodes(state.doc);
+        const allBlocks = prosemirror_utils_1.findBlockNodes(state.doc);
         const collapsedBlocks = findCollapsedNodes_1.default(state.doc);
         const visibleBlocks = allBlocks.filter((a) => !collapsedBlocks.find((b) => b.pos === a.pos));
         const nextVisibleBlock = visibleBlocks.find((a) => a.pos > from);

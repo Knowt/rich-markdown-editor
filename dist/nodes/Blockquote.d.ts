@@ -12,7 +12,7 @@ export default class Blockquote extends Node {
     };
     inputRules({ type }: {
         type: any;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     commands({ type }: {
         type: any;
     }): () => (state: any, dispatch: any) => boolean;

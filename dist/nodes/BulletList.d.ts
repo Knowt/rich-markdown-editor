@@ -13,17 +13,17 @@ export default class BulletList extends Node {
     commands({ type, schema }: {
         type: any;
         schema: any;
-    }): () => (state: import("prosemirror-state").EditorState<any>, dispatch: (tr: import("prosemirror-state").Transaction<any>) => void) => boolean;
+    }): () => (state: import("prosemirror-state").EditorState, dispatch: (tr: import("prosemirror-state").Transaction) => void) => boolean;
     keys({ type, schema }: {
         type: any;
         schema: any;
     }): {
-        "Shift-Ctrl-8": (state: import("prosemirror-state").EditorState<any>, dispatch: (tr: import("prosemirror-state").Transaction<any>) => void) => boolean;
+        "Shift-Ctrl-8": (state: import("prosemirror-state").EditorState, dispatch: (tr: import("prosemirror-state").Transaction) => void) => boolean;
     };
     inputRules({ type, schema }: {
         type: any;
         schema: any;
-    }): InputRule<any>[];
+    }): InputRule[];
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;

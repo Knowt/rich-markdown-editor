@@ -15,12 +15,12 @@ export default class Bold extends Mark {
     };
     inputRules({ type }: {
         type: any;
-    }): import("prosemirror-inputrules").InputRule<any>[];
+    }): import("prosemirror-inputrules").InputRule[];
     keys({ type }: {
         type: any;
     }): {
-        "Mod-b": (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
-        "Mod-B": (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
+        "Mod-b": import("prosemirror-state").Command;
+        "Mod-B": import("prosemirror-state").Command;
     };
     get toMarkdown(): {
         open: string;

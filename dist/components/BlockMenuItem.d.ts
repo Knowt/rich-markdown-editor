@@ -13,7 +13,18 @@ export declare type Props = {
     containerId?: string;
     mainSearchKeyword?: string;
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<Props, "disabled" | "title" | "icon" | "onClick" | "selected" | "iconSVGProps" | "innerRef" | "mainSearchKeyword" | "containerId" | "shortcut"> & {
+declare const _default: React.ForwardRefExoticComponent<{
+    disabled?: boolean | undefined;
+    title: React.ReactNode;
+    icon?: typeof React.Component | React.FC<any> | undefined;
+    onClick: () => void;
+    selected: boolean;
+    iconSVGProps?: any;
+    innerRef?: ((ref: HTMLDivElement) => void) | undefined;
+    mainSearchKeyword?: string | undefined;
+    containerId?: string | undefined;
+    shortcut?: string | undefined;
+} & {
     theme?: any;
 }>;
 export default _default;

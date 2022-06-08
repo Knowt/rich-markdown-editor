@@ -1,6 +1,4 @@
 import Node from "./Node";
-import { addColumnAfter, addColumnBefore, deleteColumn, deleteRow, deleteTable, fixTables, setCellAttr, toggleHeaderCell, toggleHeaderColumn, toggleHeaderRow } from "prosemirror-tables-contently";
-import { Plugin } from "prosemirror-state";
 import tablesRule from "../rules/tables";
 export default class Table extends Node {
     get name(): string;
@@ -32,29 +30,29 @@ export default class Table extends Node {
             index: any;
             alignment: any;
         }) => (state: any, dispatch: any) => void;
-        addColumnBefore: () => typeof addColumnBefore;
-        addColumnAfter: () => typeof addColumnAfter;
-        deleteColumn: () => typeof deleteColumn;
+        addColumnBefore: () => any;
+        addColumnAfter: () => any;
+        deleteColumn: () => any;
         addRowAfter: ({ index }: {
             index: any;
         }) => (state: any, dispatch: any) => void;
-        deleteRow: () => typeof deleteRow;
-        deleteTable: () => typeof deleteTable;
-        toggleHeaderColumn: () => typeof toggleHeaderColumn;
-        toggleHeaderRow: () => typeof toggleHeaderRow;
-        toggleHeaderCell: () => typeof toggleHeaderCell;
-        setCellAttr: () => typeof setCellAttr;
-        fixTables: () => typeof fixTables;
+        deleteRow: () => any;
+        deleteTable: () => any;
+        toggleHeaderColumn: () => any;
+        toggleHeaderRow: () => any;
+        toggleHeaderCell: () => any;
+        setCellAttr: () => any;
+        fixTables: () => any;
     };
     keys(): {
-        Tab: (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
-        "Shift-Tab": (state: import("prosemirror-state").EditorState<any>, dispatch?: ((tr: import("prosemirror-state").Transaction<any>) => void) | undefined) => boolean;
+        Tab: any;
+        "Shift-Tab": any;
         Enter: (state: any, dispatch: any) => boolean;
     };
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;
     };
-    get plugins(): Plugin<any, any>[];
+    get plugins(): any[];
 }
 //# sourceMappingURL=Table.d.ts.map

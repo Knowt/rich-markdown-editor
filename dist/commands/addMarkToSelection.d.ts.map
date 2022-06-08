@@ -1,1 +1,1 @@
-{"version":3,"file":"addMarkToSelection.d.ts","sourceRoot":"","sources":["../../src/commands/addMarkToSelection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,mBAAmB,CAAC;AAEhD,MAAM,CAAC,OAAO,UAAU,kBAAkB,CAAC,IAAI,KAAA,EAAE,KAAK,KAAK,WAC1C,YAAY,GAAG,CAAC,oBAAa,OAAO,CAUpD"}
+{"version":3,"file":"addMarkToSelection.d.ts","sourceRoot":"","sources":["../../src/commands/addMarkToSelection.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,UAAU,kBAAkB,CAAC,IAAI,KAAA,EAAE,KAAK,KAAK,kCACb,OAAO,CAUpD"}
