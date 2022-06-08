@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const outline_icons_1 = require("outline-icons");
 const styled_components_1 = __importStar(require("styled-components"));
 const isUrl_1 = __importDefault(require("../lib/isUrl"));
@@ -145,7 +145,7 @@ class LinkEditor extends React.Component {
             if (trimmedValue && this.props.onSearchLink) {
                 try {
                     const results = await this.props.onSearchLink(trimmedValue);
-                    this.setState(state => ({
+                    this.setState((state) => ({
                         results: Object.assign(Object.assign({}, state.results), { [trimmedValue]: results }),
                         previousValue: trimmedValue,
                     }));
@@ -183,7 +183,7 @@ class LinkEditor extends React.Component {
             }
             view.focus();
         };
-        this.handleSelectLink = (url, title) => event => {
+        this.handleSelectLink = (url, title) => (event) => {
             event.preventDefault();
             this.save(url, title);
             if (this.initialSelectionLength) {
@@ -193,7 +193,7 @@ class LinkEditor extends React.Component {
         this.moveSelectionToEnd = () => {
             const { to, view } = this.props;
             const { state, dispatch } = view;
-            dispatch(prosemirror_utils_1.setTextSelection(to)(state.tr));
+            dispatch(prosemirror_utils_knowt_1.setTextSelection(to)(state.tr));
             view.focus();
         };
     }
@@ -246,7 +246,7 @@ const Wrapper = styled_components_1.default(Flex_1.default) `
   pointer-events: all;
 `;
 const SearchResults = styled_components_1.default.ol `
-  background: ${props => props.theme.toolbarBackground};
+  background: ${(props) => props.theme.toolbarBackground};
   position: absolute;
   top: 100%;
   width: 100%;

@@ -1,1 +1,1 @@
-{"version":3,"file":"isNodeActive.d.ts","sourceRoot":"","sources":["../../src/queries/isNodeActive.ts"],"names":[],"mappings":"AAEA,QAAA,MAAM,YAAY,sBAAiB,OAAO,MAAM,EAAE,GAAG,CAAC,4BAcrD,CAAC;AAEF,eAAe,YAAY,CAAC"}
+{"version":3,"file":"isNodeActive.d.ts","sourceRoot":"","sources":["../../src/queries/isNodeActive.ts"],"names":[],"mappings":"AAKA,QAAA,MAAM,YAAY,sBACF,OAAO,MAAM,EAAE,GAAG,CAAC,4BAehC,CAAC;AAEJ,eAAe,YAAY,CAAC"}

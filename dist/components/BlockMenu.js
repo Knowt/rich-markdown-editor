@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const KnowtCommandMenu_1 = __importDefault(require("./KnowtCommandMenu"));
 const BlockMenuItem_1 = __importDefault(require("./BlockMenuItem"));
 const BlockGroupMenuItem_1 = __importDefault(require("./BlockGroupMenuItem"));
@@ -14,7 +14,7 @@ class BlockMenu extends react_1.default.Component {
         super(...arguments);
         this.clearSearch = (clearLength = 0) => {
             const { state, dispatch } = this.props.view;
-            const parent = prosemirror_utils_1.findParentNode((node) => !!node)(state.selection);
+            const parent = prosemirror_utils_knowt_1.findParentNode((node) => !!node)(state.selection);
             if (parent) {
                 const deleteFrom = Math.max(parent.pos, state.selection.to - clearLength);
                 dispatch(state.tr.insertText("", deleteFrom, state.selection.to));

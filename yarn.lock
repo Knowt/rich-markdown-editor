@@ -8749,10 +8749,10 @@ prosemirror-state@^1.0.0, prosemirror-state@^1.2.2, prosemirror-state@^1.3.1, pr
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-1.1.1.tgz#ad66300cc49500455cf1243bb129c9e7d883321e"
-  integrity sha512-LmCz4jrlqQZRsYRDzCRYf/pQ5CUcSOyqZlAj5kv67ZWBH1SVLP2U9WJEvQfimWgeRlIz0y0PQVqO1arRm1+woA==
+prosemirror-tables-contently@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables-contently/-/prosemirror-tables-contently-1.1.2.tgz#59f4ababf75c0a2c9b57b1784356b6f4bd370c65"
+  integrity sha512-REa13GZyVcmwUef6eFfGIZ4IIT3n+95+FEQC0mIg3F7MlwBp5q2lL5y/Pl8EcSIDDagoXp/8oW6uaYy0tWhb6A==
   dependencies:
     prosemirror-keymap "^1.1.2"
     prosemirror-model "^1.8.1"
@@ -8767,10 +8767,9 @@ prosemirror-transform@1.2.5, prosemirror-transform@^1.0.0, prosemirror-transform
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.9.6:
+"prosemirror-utils-knowt@github:knowt/prosemirror-utils":
   version "0.9.6"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.9.6.tgz#3d97bd85897e3b535555867dc95a51399116a973"
-  integrity sha512-UC+j9hQQ1POYfMc5p7UFxBTptRiGPR7Kkmbl3jVvU8VgQbkI89tR/GK+3QYC8n+VvBZrtAoCrJItNhWSxX3slA==
+  resolved "https://codeload.github.com/knowt/prosemirror-utils/tar.gz/1d656b1c8929726ce3d7f139216c091f1540c313"
 
 prosemirror-view@1.18.1:
   version "1.18.1"

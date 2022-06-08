@@ -37,7 +37,7 @@ exports.Wrapper = void 0;
 const React = __importStar(require("react"));
 const capitalize_1 = __importDefault(require("lodash/capitalize"));
 const react_portal_1 = require("react-portal");
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const styled_components_1 = __importDefault(require("styled-components"));
 const types_1 = require("../types");
 const Input_1 = __importDefault(require("./Input"));
@@ -193,7 +193,7 @@ class CommandMenu extends React.Component {
             const files = getDataTransferFiles_1.default(event);
             const { view, uploadImage, onImageUploadStart, onImageUploadStop, onShowToast, } = this.props;
             const { state } = view;
-            const parent = prosemirror_utils_1.findParentNode((node) => !!node)(state.selection);
+            const parent = prosemirror_utils_knowt_1.findParentNode((node) => !!node)(state.selection);
             this.clearSearch();
             if (!uploadImage) {
                 throw new Error("uploadImage prop is required to replace images");
@@ -288,7 +288,7 @@ class CommandMenu extends React.Component {
         const domAtPos = view.domAtPos.bind(view);
         const ref = this.menuRef.current;
         const offsetHeight = ref ? ref.offsetHeight : 0;
-        const node = prosemirror_utils_1.findDomRefAtPos(selection.from, domAtPos);
+        const node = prosemirror_utils_knowt_1.findDomRefAtPos(selection.from, domAtPos);
         const paragraph = { node };
         if (!props.isActive ||
             !paragraph.node ||

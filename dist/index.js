@@ -33,7 +33,7 @@ const prosemirror_model_1 = require("prosemirror-model");
 const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const prosemirror_keymap_1 = require("prosemirror-keymap");
 const prosemirror_commands_1 = require("prosemirror-commands");
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const styled_components_1 = require("styled-components");
 const theme_1 = require("./styles/theme");
 const dictionary_1 = __importDefault(require("./dictionary"));
@@ -172,13 +172,13 @@ class RichMarkdownEditor extends React.PureComponent {
             this.setState({ blockMenuOpen: false });
         };
         this.handleSelectRow = (index, state) => {
-            this.view.dispatch(prosemirror_utils_1.selectRow(index)(state.tr));
+            this.view.dispatch(prosemirror_utils_knowt_1.selectRow(index)(state.tr));
         };
         this.handleSelectColumn = (index, state) => {
-            this.view.dispatch(prosemirror_utils_1.selectColumn(index)(state.tr));
+            this.view.dispatch(prosemirror_utils_knowt_1.selectColumn(index)(state.tr));
         };
         this.handleSelectTable = (state) => {
-            this.view.dispatch(prosemirror_utils_1.selectTable(state.tr));
+            this.view.dispatch(prosemirror_utils_knowt_1.selectTable(state.tr));
         };
         this.forceUpdateContent = (newValue, options) => {
             const newState = this.createState(newValue);

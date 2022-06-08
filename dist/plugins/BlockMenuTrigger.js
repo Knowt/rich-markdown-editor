@@ -27,8 +27,8 @@ const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const react_dom_1 = __importDefault(require("react-dom"));
 const React = __importStar(require("react"));
 const prosemirror_state_1 = require("prosemirror-state");
-const prosemirror_tables_1 = require("prosemirror-tables");
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_tables_contently_1 = require("prosemirror-tables-contently");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const outline_icons_1 = require("outline-icons");
 const prosemirror_view_1 = require("prosemirror-view");
 const Extension_1 = __importDefault(require("../lib/Extension"));
@@ -69,7 +69,7 @@ class BlockMenuTrigger extends Extension_1.default {
                             if (!view.hasFocus()) {
                                 return false;
                             }
-                            const parent = prosemirror_utils_1.findParentNode((node) => node.type.name === "paragraph")(view.state.selection);
+                            const parent = prosemirror_utils_knowt_1.findParentNode((node) => node.type.name === "paragraph")(view.state.selection);
                             if (!parent || parent.node.content.size > 0) {
                                 return false;
                             }
@@ -105,7 +105,7 @@ class BlockMenuTrigger extends Extension_1.default {
                         return false;
                     },
                     decorations: (state) => {
-                        const parent = prosemirror_utils_1.findParentNode((node) => node.type.name === "paragraph")(state.selection);
+                        const parent = prosemirror_utils_knowt_1.findParentNode((node) => node.type.name === "paragraph")(state.selection);
                         if (!parent) {
                             return;
                         }
@@ -145,7 +145,7 @@ class BlockMenuTrigger extends Extension_1.default {
             new prosemirror_inputrules_1.InputRule(OPEN_REGEX, (state, match) => {
                 if (match &&
                     state.selection.$from.parent.type.name === "paragraph" &&
-                    !prosemirror_tables_1.isInTable(state)) {
+                    !prosemirror_tables_contently_1.isInTable(state)) {
                     this.options.onOpen(match[1] || match[2] || "");
                 }
                 return null;

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_view_1 = require("prosemirror-view");
 const Extension_1 = __importDefault(require("../lib/Extension"));
-const prosemirror_utils_1 = require("prosemirror-utils");
+const prosemirror_utils_knowt_1 = require("prosemirror-utils-knowt");
 const findCollapsedNodes_1 = __importDefault(require("../queries/findCollapsedNodes"));
 const headingToSlug_1 = require("../lib/headingToSlug");
 class Folding extends Extension_1.default {
@@ -17,7 +17,7 @@ class Folding extends Extension_1.default {
         let loaded = false;
         return [
             new prosemirror_state_1.Plugin({
-                view: view => {
+                view: (view) => {
                     loaded = false;
                     view.dispatch(view.state.tr.setMeta("folding", { loaded: true }));
                     return {};
@@ -25,12 +25,12 @@ class Folding extends Extension_1.default {
                 appendTransaction: (transactions, oldState, newState) => {
                     if (loaded)
                         return;
-                    if (!transactions.some(transaction => transaction.getMeta("folding"))) {
+                    if (!transactions.some((transaction) => transaction.getMeta("folding"))) {
                         return;
                     }
                     let modified = false;
                     const tr = newState.tr;
-                    const blocks = prosemirror_utils_1.findBlockNodes(newState.doc);
+                    const blocks = prosemirror_utils_knowt_1.findBlockNodes(newState.doc);
                     for (const block of blocks) {
                         if (block.node.type.name === "heading") {
                             const persistKey = headingToSlug_1.headingToPersistenceKey(block.node, this.editor.props.id);
@@ -45,9 +45,9 @@ class Folding extends Extension_1.default {
                     return modified ? tr : null;
                 },
                 props: {
-                    decorations: state => {
+                    decorations: (state) => {
                         const { doc } = state;
-                        const decorations = findCollapsedNodes_1.default(doc).map(block => prosemirror_view_1.Decoration.node(block.pos, block.pos + block.node.nodeSize, {
+                        const decorations = findCollapsedNodes_1.default(doc).map((block) => prosemirror_view_1.Decoration.node(block.pos, block.pos + block.node.nodeSize, {
                             class: "folded-content",
                         }));
                         return prosemirror_view_1.DecorationSet.create(doc, decorations);
