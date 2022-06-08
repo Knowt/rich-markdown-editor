@@ -12,7 +12,7 @@ import {
   InputIcon,
   HighlightIcon,
 } from "outline-icons";
-import { isInTable } from "prosemirror-tables-contently";
+import { isInTable } from "@knowt/prosemirror-tables";
 import isInList from "../queries/isInList";
 import isMarkActive, { isAnyMarkActive } from "../queries/isMarkActive";
 import isNodeActive from "../queries/isNodeActive";

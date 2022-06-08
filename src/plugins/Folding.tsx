@@ -1,7 +1,7 @@
 import { Plugin } from "prosemirror-state";
 import { Decoration, DecorationSet } from "prosemirror-view";
 import Extension from "../lib/Extension";
-import { findBlockNodes } from "prosemirror-utils-knowt";
+import { findBlockNodes } from "@knowt/prosemirror-utils";
 import findCollapsedNodes from "../queries/findCollapsedNodes";
 import { headingToPersistenceKey } from "../lib/headingToSlug";
 

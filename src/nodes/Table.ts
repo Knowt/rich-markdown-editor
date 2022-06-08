@@ -14,13 +14,13 @@ import {
   toggleHeaderCell,
   toggleHeaderColumn,
   toggleHeaderRow,
-} from "prosemirror-tables-contently";
+} from "@knowt/prosemirror-tables";
 import {
   addRowAt,
   createTable,
   getCellsInColumn,
   moveRow,
-} from "prosemirror-utils-knowt";
+} from "@knowt/prosemirror-utils";
 import { Plugin, TextSelection } from "prosemirror-state";
 import tablesRule from "../rules/tables";
 

@@ -3,7 +3,7 @@ import flattenDeep from "lodash/flattenDeep";
 import { Plugin, PluginKey, Transaction } from "prosemirror-state";
 import { Node } from "prosemirror-model";
 import { Decoration, DecorationSet } from "prosemirror-view";
-import { findBlockNodes } from "prosemirror-utils-knowt";
+import { findBlockNodes } from "@knowt/prosemirror-utils";
 
 export const LANGUAGES = {
   none: "None", // additional entry to disable highlighting

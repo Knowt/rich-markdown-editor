@@ -1,4 +1,5 @@
 node_modules/*
+sotrybook-static/
 .log
 .DS_Store
 .idea

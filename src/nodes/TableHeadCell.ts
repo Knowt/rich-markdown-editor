@@ -1,6 +1,6 @@
 import { DecorationSet, Decoration } from "prosemirror-view";
 import { Plugin } from "prosemirror-state";
-import { isColumnSelected, getCellsInRow } from "prosemirror-utils-knowt";
+import { isColumnSelected, getCellsInRow } from "@knowt/prosemirror-utils";
 import Node from "./Node";
 
 export default class TableHeadCell extends Node {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setTextSelection } from "prosemirror-utils-knowt";
+import { setTextSelection } from "@knowt/prosemirror-utils";
 import { EditorView } from "prosemirror-view";
 import { Mark } from "prosemirror-model";
 import {

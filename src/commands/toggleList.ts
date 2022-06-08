@@ -1,7 +1,7 @@
 import { NodeType } from "prosemirror-model";
 import { EditorState, Transaction } from "prosemirror-state";
 import { wrapInList, liftListItem } from "prosemirror-schema-list";
-import { findParentNode } from "prosemirror-utils-knowt";
+import { findParentNode } from "@knowt/prosemirror-utils";
 import isList from "../queries/isList";
 
 export default function toggleList(listType: NodeType, itemType: NodeType) {
