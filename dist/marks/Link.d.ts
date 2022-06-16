@@ -33,7 +33,7 @@ export default class Link extends Mark {
     };
     get plugins(): Plugin<any>[];
     get toMarkdown(): {
-        open(_state: any, mark: any, parent: any, index: any): "[" | "<";
+        open(_state: any, mark: any, parent: any, index: any): string;
         close(state: any, mark: any, parent: any, index: any): string;
     };
     parseMarkdown(): {
