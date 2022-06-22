@@ -4,9 +4,9 @@ import Extension from "../lib/Extension";
 import isInCode from "../queries/isInCode";
 import { run } from "./BlockMenuTrigger";
 
-const OPEN_REGEX = /::([0-9a-zA-Z_+-]+)?$/;
+const OPEN_REGEX = /:\)([0-9a-zA-Z_+-]+)?$/;
 const CLOSE_REGEX =
-  /::(([0-9a-zA-Z_+-]*\s+)|(\s+[0-9a-zA-Z_+-]+)|[^0-9a-zA-Z_+-]+)$/;
+  /:\)(([0-9a-zA-Z_+-]*\s+)|(\s+[0-9a-zA-Z_+-]+)|[^0-9a-zA-Z_+-]+)$/;
 
 export default class EmojiTrigger extends Extension {
   get name() {

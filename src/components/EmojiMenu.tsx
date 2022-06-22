@@ -53,7 +53,7 @@ class EmojiMenu extends React.Component<
   clearSearch = () => {
     const { state, dispatch } = this.props.view;
 
-    const MENU_TRIGGER_LENGTH = 2; // length of `::`
+    const MENU_TRIGGER_LENGTH = 2; // length of `:)`
 
     // clear search input
     dispatch(
