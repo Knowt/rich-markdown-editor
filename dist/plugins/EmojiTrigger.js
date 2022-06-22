@@ -8,8 +8,8 @@ const prosemirror_state_1 = require("prosemirror-state");
 const Extension_1 = __importDefault(require("../lib/Extension"));
 const isInCode_1 = __importDefault(require("../queries/isInCode"));
 const BlockMenuTrigger_1 = require("./BlockMenuTrigger");
-const OPEN_REGEX = /::([0-9a-zA-Z_+-]+)?$/;
-const CLOSE_REGEX = /::(([0-9a-zA-Z_+-]*\s+)|(\s+[0-9a-zA-Z_+-]+)|[^0-9a-zA-Z_+-]+)$/;
+const OPEN_REGEX = /:\)([0-9a-zA-Z_+-]+)?$/;
+const CLOSE_REGEX = /:\)(([0-9a-zA-Z_+-]*\s+)|(\s+[0-9a-zA-Z_+-]+)|[^0-9a-zA-Z_+-]+)$/;
 class EmojiTrigger extends Extension_1.default {
     get name() {
         return "emojimenu";
