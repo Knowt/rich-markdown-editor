@@ -48,12 +48,12 @@ export default class Notice extends Node {
           }),
         },
       ],
-      toDOM: node => {
-        const select = document.createElement("select");
+      toDOM: (node, document_ = document) => {
+        const select = document_.createElement("select");
         select.addEventListener("change", this.handleStyleChange);
 
         this.styleOptions.forEach(([key, label]) => {
-          const option = document.createElement("option");
+          const option = document_.createElement("option");
           option.value = key;
           option.innerText = label;
           option.selected = node.attrs.style === key;
@@ -70,7 +70,7 @@ export default class Notice extends Node {
           component = <InfoIcon color="currentColor" />;
         }
 
-        const icon = document.createElement("div");
+        const icon = document_.createElement("div");
         icon.className = "icon";
         ReactDOM.render(component, icon);
 

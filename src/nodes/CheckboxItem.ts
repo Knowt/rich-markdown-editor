@@ -26,8 +26,8 @@ export default class CheckboxItem extends Node {
           }),
         },
       ],
-      toDOM: (node) => {
-        const input = document.createElement("input");
+      toDOM: (node, document_ = document) => {
+        const input = document_.createElement("input");
         input.type = "checkbox";
         input.tabIndex = -1;
         input.addEventListener("change", this.handleChange);
