@@ -111,7 +111,7 @@ export const parseMarkdown = (markdown: string) => {
   return markdownParser.parse(markdown);
 };
 
-const mdToHtml = (document: Document) => (markdown: string): string => {
+export const mdToHtml = (document: Document) => (markdown: string): string => {
   const doc = parseMarkdown(markdown) as ProsemirrorNode;
   return serializeToHTML(document)(doc);
 };
