@@ -1,0 +1,22 @@
+diff --git a/node_modules/prosemirror-model/dist/index.cjs b/node_modules/prosemirror-model/dist/index.cjs
+index 81514e7..01d6eb1 100644
+--- a/node_modules/prosemirror-model/dist/index.cjs
++++ b/node_modules/prosemirror-model/dist/index.cjs
+@@ -3182,7 +3182,7 @@ var DOMSerializer = function () {
+   }, {
+     key: "serializeNodeInner",
+     value: function serializeNodeInner(node, options) {
+-      var _DOMSerializer$render = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node)),
++      var _DOMSerializer$render = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node, doc(options))),
+           dom = _DOMSerializer$render.dom,
+           contentDOM = _DOMSerializer$render.contentDOM;
+ 
+@@ -3215,7 +3215,7 @@ var DOMSerializer = function () {
+     value: function serializeMark(mark, inline) {
+       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+       var toDOM = this.marks[mark.type.name];
+-      return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline));
++      return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline, doc(options)));
+     }
+   }], [{
+     key: "renderSpec",
