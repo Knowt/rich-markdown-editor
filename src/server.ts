@@ -121,7 +121,7 @@ const mdToHtml = (document: Document) => (markdown: string): string => {
  * @param document_
  */
 export const externalHtmlOrMdToHtml = (isHTML_ = isHTML, document_ = document) => (content: string) => {
-  if (isHTML(content)) {
+  if (isHTML_(content)) {
     return serializeToHTML(document_)(parseHTML(document_)(content));
   } else {
     return mdToHtml(document_)(content);
