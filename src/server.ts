@@ -101,7 +101,7 @@ const parseHTML = (document: Document) => (html: string) => {
 };
 
 const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
-  const serializedFragment = domSerializer.serializeFragment(doc.content);
+  const serializedFragment = domSerializer.serializeFragment(doc.content, { document });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
   return throwAwayDiv.innerHTML;
