@@ -12,7 +12,8 @@
     "build": "tsc",
     "preversion": "yarn build",
     "watch": "yarn tsc-watch",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "patch-package"
   },
   "serve": {
     "open": true,
