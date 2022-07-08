@@ -94,7 +94,7 @@ const parseHTML = (document) => (html) => {
     return domParser.parse(domNode);
 };
 const serializeToHTML = (document) => (doc) => {
-    const serializedFragment = domSerializer.serializeFragment(doc.content);
+    const serializedFragment = domSerializer.serializeFragment(doc.content, { document });
     const throwAwayDiv = document.createElement("div");
     throwAwayDiv.appendChild(serializedFragment);
     return throwAwayDiv.innerHTML;
