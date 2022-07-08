@@ -36,7 +36,9 @@ class Emoji extends Node_1.default {
                     }),
                 },
             ],
-            toDOM: (node, document_ = document) => {
+            toDOM: (node, document_) => {
+                if (!document_ && typeof document !== "undefined")
+                    document_ = document;
                 if (name_to_emoji_json_1.default[node.attrs["data-name"]]) {
                     const text = document_.createTextNode(name_to_emoji_json_1.default[node.attrs["data-name"]]);
                     return [

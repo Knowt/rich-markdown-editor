@@ -23,12 +23,7 @@ export default class Heading extends Node {
         defining: boolean;
         draggable: boolean;
         parseDOM: any;
-        toDOM: (node: any, document_?: Document) => (string | (string | HTMLButtonElement | {
-            contentEditable: boolean;
-            class: string;
-        })[] | (string | number | {
-            class: string;
-        })[])[];
+        toDOM: (node: any, document_: any) => (string | any[])[];
     };
     toMarkdown(state: MarkdownSerializerState, node: ProsemirrorNode): void;
     parseMarkdown(): {

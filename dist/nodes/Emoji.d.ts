@@ -25,12 +25,7 @@ export default class Emoji extends Node {
                 "data-name": string | undefined;
             };
         }[];
-        toDOM: (node: any, document_?: Document) => (string | Text | {
-            class: string;
-            "data-name": any;
-        })[] | (string | Text | {
-            class: string;
-        })[];
+        toDOM: (node: any, document_: any) => any[];
     };
     get rulePlugins(): (typeof emojiRule)[];
     commands({ type }: {

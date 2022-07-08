@@ -27,14 +27,10 @@ export default class CodeFence extends Node {
                 language: string | undefined;
             };
         })[];
-        toDOM: (node: any, document_?: Document) => (string | {
+        toDOM: (node: any, document_: any) => (string | any[] | {
             class: string;
             "data-language": any;
-        } | (string | HTMLButtonElement | HTMLSelectElement | {
-            contentEditable: boolean;
-        })[] | (string | (string | number | {
-            spellCheck: boolean;
-        })[])[])[];
+        })[];
     };
     commands({ type, schema }: {
         type: any;

@@ -17,12 +17,10 @@ export default class CheckboxItem extends Node {
                 checked: boolean;
             };
         }[];
-        toDOM: (node: any, document_?: Document) => (string | (string | number)[] | {
+        toDOM: (node: any, document_: any) => (string | any[] | {
             "data-type": string;
             class: string | undefined;
-        } | (string | HTMLInputElement | {
-            contentEditable: boolean;
-        })[])[];
+        })[];
     };
     get rulePlugins(): (typeof checkboxRule)[];
     handleChange: (event: any) => void;

@@ -22,13 +22,7 @@ export default class Notice extends Node {
                 style: string | undefined;
             };
         }[];
-        toDOM: (node: any, document_?: Document) => (string | HTMLDivElement | {
-            class: string;
-        } | (string | HTMLSelectElement | {
-            contentEditable: boolean;
-        })[] | (string | number | {
-            class: string;
-        })[])[];
+        toDOM: (node: any, document_: any) => any[];
     };
     commands({ type }: {
         type: any;
