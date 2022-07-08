@@ -89,7 +89,8 @@ export default class CodeFence extends Node {
           },
         },
       ],
-      toDOM: (node, document_ = document) => {
+      toDOM: (node, document_ ) => {
+        if(!document_ && typeof document !== "undefined") document_ = document;
         const button = document_.createElement("button");
         button.innerText = "Copy";
         button.type = "button";

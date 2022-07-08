@@ -33,7 +33,8 @@ export default class Emoji extends Node {
           }),
         },
       ],
-      toDOM: (node, document_ = document) => {
+      toDOM: (node, document_ ) => {
+        if(!document_ && typeof document !== "undefined") document_ = document;
         if (nameToEmoji[node.attrs["data-name"]]) {
           const text = document_.createTextNode(
             nameToEmoji[node.attrs["data-name"]]

@@ -48,7 +48,8 @@ export default class Notice extends Node {
           }),
         },
       ],
-      toDOM: (node, document_ = document) => {
+      toDOM: (node, document_ ) => {
+        if(!document_ && typeof document !== "undefined") document_ = document;
         const select = document_.createElement("select");
         select.addEventListener("change", this.handleStyleChange);
 

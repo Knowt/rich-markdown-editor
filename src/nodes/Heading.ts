@@ -56,7 +56,8 @@ export default class Heading extends Node {
         },
         contentElement: ".heading-content",
       })),
-      toDOM: (node, document_ = document) => {
+      toDOM: (node, document_) => {
+        if(!document_ && typeof document !== "undefined") document_ = document;
         const fold = document_.createElement("button");
         fold.innerText = "";
         fold.innerHTML =
