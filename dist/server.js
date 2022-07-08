@@ -108,7 +108,7 @@ const mdToHtml = (document) => (markdown) => {
     return serializeToHTML(document)(doc);
 };
 const externalHtmlOrMdToHtml = (isHTML_ = domHelpers_1.isHTML, document_ = document) => (content) => {
-    if (domHelpers_1.isHTML(content)) {
+    if (isHTML_(content)) {
         return serializeToHTML(document_)(parseHTML(document_)(content));
     }
     else {
