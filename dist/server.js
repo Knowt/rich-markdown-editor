@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.externalHtmlOrMdToHtml = exports.parseMarkdown = exports.schema = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
-const domHelpers_1 = require("./domHelpers");
+const dictionary_1 = __importDefault(require("./dictionary"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
@@ -41,6 +41,7 @@ const YellowHighlight_1 = __importDefault(require("./marks/highlights/YellowHigh
 const BlueHighlight_1 = __importDefault(require("./marks/highlights/BlueHighlight"));
 const GreenHighlight_1 = __importDefault(require("./marks/highlights/GreenHighlight"));
 const DefaultHighlight_1 = __importDefault(require("./marks/highlights/DefaultHighlight"));
+const domHelpers_1 = require("./domHelpers");
 const extensions = new ExtensionManager_1.default([
     new Doc_1.default(),
     new Text_1.default(),
@@ -55,7 +56,7 @@ const extensions = new ExtensionManager_1.default([
     new CheckboxItem_1.default(),
     new Embed_1.default(),
     new ListItem_1.default(),
-    new Notice_1.default(),
+    new Notice_1.default({ dictionary: Object.assign({}, dictionary_1.default) }),
     new Heading_1.default({ softToDOM: true }),
     new HorizontalRule_1.default(),
     new Image_1.default(),
@@ -75,24 +76,24 @@ const extensions = new ExtensionManager_1.default([
     new YellowHighlight_1.default(),
     new BlueHighlight_1.default(),
     new GreenHighlight_1.default(),
-    new DefaultHighlight_1.default(),
+    new DefaultHighlight_1.default()
 ]);
 exports.schema = new prosemirror_model_1.Schema({
     nodes: extensions.nodes,
-    marks: extensions.marks,
+    marks: extensions.marks
 });
 const domParser = prosemirror_model_1.DOMParser.fromSchema(exports.schema);
 const domSerializer = prosemirror_model_1.DOMSerializer.fromSchema(exports.schema);
 const markdownParser = extensions.parser({
     schema: exports.schema,
-    plugins: extensions.rulePlugins,
+    plugins: extensions.rulePlugins
 });
-const parseHTML = (html) => {
+const parseHTML = (document) => (html) => {
     const domNode = document.createElement("div");
     domNode.innerHTML = html;
     return domParser.parse(domNode);
 };
-const serializeToHTML = (doc) => {
+const serializeToHTML = (document) => (doc) => {
     const serializedFragment = domSerializer.serializeFragment(doc.content);
     const throwAwayDiv = document.createElement("div");
     throwAwayDiv.appendChild(serializedFragment);
@@ -102,16 +103,16 @@ const parseMarkdown = (markdown) => {
     return markdownParser.parse(markdown);
 };
 exports.parseMarkdown = parseMarkdown;
-const mdToHtml = (markdown) => {
+const mdToHtml = (document) => (markdown) => {
     const doc = exports.parseMarkdown(markdown);
-    return serializeToHTML(doc);
+    return serializeToHTML(document)(doc);
 };
-const externalHtmlOrMdToHtml = (content) => {
+const externalHtmlOrMdToHtml = (isHTML_ = domHelpers_1.isHTML, document_ = document) => (content) => {
     if (domHelpers_1.isHTML(content)) {
-        return serializeToHTML(parseHTML(content));
+        return serializeToHTML(document_)(parseHTML(document_)(content));
     }
     else {
-        return mdToHtml(content);
+        return mdToHtml(document_)(content);
     }
 };
 exports.externalHtmlOrMdToHtml = externalHtmlOrMdToHtml;
