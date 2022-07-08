@@ -1,9 +1,9 @@
 /* Not quite a server file, it has to be run in the browser, 
 as it uses browser API to serialize the prosemirror doc AST to html */
 
-import { Schema, DOMParser, DOMSerializer } from "prosemirror-model";
+import { Schema, DOMParser, DOMSerializer, Node as ProsemirrorNode } from "prosemirror-model";
 import ExtensionManager from "./lib/ExtensionManager";
-import { isHTML } from "./domHelpers";
+import baseDictionary from "./dictionary";
 
 // nodes
 import Doc from "./nodes/Doc";
@@ -42,6 +42,7 @@ import YellowHighlight from "./marks/highlights/YellowHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
 import DefaultHighlight from "./marks/highlights/DefaultHighlight";
+import { isHTML } from "./domHelpers";
 
 const extensions = new ExtensionManager([
   new Doc(),
@@ -57,7 +58,7 @@ const extensions = new ExtensionManager([
   new CheckboxItem(),
   new Embed(),
   new ListItem(),
-  new Notice(),
+  new Notice({ dictionary: { ...baseDictionary } }),
   new Heading({ softToDOM: true }),
   new HorizontalRule(),
   new Image(),
@@ -77,12 +78,12 @@ const extensions = new ExtensionManager([
   new YellowHighlight(),
   new BlueHighlight(),
   new GreenHighlight(),
-  new DefaultHighlight(),
+  new DefaultHighlight()
 ]);
 
 export const schema = new Schema({
   nodes: extensions.nodes,
-  marks: extensions.marks,
+  marks: extensions.marks
 });
 
 const domParser = DOMParser.fromSchema(schema);
@@ -90,16 +91,16 @@ const domSerializer = DOMSerializer.fromSchema(schema);
 
 const markdownParser = extensions.parser({
   schema,
-  plugins: extensions.rulePlugins,
+  plugins: extensions.rulePlugins
 });
 
-const parseHTML = (html) => {
+const parseHTML = (document: Document) => (html: string) => {
   const domNode = document.createElement("div");
   domNode.innerHTML = html;
   return domParser.parse(domNode);
 };
 
-const serializeToHTML = (doc) => {
+const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   const serializedFragment = domSerializer.serializeFragment(doc.content);
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
@@ -110,15 +111,19 @@ export const parseMarkdown = (markdown: string) => {
   return markdownParser.parse(markdown);
 };
 
-const mdToHtml = (markdown: string): string => {
-  const doc = parseMarkdown(markdown);
-  return serializeToHTML(doc);
+const mdToHtml = (document: Document) => (markdown: string): string => {
+  const doc = parseMarkdown(markdown) as ProsemirrorNode;
+  return serializeToHTML(document)(doc);
 };
 
-export const externalHtmlOrMdToHtml = (content) => {
+/**
+ * @param isHTML_
+ * @param document_
+ */
+export const externalHtmlOrMdToHtml = (isHTML_ = isHTML, document_ = document) => (content: string) => {
   if (isHTML(content)) {
-    return serializeToHTML(parseHTML(content));
+    return serializeToHTML(document_)(parseHTML(document_)(content));
   } else {
-    return mdToHtml(content);
+    return mdToHtml(document_)(content);
   }
 };

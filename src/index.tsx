@@ -422,7 +422,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             maxLength: this.props.maxLength,
           }),
         ].filter((extension) => {
-          // Optionaly disable extensions
+          // Optionally disable extensions
           if (this.props.disableExtensions) {
             return !(this.props.disableExtensions as string[]).includes(
               extension.name
@@ -535,7 +535,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         dropCursor({ color: this.theme().cursor }),
         gapCursor(),
         inputRules({ rules: this.inputRules }),
-        keymap({ Tab: () => true }), // return true so we handle the Tab click, otherwise the default handler is to blur the editor.
+        keymap({ Tab: () => true }), // returns true, so we handle the Tab click, otherwise the default handler is to blur the editor.
         keymap(baseKeymap),
       ],
     });
@@ -548,7 +548,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       return this.domParser.parse(domNode);
     }
 
-    return this.mdParser.parse(content);
+    return this.mdParser.parse(content) ?? undefined;
   }
 
   createView() {
