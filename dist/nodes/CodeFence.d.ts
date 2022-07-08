@@ -27,7 +27,7 @@ export default class CodeFence extends Node {
                 language: string | undefined;
             };
         })[];
-        toDOM: (node: any) => (string | {
+        toDOM: (node: any, document_?: Document) => (string | {
             class: string;
             "data-language": any;
         } | (string | HTMLButtonElement | HTMLSelectElement | {

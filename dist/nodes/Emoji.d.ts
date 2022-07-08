@@ -25,7 +25,7 @@ export default class Emoji extends Node {
                 "data-name": string | undefined;
             };
         }[];
-        toDOM: (node: any) => (string | Text | {
+        toDOM: (node: any, document_?: Document) => (string | Text | {
             class: string;
             "data-name": any;
         })[] | (string | Text | {

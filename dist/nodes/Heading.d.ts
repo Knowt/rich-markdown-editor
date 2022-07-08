@@ -23,7 +23,7 @@ export default class Heading extends Node {
         defining: boolean;
         draggable: boolean;
         parseDOM: any;
-        toDOM: (node: any) => (string | (string | HTMLButtonElement | {
+        toDOM: (node: any, document_?: Document) => (string | (string | HTMLButtonElement | {
             contentEditable: boolean;
             class: string;
         })[] | (string | number | {

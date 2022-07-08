@@ -36,9 +36,9 @@ class Emoji extends Node_1.default {
                     }),
                 },
             ],
-            toDOM: (node) => {
+            toDOM: (node, document_ = document) => {
                 if (name_to_emoji_json_1.default[node.attrs["data-name"]]) {
-                    const text = document.createTextNode(name_to_emoji_json_1.default[node.attrs["data-name"]]);
+                    const text = document_.createTextNode(name_to_emoji_json_1.default[node.attrs["data-name"]]);
                     return [
                         "span",
                         {
@@ -48,7 +48,7 @@ class Emoji extends Node_1.default {
                         text,
                     ];
                 }
-                const text = document.createTextNode(`:${node.attrs["data-name"]}:`);
+                const text = document_.createTextNode(`:${node.attrs["data-name"]}:`);
                 return ["span", { class: "emoji" }, text];
             },
         };

@@ -141,15 +141,15 @@ class CodeFence extends Node_1.default {
                     },
                 },
             ],
-            toDOM: (node) => {
-                const button = document.createElement("button");
+            toDOM: (node, document_ = document) => {
+                const button = document_.createElement("button");
                 button.innerText = "Copy";
                 button.type = "button";
                 button.addEventListener("click", this.handleCopyToClipboard);
-                const select = document.createElement("select");
+                const select = document_.createElement("select");
                 select.addEventListener("change", this.handleLanguageChange);
                 this.languageOptions.forEach(([key, label]) => {
-                    const option = document.createElement("option");
+                    const option = document_.createElement("option");
                     const value = key === "none" ? "" : key;
                     option.value = value;
                     option.innerText = label;

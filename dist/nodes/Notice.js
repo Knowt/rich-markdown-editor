@@ -84,11 +84,11 @@ class Notice extends Node_1.default {
                     }),
                 },
             ],
-            toDOM: node => {
-                const select = document.createElement("select");
+            toDOM: (node, document_ = document) => {
+                const select = document_.createElement("select");
                 select.addEventListener("change", this.handleStyleChange);
                 this.styleOptions.forEach(([key, label]) => {
-                    const option = document.createElement("option");
+                    const option = document_.createElement("option");
                     option.value = key;
                     option.innerText = label;
                     option.selected = node.attrs.style === key;
@@ -104,7 +104,7 @@ class Notice extends Node_1.default {
                 else {
                     component = React.createElement(outline_icons_1.InfoIcon, { color: "currentColor" });
                 }
-                const icon = document.createElement("div");
+                const icon = document_.createElement("div");
                 icon.className = "icon";
                 react_dom_1.default.render(component, icon);
                 return [
