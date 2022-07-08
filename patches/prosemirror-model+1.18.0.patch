@@ -1,22 +1,22 @@
-diff --git a/node_modules/prosemirror-model/dist/index.cjs b/node_modules/prosemirror-model/dist/index.cjs
-index 81514e7..01d6eb1 100644
---- a/node_modules/prosemirror-model/dist/index.cjs
-+++ b/node_modules/prosemirror-model/dist/index.cjs
-@@ -3182,7 +3182,7 @@ var DOMSerializer = function () {
-   }, {
-     key: "serializeNodeInner",
-     value: function serializeNodeInner(node, options) {
--      var _DOMSerializer$render = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node)),
-+      var _DOMSerializer$render = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node, doc(options))),
-           dom = _DOMSerializer$render.dom,
-           contentDOM = _DOMSerializer$render.contentDOM;
- 
-@@ -3215,7 +3215,7 @@ var DOMSerializer = function () {
-     value: function serializeMark(mark, inline) {
-       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-       var toDOM = this.marks[mark.type.name];
--      return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline));
-+      return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline, doc(options)));
+diff --git a/node_modules/prosemirror-model/dist/index.js b/node_modules/prosemirror-model/dist/index.js
+index 0594879..6443866 100644
+--- a/node_modules/prosemirror-model/dist/index.js
++++ b/node_modules/prosemirror-model/dist/index.js
+@@ -3246,7 +3246,7 @@ class DOMSerializer {
+     @internal
+     */
+     serializeNodeInner(node, options) {
+-        let { dom, contentDOM } = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node));
++        let { dom, contentDOM } = DOMSerializer.renderSpec(doc(options), this.nodes[node.type.name](node, doc(options)));
+         if (contentDOM) {
+             if (node.isLeaf)
+                 throw new RangeError("Content hole not allowed in a leaf node spec");
+@@ -3277,7 +3277,7 @@ class DOMSerializer {
+     */
+     serializeMark(mark, inline, options = {}) {
+         let toDOM = this.marks[mark.type.name];
+-        return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline));
++        return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline, doc(options)));
      }
-   }], [{
-     key: "renderSpec",
+     /**
+     Render an [output spec](https://prosemirror.net/docs/ref/#model.DOMOutputSpec) to a DOM node. If
