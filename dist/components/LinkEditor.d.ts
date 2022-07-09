@@ -1,6 +1,6 @@
 import * as React from "react";
 import { EditorView } from "prosemirror-view";
-import { Mark } from "prosemirror-model";
+import { Mark } from "@knowt/prosemirror-model";
 import theme from "../styles/theme";
 import baseDictionary from "../dictionary";
 export declare type SearchResult = {
@@ -57,7 +57,7 @@ declare class LinkEditor extends React.Component<Props, State> {
     render(): JSX.Element;
 }
 declare const _default: React.ForwardRefExoticComponent<{
-    mark?: Mark | undefined;
+    mark?: any;
     view: EditorView<any>;
     tooltip: typeof React.Component | React.FC<any>;
     ref?: ((instance: LinkEditor | null) => void) | React.RefObject<LinkEditor> | null | undefined;

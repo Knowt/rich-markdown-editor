@@ -1,7 +1,7 @@
-import { ResolvedPos, MarkType } from "prosemirror-model";
+import { ResolvedPos, MarkType } from "@knowt/prosemirror-model";
 export default function getMarkRange($pos?: ResolvedPos, type?: MarkType): false | {
-    from: number;
-    to: number;
-    mark: import("prosemirror-model").Mark;
+    from: any;
+    to: any;
+    mark: any;
 };
 //# sourceMappingURL=getMarkRange.d.ts.map

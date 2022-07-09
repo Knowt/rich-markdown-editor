@@ -8,7 +8,7 @@ function getMarkRange($pos, type) {
     if (!start.node) {
         return false;
     }
-    const mark = start.node.marks.find(mark => mark.type === type);
+    const mark = start.node.marks.find((mark) => mark.type === type);
     if (!mark) {
         return false;
     }

@@ -71,10 +71,7 @@ class ExtensionManager {
             type: schema[`${extension.type}s`][extension.name],
             schema,
         }));
-        return [
-            ...extensionKeymaps,
-            ...nodeMarkKeymaps,
-        ].map((keys) => prosemirror_keymap_1.keymap(keys));
+        return [...extensionKeymaps, ...nodeMarkKeymaps].map((keys) => prosemirror_keymap_1.keymap(keys));
     }
     inputRules({ schema }) {
         const extensionInputRules = this.extensions

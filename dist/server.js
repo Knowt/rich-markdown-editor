@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.schema = void 0;
-const prosemirror_model_1 = require("prosemirror-model");
+const prosemirror_model_1 = require("@knowt/prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const dictionary_1 = __importDefault(require("./dictionary"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
@@ -76,17 +76,17 @@ const extensions = new ExtensionManager_1.default([
     new YellowHighlight_1.default(),
     new BlueHighlight_1.default(),
     new GreenHighlight_1.default(),
-    new DefaultHighlight_1.default()
+    new DefaultHighlight_1.default(),
 ]);
 exports.schema = new prosemirror_model_1.Schema({
     nodes: extensions.nodes,
-    marks: extensions.marks
+    marks: extensions.marks,
 });
 const domParser = prosemirror_model_1.DOMParser.fromSchema(exports.schema);
 const domSerializer = prosemirror_model_1.DOMSerializer.fromSchema(exports.schema);
 const markdownParser = extensions.parser({
     schema: exports.schema,
-    plugins: extensions.rulePlugins
+    plugins: extensions.rulePlugins,
 });
 const parseHTML = (document) => (html) => {
     const domNode = document.createElement("div");
@@ -94,7 +94,9 @@ const parseHTML = (document) => (html) => {
     return domParser.parse(domNode);
 };
 const serializeToHTML = (document) => (doc) => {
-    const serializedFragment = domSerializer.serializeFragment(doc.content, { document });
+    const serializedFragment = domSerializer.serializeFragment(doc.content, {
+        document,
+    });
     const throwAwayDiv = document.createElement("div");
     throwAwayDiv.appendChild(serializedFragment);
     return throwAwayDiv.innerHTML;

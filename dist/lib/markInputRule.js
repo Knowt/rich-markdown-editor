@@ -6,7 +6,7 @@ function getMarksBetween(start, end, state) {
     state.doc.nodesBetween(start, end, (node, pos) => {
         marks = [
             ...marks,
-            ...node.marks.map(mark => ({
+            ...node.marks.map((mark) => ({
                 start: pos,
                 end: pos + node.nodeSize,
                 mark,
@@ -28,8 +28,8 @@ function default_1(regexp, markType, getAttrs) {
             const textStart = matchStart + match[m - 1].lastIndexOf(match[m]);
             const textEnd = textStart + match[m].length;
             const excludedMarks = getMarksBetween(start, end, state)
-                .filter(item => item.mark.type.excludes(markType))
-                .filter(item => item.end > matchStart);
+                .filter((item) => item.mark.type.excludes(markType))
+                .filter((item) => item.end > matchStart);
             if (excludedMarks.length) {
                 return null;
             }

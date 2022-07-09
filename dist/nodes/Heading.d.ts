@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode, NodeType } from "prosemirror-model";
+import { Node as ProsemirrorNode, NodeType } from "@knowt/prosemirror-model";
 import { MarkdownSerializerState } from "prosemirror-markdown";
 import Node from "./Node";
 export default class Heading extends Node {
