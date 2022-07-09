@@ -1,6 +1,6 @@
 import { EditorState, TextSelection } from "prosemirror-state";
 import { findBlockNodes } from "@knowt/prosemirror-utils";
-import { NodeType } from "prosemirror-model";
+import { NodeType } from "@knowt/prosemirror-model";
 import findCollapsedNodes from "../queries/findCollapsedNodes";
 
 export default function splitHeading(type: NodeType) {

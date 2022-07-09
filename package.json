@@ -27,6 +27,7 @@
   "dependencies": {
     "@knowt/prosemirror-tables": "Knowt/prosemirror-tables",
     "@knowt/prosemirror-utils": "Knowt/prosemirror-utils",
+    "@knowt/prosemirror-model": "Knowt/prosemirror-model",
     "copy-to-clipboard": "^3.0.8",
     "fuzzy-search": "^3.2.1",
     "gemoji": "6.x",
@@ -43,7 +44,6 @@
     "prosemirror-inputrules": "^1.1.3",
     "prosemirror-keymap": "^1.1.4",
     "prosemirror-markdown": "^1.5.2",
-    "prosemirror-model": "1.18.0",
     "prosemirror-schema-list": "^1.1.2",
     "prosemirror-state": "^1.3.4",
     "prosemirror-transform": "1.2.5",

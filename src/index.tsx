@@ -12,7 +12,7 @@ import {
   MarkSpec,
   Slice,
   DOMParser,
-} from "prosemirror-model";
+} from "@knowt/prosemirror-model";
 import { inputRules, InputRule } from "prosemirror-inputrules";
 import { keymap } from "prosemirror-keymap";
 import { baseKeymap } from "prosemirror-commands";

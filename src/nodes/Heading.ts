@@ -1,7 +1,7 @@
 import { Plugin, Selection } from "prosemirror-state";
 import copy from "copy-to-clipboard";
 import { Decoration, DecorationSet } from "prosemirror-view";
-import { Node as ProsemirrorNode, NodeType } from "prosemirror-model";
+import { Node as ProsemirrorNode, NodeType } from "@knowt/prosemirror-model";
 import { textblockTypeInputRule } from "prosemirror-inputrules";
 import { MarkdownSerializerState } from "prosemirror-markdown";
 import backspaceToParagraph from "../commands/backspaceToParagraph";
@@ -57,7 +57,7 @@ export default class Heading extends Node {
         contentElement: ".heading-content",
       })),
       toDOM: (node, document_) => {
-        if(!document_ && typeof document !== "undefined") document_ = document;
+        if (!document_ && typeof document !== "undefined") document_ = document;
         const fold = document_.createElement("button");
         fold.innerText = "";
         fold.innerHTML =

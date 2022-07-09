@@ -1,5 +1,5 @@
 import { InputRule, wrappingInputRule } from "prosemirror-inputrules";
-import { NodeRange } from "prosemirror-model";
+import { NodeRange } from "@knowt/prosemirror-model";
 import { canJoin, findWrapping } from "prosemirror-transform";
 import toggleList from "../commands/toggleList";
 import Node from "./Node";

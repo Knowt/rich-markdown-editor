@@ -1,4 +1,4 @@
-import { Schema } from "prosemirror-model";
+import { Schema } from "@knowt/prosemirror-model";
 import { keymap } from "prosemirror-keymap";
 import { MarkdownParser } from "prosemirror-markdown";
 import { MarkdownSerializer } from "./markdown/serializer";
@@ -130,10 +130,9 @@ export default class ExtensionManager {
         })
       );
 
-    return [
-      ...extensionKeymaps,
-      ...nodeMarkKeymaps,
-    ].map((keys: Record<string, any>) => keymap(keys));
+    return [...extensionKeymaps, ...nodeMarkKeymaps].map(
+      (keys: Record<string, any>) => keymap(keys)
+    );
   }
 
   inputRules({ schema }: { schema: Schema }) {

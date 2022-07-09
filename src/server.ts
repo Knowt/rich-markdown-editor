@@ -1,7 +1,12 @@
 /* Not quite a server file, it has to be run in the browser, 
 as it uses browser API to serialize the prosemirror doc AST to html */
 
-import { Schema, DOMParser, DOMSerializer, Node as ProsemirrorNode } from "prosemirror-model";
+import {
+  Schema,
+  DOMParser,
+  DOMSerializer,
+  Node as ProsemirrorNode,
+} from "@knowt/prosemirror-model";
 import ExtensionManager from "./lib/ExtensionManager";
 import baseDictionary from "./dictionary";
 
@@ -78,12 +83,12 @@ const extensions = new ExtensionManager([
   new YellowHighlight(),
   new BlueHighlight(),
   new GreenHighlight(),
-  new DefaultHighlight()
+  new DefaultHighlight(),
 ]);
 
 export const schema = new Schema({
   nodes: extensions.nodes,
-  marks: extensions.marks
+  marks: extensions.marks,
 });
 
 const domParser = DOMParser.fromSchema(schema);
@@ -91,7 +96,7 @@ const domSerializer = DOMSerializer.fromSchema(schema);
 
 const markdownParser = extensions.parser({
   schema,
-  plugins: extensions.rulePlugins
+  plugins: extensions.rulePlugins,
 });
 
 const parseHTML = (document: Document) => (html: string) => {
@@ -101,7 +106,9 @@ const parseHTML = (document: Document) => (html: string) => {
 };
 
 const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
-  const serializedFragment = domSerializer.serializeFragment(doc.content, { document });
+  const serializedFragment = domSerializer.serializeFragment(doc.content, {
+    document,
+  });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
   return throwAwayDiv.innerHTML;
@@ -111,19 +118,23 @@ export const parseMarkdown = (markdown: string) => {
   return markdownParser.parse(markdown);
 };
 
-export const mdToHtml = (document: Document) => (markdown: string): string => {
-  const doc = parseMarkdown(markdown) as ProsemirrorNode;
-  return serializeToHTML(document)(doc);
-};
+export const mdToHtml =
+  (document: Document) =>
+  (markdown: string): string => {
+    const doc = parseMarkdown(markdown) as ProsemirrorNode;
+    return serializeToHTML(document)(doc);
+  };
 
 /**
  * @param isHTML_
  * @param document_
  */
-export const externalHtmlOrMdToHtml = (isHTML_ = isHTML, document_ = document) => (content: string) => {
-  if (isHTML_(content)) {
-    return serializeToHTML(document_)(parseHTML(document_)(content));
-  } else {
-    return mdToHtml(document_)(content);
-  }
-};
+export const externalHtmlOrMdToHtml =
+  (isHTML_ = isHTML, document_ = document) =>
+  (content: string) => {
+    if (isHTML_(content)) {
+      return serializeToHTML(document_)(parseHTML(document_)(content));
+    } else {
+      return mdToHtml(document_)(content);
+    }
+  };

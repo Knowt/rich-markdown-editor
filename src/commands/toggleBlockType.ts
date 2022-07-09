@@ -1,5 +1,5 @@
 // import { setBlockType } from "prosemirror-commands";
-import { Slice, Fragment } from "prosemirror-model";
+import { Slice, Fragment } from "@knowt/prosemirror-model";
 import { ReplaceAroundStep } from "prosemirror-transform";
 import isNodeActive from "../queries/isNodeActive";
 
@@ -42,7 +42,7 @@ function setBlockType2(from, to = from, type, attrs) {
 }
 
 function setBlockType(nodeType, attrs = {}) {
-  return function(state, dispatch) {
+  return function (state, dispatch) {
     const { from, to } = state.selection;
     let applicable = false;
 

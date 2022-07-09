@@ -1,5 +1,5 @@
 import { findBlockNodes, NodeWithPos } from "@knowt/prosemirror-utils";
-import { Node } from "prosemirror-model";
+import { Node } from "@knowt/prosemirror-model";
 
 export default function findCollapsedNodes(doc: Node): NodeWithPos[] {
   const blocks = findBlockNodes(doc);
