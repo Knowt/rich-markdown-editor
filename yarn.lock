@@ -1403,6 +1403,12 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@knowt/prosemirror-model@Knowt/prosemirror-model", prosemirror-model@Knowt/prosemirror-model:
+  version "1.18.1"
+  resolved "https://codeload.github.com/Knowt/prosemirror-model/tar.gz/7bf74ce4b2ea06d870d1b60cfe5a41d0c7314790"
+  dependencies:
+    orderedmap "^2.0.0"
+
 "@knowt/prosemirror-tables@Knowt/prosemirror-tables":
   version "1.1.1"
   resolved "https://codeload.github.com/Knowt/prosemirror-tables/tar.gz/657e9e6cc3c1817ee6901586cfb06e1adef09bfe"
@@ -8343,6 +8349,11 @@ orderedmap@^1.1.0:
   resolved "https://registry.yarnpkg.com/orderedmap/-/orderedmap-1.1.8.tgz#9652b2584f721c1032fa04cb60d442b3d4aa097c"
   integrity sha512-eWEYOAggZZpZbJ9CTsqAKOTxlbBHdHZ8pzcfEvNTxGrjQ/m+Q25nSWUiMlT9MTbgpB6FOiBDKqsgJ2FlLDVNaw==
 
+orderedmap@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/orderedmap/-/orderedmap-2.0.0.tgz#12ff5ef6ea9d12d6430b80c701b35475e1c9ff34"
+  integrity sha512-buf4PoAMlh45b8a8gsGy/X6w279TSqkyAS0C0wdTSJwFSU+ljQFJON5I8NfjLHoCXwpSROIo2wr0g33T+kQshQ==
+
 os-browserify@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/os-browserify/-/os-browserify-0.3.0.tgz#854373c7f5c2315914fc9bfc6bd8238fdda1ec27"
@@ -8985,7 +8996,7 @@ prosemirror-markdown@^1.5.2:
     markdown-it "^13.0.1"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@1.18.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.16.0, prosemirror-model@^1.8.1:
+prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.16.0, prosemirror-model@^1.8.1:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.18.0.tgz#8c360ed65a6ec9dd2fb899b5f5ceeb5f5f689ee0"
   integrity sha512-EZLl0mvVIixEL1V538GsPP4Iw+D83gBRdLcjL7VouzoPPWlhhv/0Y0V9ttT5lUhF7jieIrNHOa3XNFs1FwgrOw==
