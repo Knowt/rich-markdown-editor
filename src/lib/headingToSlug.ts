@@ -1,4 +1,4 @@
-import { Node } from "@knowt/prosemirror-model";
+import { Node } from "prosemirror-model";
 import escape from "lodash/escape";
 import slugify from "slugify";
 

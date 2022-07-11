@@ -1,5 +1,5 @@
 // import { setBlockType } from "prosemirror-commands";
-import { Slice, Fragment } from "@knowt/prosemirror-model";
+import { Slice, Fragment } from "prosemirror-model";
 import { ReplaceAroundStep } from "prosemirror-transform";
 import isNodeActive from "../queries/isNodeActive";
 

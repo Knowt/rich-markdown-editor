@@ -1,4 +1,4 @@
-import { Node as PMNode, Mark } from "@knowt/prosemirror-model";
+import { Node as PMNode, Mark } from "prosemirror-model";
 import { EditorState } from "prosemirror-state";
 import Node from "../nodes/Node";
 

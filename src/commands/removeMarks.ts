@@ -1,5 +1,5 @@
 // import { toggleMark } from "prosemirror-commands";
-import { MarkType } from "@knowt/prosemirror-model";
+import { MarkType } from "prosemirror-model";
 import { EditorView } from "prosemirror-view";
 import isMarkActive from "../queries/isMarkActive";
 

@@ -1,4 +1,4 @@
-import { MarkType, Mark } from "@knowt/prosemirror-model";
+import { MarkType, Mark } from "prosemirror-model";
 import { InputRule } from "prosemirror-inputrules";
 import { EditorState } from "prosemirror-state";
 
