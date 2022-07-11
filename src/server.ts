@@ -6,7 +6,7 @@ import {
   DOMParser,
   DOMSerializer,
   Node as ProsemirrorNode,
-} from "@knowt/prosemirror-model";
+} from "prosemirror-model";
 import ExtensionManager from "./lib/ExtensionManager";
 import baseDictionary from "./dictionary";
 

@@ -12,8 +12,8 @@ export default class CheckboxItem extends Node {
     return {
       attrs: {
         checked: {
-          default: false,
-        },
+          default: false
+        }
       },
       content: "paragraph block*",
       defining: true,
@@ -22,37 +22,48 @@ export default class CheckboxItem extends Node {
         {
           tag: `li[data-type="${this.name}"]`,
           getAttrs: (dom: HTMLLIElement) => ({
-            checked: dom.className.includes("checked"),
-          }),
-        },
+            checked: dom.className.includes("checked")
+          })
+        }
       ],
-      toDOM: (node, document_ ) => {
-        if(!document_ && typeof document !== "undefined") document_ = document;
-        const input = document_.createElement("input");
-        input.type = "checkbox";
-        input.tabIndex = -1;
-        input.addEventListener("change", this.handleChange);
-
-        if (node.attrs.checked) {
-          input.checked = true;
+      toDOM: (node) => {
+        const isServer = typeof window === "undefined";
+        let input;
+        if (isServer) {
+          input = [
+            "input",
+            {
+              type: "checkbox",
+              tabindex: -1,
+              ...(node.attrs.checked  && { checked: true } ),
+            }
+          ]
+        } else {
+          input = document.createElement("input");
+          input.type = "checkbox";
+          input.tabIndex = -1;
+          input.addEventListener("change", this.handleChange);
+          if (node.attrs.checked) {
+            input.checked = true;
+          }
         }
 
         return [
           "li",
           {
             "data-type": this.name,
-            class: node.attrs.checked ? "checked" : undefined,
+            class: node.attrs.checked ? "checked" : undefined
           },
           [
             "span",
             {
-              contentEditable: false,
+              contentEditable: false
             },
-            input,
+            input
           ],
-          ["div", 0],
+          ["div", 0]
         ];
-      },
+      }
     };
   }
 
@@ -68,7 +79,7 @@ export default class CheckboxItem extends Node {
 
     if (result) {
       const transaction = tr.setNodeMarkup(result.inside, undefined, {
-        checked: event.target.checked,
+        checked: event.target.checked
       });
       view.dispatch(transaction);
     }
@@ -80,7 +91,7 @@ export default class CheckboxItem extends Node {
       Tab: sinkListItem(type),
       "Shift-Tab": liftListItem(type),
       "Mod-]": sinkListItem(type),
-      "Mod-[": liftListItem(type),
+      "Mod-[": liftListItem(type)
     };
   }
 
@@ -93,8 +104,8 @@ export default class CheckboxItem extends Node {
     return {
       block: "checkbox_item",
       getAttrs: (tok) => ({
-        checked: tok.attrGet("checked") ? true : undefined,
-      }),
+        checked: tok.attrGet("checked") ? true : undefined
+      })
     };
   }
 }

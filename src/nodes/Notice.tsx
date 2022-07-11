@@ -11,7 +11,7 @@ export default class Notice extends Node {
     return Object.entries({
       info: this.options.dictionary.info,
       warning: this.options.dictionary.warning,
-      tip: this.options.dictionary.tip,
+      tip: this.options.dictionary.tip
     });
   }
 
@@ -27,8 +27,8 @@ export default class Notice extends Node {
     return {
       attrs: {
         style: {
-          default: "info",
-        },
+          default: "info"
+        }
       },
       content: "block+",
       group: "block",
@@ -43,46 +43,48 @@ export default class Notice extends Node {
             style: dom.className.includes("tip")
               ? "tip"
               : dom.className.includes("warning")
-              ? "warning"
-              : undefined,
-          }),
-        },
-      ],
-      toDOM: (node, document_ ) => {
-        if(!document_ && typeof document !== "undefined") document_ = document;
-        const select = document_.createElement("select");
-        select.addEventListener("change", this.handleStyleChange);
-
-        this.styleOptions.forEach(([key, label]) => {
-          const option = document_.createElement("option");
-          option.value = key;
-          option.innerText = label;
-          option.selected = node.attrs.style === key;
-          select.appendChild(option);
-        });
-
-        let component;
-
-        if (node.attrs.style === "tip") {
-          component = <StarredIcon color="currentColor" />;
-        } else if (node.attrs.style === "warning") {
-          component = <WarningIcon color="currentColor" />;
-        } else {
-          component = <InfoIcon color="currentColor" />;
+                ? "warning"
+                : undefined
+          })
         }
+      ],
+      toDOM: (node) => {
+        const isServer = typeof window === "undefined";
+        let select, component, icon;
 
-        const icon = document_.createElement("div");
-        icon.className = "icon";
-        ReactDOM.render(component, icon);
+        if (!isServer) {
+          select = document.createElement("select");
+          select.addEventListener("change", this.handleStyleChange);
+
+          this.styleOptions.forEach(([key, label]) => {
+            const option = document.createElement("option");
+            option.value = key;
+            option.innerText = label;
+            option.selected = node.attrs.style === key;
+            select.appendChild(option);
+          });
+
+          if (node.attrs.style === "tip") {
+            component = <StarredIcon color="currentColor" />;
+          } else if (node.attrs.style === "warning") {
+            component = <WarningIcon color="currentColor" />;
+          } else {
+            component = <InfoIcon color="currentColor" />;
+          }
+
+          icon = document.createElement("div");
+          icon.className = "icon";
+          ReactDOM.render(component, icon);
+        }
 
         return [
           "div",
           { class: `notice-block ${node.attrs.style}` },
-          icon,
+          icon ?? "div",
           ["div", { contentEditable: false }, select],
-          ["div", { class: "content" }, 0],
+          ["div", { class: "content" }, 0]
         ];
-      },
+      }
     };
   }
 
@@ -99,7 +101,7 @@ export default class Notice extends Node {
 
     if (result) {
       const transaction = tr.setNodeMarkup(result.inside, undefined, {
-        style: element.value,
+        style: element.value
       });
       view.dispatch(transaction);
     }
@@ -120,7 +122,7 @@ export default class Notice extends Node {
   parseMarkdown() {
     return {
       block: "container_notice",
-      getAttrs: tok => ({ style: tok.info }),
+      getAttrs: tok => ({ style: tok.info })
     };
   }
 }

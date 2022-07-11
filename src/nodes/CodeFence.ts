@@ -27,7 +27,6 @@ import toggleBlockType from "../commands/toggleBlockType";
 import isInCode from "../queries/isInCode";
 import Node from "./Node";
 import { ToastType } from "../types";
-import backspaceToParagraph from "../commands/backspaceToParagraph";
 
 const PERSISTENCE_KEY = "rme-code-language";
 const DEFAULT_LANGUAGE = "javascript";
@@ -51,7 +50,7 @@ const DEFAULT_LANGUAGE = "javascript";
   rust,
   sql,
   typescript,
-  yaml,
+  yaml
 ].forEach(refractor.register);
 
 export default class CodeFence extends Node {
@@ -67,8 +66,8 @@ export default class CodeFence extends Node {
     return {
       attrs: {
         language: {
-          default: DEFAULT_LANGUAGE,
-        },
+          default: DEFAULT_LANGUAGE
+        }
       },
       content: "text*",
       marks: "",
@@ -84,37 +83,41 @@ export default class CodeFence extends Node {
           contentElement: "code",
           getAttrs: (dom: HTMLDivElement) => {
             return {
-              language: dom.dataset.language,
+              language: dom.dataset.language
             };
-          },
-        },
+          }
+        }
       ],
-      toDOM: (node, document_ ) => {
-        if(!document_ && typeof document !== "undefined") document_ = document;
-        const button = document_.createElement("button");
-        button.innerText = "Copy";
-        button.type = "button";
-        button.addEventListener("click", this.handleCopyToClipboard);
+      toDOM: (node) => {
+        const isServer = typeof window === "undefined";
+        let button, select;
 
-        const select = document_.createElement("select");
-        select.addEventListener("change", this.handleLanguageChange);
+        if (!isServer) {
+          button = document.createElement("button");
+          button.innerText = "Copy";
+          button.type = "button";
+          button.addEventListener("click", this.handleCopyToClipboard);
 
-        this.languageOptions.forEach(([key, label]) => {
-          const option = document_.createElement("option");
-          const value = key === "none" ? "" : key;
-          option.value = value;
-          option.innerText = label;
-          option.selected = node.attrs.language === value;
-          select.appendChild(option);
-        });
+          select = document.createElement("select");
+          select.addEventListener("change", this.handleLanguageChange);
+
+          this.languageOptions.forEach(([key, label]) => {
+            const option = document.createElement("option");
+            const value = key === "none" ? "" : key;
+            option.value = value;
+            option.innerText = label;
+            option.selected = node.attrs.language === value;
+            select.appendChild(option);
+          });
+        }
 
         return [
           "div",
           { class: "code-block", "data-language": node.attrs.language },
-          ["div", { contentEditable: false }, select, button],
-          ["pre", ["code", { spellCheck: false }, 0]],
+          ["div", { contentEditable: false }, select ?? "select", button ?? "button"],
+          ["pre", ["code", { spellCheck: false }, 0]]
         ];
-      },
+      }
     };
   }
 
@@ -122,7 +125,7 @@ export default class CodeFence extends Node {
     return (attrs) =>
       toggleBlockType(type, schema.nodes.paragraph, {
         language: localStorage?.getItem(PERSISTENCE_KEY) || DEFAULT_LANGUAGE,
-        ...attrs,
+        ...attrs
       });
   }
 
@@ -133,7 +136,7 @@ export default class CodeFence extends Node {
         if (!isInCode(state)) return false;
         const {
           tr,
-          selection,
+          selection
         }: { tr: Transaction; selection: TextSelection } = state;
         const text = selection?.$anchor?.nodeBefore?.text;
 
@@ -156,7 +159,7 @@ export default class CodeFence extends Node {
         const { tr, selection } = state;
         dispatch(tr.insertText("  ", selection.from, selection.to));
         return true;
-      },
+      }
     };
   }
 
@@ -193,7 +196,7 @@ export default class CodeFence extends Node {
       const transaction = tr
         .setSelection(Selection.near(view.state.doc.resolve(result.inside)))
         .setNodeMarkup(result.inside, undefined, {
-          language,
+          language
         });
       view.dispatch(transaction);
 
@@ -224,7 +227,7 @@ export default class CodeFence extends Node {
   parseMarkdown() {
     return {
       block: "code_block",
-      getAttrs: (tok) => ({ language: tok.info }),
+      getAttrs: (tok) => ({ language: tok.info })
     };
   }
 }
