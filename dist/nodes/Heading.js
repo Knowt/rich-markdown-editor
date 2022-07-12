@@ -102,7 +102,7 @@ class Heading extends Node_1.default {
                 contentElement: ".heading-content"
             })),
             toDOM: (node) => {
-                const isServer = typeof window === "undefined";
+                const isServer = typeof document === "undefined";
                 let fold;
                 if (!isServer) {
                     fold = document.createElement("button");

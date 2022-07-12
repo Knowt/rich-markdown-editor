@@ -85,7 +85,7 @@ class Notice extends Node_1.default {
                 }
             ],
             toDOM: (node) => {
-                const isServer = typeof window === "undefined";
+                const isServer = typeof document === "undefined";
                 let select, component, icon;
                 if (!isServer) {
                     select = document.createElement("select");
