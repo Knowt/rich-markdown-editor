@@ -1,4 +1,4 @@
-import { Schema } from "@knowt/prosemirror-model";
+import { Schema } from "prosemirror-model";
 import { MarkdownParser } from "prosemirror-markdown";
 import { MarkdownSerializer } from "./markdown/serializer";
 import Editor from "../";

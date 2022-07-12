@@ -52,7 +52,7 @@ export default class Heading extends Node {
         contentElement: ".heading-content"
       })),
       toDOM: (node) => {
-        const isServer = typeof window === "undefined";
+        const isServer = typeof document === "undefined";
 
         let fold;
         if (!isServer) {

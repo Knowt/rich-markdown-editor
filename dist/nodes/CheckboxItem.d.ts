@@ -17,7 +17,7 @@ export default class CheckboxItem extends Node {
                 checked: boolean;
             };
         }[];
-        toDOM: (node: any, document_: any) => (string | any[] | {
+        toDOM: (node: any) => (string | any[] | {
             "data-type": string;
             class: string | undefined;
         })[];

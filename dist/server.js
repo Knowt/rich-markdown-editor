@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.schema = void 0;
-const prosemirror_model_1 = require("@knowt/prosemirror-model");
+const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const dictionary_1 = __importDefault(require("./dictionary"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));

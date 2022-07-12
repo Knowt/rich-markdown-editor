@@ -22,7 +22,7 @@ export default class Notice extends Node {
                 style: string | undefined;
             };
         }[];
-        toDOM: (node: any, document_: any) => any[];
+        toDOM: (node: any) => any[];
     };
     commands({ type }: {
         type: any;

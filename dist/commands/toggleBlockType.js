@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const prosemirror_model_1 = require("@knowt/prosemirror-model");
+const prosemirror_model_1 = require("prosemirror-model");
 const prosemirror_transform_1 = require("prosemirror-transform");
 const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
 function canChangeType(doc, pos, type) {

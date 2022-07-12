@@ -27,7 +27,7 @@ export default class CheckboxItem extends Node {
         }
       ],
       toDOM: (node) => {
-        const isServer = typeof window === "undefined";
+        const isServer = typeof document === "undefined";
         let input;
         if (isServer) {
           input = [

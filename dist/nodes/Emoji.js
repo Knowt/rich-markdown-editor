@@ -36,22 +36,18 @@ class Emoji extends Node_1.default {
                     }),
                 },
             ],
-            toDOM: (node, document_) => {
-                if (!document_ && typeof document !== "undefined")
-                    document_ = document;
+            toDOM: (node) => {
                 if (name_to_emoji_json_1.default[node.attrs["data-name"]]) {
-                    const text = document_.createTextNode(name_to_emoji_json_1.default[node.attrs["data-name"]]);
                     return [
                         "span",
                         {
                             class: `emoji ${node.attrs["data-name"]}`,
                             "data-name": node.attrs["data-name"],
                         },
-                        text,
+                        name_to_emoji_json_1.default[node.attrs["data-name"]],
                     ];
                 }
-                const text = document_.createTextNode(`:${node.attrs["data-name"]}:`);
-                return ["span", { class: "emoji" }, text];
+                return ["span", { class: "emoji" }, `:${node.attrs["data-name"]}:`];
             },
         };
     }

@@ -89,7 +89,7 @@ export default class CodeFence extends Node {
         }
       ],
       toDOM: (node) => {
-        const isServer = typeof window === "undefined";
+        const isServer = typeof document === "undefined";
         let button, select;
 
         if (!isServer) {

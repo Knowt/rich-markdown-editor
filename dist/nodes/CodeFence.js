@@ -71,7 +71,7 @@ const DEFAULT_LANGUAGE = "javascript";
     rust_1.default,
     sql_1.default,
     typescript_1.default,
-    yaml_1.default,
+    yaml_1.default
 ].forEach(core_1.default.register);
 class CodeFence extends Node_1.default {
     constructor() {
@@ -102,7 +102,7 @@ class CodeFence extends Node_1.default {
                 const transaction = tr
                     .setSelection(prosemirror_state_1.Selection.near(view.state.doc.resolve(result.inside)))
                     .setNodeMarkup(result.inside, undefined, {
-                    language,
+                    language
                 });
                 view.dispatch(transaction);
                 localStorage === null || localStorage === void 0 ? void 0 : localStorage.setItem(PERSISTENCE_KEY, language);
@@ -119,8 +119,8 @@ class CodeFence extends Node_1.default {
         return {
             attrs: {
                 language: {
-                    default: DEFAULT_LANGUAGE,
-                },
+                    default: DEFAULT_LANGUAGE
+                }
             },
             content: "text*",
             marks: "",
@@ -136,35 +136,37 @@ class CodeFence extends Node_1.default {
                     contentElement: "code",
                     getAttrs: (dom) => {
                         return {
-                            language: dom.dataset.language,
+                            language: dom.dataset.language
                         };
-                    },
-                },
+                    }
+                }
             ],
-            toDOM: (node, document_) => {
-                if (!document_ && typeof document !== "undefined")
-                    document_ = document;
-                const button = document_.createElement("button");
-                button.innerText = "Copy";
-                button.type = "button";
-                button.addEventListener("click", this.handleCopyToClipboard);
-                const select = document_.createElement("select");
-                select.addEventListener("change", this.handleLanguageChange);
-                this.languageOptions.forEach(([key, label]) => {
-                    const option = document_.createElement("option");
-                    const value = key === "none" ? "" : key;
-                    option.value = value;
-                    option.innerText = label;
-                    option.selected = node.attrs.language === value;
-                    select.appendChild(option);
-                });
+            toDOM: (node) => {
+                const isServer = typeof window === "undefined";
+                let button, select;
+                if (!isServer) {
+                    button = document.createElement("button");
+                    button.innerText = "Copy";
+                    button.type = "button";
+                    button.addEventListener("click", this.handleCopyToClipboard);
+                    select = document.createElement("select");
+                    select.addEventListener("change", this.handleLanguageChange);
+                    this.languageOptions.forEach(([key, label]) => {
+                        const option = document.createElement("option");
+                        const value = key === "none" ? "" : key;
+                        option.value = value;
+                        option.innerText = label;
+                        option.selected = node.attrs.language === value;
+                        select.appendChild(option);
+                    });
+                }
                 return [
                     "div",
                     { class: "code-block", "data-language": node.attrs.language },
-                    ["div", { contentEditable: false }, select, button],
-                    ["pre", ["code", { spellCheck: false }, 0]],
+                    ["div", { contentEditable: false }, select !== null && select !== void 0 ? select : "select", button !== null && button !== void 0 ? button : "button"],
+                    ["pre", ["code", { spellCheck: false }, 0]]
                 ];
-            },
+            }
         };
     }
     commands({ type, schema }) {
@@ -177,7 +179,7 @@ class CodeFence extends Node_1.default {
                 var _a, _b;
                 if (!isInCode_1.default(state))
                     return false;
-                const { tr, selection, } = state;
+                const { tr, selection } = state;
                 const text = (_b = (_a = selection === null || selection === void 0 ? void 0 : selection.$anchor) === null || _a === void 0 ? void 0 : _a.nodeBefore) === null || _b === void 0 ? void 0 : _b.text;
                 let newText = "\n";
                 if (text) {
@@ -194,7 +196,7 @@ class CodeFence extends Node_1.default {
                 const { tr, selection } = state;
                 dispatch(tr.insertText("  ", selection.from, selection.to));
                 return true;
-            },
+            }
         };
     }
     get plugins() {
@@ -216,7 +218,7 @@ class CodeFence extends Node_1.default {
     parseMarkdown() {
         return {
             block: "code_block",
-            getAttrs: (tok) => ({ language: tok.info }),
+            getAttrs: (tok) => ({ language: tok.info })
         };
     }
 }

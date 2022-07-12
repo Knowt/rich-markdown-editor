@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode, NodeType } from "@knowt/prosemirror-model";
+import { Node as ProsemirrorNode, NodeType } from "prosemirror-model";
 import { MarkdownSerializerState } from "prosemirror-markdown";
 import Node from "./Node";
 export default class Heading extends Node {
@@ -23,7 +23,7 @@ export default class Heading extends Node {
         defining: boolean;
         draggable: boolean;
         parseDOM: any;
-        toDOM: (node: any, document_: any) => (string | any[])[];
+        toDOM: (node: any) => (string | any[])[];
     };
     toMarkdown(state: MarkdownSerializerState, node: ProsemirrorNode): void;
     parseMarkdown(): {

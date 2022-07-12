@@ -17,7 +17,7 @@ class CheckboxItem extends Node_1.default {
             const result = view.posAtCoords({ top, left });
             if (result) {
                 const transaction = tr.setNodeMarkup(result.inside, undefined, {
-                    checked: event.target.checked,
+                    checked: event.target.checked
                 });
                 view.dispatch(transaction);
             }
@@ -30,8 +30,8 @@ class CheckboxItem extends Node_1.default {
         return {
             attrs: {
                 checked: {
-                    default: false,
-                },
+                    default: false
+                }
             },
             content: "paragraph block*",
             defining: true,
@@ -40,36 +40,44 @@ class CheckboxItem extends Node_1.default {
                 {
                     tag: `li[data-type="${this.name}"]`,
                     getAttrs: (dom) => ({
-                        checked: dom.className.includes("checked"),
-                    }),
-                },
+                        checked: dom.className.includes("checked")
+                    })
+                }
             ],
-            toDOM: (node, document_) => {
-                if (!document_ && typeof document !== "undefined")
-                    document_ = document;
-                const input = document_.createElement("input");
-                input.type = "checkbox";
-                input.tabIndex = -1;
-                input.addEventListener("change", this.handleChange);
-                if (node.attrs.checked) {
-                    input.checked = true;
+            toDOM: (node) => {
+                const isServer = typeof window === "undefined";
+                let input;
+                if (isServer) {
+                    input = [
+                        "input",
+                        Object.assign({ type: "checkbox", tabindex: -1 }, (node.attrs.checked && { checked: true }))
+                    ];
+                }
+                else {
+                    input = document.createElement("input");
+                    input.type = "checkbox";
+                    input.tabIndex = -1;
+                    input.addEventListener("change", this.handleChange);
+                    if (node.attrs.checked) {
+                        input.checked = true;
+                    }
                 }
                 return [
                     "li",
                     {
                         "data-type": this.name,
-                        class: node.attrs.checked ? "checked" : undefined,
+                        class: node.attrs.checked ? "checked" : undefined
                     },
                     [
                         "span",
                         {
-                            contentEditable: false,
+                            contentEditable: false
                         },
-                        input,
+                        input
                     ],
-                    ["div", 0],
+                    ["div", 0]
                 ];
-            },
+            }
         };
     }
     get rulePlugins() {
@@ -81,7 +89,7 @@ class CheckboxItem extends Node_1.default {
             Tab: prosemirror_schema_list_1.sinkListItem(type),
             "Shift-Tab": prosemirror_schema_list_1.liftListItem(type),
             "Mod-]": prosemirror_schema_list_1.sinkListItem(type),
-            "Mod-[": prosemirror_schema_list_1.liftListItem(type),
+            "Mod-[": prosemirror_schema_list_1.liftListItem(type)
         };
     }
     toMarkdown(state, node) {
@@ -92,8 +100,8 @@ class CheckboxItem extends Node_1.default {
         return {
             block: "checkbox_item",
             getAttrs: (tok) => ({
-                checked: tok.attrGet("checked") ? true : undefined,
-            }),
+                checked: tok.attrGet("checked") ? true : undefined
+            })
         };
     }
 }

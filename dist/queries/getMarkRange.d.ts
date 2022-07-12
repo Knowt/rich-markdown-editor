@@ -1,4 +1,4 @@
-import { ResolvedPos, MarkType } from "@knowt/prosemirror-model";
+import { ResolvedPos, MarkType } from "prosemirror-model";
 export default function getMarkRange($pos?: ResolvedPos, type?: MarkType): false | {
     from: number;
     to: number;

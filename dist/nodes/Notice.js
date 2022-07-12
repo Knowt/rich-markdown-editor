@@ -40,7 +40,7 @@ class Notice extends Node_1.default {
             const result = view.posAtCoords({ top, left });
             if (result) {
                 const transaction = tr.setNodeMarkup(result.inside, undefined, {
-                    style: element.value,
+                    style: element.value
                 });
                 view.dispatch(transaction);
             }
@@ -50,7 +50,7 @@ class Notice extends Node_1.default {
         return Object.entries({
             info: this.options.dictionary.info,
             warning: this.options.dictionary.warning,
-            tip: this.options.dictionary.tip,
+            tip: this.options.dictionary.tip
         });
     }
     get name() {
@@ -63,8 +63,8 @@ class Notice extends Node_1.default {
         return {
             attrs: {
                 style: {
-                    default: "info",
-                },
+                    default: "info"
+                }
             },
             content: "block+",
             group: "block",
@@ -80,43 +80,44 @@ class Notice extends Node_1.default {
                             ? "tip"
                             : dom.className.includes("warning")
                                 ? "warning"
-                                : undefined,
-                    }),
-                },
+                                : undefined
+                    })
+                }
             ],
-            toDOM: (node, document_) => {
-                if (!document_ && typeof document !== "undefined")
-                    document_ = document;
-                const select = document_.createElement("select");
-                select.addEventListener("change", this.handleStyleChange);
-                this.styleOptions.forEach(([key, label]) => {
-                    const option = document_.createElement("option");
-                    option.value = key;
-                    option.innerText = label;
-                    option.selected = node.attrs.style === key;
-                    select.appendChild(option);
-                });
-                let component;
-                if (node.attrs.style === "tip") {
-                    component = React.createElement(outline_icons_1.StarredIcon, { color: "currentColor" });
+            toDOM: (node) => {
+                const isServer = typeof window === "undefined";
+                let select, component, icon;
+                if (!isServer) {
+                    select = document.createElement("select");
+                    select.addEventListener("change", this.handleStyleChange);
+                    this.styleOptions.forEach(([key, label]) => {
+                        const option = document.createElement("option");
+                        option.value = key;
+                        option.innerText = label;
+                        option.selected = node.attrs.style === key;
+                        select.appendChild(option);
+                    });
+                    if (node.attrs.style === "tip") {
+                        component = React.createElement(outline_icons_1.StarredIcon, { color: "currentColor" });
+                    }
+                    else if (node.attrs.style === "warning") {
+                        component = React.createElement(outline_icons_1.WarningIcon, { color: "currentColor" });
+                    }
+                    else {
+                        component = React.createElement(outline_icons_1.InfoIcon, { color: "currentColor" });
+                    }
+                    icon = document.createElement("div");
+                    icon.className = "icon";
+                    react_dom_1.default.render(component, icon);
                 }
-                else if (node.attrs.style === "warning") {
-                    component = React.createElement(outline_icons_1.WarningIcon, { color: "currentColor" });
-                }
-                else {
-                    component = React.createElement(outline_icons_1.InfoIcon, { color: "currentColor" });
-                }
-                const icon = document_.createElement("div");
-                icon.className = "icon";
-                react_dom_1.default.render(component, icon);
                 return [
                     "div",
                     { class: `notice-block ${node.attrs.style}` },
-                    icon,
+                    icon !== null && icon !== void 0 ? icon : "div",
                     ["div", { contentEditable: false }, select],
-                    ["div", { class: "content" }, 0],
+                    ["div", { class: "content" }, 0]
                 ];
-            },
+            }
         };
     }
     commands({ type }) {
@@ -135,7 +136,7 @@ class Notice extends Node_1.default {
     parseMarkdown() {
         return {
             block: "container_notice",
-            getAttrs: tok => ({ style: tok.info }),
+            getAttrs: tok => ({ style: tok.info })
         };
     }
 }

@@ -27,7 +27,7 @@ export default class CodeFence extends Node {
                 language: string | undefined;
             };
         })[];
-        toDOM: (node: any, document_: any) => (string | any[] | {
+        toDOM: (node: any) => (string | any[] | {
             class: string;
             "data-language": any;
         })[];

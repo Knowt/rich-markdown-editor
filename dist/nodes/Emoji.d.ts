@@ -25,7 +25,7 @@ export default class Emoji extends Node {
                 "data-name": string | undefined;
             };
         }[];
-        toDOM: (node: any, document_: any) => any[];
+        toDOM: (node: any) => any[];
     };
     get rulePlugins(): (typeof emojiRule)[];
     commands({ type }: {

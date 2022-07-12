@@ -49,7 +49,7 @@ export default class Notice extends Node {
         }
       ],
       toDOM: (node) => {
-        const isServer = typeof window === "undefined";
+        const isServer = typeof document === "undefined";
         let select, component, icon;
 
         if (!isServer) {

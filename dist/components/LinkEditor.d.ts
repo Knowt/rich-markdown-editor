@@ -1,6 +1,6 @@
 import * as React from "react";
 import { EditorView } from "prosemirror-view";
-import { Mark } from "@knowt/prosemirror-model";
+import { Mark } from "prosemirror-model";
 import theme from "../styles/theme";
 import baseDictionary from "../dictionary";
 export declare type SearchResult = {
