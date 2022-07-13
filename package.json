@@ -10,8 +10,7 @@
     "test": "jest",
     "start": "start-storybook -p 6006",
     "build": "tsc",
-    "preversion": "yarn build",
-    "watch": "yarn tsc-watch",
+    "preversion": "npm run build",
     "build-storybook": "build-storybook"
   },
   "serve": {
