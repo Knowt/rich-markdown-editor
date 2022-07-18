@@ -3,3 +3,4 @@ sotrybook-static/
 .log
 .DS_Store
 .idea
+.vscode
