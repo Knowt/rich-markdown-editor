@@ -21,6 +21,7 @@ import baseDictionary from "../dictionary";
 import removeMarks from "../commands/removeMarks";
 import { RemoveIcon } from "../icons";
 import { EditorView } from "prosemirror-view";
+import _isSelectionEmpty from "../queries/isSelectionEmpty";
 
 export default function formattingMenuItems(
   view: EditorView,
@@ -28,9 +29,11 @@ export default function formattingMenuItems(
   dictionary: typeof baseDictionary
 ): MenuItem[] {
   const { state } = view;
-  const { schema } = state;
+  const { schema, selection } = state;
   const isTable = isInTable(state);
   const isList = isInList(state);
+  const isSelectionEmpty = _isSelectionEmpty(selection);
+
   const allowBlocks = !isTable && !isList;
 
   const allMarks = [
@@ -58,16 +61,18 @@ export default function formattingMenuItems(
       tooltip: dictionary.strong,
       icon: BoldIcon,
       active: isMarkActive(schema.marks.strong),
+      visible: !isSelectionEmpty,
     },
     {
       name: "strikethrough",
       tooltip: dictionary.strikethrough,
       icon: StrikethroughIcon,
       active: isMarkActive(schema.marks.strikethrough),
+      visible: !isSelectionEmpty,
     },
     {
       name: "separator",
-      visible: allowBlocks,
+      visible: allowBlocks && !isSelectionEmpty,
     },
     {
       name: "highlight_default",
@@ -75,7 +80,7 @@ export default function formattingMenuItems(
       icon: HighlightIcon,
       iconColor: schema.marks.highlight_default.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_default),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
     },
     {
       name: "highlight_orange",
@@ -83,7 +88,7 @@ export default function formattingMenuItems(
       icon: HighlightIcon,
       iconColor: schema.marks.highlight_orange.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_orange),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
     },
     {
       name: "highlight_yellow",
@@ -91,7 +96,7 @@ export default function formattingMenuItems(
       icon: HighlightIcon,
       iconColor: schema.marks.highlight_yellow.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_yellow),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
     },
     {
       name: "highlight_green",
@@ -99,7 +104,7 @@ export default function formattingMenuItems(
       icon: HighlightIcon,
       iconColor: schema.marks.highlight_green.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_green),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
     },
     {
       name: "highlight_blue",
@@ -107,7 +112,7 @@ export default function formattingMenuItems(
       icon: HighlightIcon,
       iconColor: schema.marks.highlight_blue.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_blue),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
     },
     {
       name: "highlight_remove",
@@ -115,12 +120,12 @@ export default function formattingMenuItems(
       icon: RemoveIcon,
       iconColor: "#fff",
       active: isAnyMarkActive(allMarks),
-      visible: !isTemplate,
+      visible: !isTemplate && !isSelectionEmpty,
       customOnClick: () => removeMarks(view, allMarks),
     },
     {
       name: "separator",
-      visible: allowBlocks,
+      visible: allowBlocks && !isSelectionEmpty,
     },
     {
       name: "code_inline",
