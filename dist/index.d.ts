@@ -110,7 +110,6 @@ export declare type Props = {
     extensions?: Extension[];
     disableExtensions?: ("strong" | "code_inline" | "highlight" | "em" | "link" | "placeholder" | "strikethrough" | "underline" | "blockquote" | "bullet_list" | "checkbox_item" | "checkbox_list" | "code_block" | "code_fence" | "embed" | "br" | "heading" | "hr" | "image" | "list_item" | "container_notice" | "ordered_list" | "paragraph" | "table" | "td" | "th" | "tr" | "emoji")[];
     fontScale?: number;
-    autoFocus?: boolean;
     readOnly?: boolean;
     readOnlyWriteCheckboxes?: boolean;
     dictionary?: Partial<typeof baseDictionary>;
@@ -242,8 +241,6 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     forceUpdateContent: (newValue: string, options: {
         triggerOnChange?: boolean;
     }) => void;
-    focusAtStart: () => void;
-    focusAtEnd: () => void;
     getHeadings: () => {
         title: string;
         level: number;

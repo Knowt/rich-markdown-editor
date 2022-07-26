@@ -187,18 +187,6 @@ class RichMarkdownEditor extends React.PureComponent {
                 this.handleChange();
             }
         };
-        this.focusAtStart = () => {
-            const selection = prosemirror_state_1.Selection.atStart(this.view.state.doc);
-            const transaction = this.view.state.tr.setSelection(selection);
-            this.view.dispatch(transaction);
-            this.view.focus();
-        };
-        this.focusAtEnd = () => {
-            const selection = prosemirror_state_1.Selection.atEnd(this.view.state.doc);
-            const transaction = this.view.state.tr.setSelection(selection);
-            this.view.dispatch(transaction);
-            this.view.focus();
-        };
         this.getHeadings = () => {
             const headings = [];
             const previouslySeen = {};
@@ -233,11 +221,6 @@ class RichMarkdownEditor extends React.PureComponent {
             this.scrollToAnchor(this.props.scrollTo);
         }
         this.calculateDir();
-        if (this.props.readOnly)
-            return;
-        if (this.props.autoFocus) {
-            this.focusAtEnd();
-        }
     }
     componentDidUpdate(prevProps) {
         if (prevProps.readOnly !== this.props.readOnly) {
@@ -245,9 +228,6 @@ class RichMarkdownEditor extends React.PureComponent {
         }
         if (this.props.scrollTo && this.props.scrollTo !== prevProps.scrollTo) {
             this.scrollToAnchor(this.props.scrollTo);
-        }
-        if (prevProps.readOnly && !this.props.readOnly && this.props.autoFocus) {
-            this.focusAtEnd();
         }
         if (prevProps.dir !== this.props.dir) {
             this.calculateDir();

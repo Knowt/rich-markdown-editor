@@ -29,11 +29,13 @@ const isMarkActive_1 = __importStar(require("../queries/isMarkActive"));
 const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
 const removeMarks_1 = __importDefault(require("../commands/removeMarks"));
 const icons_1 = require("../icons");
+const isSelectionEmpty_1 = __importDefault(require("../queries/isSelectionEmpty"));
 function formattingMenuItems(view, isTemplate, dictionary) {
     const { state } = view;
-    const { schema } = state;
+    const { schema, selection } = state;
     const isTable = prosemirror_tables_1.isInTable(state);
     const isList = isInList_1.default(state);
+    const isSelectionEmpty = isSelectionEmpty_1.default(selection);
     const allowBlocks = !isTable && !isList;
     const allMarks = [
         schema.marks.highlight_default,
@@ -59,16 +61,18 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             tooltip: dictionary.strong,
             icon: outline_icons_1.BoldIcon,
             active: isMarkActive_1.default(schema.marks.strong),
+            visible: !isSelectionEmpty,
         },
         {
             name: "strikethrough",
             tooltip: dictionary.strikethrough,
             icon: outline_icons_1.StrikethroughIcon,
             active: isMarkActive_1.default(schema.marks.strikethrough),
+            visible: !isSelectionEmpty,
         },
         {
             name: "separator",
-            visible: allowBlocks,
+            visible: allowBlocks && !isSelectionEmpty,
         },
         {
             name: "highlight_default",
@@ -76,7 +80,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.HighlightIcon,
             iconColor: schema.marks.highlight_default.attrs.color.default,
             active: isMarkActive_1.default(schema.marks.highlight_default),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
         },
         {
             name: "highlight_orange",
@@ -84,7 +88,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.HighlightIcon,
             iconColor: schema.marks.highlight_orange.attrs.color.default,
             active: isMarkActive_1.default(schema.marks.highlight_orange),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
         },
         {
             name: "highlight_yellow",
@@ -92,7 +96,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.HighlightIcon,
             iconColor: schema.marks.highlight_yellow.attrs.color.default,
             active: isMarkActive_1.default(schema.marks.highlight_yellow),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
         },
         {
             name: "highlight_green",
@@ -100,7 +104,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.HighlightIcon,
             iconColor: schema.marks.highlight_green.attrs.color.default,
             active: isMarkActive_1.default(schema.marks.highlight_green),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
         },
         {
             name: "highlight_blue",
@@ -108,7 +112,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.HighlightIcon,
             iconColor: schema.marks.highlight_blue.attrs.color.default,
             active: isMarkActive_1.default(schema.marks.highlight_blue),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
         },
         {
             name: "highlight_remove",
@@ -116,12 +120,12 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: icons_1.RemoveIcon,
             iconColor: "#fff",
             active: isMarkActive_1.isAnyMarkActive(allMarks),
-            visible: !isTemplate,
+            visible: !isTemplate && !isSelectionEmpty,
             customOnClick: () => removeMarks_1.default(view, allMarks),
         },
         {
             name: "separator",
-            visible: allowBlocks,
+            visible: allowBlocks && !isSelectionEmpty,
         },
         {
             name: "code_inline",

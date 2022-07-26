@@ -56,11 +56,6 @@ With `readOnly` set to `false` the editor is optimized for composition. When `tr
 
 With `readOnlyWriteCheckboxes` set to `true` checkboxes can still be checked or unchecked as a special case while `readOnly` is set to `true` and the editor is otherwise unable to be edited.
 
-#### `autoFocus`
-
-When set `true` together with `readOnly` set to `false`, focus at the end of the
-document automatically.
-
 #### `maxLength`
 
 When set enforces a maximum character length on the document, not including markdown syntax.
@@ -292,14 +287,6 @@ The Editor component exposes a few methods for interacting with the mounted edit
 #### `forceUpdateContent(value: string): void`
 
 Force update the editor content. Used to override the current content; also could be used to set the initial value, instead of relying on `defaultValue`.
-
-#### `focusAtStart(): void`
-
-Place the cursor at the start of the document and focus it.
-
-#### `focusAtEnd(): void`
-
-Place the cursor at the end of the document and focus it.
 
 #### `getHeadings(): { title: string, level: number, id: string }[]`
 

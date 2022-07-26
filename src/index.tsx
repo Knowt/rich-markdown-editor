@@ -132,7 +132,6 @@ export type Props = {
     | "emoji"
   )[];
   fontScale?: number;
-  autoFocus?: boolean;
   readOnly?: boolean;
   readOnlyWriteCheckboxes?: boolean;
   dictionary?: Partial<typeof baseDictionary>;
@@ -240,12 +239,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
 
     this.calculateDir();
-
-    if (this.props.readOnly) return;
-
-    if (this.props.autoFocus) {
-      this.focusAtEnd();
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -259,12 +252,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
     if (this.props.scrollTo && this.props.scrollTo !== prevProps.scrollTo) {
       this.scrollToAnchor(this.props.scrollTo);
-    }
-
-    // Focus at the end of the document if switching from readOnly and autoFocus
-    // is set to true
-    if (prevProps.readOnly && !this.props.readOnly && this.props.autoFocus) {
-      this.focusAtEnd();
     }
 
     if (prevProps.dir !== this.props.dir) {
@@ -718,20 +705,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     if (options.triggerOnChange) {
       this.handleChange();
     }
-  };
-
-  focusAtStart = () => {
-    const selection = Selection.atStart(this.view.state.doc);
-    const transaction = this.view.state.tr.setSelection(selection);
-    this.view.dispatch(transaction);
-    this.view.focus();
-  };
-
-  focusAtEnd = () => {
-    const selection = Selection.atEnd(this.view.state.doc);
-    const transaction = this.view.state.tr.setSelection(selection);
-    this.view.dispatch(transaction);
-    this.view.focus();
   };
 
   getHeadings = () => {
