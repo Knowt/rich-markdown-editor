@@ -18,6 +18,10 @@ function normalizePastedMarkdown(text) {
     }
     return text;
 }
+const replaceHeaderByStrong = (html) => {
+    const findHeadersRegex = /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
+    return html.replace(findHeadersRegex, "<$1strong$2>");
+};
 class PasteHandler extends Extension_1.default {
     get name() {
         return "markdown-paste";
@@ -26,6 +30,9 @@ class PasteHandler extends Extension_1.default {
         return [
             new prosemirror_state_1.Plugin({
                 props: {
+                    transformPastedHTML: (html) => {
+                        return replaceHeaderByStrong(html);
+                    },
                     handlePaste: (view, event) => {
                         if (view.props.editable && !view.props.editable(view.state)) {
                             return false;
