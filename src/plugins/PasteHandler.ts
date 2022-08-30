@@ -24,6 +24,12 @@ function normalizePastedMarkdown(text: string): string {
   return text;
 }
 
+const replaceHeaderByStrong = (html: string) => {
+  const findHeadersRegex =
+    /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
+  return html.replace(findHeadersRegex, "<$1strong$2>");
+};
+
 export default class PasteHandler extends Extension {
   get name() {
     return "markdown-paste";
@@ -33,6 +39,11 @@ export default class PasteHandler extends Extension {
     return [
       new Plugin({
         props: {
+          transformPastedHTML: (html: string) => {
+            // TODO: this is a temp fix for pasting headers..
+            //  uncomment to see the error :) this is to be fixed ASAP
+            return replaceHeaderByStrong(html);
+          },
           handlePaste: (view, event: ClipboardEvent) => {
             if (view.props.editable && !view.props.editable(view.state)) {
               return false;
