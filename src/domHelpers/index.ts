@@ -47,3 +47,9 @@ export const isValidHeading = (fontSize, level) => {
 export const getStyleValue = (el, prop: string): number => {
   return el ? getParsedValue(window.getComputedStyle(el)[prop]) : 0;
 };
+
+export const replaceHeaderByStrong = (html: string) => {
+  const findHeadersRegex =
+    /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
+  return html.replace(findHeadersRegex, "<$1strong$2>");
+};

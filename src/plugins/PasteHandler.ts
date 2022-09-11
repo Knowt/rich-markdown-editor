@@ -6,6 +6,7 @@ import isUrl from "../lib/isUrl";
 import isMarkdown from "../lib/isMarkdown";
 import selectionIsInCode from "../queries/isInCode";
 import { LANGUAGES } from "./Prism";
+import { replaceHeaderByStrong } from "../domHelpers";
 
 /**
  * Add support for additional syntax that users paste even though it isn't
@@ -23,12 +24,6 @@ function normalizePastedMarkdown(text: string): string {
 
   return text;
 }
-
-const replaceHeaderByStrong = (html: string) => {
-  const findHeadersRegex =
-    /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
-  return html.replace(findHeadersRegex, "<$1strong$2>");
-};
 
 export default class PasteHandler extends Extension {
   get name() {
