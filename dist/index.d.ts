@@ -219,7 +219,8 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     createPasteParser(): MarkdownParser;
     createState(value?: string): EditorState;
     createDocument(content: string): import("prosemirror-model").Node | undefined;
-    createView(): EditorView<any>;
+    parseHtmlContent(content: string): import("prosemirror-model").Node;
+    createView(): EditorView;
     scrollToAnchor(hash: string): void;
     calculateDir: () => void;
     getValue: () => string;

@@ -13,7 +13,7 @@ declare class ToolbarMenu extends React.Component<Props> {
     render(): JSX.Element;
 }
 declare const _default: React.ForwardRefExoticComponent<{
-    view: EditorView<any>;
+    view: EditorView;
     tooltip: typeof React.Component | React.FC<any>;
     ref?: ((instance: ToolbarMenu | null) => void) | React.RefObject<ToolbarMenu> | null | undefined;
     key?: string | number | null | undefined;

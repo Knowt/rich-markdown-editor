@@ -12,7 +12,7 @@ export default class ListItem extends Node {
         }[];
         toDOM: () => (string | number)[];
     };
-    get plugins(): Plugin<DecorationSet<any>>[];
+    get plugins(): Plugin<DecorationSet>[];
     keys({ type }: {
         type: any;
     }): {

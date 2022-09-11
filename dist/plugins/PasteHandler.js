@@ -11,6 +11,7 @@ const isUrl_1 = __importDefault(require("../lib/isUrl"));
 const isMarkdown_1 = __importDefault(require("../lib/isMarkdown"));
 const isInCode_1 = __importDefault(require("../queries/isInCode"));
 const Prism_1 = require("./Prism");
+const domHelpers_1 = require("../domHelpers");
 function normalizePastedMarkdown(text) {
     const CHECKBOX_REGEX = /^\s?(\[(X|\s|_|-)\]\s(.*)?)/gim;
     while (text.match(CHECKBOX_REGEX)) {
@@ -18,10 +19,6 @@ function normalizePastedMarkdown(text) {
     }
     return text;
 }
-const replaceHeaderByStrong = (html) => {
-    const findHeadersRegex = /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
-    return html.replace(findHeadersRegex, "<$1strong$2>");
-};
 class PasteHandler extends Extension_1.default {
     get name() {
         return "markdown-paste";
@@ -31,7 +28,7 @@ class PasteHandler extends Extension_1.default {
             new prosemirror_state_1.Plugin({
                 props: {
                     transformPastedHTML: (html) => {
-                        return replaceHeaderByStrong(html);
+                        return domHelpers_1.replaceHeaderByStrong(html);
                     },
                     handlePaste: (view, event) => {
                         if (view.props.editable && !view.props.editable(view.state)) {

@@ -58,7 +58,7 @@ declare class LinkEditor extends React.Component<Props, State> {
 }
 declare const _default: React.ForwardRefExoticComponent<{
     mark?: Mark | undefined;
-    view: EditorView<any>;
+    view: EditorView;
     tooltip: typeof React.Component | React.FC<any>;
     ref?: ((instance: LinkEditor | null) => void) | React.RefObject<LinkEditor> | null | undefined;
     key?: string | number | null | undefined;

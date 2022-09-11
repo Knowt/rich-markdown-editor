@@ -470,11 +470,20 @@ class RichMarkdownEditor extends React.PureComponent {
     createDocument(content) {
         var _a;
         if (domHelpers_1.isHTML(content)) {
-            const domNode = document.createElement("div");
-            domNode.innerHTML = content;
-            return this.domParser.parse(domNode);
+            return this.parseHtmlContent(content);
         }
         return (_a = this.mdParser.parse(content)) !== null && _a !== void 0 ? _a : undefined;
+    }
+    parseHtmlContent(content) {
+        const domNode = document.createElement("div");
+        domNode.innerHTML = content;
+        try {
+            return this.domParser.parse(domNode);
+        }
+        catch (error) {
+            domNode.innerHTML = domHelpers_1.replaceHeaderByStrong(content);
+            return this.domParser.parse(domNode);
+        }
     }
     createView() {
         if (!this.element) {

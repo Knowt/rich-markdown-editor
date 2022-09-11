@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStyleValue = exports.isValidHeading = exports.getHeadingLevelByFontSize = exports.getParsedValue = exports.remToPx = exports.isHTML = void 0;
+exports.replaceHeaderByStrong = exports.getStyleValue = exports.isValidHeading = exports.getHeadingLevelByFontSize = exports.getParsedValue = exports.remToPx = exports.isHTML = void 0;
 const isHTML = (str) => {
     const doc = new DOMParser().parseFromString(str, "text/html");
     return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
@@ -50,4 +50,9 @@ const getStyleValue = (el, prop) => {
     return el ? exports.getParsedValue(window.getComputedStyle(el)[prop]) : 0;
 };
 exports.getStyleValue = getStyleValue;
+const replaceHeaderByStrong = (html) => {
+    const findHeadersRegex = /<(\/?)h[1,2,3,4,5]\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gm;
+    return html.replace(findHeadersRegex, "<$1strong$2>");
+};
+exports.replaceHeaderByStrong = replaceHeaderByStrong;
 //# sourceMappingURL=index.js.map
