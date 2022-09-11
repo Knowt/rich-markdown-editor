@@ -87,7 +87,7 @@ import SmartText from "./plugins/SmartText";
 import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 import { PluginSimple } from "markdown-it";
-import { isHTML } from "./domHelpers";
+import { isHTML, replaceHeaderByStrong } from "./domHelpers";
 import GoToPreviousInputTrigger from "./plugins/GoToPreviousInputTrigger";
 
 // export { schema, parser, serializer, renderToHtml } from "./server";
@@ -512,7 +512,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
   createState(value?: string) {
     const doc = this.createDocument(value || this.props.defaultValue);
-
     return EditorState.create({
       schema: this.schema,
       doc,
@@ -530,12 +529,22 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
   createDocument(content: string) {
     if (isHTML(content)) {
-      const domNode = document.createElement("div");
-      domNode.innerHTML = content;
+      return this.parseHtmlContent(content);
+    }
+    return this.mdParser.parse(content) ?? undefined;
+  }
+
+  parseHtmlContent(content: string) {
+    const domNode = document.createElement("div");
+    domNode.innerHTML = content;
+    try {
+      return this.domParser.parse(domNode);
+    } catch (error) {
+      // TODO: parsing `h` tags throws sometimes, so we
+      //  replace headers by strong till we found the problem
+      domNode.innerHTML = replaceHeaderByStrong(content);
       return this.domParser.parse(domNode);
     }
-
-    return this.mdParser.parse(content) ?? undefined;
   }
 
   createView() {
