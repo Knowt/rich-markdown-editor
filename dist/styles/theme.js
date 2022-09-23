@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.dark = exports.light = exports.base = void 0;
 const colors = {
     black: "#000",
-    almostBlack: "#181A1B",
-    lightBlack: "#2F3336",
+    almostBlack: "#1d1e1e",
+    lightBlack: "#333333",
     almostWhite: "#E6E6E6",
     white: "#FFF",
     white10: "rgba(255, 255, 255, 0.1)",
