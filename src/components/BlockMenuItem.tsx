@@ -27,6 +27,7 @@ function BlockMenuItem({
   innerRef,
   mainSearchKeyword,
   containerId = "block-menu-container",
+  theme
 }: Props) {
   const Icon = icon;
 
@@ -53,7 +54,7 @@ function BlockMenuItem({
       <Group>
         {Icon && (
           <>
-            <Icon size={20} {...iconSVGProps} />
+            <Icon color={theme.blockToolbarIconColor} size={20} {...iconSVGProps} />
             &nbsp;&nbsp;
           </>
         )}
@@ -124,7 +125,7 @@ const SearchKeyword = styled.span`
   justify-content: center;
   box-sizing: border-box;
   color: ${(props) => props.theme.knowtGreen};
-  background-color: #ecf9f7;
+  background-color: ${(props) => props.theme.blockToolbarTagBackgroundColor};
 `;
 
 export default withTheme(BlockMenuItem);

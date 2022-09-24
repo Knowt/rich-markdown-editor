@@ -21,6 +21,7 @@ function BlockGroupMenuItem(props: Props) {
     onClick,
     containerId = "block-menu-container",
     innerRef,
+      theme
   } = props;
 
   const ref = React.useCallback(
@@ -38,7 +39,7 @@ function BlockGroupMenuItem(props: Props) {
   );
 
   const arrowIcon = (
-    <svg width="8" x="0px" y="0px" viewBox="0 0 1000 1000">
+    <svg fill={theme.blockToolbarExpandArrowColor} width="8" x="0px" y="0px" viewBox="0 0 1000 1000">
       <g transform="translate(0.000000,511.000000) scale(0.100000,-0.100000)">
         <path d="M2608.4,4961.2c-156.9-68.9-317.7-264.1-348.3-424.9c-61.2-344.5-134-260.3,2024.8-2419.1L6283,115.3L4284.9-1882.7C2122.3-4053,2195-3961.2,2263.9-4313.3c34.4-187.5,264.1-417.2,451.7-451.6c356-68.9,233.5-168.4,2713.9,2308.1C7446.7-435.8,7718.4-156.4,7737.5-26.3c65.1,356,164.6,237.3-2269.8,2683.2C4177.8,3950.7,3167.3,4930.6,3098.4,4961.2C2945.3,5026.3,2757.7,5026.3,2608.4,4961.2z" />
       </g>
