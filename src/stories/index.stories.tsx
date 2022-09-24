@@ -36,6 +36,7 @@ Emoji.args = {
 \
 :1st_place_medal:
 `,
+  dark: true
 };
 
 export const TemplateDoc = Template.bind({});

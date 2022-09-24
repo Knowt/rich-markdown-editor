@@ -127,11 +127,12 @@ export const dark = {
   blockToolbarTextSelected: colors.almostWhite,
   blockToolbarIconColor: colors.almostWhite,
   blockToolbarTagBackgroundColor: colors.lighterBlack,
+  blockToolbarExpandArrowColor: colors.white,
 
   toolbarBackground: colors.lighterBlack,
   toolbarHoverBackground: colors.greyMid,
   toolbarInput: colors.black10,
-  toolbarItem: colors.lightBlack,
+  toolbarItem: colors.white,
 
   tableDivider: colors.lightBlack,
   tableSelected: colors.primary,
