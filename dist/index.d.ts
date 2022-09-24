@@ -70,6 +70,9 @@ export declare const theme: {
     blockToolbarSelectedBackground: string;
     blockToolbarHoverBackground: string;
     blockToolbarDivider: string;
+    blockToolbarExpandArrowColor: string;
+    blockToolbarIconColor: string;
+    blockToolbarTagBackgroundColor: string;
     noticeInfoBackground: string;
     noticeInfoText: string;
     noticeTipBackground: string;
@@ -79,9 +82,11 @@ export declare const theme: {
     black: string;
     almostBlack: string;
     lightBlack: string;
+    lighterBlack: string;
     almostWhite: string;
     white: string;
     white10: string;
+    white40: string;
     black10: string;
     primary: string;
     greyLight: string;
@@ -304,6 +309,9 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         blockToolbarSelectedBackground: string;
         blockToolbarHoverBackground: string;
         blockToolbarDivider: string;
+        blockToolbarExpandArrowColor: string;
+        blockToolbarIconColor: string;
+        blockToolbarTagBackgroundColor: string;
         noticeInfoBackground: string;
         noticeInfoText: string;
         noticeTipBackground: string;
@@ -313,9 +321,11 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         black: string;
         almostBlack: string;
         lightBlack: string;
+        lighterBlack: string;
         almostWhite: string;
         white: string;
         white10: string;
+        white40: string;
         black10: string;
         primary: string;
         greyLight: string;

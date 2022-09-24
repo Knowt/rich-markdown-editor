@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
 const smooth_scroll_into_view_if_needed_1 = __importDefault(require("smooth-scroll-into-view-if-needed"));
 const styled_components_1 = __importStar(require("styled-components"));
-function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps, innerRef, mainSearchKeyword, containerId = "block-menu-container", }) {
+function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps, innerRef, mainSearchKeyword, containerId = "block-menu-container", theme }) {
     const Icon = icon;
     const ref = React.useCallback((node) => {
         innerRef === null || innerRef === void 0 ? void 0 : innerRef(node);
@@ -40,7 +40,7 @@ function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps,
     return (React.createElement(MenuItem, { selected: selected, onClick: disabled ? undefined : onClick, ref: ref },
         React.createElement(Group, null,
             Icon && (React.createElement(React.Fragment, null,
-                React.createElement(Icon, Object.assign({ size: 20 }, iconSVGProps)),
+                React.createElement(Icon, Object.assign({ color: theme.blockToolbarIconColor, size: 20 }, iconSVGProps)),
                 "\u00A0\u00A0")),
             React.createElement(Title, null, title)),
         React.createElement(Group, null, mainSearchKeyword && (React.createElement(SearchKeyword, null, mainSearchKeyword)))));
@@ -93,7 +93,7 @@ const SearchKeyword = styled_components_1.default.span `
   justify-content: center;
   box-sizing: border-box;
   color: ${(props) => props.theme.knowtGreen};
-  background-color: #ecf9f7;
+  background-color: ${(props) => props.theme.blockToolbarTagBackgroundColor};
 `;
 exports.default = styled_components_1.withTheme(BlockMenuItem);
 //# sourceMappingURL=BlockMenuItem.js.map
