@@ -184,6 +184,7 @@ export declare const dark: {
     blockToolbarTextSelected: string;
     blockToolbarIconColor: string;
     blockToolbarTagBackgroundColor: string;
+    blockToolbarExpandArrowColor: string;
     toolbarBackground: string;
     toolbarHoverBackground: string;
     toolbarInput: string;
@@ -228,7 +229,6 @@ export declare const dark: {
     blockToolbarIcon: string;
     blockToolbarIconSelected: string;
     blockToolbarDivider: string;
-    blockToolbarExpandArrowColor: string;
     noticeInfoBackground: string;
     noticeInfoText: string;
     noticeTipBackground: string;

@@ -37,6 +37,7 @@ exports.Emoji.args = {
 \
 :1st_place_medal:
 `,
+    dark: true
 };
 exports.TemplateDoc = Template.bind({});
 exports.TemplateDoc.args = {
