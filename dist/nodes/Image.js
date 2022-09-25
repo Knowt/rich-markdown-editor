@@ -136,22 +136,12 @@ class Image extends Node_1.default {
             view.dispatch(transaction);
         };
         this.component = (props) => {
-            const { isSelected } = props;
+            const { isSelected, node, getPos } = props;
             const { alt, src, title, width, height } = props.node.attrs;
             const className = "image";
             const resizableWrapperRef = React.useRef(null);
-            const sizeRef = React.useRef({ width, height });
-            const imageResized = React.useRef(false);
-            React.useEffect(() => {
-                if (imageResized.current) {
-                    imageResized.current = false;
-                    this.resizeImage(Object.assign(Object.assign({}, props), sizeRef.current));
-                }
-            }, [isSelected]);
             useResizeObserver_1.default(resizableWrapperRef, (entry) => {
-                imageResized.current = true;
-                sizeRef.current.width = entry.width;
-                sizeRef.current.height = entry.height;
+                this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
             });
             return (React.createElement("div", { contentEditable: false, className: className },
                 React.createElement(ImageWrapper, { className: isSelected ? "ProseMirror-selectednode" : "", onClick: this.handleSelect(props) },
@@ -296,12 +286,14 @@ class Image extends Node_1.default {
     }
 }
 exports.default = Image;
-const ResizableWrapper = styled_components_1.default.div `
+const ResizableWrapper = styled_components_1.default.div.attrs(({ width, height }) => ({
+    style: Object.assign(Object.assign({}, (width && { width: `${width}px` })), (height && { height: `${height}px` }))
+})) `
   resize: both;
   overflow: hidden;
   max-height: 75%;
   position: relative;
-
+  
   &::-webkit-resizer {
     display: none;
   }
@@ -309,13 +301,6 @@ const ResizableWrapper = styled_components_1.default.div `
   @media (max-width: 600px) {
     max-width: 300px;
   }
-
-  ${({ width, height }) => width &&
-    height &&
-    `
-    width: ${width}px;
-    height: ${height}px;
-  `}
 `;
 const Button = styled_components_1.default.button `
   position: absolute;

@@ -6,24 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
 const resize_observer_polyfill_1 = __importDefault(require("resize-observer-polyfill"));
 function useResizeObserver(ref, callback) {
-    const handleResize = react_1.useCallback((entries) => {
-        if (!Array.isArray(entries)) {
-            return;
-        }
-        const entry = entries[0];
-        callback(entry.contentRect);
+    const callbackRef = react_1.useRef(callback);
+    react_1.useEffect(() => {
+        callbackRef.current = callback;
     }, [callback]);
     react_1.useLayoutEffect(() => {
-        if (!ref.current) {
+        if (!ref.current)
             return;
-        }
-        const RO = new resize_observer_polyfill_1.default((entries) => {
-            return handleResize(entries);
+        const ro = new resize_observer_polyfill_1.default((entries) => {
+            if (!Array.isArray(entries))
+                return;
+            const entry = entries[0];
+            callbackRef.current(entry.contentRect);
         });
-        RO.observe(ref.current);
-        return () => {
-            RO.disconnect();
-        };
+        ro.observe(ref.current);
+        return () => ro.disconnect();
     }, []);
 }
 exports.default = useResizeObserver;
