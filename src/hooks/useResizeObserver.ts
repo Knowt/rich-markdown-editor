@@ -1,40 +1,27 @@
-import { useLayoutEffect, useCallback, RefObject } from "react";
+import {useLayoutEffect, useEffect, RefObject, useRef} from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
-export interface ResizeObserverEntry {
-  target: HTMLElement;
-  contentRect: DOMRectReadOnly;
-}
-
 export default function useResizeObserver(
-  ref: RefObject<HTMLElement>,
-  callback: (entry: DOMRectReadOnly) => void
+    ref: RefObject<HTMLElement>,
+    callback: (entry: DOMRectReadOnly) => void
 ): void {
-  const handleResize = useCallback(
-    (entries: ResizeObserverEntry[]) => {
-      if (!Array.isArray(entries)) {
-        return;
-      }
+    const callbackRef = useRef(callback)
 
-      const entry = entries[0];
-      callback(entry.contentRect);
-    },
-    [callback]
-  );
+    useEffect(() => {
+        callbackRef.current = callback;
+    }, [callback])
 
-  useLayoutEffect(() => {
-    if (!ref.current) {
-      return;
-    }
+    useLayoutEffect(() => {
+        if (!ref.current) return;
 
-    const RO = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      return handleResize(entries);
-    });
+        const ro = new ResizeObserver((entries) => {
+            if (!Array.isArray(entries)) return;
+            const entry = entries[0];
+            callbackRef.current(entry.contentRect as DOMRectReadOnly);
+        });
 
-    RO.observe(ref.current);
+        ro.observe(ref.current);
 
-    return () => {
-      RO.disconnect();
-    };
-  }, []);
+        return () => ro.disconnect();
+    }, []);
 }

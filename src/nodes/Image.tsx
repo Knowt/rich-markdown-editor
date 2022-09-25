@@ -228,25 +228,14 @@ export default class Image extends Node {
   };
 
   component = (props) => {
-    const { isSelected } = props;
+    const { isSelected, node, getPos } = props;
     const { alt, src, title, width, height } = props.node.attrs;
     const className = "image";
 
     const resizableWrapperRef = React.useRef(null);
-    const sizeRef = React.useRef({ width, height });
-    const imageResized = React.useRef(false);
-
-    React.useEffect(() => {
-      if (imageResized.current) {
-        imageResized.current = false;
-        this.resizeImage({ ...props, ...sizeRef.current });
-      }
-    }, [isSelected]);
 
     useResizeObserver(resizableWrapperRef, (entry) => {
-      imageResized.current = true;
-      sizeRef.current.width = entry.width;
-      sizeRef.current.height = entry.height;
+      this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
     });
 
     return (
@@ -383,15 +372,19 @@ export default class Image extends Node {
   }
 }
 
-const ResizableWrapper = styled.div<{
-  width?: number;
-  height?: number;
-}>`
+const ResizableWrapper = styled.div.attrs<{width?: number, height?: number}>(
+    ({ width, height }) => ({
+      style: {
+        ...(width && {width: `${width}px`}),
+        ...(height && {height: `${height}px`}),
+      }
+    })
+)`
   resize: both;
   overflow: hidden;
   max-height: 75%;
   position: relative;
-
+  
   &::-webkit-resizer {
     display: none;
   }
@@ -399,14 +392,6 @@ const ResizableWrapper = styled.div<{
   @media (max-width: 600px) {
     max-width: 300px;
   }
-
-  ${({ width, height }) =>
-    width &&
-    height &&
-    `
-    width: ${width}px;
-    height: ${height}px;
-  `}
 `;
 
 const Button = styled.button`
