@@ -2,10 +2,5 @@
     "svg.preview.background": "transparent",
     "cSpell.words": [
         "prosemirror"
-    ],
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#411C59",
-        "titleBar.activeBackground": "#5B277C",
-        "titleBar.activeForeground": "#FDFBFE"
-    }
+    ]
 }
