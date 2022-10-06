@@ -11,7 +11,8 @@
     "start": "start-storybook -p 6006",
     "build": "tsc",
     "preversion": "npm run build",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "type-check": "node_modules/.bin/tsc --noEmit"
   },
   "serve": {
     "open": true,

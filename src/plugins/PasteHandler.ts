@@ -6,7 +6,7 @@ import isUrl from "../lib/isUrl";
 import isMarkdown from "../lib/isMarkdown";
 import selectionIsInCode from "../queries/isInCode";
 import { LANGUAGES } from "./Prism";
-import { replaceHeaderByStrong } from "../domHelpers";
+// import { replaceHeaderByStrong } from "../domHelpers";
 
 /**
  * Add support for additional syntax that users paste even though it isn't
@@ -34,11 +34,19 @@ export default class PasteHandler extends Extension {
     return [
       new Plugin({
         props: {
-          transformPastedHTML: (html: string) => {
-            // TODO: this is a temp fix for pasting headers..
-            //  uncomment to see the error :) this is to be fixed ASAP
-            return replaceHeaderByStrong(html);
-          },
+          /**
+           * I'm not sure the use case for this previously
+           * from what I understand this pasted any header tags (copied from within the editor or outside)
+           * to just be <strong>. Without this line of code, header pasted copied from the editor work
+           * HOWEVER, headers copied from other sites would be pasted as regular text
+           */
+          // transformPastedHTML: (html: string) => {
+          //   // TODO: this is a temp fix for pasting headers..
+          //   //  uncomment to see the error :) this is to be fixed ASAP
+          //   const word = replaceHeaderByStrong(html);
+
+          //   return word;
+          // },
           handlePaste: (view, event: ClipboardEvent) => {
             if (view.props.editable && !view.props.editable(view.state)) {
               return false;
@@ -140,11 +148,14 @@ export default class PasteHandler extends Extension {
               const paste = this.editor.pasteParser.parse(
                 normalizePastedMarkdown(text)
               );
-              const slice = paste.slice(0);
 
-              const transaction = view.state.tr.replaceSelection(slice);
-              view.dispatch(transaction);
-              return true;
+              if ( paste ) {
+                const slice = paste.slice(0);
+  
+                const transaction = view.state.tr.replaceSelection(slice);
+                view.dispatch(transaction);
+                return true;
+              }
             }
 
             // otherwise use the default HTML parser which will handle all paste
