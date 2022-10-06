@@ -146,6 +146,8 @@ export const StyledEditor = styled("div")<{
   }
 
   .heading-content {
+    line-height: 120%;
+
     &:before {
       content: "​";
       display: inline;
