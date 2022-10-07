@@ -90,10 +90,12 @@ export default class BlockMenuTrigger extends Extension {
               });
             }
 
+            const isSearchEmpty = document.getElementById( 'block-menu-container-empty' );
+
             // If the query is active and we're navigating the block menu then
             // just ignore the key events in the editor itself until we're done
             if (
-              event.key === "Enter" ||
+              ( event.key === "Enter" && !isSearchEmpty ) ||
               event.key === "ArrowUp" ||
               event.key === "ArrowDown" ||
               event.key === "Tab"
