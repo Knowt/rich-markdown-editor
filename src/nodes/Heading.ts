@@ -49,7 +49,7 @@ export default class Heading extends Node {
           }
           return false;
         },
-        contentElement: ".heading-content"
+        // contentElement: ".heading-content"
       })),
       toDOM: (node) => {
         const isServer = typeof document === "undefined";

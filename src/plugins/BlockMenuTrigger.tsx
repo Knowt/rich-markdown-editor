@@ -79,7 +79,7 @@ export default class BlockMenuTrigger extends Extension {
               // and any characters removed, before we evaluate the rule.
               setTimeout(() => {
                 const { pos } = view.state.selection.$from;
-                return run(view, pos, pos, OPEN_REGEX, (_, match) => {
+                return run(view, pos, pos, OPEN_REGEX, (state, match) => {
                   if (match) {
                     this.options.onOpen(match[1] || "");
                   } else {
@@ -100,7 +100,7 @@ export default class BlockMenuTrigger extends Extension {
             ) {
               const { pos } = view.state.selection.$from;
 
-              return run(view, pos, pos, OPEN_REGEX, (_, match) => {
+              return run(view, pos, pos, OPEN_REGEX, (state, match) => {
                 // just tell Prosemirror we handled it and not to do anything
                 return match ? true : null;
               });

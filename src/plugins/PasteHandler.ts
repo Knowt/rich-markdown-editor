@@ -34,18 +34,10 @@ export default class PasteHandler extends Extension {
     return [
       new Plugin({
         props: {
-          /**
-           * I'm not sure the use case for this previously
-           * from what I understand this pasted any header tags (copied from within the editor or outside)
-           * to just be <strong>. Without this line of code, header pasted copied from the editor work
-           * HOWEVER, headers copied from other sites would be pasted as regular text
-           */
           // transformPastedHTML: (html: string) => {
           //   // TODO: this is a temp fix for pasting headers..
-          //   //  uncomment to see the error :) this is to be fixed ASAP
-          //   const word = replaceHeaderByStrong(html);
-
-          //   return word;
+          //   // uncomment to see the error :) this is to be fixed ASAP
+          //   return replaceHeaderByStrong(html);
           // },
           handlePaste: (view, event: ClipboardEvent) => {
             if (view.props.editable && !view.props.editable(view.state)) {
