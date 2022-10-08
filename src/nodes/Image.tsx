@@ -244,7 +244,9 @@ export default class Image extends Node {
           className={isSelected ? "ProseMirror-selectednode" : ""}
           onClick={this.handleSelect(props)}
         >
-          <ResizableWrapper ref={resizableWrapperRef} {...{ width, height }}>
+          <ResizableWrapper ref={resizableWrapperRef} 
+            {...{ width, height }}
+          >
             <img src={src} alt={alt} title={title} />
             <ResizeButtonContainer>
               <ResizeIconContainer>{resizeIcon}</ResizeIconContainer>
@@ -372,19 +374,20 @@ export default class Image extends Node {
   }
 }
 
-const ResizableWrapper = styled.div.attrs<{width?: number, height?: number}>(
-    ({ width, height }) => ({
-      style: {
-        ...(width && {width: `${width}px`}),
-        ...(height && {height: `${height}px`}),
-      }
-    })
+const ResizableWrapper = styled.div.attrs<{ width: number, height: number }>(
+  ( { width, height }) => ( {
+    style: {
+      aspectRatio: `${width} / ${height}`,
+      width: `${width}px`,
+    },
+  } )
 )`
   resize: both;
   overflow: hidden;
-  max-height: 75%;
   position: relative;
-  
+  height: auto !important;
+  max-width: 100%;
+
   &::-webkit-resizer {
     display: none;
   }
@@ -453,6 +456,7 @@ const ImageWrapper = styled.span`
   line-height: 0;
   display: inline-block;
   position: relative;
+  max-width: 100%;
 
   &:hover {
     ${Button} {
