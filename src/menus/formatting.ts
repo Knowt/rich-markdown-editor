@@ -22,6 +22,7 @@ import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import _isSelectionEmpty from "../queries/isSelectionEmpty";
 import { toggleMark } from '../commands/toggleMark';
+import isHeading from '../queries/isHeading';
 
 export default function formattingMenuItems(
   view: EditorView,
@@ -34,6 +35,7 @@ export default function formattingMenuItems(
   const isTable = isInTable(state);
   const isList = isInList(state);
   const isSelectionEmpty = _isSelectionEmpty(selection);
+  const isSelHeading = isHeading( state );
 
   const allowBlocks = !isTable && !isList;
 
@@ -72,8 +74,14 @@ export default function formattingMenuItems(
       visible: !isSelectionEmpty,
     },
     {
+      name: "code_inline",
+      tooltip: dictionary.codeInline,
+      icon: CodeIcon,
+      active: isMarkActive(schema.marks.code_inline),
+    },
+    {
       name: "separator",
-      visible: allowBlocks && !isSelectionEmpty,
+      visible: !isSelectionEmpty,
     },
     {
       name: "highlight_blue",
@@ -161,16 +169,6 @@ export default function formattingMenuItems(
     // },
     {
       name: "separator",
-      visible: allowBlocks && !isSelectionEmpty,
-    },
-    {
-      name: "code_inline",
-      tooltip: dictionary.codeInline,
-      icon: CodeIcon,
-      active: isMarkActive(schema.marks.code_inline),
-    },
-    {
-      name: "separator",
       visible: allowBlocks,
     },
     {
@@ -207,7 +205,7 @@ export default function formattingMenuItems(
     },
     {
       name: "separator",
-      visible: allowBlocks || isList,
+      visible: ( allowBlocks || isList ) && !isSelHeading,
     },
     {
       name: "checkbox_list",
@@ -215,21 +213,21 @@ export default function formattingMenuItems(
       icon: TodoListIcon,
       keywords: "checklist checkbox task",
       active: isNodeActive(schema.nodes.checkbox_list),
-      visible: allowBlocks || isList,
+      visible: ( allowBlocks || isList ) && !isSelHeading,
     },
     {
       name: "bullet_list",
       tooltip: dictionary.bulletList,
       icon: BulletedListIcon,
       active: isNodeActive(schema.nodes.bullet_list),
-      visible: allowBlocks || isList,
+      visible: ( allowBlocks || isList ) && !isSelHeading,
     },
     {
       name: "ordered_list",
       tooltip: dictionary.orderedList,
       icon: OrderedListIcon,
       active: isNodeActive(schema.nodes.ordered_list),
-      visible: allowBlocks || isList,
+      visible: ( allowBlocks || isList ) && !isSelHeading,
     },
     {
       name: "separator",
