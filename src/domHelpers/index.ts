@@ -7,7 +7,8 @@ export const isHTML = (str) => {
       const nextElemText = childNodes[ index + 1 ]?.textContent;
 
       // this checks to see if the html is residing within a code block
-      return nextElemText && 
+      // the next block is a new line, that means the html resides within a code block
+      return !nextElemText ? true :
         !nextElemText.startsWith( '\n' );
     }
 
