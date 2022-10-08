@@ -751,7 +751,7 @@ class KnowtCommandMenu extends React.Component<Props, State> {
     const { dictionary, isActive, uploadImage } = this.props;
     const selectedGroup = this.filtered[this.state.selectedIndex];
 
-    let id = this.props.id || "block-menu-container";
+    let id = "block-menu-container";
 
     if ( !isActive )
       id += '-empty';
