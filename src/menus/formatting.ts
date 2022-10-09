@@ -21,14 +21,12 @@ import { MenuItem } from "../types";
 import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import _isSelectionEmpty from "../queries/isSelectionEmpty";
-import { toggleMark } from '../commands/toggleMark';
 import isHeading from '../queries/isHeading';
 
 export default function formattingMenuItems(
   view: EditorView,
   isTemplate: boolean,
   dictionary: typeof baseDictionary,
-  commands: Record<string, any>,
 ): MenuItem[] {
   const { state } = view;
   const { schema, selection } = state;
@@ -38,14 +36,6 @@ export default function formattingMenuItems(
   const isSelHeading = isHeading( state );
 
   const allowBlocks = !isTable && !isList;
-
-  const allMarks = [
-    schema.marks.highlight_default,
-    schema.marks.highlight_orange,
-    schema.marks.highlight_yellow,
-    schema.marks.highlight_green,
-    schema.marks.highlight_blue,
-  ];
 
   return [
     {
@@ -90,13 +80,6 @@ export default function formattingMenuItems(
       iconColor: schema.marks.highlight_blue.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_blue),
       visible: !isTemplate && !isSelectionEmpty,
-      customOnClick: () => toggleMark( {
-        item: schema.marks.highlight_blue,
-        commands,
-        isMarkActive: isMarkActive(schema.marks.highlight_blue),
-        view,
-        allMarks,
-      } ),
     },
     {
       name: "highlight_yellow",
@@ -105,68 +88,7 @@ export default function formattingMenuItems(
       iconColor: schema.marks.highlight_yellow.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_yellow),
       visible: !isTemplate && !isSelectionEmpty,
-      customOnClick: () => toggleMark( {
-        item: schema.marks.highlight_yellow,
-        commands,
-        isMarkActive: isMarkActive(schema.marks.highlight_yellow),
-        view,
-        allMarks,
-      } ),
     },
-    // {
-    //   name: "highlight_green",
-    //   tooltip: "Green Highlight",
-    //   icon: HighlightIcon,
-    //   iconColor: schema.marks.highlight_green.attrs.color.default,
-    //   active: isMarkActive(schema.marks.highlight_green),
-    //   visible: !isTemplate && !isSelectionEmpty,
-    //   customOnClick: () => toggleMark( {
-    //     item: schema.marks.highlight_green,
-    //     commands,
-    //     isMarkActive: isMarkActive(schema.marks.highlight_green),
-    //     view,
-    //     allMarks,
-    //   } ),
-    // },
-    // {
-    //   name: "highlight_remove",
-    //   tooltip: "Remove All Highlights",
-    //   icon: RemoveIcon,
-    //   iconColor: "#fff",
-    //   active: isAnyMarkActive(allMarks),
-    //   visible: !isTemplate && !isSelectionEmpty,
-    //   customOnClick: () => removeMarks(view, allMarks),
-    // },
-    // {
-    //   name: "highlight_default",
-    //   tooltip: "Red Highlight",
-    //   icon: HighlightIcon,
-    //   iconColor: schema.marks.highlight_default.attrs.color.default,
-    //   active: isMarkActive(schema.marks.highlight_default),
-    //   visible: !isTemplate && !isSelectionEmpty,
-    //   customOnClick: () => toggleMark( {
-    //     item: schema.marks.highlight_default,
-    //     commands,
-    //     isMarkActive: isMarkActive(schema.marks.highlight_default),
-    //     view,
-    //     allMarks,
-    //   } ),
-    // },
-    // {
-    //   name: "highlight_orange",
-    //   tooltip: "Orange Highlight",
-    //   icon: HighlightIcon,
-    //   iconColor: schema.marks.highlight_orange.attrs.color.default,
-    //   active: isMarkActive(schema.marks.highlight_orange),
-    //   visible: !isTemplate && !isSelectionEmpty,
-    //   customOnClick: () => toggleMark( {
-    //     item: schema.marks.highlight_orange,
-    //     commands,
-    //     isMarkActive: isMarkActive(schema.marks.highlight_orange),
-    //     view,
-    //     allMarks,
-    //   } ),
-    // },
     {
       name: "separator",
       visible: allowBlocks,
