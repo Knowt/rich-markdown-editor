@@ -10,8 +10,9 @@
     "test": "jest",
     "start": "start-storybook -p 6006",
     "build": "tsc",
-    "preversion": "npm run build",
-    "build-storybook": "build-storybook"
+    "preinstall": "npx only-allow yarn",
+    "build-storybook": "build-storybook",
+    "type-check": "tsc --noEmit"
   },
   "serve": {
     "open": true,
