@@ -5,6 +5,7 @@ import ToolbarButton from "./ToolbarButton";
 import ToolbarSeparator from "./ToolbarSeparator";
 import theme from "../styles/theme";
 import { MenuItem } from "../types";
+import { defaultMarkClick } from '../commands/defaultMarkClick';
 
 type Props = {
   tooltip: typeof React.Component | React.FC<any>;
@@ -40,14 +41,10 @@ class ToolbarMenu extends React.Component<Props> {
             <ToolbarButton
               key={index}
               active={isActive}
-              onClick={() => {
-                if (item.customOnClick) {
-                  return item.customOnClick();
-                }
-
-                if (!item.name) return;
-                this.props.commands[item.name](item.attrs);
-              }}
+              onClick={() => defaultMarkClick( {
+                item,
+                commands: this.props.commands,
+              })}
             >
               <Tooltip tooltip={item.tooltip} placement="top">
                 <Icon color={item.iconColor || this.props.theme.toolbarItem} />
