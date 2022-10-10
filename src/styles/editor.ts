@@ -344,6 +344,7 @@ export const StyledEditor = styled("div")<{
 
   blockquote {
     margin: 0;
+    margin-bottom: 0.3rem;
     padding-left: 1.5em;
     font-style: italic;
     overflow: hidden;
@@ -563,9 +564,12 @@ export const StyledEditor = styled("div")<{
     &.blue {
         background: ${(props) => props.theme.highlights["blue"]};
     }
-
   }
 
+  .code-block {
+    margin-bottom: 0.3rem;
+  }
+  
   .code-block,
   .notice-block {
     position: relative;
