@@ -593,6 +593,10 @@ export const StyledEditor = styled("div")<{
       button {
         right: 4px;
       }
+
+      select {
+        color: ${(props) => props.theme.text};
+      }
     }
 
     &.notice-block {
