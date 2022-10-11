@@ -29,6 +29,15 @@ export const StyledEditor = styled("div")<{
     padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
   }
 
+  img {
+    &.ProseMirror-separator {
+      display: none;
+
+      + .ProseMirror-trailingBreak {
+        display: none;
+      }
+    }
+  }
 
   pre {
     white-space: pre-wrap;
