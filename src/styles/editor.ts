@@ -761,12 +761,15 @@ export const StyledEditor = styled("div")<{
     border-radius: 4px;
     margin-top: 1em;
     box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat( auto-fill, 1fr );
 
     * {
       box-sizing: border-box;
     }
 
     tr {
+      display: flex;
       position: relative;
       border-bottom: 1px solid ${(props) => props.theme.tableDivider};
     }
@@ -780,10 +783,16 @@ export const StyledEditor = styled("div")<{
       position: relative;
       vertical-align: top;
       border: 1px solid ${(props) => props.theme.tableDivider};
-      position: relative;
       padding: 4px 8px;
       text-align: ${(props) => (props.rtl ? "right" : "left")};
-      min-width: 100px;
+      width: 100%;
+
+      p {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -ms-word-break: break-all;
+        word-break: break-word;
+      }
     }
 
     .selectedCell {

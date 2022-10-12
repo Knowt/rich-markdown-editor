@@ -8,20 +8,19 @@ import {
   deleteTable,
   fixTables,
   goToNextCell,
-  isInTable,
   setCellAttr,
   tableEditing,
   toggleHeaderCell,
   toggleHeaderColumn,
   toggleHeaderRow,
+  addRowAfter,
+  addRowBefore,
 } from "@knowt/prosemirror-tables";
 import {
-  addRowAt,
   createTable,
   getCellsInColumn,
-  moveRow,
 } from "@knowt/prosemirror-utils";
-import { Plugin, TextSelection } from "prosemirror-state";
+import { Plugin, TextSelection, EditorState } from "prosemirror-state";
 import tablesRule from "../rules/tables";
 
 export default class Table extends Node {
@@ -82,18 +81,8 @@ export default class Table extends Node {
       addColumnBefore: () => addColumnBefore,
       addColumnAfter: () => addColumnAfter,
       deleteColumn: () => deleteColumn,
-      addRowAfter:
-        ({ index }) =>
-        (state, dispatch) => {
-          if (index === 0) {
-            // A little hack to avoid cloning the heading row by cloning the row
-            // beneath and then moving it to the right index.
-            const tr = addRowAt(index + 2, true)(state.tr);
-            dispatch(moveRow(index + 2, index + 1)(tr));
-          } else {
-            dispatch(addRowAt(index + 1, true)(state.tr));
-          }
-        },
+      addRowBefore: () => addRowBefore,
+      addRowAfter: () => addRowAfter,
       deleteRow: () => deleteRow,
       deleteTable: () => deleteTable,
       toggleHeaderColumn: () => toggleHeaderColumn,
@@ -108,16 +97,6 @@ export default class Table extends Node {
     return {
       Tab: goToNextCell(1),
       "Shift-Tab": goToNextCell(-1),
-      Enter: (state, dispatch) => {
-        if (!isInTable(state)) return false;
-
-        // TODO: Adding row at the end for now, can we find the current cell
-        // row index and add the row below that?
-        const cells = getCellsInColumn(0)(state.selection) || [];
-
-        dispatch(addRowAt(cells.length, true)(state.tr));
-        return true;
-      },
     };
   }
 

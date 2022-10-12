@@ -182,8 +182,14 @@ export default class SelectionToolbar extends React.Component<Props> {
     let isTextSelection = false;
 
     let items: MenuItem[] = [];
-    if (isTableSelection) {
-      items = getTableMenuItems(dictionary);
+    if (
+      isTableSelection &&
+      typeof rowIndex === 'number'
+    ) {
+      items = getTableMenuItems(dictionary, {
+        rowIndex,
+        rtl,
+      });
     } else if (colIndex !== undefined) {
       items = getTableColMenuItems(state, colIndex, rtl, dictionary);
     } else if (rowIndex !== undefined) {
