@@ -40,6 +40,7 @@ export default class Strikethrough extends Mark {
       close: "~~",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 
