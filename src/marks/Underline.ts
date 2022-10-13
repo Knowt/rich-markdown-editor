@@ -42,6 +42,7 @@ export default class Underline extends Mark {
       close: "__",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 

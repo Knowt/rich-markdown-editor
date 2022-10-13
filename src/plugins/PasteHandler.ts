@@ -6,7 +6,7 @@ import isUrl from "../lib/isUrl";
 import isMarkdown from "../lib/isMarkdown";
 import selectionIsInCode from "../queries/isInCode";
 import { LANGUAGES } from "./Prism";
-// import { replaceHeaderByStrong } from "../domHelpers";
+
 
 /**
  * Add support for additional syntax that users paste even though it isn't
@@ -34,11 +34,6 @@ export default class PasteHandler extends Extension {
     return [
       new Plugin({
         props: {
-          // transformPastedHTML: (html: string) => {
-          //   // TODO: this is a temp fix for pasting headers..
-          //   // uncomment to see the error :) this is to be fixed ASAP
-          //   return replaceHeaderByStrong(html);
-          // },
           handlePaste: (view, event: ClipboardEvent) => {
             if (view.props.editable && !view.props.editable(view.state)) {
               return false;

@@ -199,7 +199,7 @@ export default class SelectionToolbar extends React.Component<Props> {
     } else if (isDividerSelection) {
       items = getDividerMenuItems(state, dictionary);
     } else {
-      items = getFormattingMenuItems(view, isTemplate, dictionary, this.props.commands);
+      items = getFormattingMenuItems(view, isTemplate, dictionary);
       isTextSelection = true;
     }
 
