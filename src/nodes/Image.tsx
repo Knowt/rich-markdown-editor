@@ -61,7 +61,35 @@ const uploadPlugin = (options) => {
           insertFiles(view, event, pos, files, options);
           return true;
         },
+        dragenter: ( _, event ) => {
+          event.preventDefault();
+        },
+        dragover: ( _, event ) => {
+          event.preventDefault();
+        },
         drop(view, event: DragEvent): boolean {
+          // an image is being moved to another location within the note
+          if ( event.dataTransfer?.effectAllowed === 'move' ) {
+            const { state, dispatch } = view;
+            const { tr } = state;
+
+            const result = view.posAtCoords({
+              left: event.clientX,
+              top: event.clientY,
+            });
+
+            // @ts-ignore
+            if ( result && tr.selection.node ) {
+                // @ts-ignore
+                tr.insert( result.pos, state.selection.node );
+                tr.deleteSelection();
+
+                dispatch( tr );
+  
+                return true;
+            }
+          }
+
           if (
             (view.props.editable && !view.props.editable(view.state)) ||
             !options.uploadImage
@@ -114,8 +142,6 @@ export default class Image extends Node {
       content: "text*",
       marks: "",
       group: "inline",
-      selectable: true,
-      draggable: true,
       parseDOM: [
         {
           tag: "div[class~=image]",
@@ -196,7 +222,6 @@ export default class Image extends Node {
         src,
         alt,
         title,
-
         width,
         height,
       });
@@ -205,9 +230,7 @@ export default class Image extends Node {
 
   handleSelect =
     ({ getPos }) =>
-    (event) => {
-      event.preventDefault();
-
+    () => {
       const { view } = this.editor;
       const $pos = view.state.doc.resolve(getPos());
       const transaction = view.state.tr.setSelection(new NodeSelection($pos));
@@ -239,11 +262,15 @@ export default class Image extends Node {
     });
 
     return (
-      <div contentEditable={false} className={className}>
-        <ImageWrapper
+      <div contentEditable={false} className={className}
+        onClick={() => this.handleSelect(props)()} role='button'>
+        <ImageWrapper draggable={true}
           className={isSelected ? "ProseMirror-selectednode" : ""}
-          onClick={this.handleSelect(props)}
-        >
+          onDragStartCapture={( event ) => {
+            this.handleSelect(props)();
+
+            event.dataTransfer.effectAllowed = 'move';
+          }}>
           <ResizableWrapper ref={resizableWrapperRef} 
             {...{ width, height }}
           >
