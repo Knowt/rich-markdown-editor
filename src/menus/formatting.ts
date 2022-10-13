@@ -95,7 +95,7 @@ export default function formattingMenuItems(
     },
     {
       name: "heading",
-      tooltip: dictionary.heading,
+      tooltip: dictionary.h1,
       icon: Heading1Icon,
       active: isNodeActive(schema.nodes.heading, { level: 1 }),
       attrs: { level: 1 },
@@ -103,7 +103,7 @@ export default function formattingMenuItems(
     },
     {
       name: "heading",
-      tooltip: dictionary.subheading,
+      tooltip: dictionary.h2,
       icon: Heading2Icon,
       active: isNodeActive(schema.nodes.heading, { level: 2 }),
       attrs: { level: 2 },
@@ -111,7 +111,7 @@ export default function formattingMenuItems(
     },
     {
       name: "heading",
-      tooltip: dictionary.subheading,
+      tooltip: dictionary.h3,
       icon: Heading3Icon,
       active: isNodeActive(schema.nodes.heading, { level: 3 }),
       attrs: { level: 3 },
