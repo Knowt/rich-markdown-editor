@@ -55,6 +55,7 @@ export default class DefaultHighlight extends Mark {
       close: "==",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 

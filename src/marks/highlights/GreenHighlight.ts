@@ -56,6 +56,7 @@ export default class GreenHighlight extends Mark {
       close: "%%",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 
