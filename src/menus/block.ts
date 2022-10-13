@@ -7,7 +7,6 @@ import {
   Heading3Icon,
   HorizontalRuleIcon,
   OrderedListIcon,
-  PageBreakIcon,
   TableIcon,
   TodoListIcon,
   ImageIcon,
@@ -15,14 +14,13 @@ import {
 } from "outline-icons";
 import { EmbedDescriptor, GroupMenuItem } from "../types";
 import baseDictionary from "../dictionary";
+import { EditorView } from "prosemirror-view";
 import { CircleIcon } from "../icons";
 import removeMarks from "../commands/removeMarks";
-import { EditorView } from "prosemirror-view";
 
 const SSR = typeof window === "undefined";
 const isMac = !SSR && window.navigator.platform === "MacIntel";
 const mod = isMac ? "⌘" : "ctrl";
-
 const HIGHLIGHT_RADIUS = 12;
 
 export const getGroupedMenuItems = (
@@ -31,7 +29,7 @@ export const getGroupedMenuItems = (
 ): GroupMenuItem[] => {
   const { state } = view;
   const { schema } = state;
-
+  
   const allMarks = [
     schema.marks.highlight_default,
     schema.marks.highlight_orange,
@@ -147,14 +145,6 @@ export const getGroupedMenuItems = (
           shortcut: `${mod} _`,
           keywords: "horizontal rule break line",
           searchKeyword: "divider",
-        },
-        {
-          name: "hr",
-          title: dictionary.pageBreak,
-          icon: PageBreakIcon,
-          keywords: "page print break line",
-          searchKeyword: "page break",
-          attrs: { markup: "***" },
         },
         {
           name: "link",
