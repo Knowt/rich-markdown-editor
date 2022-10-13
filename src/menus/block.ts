@@ -15,15 +15,29 @@ import {
 import { EmbedDescriptor, GroupMenuItem } from "../types";
 import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
+import { CircleIcon } from "../icons";
+import removeMarks from "../commands/removeMarks";
 
 const SSR = typeof window === "undefined";
 const isMac = !SSR && window.navigator.platform === "MacIntel";
 const mod = isMac ? "⌘" : "ctrl";
+const HIGHLIGHT_RADIUS = 12;
 
 export const getGroupedMenuItems = (
-  _: EditorView,
+  view: EditorView,
   dictionary: typeof baseDictionary
 ): GroupMenuItem[] => {
+  const { state } = view;
+  const { schema } = state;
+  
+  const allMarks = [
+    schema.marks.highlight_default,
+    schema.marks.highlight_orange,
+    schema.marks.highlight_yellow,
+    schema.marks.highlight_green,
+    schema.marks.highlight_blue,
+  ];
+
   return [
     {
       groupData: {
@@ -139,6 +153,100 @@ export const getGroupedMenuItems = (
           shortcut: `${mod} k`,
           keywords: "link url uri href",
           searchKeyword: "link",
+        },
+      ],
+    },
+    {
+      groupData: {
+        name: "Highlight",
+      },
+      items: [
+        {
+          name: "highlight_default",
+          title: "Red",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS,
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            fill: schema.marks.highlight_default.attrs.color.default,
+          },
+          keywords: "highlight red",
+          searchKeyword: "red",
+          shortcut: "alt shift 1",
+        },
+        {
+          name: "highlight_orange",
+          title: "Orange",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS,
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            fill: schema.marks.highlight_orange.attrs.color.default,
+          },
+          keywords: "highlight orange",
+          searchKeyword: "orange",
+          shortcut: "alt shift 2",
+        },
+        {
+          name: "highlight_yellow",
+          title: "Yellow",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS,
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            fill: schema.marks.highlight_yellow.attrs.color.default,
+          },
+          keywords: "highlight yellow",
+          searchKeyword: "yellow",
+          shortcut: "alt shift 3",
+        },
+        {
+          name: "highlight_green",
+          title: "Green",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS,
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            fill: schema.marks.highlight_green.attrs.color.default,
+          },
+          keywords: "highlight green",
+          searchKeyword: "green",
+          shortcut: "alt shift 4",
+        },
+        {
+          name: "highlight_blue",
+          title: "Blue",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS,
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            fill: schema.marks.highlight_blue.attrs.color.default,
+          },
+          keywords: "highlight blue",
+          searchKeyword: "blue",
+          shortcut: "alt shift 5",
+        },
+        {
+          name: "highlight_remove",
+          title: "No highlight",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: HIGHLIGHT_RADIUS - 1, // 1 is stroke width
+            cx: HIGHLIGHT_RADIUS,
+            cy: HIGHLIGHT_RADIUS,
+            strokeWidth: 1,
+            fill: "#fff",
+            stroke: "#777",
+          },
+          keywords: "highlight remove unhighlight",
+          searchKeyword: "unhighlight",
+          shortcut: "", //TODO: add shortcut
+          customOnClick: () => removeMarks(view, allMarks),
         },
       ],
     },
