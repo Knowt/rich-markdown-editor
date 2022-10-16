@@ -9,6 +9,7 @@ import {
 } from "prosemirror-model";
 import ExtensionManager from "./lib/ExtensionManager";
 import baseDictionary from "./dictionary";
+import { isNoteLegacy } from './lib/isNoteLegacy';
 
 // nodes
 import Doc from "./nodes/Doc";
@@ -131,8 +132,8 @@ export const mdToHtml =
  */
 export const externalHtmlOrMdToHtml =
   (isHTML_ = isHTML, document_ = document) =>
-  (content: string) => {
-    if (isHTML_(content)) {
+  (content: string, created: number) => {
+    if (isNoteLegacy( created ) && isHTML_(content)) {
       return serializeToHTML(document_)(parseHTML(document_)(content));
     } else {
       return mdToHtml(document_)(content);

@@ -87,11 +87,8 @@ import SmartText from "./plugins/SmartText";
 import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 import { PluginSimple } from "markdown-it";
-import { isHTML, replaceHeaderByStrong } from "./domHelpers";
+import { replaceHeaderByStrong } from "./domHelpers";
 import GoToPreviousInputTrigger from "./plugins/GoToPreviousInputTrigger";
-
-// export { schema, parser, serializer, renderToHtml } from "./server";
-
 export { default as Extension } from "./lib/Extension";
 
 export const theme = lightTheme;
@@ -165,6 +162,7 @@ export type Props = {
   tooltip: typeof React.Component | React.FC<any>;
   className?: string;
   style?: React.CSSProperties;
+  parseAsHTML: boolean;
 };
 
 type State = {
@@ -528,7 +526,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   }
 
   createDocument(content: string) {
-    if (isHTML(content)) {
+    if (this.props.parseAsHTML) {
       return this.parseHtmlContent(content);
     }
     return this.mdParser.parse(content) ?? undefined;
