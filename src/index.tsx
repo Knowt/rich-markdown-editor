@@ -165,6 +165,7 @@ export type Props = {
   tooltip: typeof React.Component | React.FC<any>;
   className?: string;
   style?: React.CSSProperties;
+  spellCheck?: boolean;
 };
 
 type State = {
@@ -780,6 +781,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         justify="center"
         dir={dir}
         column
+        spellCheck={typeof this.props.spellCheck === 'boolean' ? 
+          this.props.spellCheck : true}
       >
         <ThemeProvider theme={this.theme()}>
           <React.Fragment>
