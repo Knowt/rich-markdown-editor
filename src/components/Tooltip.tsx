@@ -1,10 +1,20 @@
-import * as React from "react";
+import React, { ReactNode } from 'react';
+
 
 type Props = {
+  children: ReactNode;
   tooltip: string;
-  children: React.ReactNode;
 };
 
-export default function Tooltip({ tooltip, children }: Props) {
-  return <span title={tooltip}>{children}</span>;
+
+const Tooltip = ( { 
+  children,
+  tooltip, 
+}: Props ) => {
+  return (
+    <span title={tooltip}>{children}</span>
+  )
 }
+
+
+export default Tooltip;

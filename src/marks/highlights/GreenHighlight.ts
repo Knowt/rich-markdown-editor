@@ -2,7 +2,7 @@ import markInputRule from "../../lib/markInputRule";
 import Mark from "../Mark";
 import markRule from "../../rules/mark";
 import { toggleMark } from "prosemirror-commands";
-
+import { GREEN_HIGHLIGHT_SHORTCUT } from '../../lib/constants';
 
 export default class GreenHighlight extends Mark {
   get name() {
@@ -38,7 +38,7 @@ export default class GreenHighlight extends Mark {
 
   keys({ type }) {
     return {
-      "Alt-Shift-4": toggleMark(type),
+      [ GREEN_HIGHLIGHT_SHORTCUT ]: toggleMark(type),
     };
   }
 
