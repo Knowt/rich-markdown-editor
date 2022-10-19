@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { ReactNode, RefObject, useState, useRef,
   useCallback, useEffect, forwardRef } from 'react';
-
+import useDelay from '../hooks/useDelay';
 
 /* TYPES */
 type TooltipPositions = 'top' | 'bottom' | 'right' | 'left';
@@ -11,6 +11,7 @@ interface Props {
   id: string;
   position?: TooltipPositions;
   includeArrow?: boolean;
+  delayShowTime?: number;
 }
 
 interface Styles {
@@ -180,11 +181,16 @@ const Tooltip = forwardRef<HTMLElement, Props>( ( {
   id,
   position='top',
   includeArrow=true,
+  delayShowTime=0,
 }, ref ) => {
   /* HOOKS */
   const tooltipRef = useRef<HTMLDivElement>( null );
   const [ isActive, setIsActive ] = useState<boolean>( false );
   const [ tooltipStyles, setTooltipStyles ] = useState<Styles>( {} );
+  const shouldDisplay = useDelay( {
+    isActive,
+    delayTime: delayShowTime,
+  } );
 
   /* FUNCTIONS */
   const handlePointerOver = useCallback( () => {
@@ -218,7 +224,7 @@ const Tooltip = forwardRef<HTMLElement, Props>( ( {
 
   return (
     <TooltipWrapper id={id} ref={tooltipRef}
-      className={isActive ? `active ${position} tooltip-wrapper` : 
+      className={isActive && shouldDisplay ? `active ${position} tooltip-wrapper` : 
         `not-active ${position} tooltip-wrapper`} 
       role='tooltip' style={tooltipStyles}>
         <span className='tooltip'>

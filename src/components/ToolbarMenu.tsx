@@ -62,7 +62,7 @@ const ToolbarItem = ( {
           'toolbar-icon light' : 'toolbar-icon'}
           color={item.iconColor || theme.toolbarItem} />
       </ToolbarButton>
-      <Tooltip id={id} ref={ref}>
+      <Tooltip id={id} ref={ref} delayShowTime={500}>
           Text fsdafsd
       </Tooltip>
     </RelativeWrapper>
