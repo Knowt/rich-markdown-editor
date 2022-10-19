@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -25,25 +6,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const outline_icons_1 = require("outline-icons");
 const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
 const isInList_1 = __importDefault(require("../queries/isInList"));
-const isMarkActive_1 = __importStar(require("../queries/isMarkActive"));
+const isMarkActive_1 = __importDefault(require("../queries/isMarkActive"));
 const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
-const removeMarks_1 = __importDefault(require("../commands/removeMarks"));
-const icons_1 = require("../icons");
 const isSelectionEmpty_1 = __importDefault(require("../queries/isSelectionEmpty"));
+const isHeading_1 = __importDefault(require("../queries/isHeading"));
 function formattingMenuItems(view, isTemplate, dictionary) {
     const { state } = view;
     const { schema, selection } = state;
     const isTable = prosemirror_tables_1.isInTable(state);
     const isList = isInList_1.default(state);
     const isSelectionEmpty = isSelectionEmpty_1.default(selection);
+    const isSelHeading = isHeading_1.default(state);
     const allowBlocks = !isTable && !isList;
-    const allMarks = [
-        schema.marks.highlight_default,
-        schema.marks.highlight_orange,
-        schema.marks.highlight_yellow,
-        schema.marks.highlight_green,
-        schema.marks.highlight_blue,
-    ];
     return [
         {
             name: "placeholder",
@@ -71,23 +45,21 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             visible: !isSelectionEmpty,
         },
         {
+            name: "code_inline",
+            tooltip: dictionary.codeInline,
+            icon: outline_icons_1.CodeIcon,
+            active: isMarkActive_1.default(schema.marks.code_inline),
+        },
+        {
             name: "separator",
-            visible: allowBlocks && !isSelectionEmpty,
+            visible: !isSelectionEmpty,
         },
         {
-            name: "highlight_default",
-            tooltip: "Red Highlight",
+            name: "highlight_blue",
+            tooltip: "Blue Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_default.attrs.color.default,
-            active: isMarkActive_1.default(schema.marks.highlight_default),
-            visible: !isTemplate && !isSelectionEmpty,
-        },
-        {
-            name: "highlight_orange",
-            tooltip: "Orange Highlight",
-            icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_orange.attrs.color.default,
-            active: isMarkActive_1.default(schema.marks.highlight_orange),
+            iconColor: schema.marks.highlight_blue.attrs.color.default,
+            active: isMarkActive_1.default(schema.marks.highlight_blue),
             visible: !isTemplate && !isSelectionEmpty,
         },
         {
@@ -99,47 +71,12 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             visible: !isTemplate && !isSelectionEmpty,
         },
         {
-            name: "highlight_green",
-            tooltip: "Green Highlight",
-            icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_green.attrs.color.default,
-            active: isMarkActive_1.default(schema.marks.highlight_green),
-            visible: !isTemplate && !isSelectionEmpty,
-        },
-        {
-            name: "highlight_blue",
-            tooltip: "Blue Highlight",
-            icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_blue.attrs.color.default,
-            active: isMarkActive_1.default(schema.marks.highlight_blue),
-            visible: !isTemplate && !isSelectionEmpty,
-        },
-        {
-            name: "highlight_remove",
-            tooltip: "Remove All Highlights",
-            icon: icons_1.RemoveIcon,
-            iconColor: "#fff",
-            active: isMarkActive_1.isAnyMarkActive(allMarks),
-            visible: !isTemplate && !isSelectionEmpty,
-            customOnClick: () => removeMarks_1.default(view, allMarks),
-        },
-        {
-            name: "separator",
-            visible: allowBlocks && !isSelectionEmpty,
-        },
-        {
-            name: "code_inline",
-            tooltip: dictionary.codeInline,
-            icon: outline_icons_1.CodeIcon,
-            active: isMarkActive_1.default(schema.marks.code_inline),
-        },
-        {
             name: "separator",
             visible: allowBlocks,
         },
         {
             name: "heading",
-            tooltip: dictionary.heading,
+            tooltip: dictionary.h1,
             icon: outline_icons_1.Heading1Icon,
             active: isNodeActive_1.default(schema.nodes.heading, { level: 1 }),
             attrs: { level: 1 },
@@ -147,10 +84,18 @@ function formattingMenuItems(view, isTemplate, dictionary) {
         },
         {
             name: "heading",
-            tooltip: dictionary.subheading,
+            tooltip: dictionary.h2,
             icon: outline_icons_1.Heading2Icon,
             active: isNodeActive_1.default(schema.nodes.heading, { level: 2 }),
             attrs: { level: 2 },
+            visible: allowBlocks,
+        },
+        {
+            name: "heading",
+            tooltip: dictionary.h3,
+            icon: outline_icons_1.Heading3Icon,
+            active: isNodeActive_1.default(schema.nodes.heading, { level: 3 }),
+            attrs: { level: 3 },
             visible: allowBlocks,
         },
         {
@@ -163,7 +108,7 @@ function formattingMenuItems(view, isTemplate, dictionary) {
         },
         {
             name: "separator",
-            visible: allowBlocks || isList,
+            visible: (allowBlocks || isList) && !isSelHeading,
         },
         {
             name: "checkbox_list",
@@ -171,21 +116,21 @@ function formattingMenuItems(view, isTemplate, dictionary) {
             icon: outline_icons_1.TodoListIcon,
             keywords: "checklist checkbox task",
             active: isNodeActive_1.default(schema.nodes.checkbox_list),
-            visible: allowBlocks || isList,
+            visible: (allowBlocks || isList) && !isSelHeading,
         },
         {
             name: "bullet_list",
             tooltip: dictionary.bulletList,
             icon: outline_icons_1.BulletedListIcon,
             active: isNodeActive_1.default(schema.nodes.bullet_list),
-            visible: allowBlocks || isList,
+            visible: (allowBlocks || isList) && !isSelHeading,
         },
         {
             name: "ordered_list",
             tooltip: dictionary.orderedList,
             icon: outline_icons_1.OrderedListIcon,
             active: isNodeActive_1.default(schema.nodes.ordered_list),
-            visible: allowBlocks || isList,
+            visible: (allowBlocks || isList) && !isSelHeading,
         },
         {
             name: "separator",

@@ -131,8 +131,8 @@ export declare type Props = {
     uploadImage?: (file: File) => Promise<string>;
     onBlur?: () => void;
     onFocus?: () => void;
-    onSave?: ({ done: boolean }: {
-        done: any;
+    onSave?: (input: {
+        done: boolean;
     }) => void;
     onCancel?: () => void;
     onChange?: (value: () => string) => void;

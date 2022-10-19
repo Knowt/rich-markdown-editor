@@ -41,6 +41,7 @@ class Underline extends Mark_1.default {
             close: "__",
             mixable: true,
             expelEnclosingWhitespace: true,
+            escape: false,
         };
     }
     parseMarkdown() {

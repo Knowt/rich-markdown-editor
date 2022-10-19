@@ -287,13 +287,17 @@ class Image extends Node_1.default {
 }
 exports.default = Image;
 const ResizableWrapper = styled_components_1.default.div.attrs(({ width, height }) => ({
-    style: Object.assign(Object.assign({}, (width && { width: `${width}px` })), (height && { height: `${height}px` }))
+    style: {
+        aspectRatio: `${width} / ${height}`,
+        width: `${width}px`,
+    },
 })) `
   resize: both;
   overflow: hidden;
-  max-height: 75%;
   position: relative;
-  
+  height: auto !important;
+  max-width: 100%;
+
   &::-webkit-resizer {
     display: none;
   }
@@ -359,6 +363,7 @@ const ImageWrapper = styled_components_1.default.span `
   line-height: 0;
   display: inline-block;
   position: relative;
+  max-width: 100%;
 
   &:hover {
     ${Button} {

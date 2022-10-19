@@ -146,6 +146,8 @@ exports.StyledEditor = styled_components_1.default("div") `
   }
 
   .heading-content {
+    line-height: 120%;
+
     &:before {
       content: "​";
       display: inline;
