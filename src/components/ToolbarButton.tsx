@@ -3,16 +3,15 @@ import styled from "styled-components";
 type Props = { active?: boolean; disabled?: boolean };
 
 export default styled.button<Props>`
-  display: inline-block;
-  flex: 0;
-  width: 24px;
-  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  margin-left: 8px;
+  padding: 10px 3px;
   border: none;
   background: none;
-  transition: opacity 100ms ease-in-out;
-  padding: 0;
+  transition: opacity 85ms ease-in-out,
+              background-color 85ms ease-in-out;
   opacity: 0.7;
   outline: none;
   pointer-events: all;
@@ -22,8 +21,15 @@ export default styled.button<Props>`
     margin-left: 0;
   }
 
+  .toolbar-icon {
+    &.light {
+      filter: saturate( 1100% ) brightness( 90% );
+    }
+  }
+
   &:hover {
     opacity: 1;
+    background: ${(props) => props.theme.toolbarHoverBackground};
   }
 
   &:disabled {

@@ -802,6 +802,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
                   tooltip={tooltip}
+                  isDarkMode={this.props.dark}
                 />
                 <LinkToolbar
                   view={this.view}

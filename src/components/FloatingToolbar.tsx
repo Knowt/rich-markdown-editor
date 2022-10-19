@@ -182,23 +182,32 @@ const Wrapper = styled.div<{
   active?: boolean;
   offset: number;
 }>`
+  display: flex;
   will-change: opacity, transform;
-  padding: 8px 16px;
   position: absolute;
   z-index: ${props => props.theme.zIndex + 100};
   opacity: 0;
-  background-color: ${props => props.theme.toolbarBackground};
+  background: ${props => props.theme.toolbarBackground};
   border-radius: 4px;
   transform: scale(0.95);
   transition: opacity 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+              transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transition-delay: 150ms;
   line-height: 0;
-  height: 40px;
+  height: 35px;
   box-sizing: border-box;
   pointer-events: none;
   white-space: nowrap;
-
+  // DO NOT REMOVE THIS
+  // idk why but you need this to calc position of toolbar
+  min-width: 1px;
+  overflow: hidden;
+  box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
+              0px 0px 0.9px ${props => props.theme.toolbarShadow},
+              0px 0px 1.8px ${props => props.theme.toolbarShadow},
+              0px 0px 3.7px ${props => props.theme.toolbarShadow},
+              0px 0px 10px ${props => props.theme.toolbarShadow};
+              
   &::before {
     content: "";
     display: block;

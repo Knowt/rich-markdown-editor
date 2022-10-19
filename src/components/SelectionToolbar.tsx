@@ -35,6 +35,7 @@ type Props = {
   onCreateLink?: (title: string) => Promise<string>;
   onShowToast?: (msg: string, code: string) => void;
   view: EditorView;
+  isDarkMode?: boolean;
 };
 
 function isVisible(props) {

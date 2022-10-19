@@ -91,10 +91,11 @@ export const light = {
   cursor: colors.black,
   divider: colors.greyMid,
 
-  toolbarBackground: colors.lightBlack,
-  toolbarHoverBackground: colors.black,
+  toolbarBackground: colors.white,
+  toolbarShadow: colors.knowtGrey,
+  toolbarHoverBackground: colors.knowtGreyLight,
   toolbarInput: colors.white10,
-  toolbarItem: colors.white,
+  toolbarItem: colors.almostBlack,
 
   tableDivider: colors.greyMid,
   tableSelected: colors.primary,
@@ -130,7 +131,8 @@ export const dark = {
   blockToolbarExpandArrowColor: colors.white,
 
   toolbarBackground: colors.lighterBlack,
-  toolbarHoverBackground: colors.greyMid,
+  toolbarShadow: colors.lightBlack,
+  toolbarHoverBackground: colors.knowtGreyStrong,
   toolbarInput: colors.black10,
   toolbarItem: colors.white,
 

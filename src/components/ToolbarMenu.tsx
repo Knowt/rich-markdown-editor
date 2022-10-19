@@ -13,6 +13,7 @@ type Props = {
   view: EditorView;
   theme: typeof theme;
   items: MenuItem[];
+  isDarkMode?: boolean;
 };
 
 const FlexibleWrapper = styled.div`
@@ -47,7 +48,9 @@ class ToolbarMenu extends React.Component<Props> {
               })}
             >
               <Tooltip tooltip={item.tooltip} placement="top">
-                <Icon color={item.iconColor || this.props.theme.toolbarItem} />
+                <Icon className={!this.props.isDarkMode && item.iconColor ? 
+                  'toolbar-icon light' : 'toolbar-icon'}
+                  color={item.iconColor || this.props.theme.toolbarItem} />
               </Tooltip>
             </ToolbarButton>
           );
