@@ -22,6 +22,10 @@ import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import _isSelectionEmpty from "../queries/isSelectionEmpty";
 import isHeading from '../queries/isHeading';
+import { parseShortcut } from '../lib/parseShortcut';
+import { BOLD_SHORTCUT2, STRIKETHROUGH_SHORTCUT2,
+  CODE_SHORTCUT, BLUE_HIGHLIGHT_SHORTCUT, 
+  YELLOW_HIGHLIGHT_SHORTCUT, LINK_SHORTCUT2 } from '../lib/constants';
 
 export default function formattingMenuItems(
   view: EditorView,
@@ -55,6 +59,9 @@ export default function formattingMenuItems(
       icon: BoldIcon,
       active: isMarkActive(schema.marks.strong),
       visible: !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: BOLD_SHORTCUT2,
+      } ),
     },
     {
       name: "strikethrough",
@@ -62,12 +69,18 @@ export default function formattingMenuItems(
       icon: StrikethroughIcon,
       active: isMarkActive(schema.marks.strikethrough),
       visible: !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: STRIKETHROUGH_SHORTCUT2,
+      } ),
     },
     {
       name: "code_inline",
       tooltip: dictionary.codeInline,
       icon: CodeIcon,
       active: isMarkActive(schema.marks.code_inline),
+      shortcut: parseShortcut( { 
+        shortcut: CODE_SHORTCUT,
+      } ),
     },
     {
       name: "separator",
@@ -80,6 +93,9 @@ export default function formattingMenuItems(
       iconColor: schema.marks.highlight_blue.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_blue),
       visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: BLUE_HIGHLIGHT_SHORTCUT,
+      } ),
     },
     {
       name: "highlight_yellow",
@@ -88,6 +104,9 @@ export default function formattingMenuItems(
       iconColor: schema.marks.highlight_yellow.attrs.color.default,
       active: isMarkActive(schema.marks.highlight_yellow),
       visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: YELLOW_HIGHLIGHT_SHORTCUT,
+      } ),
     },
     {
       name: "separator",
@@ -160,6 +179,9 @@ export default function formattingMenuItems(
       icon: LinkIcon,
       active: isMarkActive(schema.marks.link),
       attrs: { href: "" },
+      shortcut: parseShortcut( { 
+        shortcut: LINK_SHORTCUT2,
+      } ),
     },
   ];
 }

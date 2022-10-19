@@ -3,13 +3,9 @@ export const LEGACY_NOTE_TIMESTAMP = 1649667600;
 
 /* SHORTCUTS */
 export const DEFAULT_HIGHLIGHT_SHORTCUT = 'Alt-Shift-1';
-
 export const ORANGE_HIGHLIGHT_SHORTCUT = 'Alt-Shift-2';
-
 export const YELLOW_HIGHLIGHT_SHORTCUT = 'Alt-Shift-3';
-
 export const GREEN_HIGHLIGHT_SHORTCUT = 'Alt-Shift-4';
-
 export const BLUE_HIGHLIGHT_SHORTCUT = 'Alt-Shift-5';
 
 export const BOLD_SHORTCUT1 = 'Mod-b';

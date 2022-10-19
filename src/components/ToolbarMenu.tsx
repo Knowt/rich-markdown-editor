@@ -16,6 +16,25 @@ const FlexibleWrapper = styled.div`
 const RelativeWrapper = styled.div`
   display: flex;
   position: relative;
+
+  .tooltip-wrapper {
+    text-align: center;
+
+    .tooltip {
+      flex-direction: column;
+
+      .shortcut {
+        font-size: 80%;
+        margin-top: 2px;
+      }
+    }
+  }
+
+  @media( max-width: 800px ) {
+    .tooltip-wrapper {
+      display: none;
+    }
+  }
 `;
 
 interface ToolbarItemProps {
@@ -62,8 +81,17 @@ const ToolbarItem = ( {
           'toolbar-icon light' : 'toolbar-icon'}
           color={item.iconColor || theme.toolbarItem} />
       </ToolbarButton>
-      <Tooltip id={id} ref={ref} delayShowTime={500}>
-          Text fsdafsd
+      <Tooltip id={id} ref={ref} delayShowTime={500} position='top'>
+          <p className='item-name'>
+            {item.tooltip}
+          </p>
+          {
+            item.shortcut ? (
+              <p className='shortcut'>
+                {item.shortcut}
+              </p>
+            ) : ''
+          }
       </Tooltip>
     </RelativeWrapper>
   );

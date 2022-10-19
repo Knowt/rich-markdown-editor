@@ -4,7 +4,7 @@ import React, { ReactNode, RefObject, useState, useRef,
 import useDelay from '../hooks/useDelay';
 
 /* TYPES */
-type TooltipPositions = 'top' | 'bottom' | 'right' | 'left';
+type TooltipPositions = 'top' | 'bottom';
 
 interface Props {
   children: ReactNode;
@@ -22,7 +22,7 @@ interface Styles {
 }
 
 /* CONSTANTS */
-const TOOLTIP_PADDING = 10;
+const TOOLTIP_PADDING = 14;
 
 /* FUNCTIONS */
 interface GetTooltipStylesInput {
@@ -48,18 +48,6 @@ const getTooltipStyles = ( input: GetTooltipStylesInput ) => {
         top: `${refRect.height + tooltipRect.height - TOOLTIP_PADDING}px`
       }
     }
-  else if ( position === 'left' ) {
-    return {
-        top: '50%',
-        right: `${refRect.width - TOOLTIP_PADDING}px`,
-      }
-    }
-  else if ( position === 'right' ) {
-      return {
-        top: '50%',
-        left: `${refRect.width + TOOLTIP_PADDING}px`,
-      }
-    }
   }
 
   return {};
@@ -68,9 +56,8 @@ const getTooltipStyles = ( input: GetTooltipStylesInput ) => {
 const TooltipWrapper = styled.div`
   display: flex;
   position: absolute;
-  padding: 5px 8px;
-  font-size: 85%;
-  line-height: 100%;
+  padding-inline: 4px;
+  font-size: 75%;
   background: ${props => props.theme.toolbarBackground};
   font-family: ${props => props.theme.fontFamily};
   border-radius: 4px;
@@ -103,7 +90,7 @@ const TooltipWrapper = styled.div`
 
       &.top {
         left: 50%;
-        top: calc( 100% + 8px );
+        top: 100%;
 
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
@@ -112,32 +99,12 @@ const TooltipWrapper = styled.div`
 
       &.bottom {
         left: 50%;
-        top: -8px;
+        top: 0;
 
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
         
         border-bottom: 8px solid ${props => props.theme.toolbarBackground};
-      }
-
-      &.left {
-        left: calc( 100% + 8px );
-        top: 50%;
-
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
-        
-        border-left: 8px solid ${props => props.theme.toolbarBackground};
-      }
-
-      &.right {
-        top: 50%;
-        left: -8px;
-
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent; 
-        
-        border-right:8px solid ${props => props.theme.toolbarBackground}; 
       }
     }
   }
@@ -151,28 +118,12 @@ const TooltipWrapper = styled.div`
     transform-origin: top;
   }
 
-  &.right {
-    transform-origin: left;
-  }
-
-  &.left {
-    transform-origin: right;
-  }
-
   &.top,
   &.bottom {
       &.not-active {
         transform: scaleY( 0.8 )
                     translate( -50%, -50% );
       }
-  }
-
-  &.right,
-  &.left {
-    &.not-active {
-      transform: scaleX( 0.8 )
-                  translate( -50%, -50% );
-    }
   }
 `;
 
