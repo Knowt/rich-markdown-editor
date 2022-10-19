@@ -59,15 +59,8 @@ class Table extends Node_1.default {
             addColumnBefore: () => prosemirror_tables_1.addColumnBefore,
             addColumnAfter: () => prosemirror_tables_1.addColumnAfter,
             deleteColumn: () => prosemirror_tables_1.deleteColumn,
-            addRowAfter: ({ index }) => (state, dispatch) => {
-                if (index === 0) {
-                    const tr = prosemirror_utils_1.addRowAt(index + 2, true)(state.tr);
-                    dispatch(prosemirror_utils_1.moveRow(index + 2, index + 1)(tr));
-                }
-                else {
-                    dispatch(prosemirror_utils_1.addRowAt(index + 1, true)(state.tr));
-                }
-            },
+            addRowBefore: () => prosemirror_tables_1.addRowBefore,
+            addRowAfter: () => prosemirror_tables_1.addRowAfter,
             deleteRow: () => prosemirror_tables_1.deleteRow,
             deleteTable: () => prosemirror_tables_1.deleteTable,
             toggleHeaderColumn: () => prosemirror_tables_1.toggleHeaderColumn,
@@ -81,13 +74,6 @@ class Table extends Node_1.default {
         return {
             Tab: prosemirror_tables_1.goToNextCell(1),
             "Shift-Tab": prosemirror_tables_1.goToNextCell(-1),
-            Enter: (state, dispatch) => {
-                if (!prosemirror_tables_1.isInTable(state))
-                    return false;
-                const cells = prosemirror_utils_1.getCellsInColumn(0)(state.selection) || [];
-                dispatch(prosemirror_utils_1.addRowAt(cells.length, true)(state.tr));
-                return true;
-            },
         };
     }
     toMarkdown(state, node) {

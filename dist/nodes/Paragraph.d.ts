@@ -1,4 +1,5 @@
 import Node from "./Node";
+import { EditorState } from 'prosemirror-state';
 export default class Paragraph extends Node {
     get name(): string;
     get schema(): {
@@ -13,6 +14,7 @@ export default class Paragraph extends Node {
         type: any;
     }): {
         "Shift-Ctrl-0": import("prosemirror-state").Command;
+        Tab: (state: EditorState, dispatch: any) => void;
     };
     commands({ type }: {
         type: any;

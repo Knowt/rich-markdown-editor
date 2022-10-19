@@ -51,8 +51,11 @@ const uploadPlaceholder = new prosemirror_state_1.Plugin({
 exports.default = uploadPlaceholder;
 function findPlaceholder(state, id) {
     const decos = uploadPlaceholder.getState(state);
-    const found = decos.find(null, null, spec => spec.id === id);
-    return found.length ? [found[0].from, found[0].to] : null;
+    if (decos) {
+        const found = decos.find(undefined, undefined, spec => spec.id === id);
+        return found.length ? [found[0].from, found[0].to] : null;
+    }
+    return null;
 }
 exports.findPlaceholder = findPlaceholder;
 //# sourceMappingURL=uploadPlaceholder.js.map

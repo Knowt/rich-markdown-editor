@@ -28,17 +28,18 @@ export default class BlueHighlight extends Mark {
     keys({ type }: {
         type: any;
     }): {
-        "Alt-Shift-5": (state: import("prosemirror-state").EditorState, dispatch: any) => boolean;
+        "Alt-Shift-5": import("prosemirror-state").Command;
     };
     commands({ type }: {
         type: any;
-    }): () => (state: import("prosemirror-state").EditorState, dispatch: any) => boolean;
+    }): () => import("prosemirror-state").Command;
     get rulePlugins(): ((md: any) => void)[];
     get toMarkdown(): {
         open: string;
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
+        escape: boolean;
     };
     parseMarkdown(): {
         mark: string;
