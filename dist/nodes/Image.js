@@ -60,7 +60,28 @@ const uploadPlugin = (options) => {
                     insertFiles_1.default(view, event, pos, files, options);
                     return true;
                 },
+                dragenter: (_, event) => {
+                    event.preventDefault();
+                },
+                dragover: (_, event) => {
+                    event.preventDefault();
+                },
                 drop(view, event) {
+                    var _a;
+                    if (((_a = event.dataTransfer) === null || _a === void 0 ? void 0 : _a.effectAllowed) === 'move') {
+                        const { state, dispatch } = view;
+                        const { tr } = state;
+                        const result = view.posAtCoords({
+                            left: event.clientX,
+                            top: event.clientY,
+                        });
+                        if (result && tr.selection.node) {
+                            tr.insert(result.pos, state.selection.node);
+                            tr.deleteSelection();
+                            dispatch(tr);
+                            return true;
+                        }
+                    }
                     if ((view.props.editable && !view.props.editable(view.state)) ||
                         !options.uploadImage) {
                         return false;
@@ -121,8 +142,7 @@ class Image extends Node_1.default {
             });
             view.dispatch(transaction);
         };
-        this.handleSelect = ({ getPos }) => (event) => {
-            event.preventDefault();
+        this.handleSelect = ({ getPos }) => () => {
             const { view } = this.editor;
             const $pos = view.state.doc.resolve(getPos());
             const transaction = view.state.tr.setSelection(new prosemirror_state_1.NodeSelection($pos));
@@ -143,8 +163,11 @@ class Image extends Node_1.default {
             useResizeObserver_1.default(resizableWrapperRef, (entry) => {
                 this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
             });
-            return (React.createElement("div", { contentEditable: false, className: className },
-                React.createElement(ImageWrapper, { className: isSelected ? "ProseMirror-selectednode" : "", onClick: this.handleSelect(props) },
+            return (React.createElement("div", { contentEditable: false, className: className, onClick: () => this.handleSelect(props)(), role: 'button' },
+                React.createElement(ImageWrapper, { draggable: true, className: isSelected ? "ProseMirror-selectednode" : "", onDragStartCapture: (event) => {
+                        this.handleSelect(props)();
+                        event.dataTransfer.effectAllowed = 'move';
+                    } },
                     React.createElement(ResizableWrapper, Object.assign({ ref: resizableWrapperRef }, { width, height }),
                         React.createElement("img", { src: src, alt: alt, title: title }),
                         React.createElement(ResizeButtonContainer, null,
@@ -168,8 +191,6 @@ class Image extends Node_1.default {
             content: "text*",
             marks: "",
             group: "inline",
-            selectable: true,
-            draggable: true,
             parseDOM: [
                 {
                     tag: "div[class~=image]",
@@ -287,13 +308,17 @@ class Image extends Node_1.default {
 }
 exports.default = Image;
 const ResizableWrapper = styled_components_1.default.div.attrs(({ width, height }) => ({
-    style: Object.assign(Object.assign({}, (width && { width: `${width}px` })), (height && { height: `${height}px` }))
+    style: {
+        aspectRatio: `${width} / ${height}`,
+        width: `${width}px`,
+    },
 })) `
   resize: both;
   overflow: hidden;
-  max-height: 75%;
   position: relative;
-  
+  height: auto !important;
+  max-width: 100%;
+
   &::-webkit-resizer {
     display: none;
   }
@@ -359,6 +384,7 @@ const ImageWrapper = styled_components_1.default.span `
   line-height: 0;
   display: inline-block;
   position: relative;
+  max-width: 100%;
 
   &:hover {
     ${Button} {

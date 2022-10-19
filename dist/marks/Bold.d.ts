@@ -27,6 +27,7 @@ export default class Bold extends Mark {
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
+        escape: boolean;
     };
     parseMarkdown(): {
         mark: string;

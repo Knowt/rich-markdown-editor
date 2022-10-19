@@ -521,8 +521,11 @@ class KnowtCommandMenu extends React.Component {
         var _a;
         const { dictionary, isActive, uploadImage } = this.props;
         const selectedGroup = this.filtered[this.state.selectedIndex];
+        let id = "block-menu-container";
+        if (!isActive)
+            id += '-empty';
         return (React.createElement(react_portal_1.Portal, null,
-            React.createElement(exports.Wrapper, Object.assign({ id: this.props.id || "block-menu-container", active: isActive, ref: this.menuRef, style: { maxHeight: this.state.menu1MaxHeight } }, this.state.menu1Position),
+            React.createElement(exports.Wrapper, Object.assign({ id: id, active: isActive, ref: this.menuRef, style: { maxHeight: this.state.menu1MaxHeight } }, this.state.menu1Position),
                 this.state.insertItem ? (React.createElement(LinkInputWrapper, null,
                     React.createElement(LinkInput, { type: "text", placeholder: this.state.insertItem.title
                             ? dictionary.pasteLinkWithTitle(this.state.insertItem.title)

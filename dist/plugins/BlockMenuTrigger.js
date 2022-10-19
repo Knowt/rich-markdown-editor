@@ -93,7 +93,8 @@ class BlockMenuTrigger extends Extension_1.default {
                                 });
                             });
                         }
-                        if (event.key === "Enter" ||
+                        const isSearchEmpty = document.getElementById('block-menu-container-empty');
+                        if ((event.key === "Enter" && !isSearchEmpty) ||
                             event.key === "ArrowUp" ||
                             event.key === "ArrowDown" ||
                             event.key === "Tab") {

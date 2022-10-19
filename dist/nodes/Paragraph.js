@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_commands_1 = require("prosemirror-commands");
 const Node_1 = __importDefault(require("./Node"));
+const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
+const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
+const isInList_1 = __importDefault(require("../queries/isInList"));
 class Paragraph extends Node_1.default {
     get name() {
         return "paragraph";
@@ -20,6 +23,16 @@ class Paragraph extends Node_1.default {
     keys({ type }) {
         return {
             "Shift-Ctrl-0": prosemirror_commands_1.setBlockType(type),
+            Tab: (state, dispatch) => {
+                if (prosemirror_tables_1.isInTable(state) ||
+                    isNodeActive_1.default(state.schema.nodes.image)(state) ||
+                    isNodeActive_1.default(state.schema.nodes.hr)(state) ||
+                    isInList_1.default(state))
+                    return;
+                const { tr } = state;
+                tr.insertText('    ');
+                dispatch(tr);
+            }
         };
     }
     commands({ type }) {
