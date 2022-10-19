@@ -17,6 +17,7 @@ import Input from "./Input";
 import ToolbarButton from "./ToolbarButton";
 import LinkSearchResult from "./LinkSearchResult";
 import baseDictionary from "../dictionary";
+import Tooltip from '../components/Tooltip';
 
 export type SearchResult = {
   title: string;
@@ -28,7 +29,6 @@ type Props = {
   mark?: Mark;
   from: number;
   to: number;
-  tooltip: typeof React.Component | React.FC<any>;
   dictionary: typeof baseDictionary;
   onRemoveLink?: () => void;
   onCreateLink?: (title: string) => Promise<void>;
@@ -281,7 +281,6 @@ class LinkEditor extends React.Component<Props, State> {
       this.state.results[this.state.previousValue] ||
       [];
 
-    const Tooltip = this.props.tooltip;
     const looksLikeUrl = value.match(/^https?:\/\//i);
 
     const suggestedLinkTitle = this.suggestedLinkTitle;
@@ -311,18 +310,16 @@ class LinkEditor extends React.Component<Props, State> {
           autoFocus={this.href === ""}
         />
         <ToolbarButton onClick={this.handleOpenLink} disabled={!value}>
-          <Tooltip tooltip={dictionary.openLink} placement="top">
-            <OpenIcon color={theme.toolbarItem} />
-          </Tooltip>
+          {/** dictionary.openLink */}
+          <OpenIcon color={theme.toolbarItem} />
         </ToolbarButton>
         <ToolbarButton onClick={this.handleRemoveLink}>
-          <Tooltip tooltip={dictionary.removeLink} placement="top">
-            {this.initialValue ? (
-              <TrashIcon color={theme.toolbarItem} />
-            ) : (
-              <CloseIcon color={theme.toolbarItem} />
-            )}
-          </Tooltip>
+          {/**dictionary.removeLink */}
+          {this.initialValue ? (
+            <TrashIcon color={theme.toolbarItem} />
+          ) : (
+            <CloseIcon color={theme.toolbarItem} />
+          )}
         </ToolbarButton>
         {showResults && (
           <SearchResults id="link-search-results">

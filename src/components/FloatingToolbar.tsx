@@ -201,7 +201,6 @@ const Wrapper = styled.div<{
   // DO NOT REMOVE THIS
   // idk why but you need this to calc position of toolbar
   min-width: 1px;
-  overflow: hidden;
   box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
               0px 0px 0.9px ${props => props.theme.toolbarShadow},
               0px 0px 1.8px ${props => props.theme.toolbarShadow},

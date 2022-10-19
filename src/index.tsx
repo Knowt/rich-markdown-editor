@@ -27,7 +27,6 @@ import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
 import LinkToolbar from "./components/LinkToolbar";
-import Tooltip from "./components/Tooltip";
 import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
@@ -159,7 +158,6 @@ export type Props = {
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   embeds: EmbedDescriptor[];
   onShowToast?: (message: string, code: ToastType) => void;
-  tooltip: typeof React.Component | React.FC<any>;
   className?: string;
   style?: React.CSSProperties;
   parseAsHTML: boolean;
@@ -196,7 +194,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     },
     embeds: [],
     extensions: [],
-    tooltip: Tooltip,
   };
 
   state = {
@@ -761,7 +758,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       readOnly,
       readOnlyWriteCheckboxes,
       style,
-      tooltip,
       className,
       onKeyDown,
       fontScale,
@@ -801,7 +797,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onSearchLink={this.props.onSearchLink}
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
-                  tooltip={tooltip}
                   isDarkMode={this.props.dark}
                 />
                 <LinkToolbar
@@ -813,7 +808,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onShowToast={this.props.onShowToast}
                   onClose={this.handleCloseLinkMenu}
-                  tooltip={tooltip}
                 />
                 <EmojiMenu
                   view={this.view}

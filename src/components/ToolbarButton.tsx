@@ -5,6 +5,7 @@ type Props = { active?: boolean; disabled?: boolean };
 export default styled.button<Props>`
   display: flex;
   justify-content: center;
+  border-radius: 4px;
   align-items: center;
   cursor: pointer;
   padding: 10px 3px;
