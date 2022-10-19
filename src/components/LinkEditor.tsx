@@ -298,6 +298,7 @@ class LinkEditor extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Input
+          className='link-editor-input'
           value={value}
           placeholder={
             showCreateLink
@@ -309,7 +310,6 @@ class LinkEditor extends React.Component<Props, State> {
           onChange={this.handleChange}
           autoFocus={this.href === ""}
         />
-
         <ToolbarButton onClick={this.handleOpenLink} disabled={!value}>
           <Tooltip tooltip={dictionary.openLink} placement="top">
             <OpenIcon color={theme.toolbarItem} />
@@ -324,7 +324,6 @@ class LinkEditor extends React.Component<Props, State> {
             )}
           </Tooltip>
         </ToolbarButton>
-
         {showResults && (
           <SearchResults id="link-search-results">
             {results.map((result, index) => (
@@ -338,7 +337,6 @@ class LinkEditor extends React.Component<Props, State> {
                 selected={index === selectedIndex}
               />
             ))}
-
             {showCreateLink && (
               <LinkSearchResult
                 key="create"
@@ -368,19 +366,22 @@ const Wrapper = styled(Flex)`
   margin-right: -8px;
   min-width: 336px;
   pointer-events: all;
+  padding-inline: 8px;
+  display: flex;
+
+  .link-editor-input {
+    margin: 3px 6px;
+  }
 `;
 
 const SearchResults = styled.ol`
   background: ${(props) => props.theme.toolbarBackground};
   position: absolute;
-  top: 100%;
+  top: calc( 100% - 3px );
   width: 100%;
   height: auto;
   left: 0;
   padding: 4px 8px 8px;
-  margin: 0;
-  margin-top: -3px;
-  margin-bottom: 0;
   border-radius: 0 0 4px 4px;
   overflow-y: auto;
   max-height: 25vh;
