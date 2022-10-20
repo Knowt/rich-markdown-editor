@@ -31,7 +31,7 @@ const RelativeWrapper = styled.div`
     }
   }
 
-  @media( max-width: 800px ) {
+  @media screen and ( max-width: 800px ) {
     .tooltip-wrapper {
       display: none;
     }
