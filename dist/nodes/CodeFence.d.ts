@@ -2,9 +2,6 @@ import Node from "./Node";
 export default class CodeFence extends Node {
     get languageOptions(): [string, string][];
     get name(): string;
-    get defaultOptions(): {
-        softToDOM: boolean;
-    };
     get schema(): {
         attrs: {
             language: {
