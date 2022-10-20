@@ -3,7 +3,7 @@ import markInputRule from "../lib/markInputRule";
 import moveLeft from "../commands/moveLeft";
 import moveRight from "../commands/moveRight";
 import Mark from "./Mark";
-import { CODE_SHORTCUT } from '../lib/constants';
+import { CODE_SHORTCUT1, CODE_SHORTCUT2 } from '../lib/constants';
 
 function backticksFor(node, side) {
   const ticks = /`+/g;
@@ -47,7 +47,8 @@ export default class Code extends Mark {
     // Note: This key binding only works on non-Mac platforms
     // https://github.com/ProseMirror/prosemirror/issues/515
     return {
-      [ CODE_SHORTCUT ]: toggleMark(type),
+      [ CODE_SHORTCUT1 ]: toggleMark(type),
+      [ CODE_SHORTCUT2 ]: toggleMark(type),
       ArrowLeft: moveLeft(),
       ArrowRight: moveRight(),
     };

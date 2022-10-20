@@ -71,9 +71,9 @@ const TooltipWrapper = styled.div`
               0px 0px 10px ${props => props.theme.toolbarShadow};
 
   transform: translate( -50%, -50% );
-  transition: opacity 0.21s ease,
-              visibility 0.21s ease,
-              transform 0.21s ease;
+  transition: opacity 0.18s ease,
+              visibility 0.18s ease,
+              transform 0.18s ease;
 
   &.not-active {
     opacity: 0;

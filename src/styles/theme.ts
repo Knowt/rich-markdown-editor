@@ -96,6 +96,7 @@ export const light = {
   toolbarHoverBackground: colors.knowtGreyLight,
   toolbarInput: colors.white10,
   toolbarItem: colors.almostBlack,
+  toolbarShortcutText: colors.knowtGreyStrong,
 
   tableDivider: colors.greyMid,
   tableSelected: colors.primary,
@@ -135,6 +136,7 @@ export const dark = {
   toolbarHoverBackground: colors.knowtGreyStrong,
   toolbarInput: colors.black10,
   toolbarItem: colors.white,
+  toolbarShortcutText: colors.knowtGreyMid,
 
   tableDivider: colors.lightBlack,
   tableSelected: colors.primary,

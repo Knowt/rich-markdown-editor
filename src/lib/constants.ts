@@ -11,7 +11,8 @@ export const BLUE_HIGHLIGHT_SHORTCUT = 'Alt-Shift-5';
 export const BOLD_SHORTCUT1 = 'Mod-b';
 export const BOLD_SHORTCUT2 = 'Mod-B';
 
-export const CODE_SHORTCUT = 'Mod`';
+export const CODE_SHORTCUT1 = 'Mod-e';
+export const CODE_SHORTCUT2 = 'Mod-E';
 
 export const ITALIC_SHORTCUT1 = 'Mod-i';
 export const ITALIC_SHORTCUT2 = 'Mod-I';

@@ -17,7 +17,6 @@ import Input from "./Input";
 import ToolbarButton from "./ToolbarButton";
 import LinkSearchResult from "./LinkSearchResult";
 import baseDictionary from "../dictionary";
-import Tooltip from '../components/Tooltip';
 
 export type SearchResult = {
   title: string;
@@ -310,15 +309,22 @@ class LinkEditor extends React.Component<Props, State> {
           autoFocus={this.href === ""}
         />
         <ToolbarButton onClick={this.handleOpenLink} disabled={!value}>
-          {/** dictionary.openLink */}
-          <OpenIcon color={theme.toolbarItem} />
+          <span title={dictionary.openLink}
+            aria-label={dictionary.openLink}>
+            <OpenIcon color={theme.toolbarItem} />
+          </span>
         </ToolbarButton>
         <ToolbarButton onClick={this.handleRemoveLink}>
-          {/**dictionary.removeLink */}
           {this.initialValue ? (
-            <TrashIcon color={theme.toolbarItem} />
+            <span title={dictionary.removeLink}
+              aria-label={dictionary.removeLink}>
+              <TrashIcon color={theme.toolbarItem} />
+            </span>
           ) : (
-            <CloseIcon color={theme.toolbarItem} />
+            <span title={dictionary.removeLink}
+              aria-label={dictionary.removeLink}>
+              <CloseIcon color={theme.toolbarItem} />
+            </span>
           )}
         </ToolbarButton>
         {showResults && (

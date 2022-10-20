@@ -22,7 +22,7 @@ import { light as lightTheme, dark as darkTheme } from "./styles/theme";
 import baseDictionary from "./dictionary";
 import Flex from "./components/Flex";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType } from "./types";
+import { EmbedDescriptor, ToastType, DeviceType } from "./types";
 import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
@@ -161,6 +161,7 @@ export type Props = {
   className?: string;
   style?: React.CSSProperties;
   parseAsHTML: boolean;
+  deviceType?: DeviceType;
 };
 
 type State = {
@@ -798,6 +799,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
                   isDarkMode={this.props.dark}
+                  deviceType={this.props.deviceType || 'mac'}
                 />
                 <LinkToolbar
                   view={this.view}

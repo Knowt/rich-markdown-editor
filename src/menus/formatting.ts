@@ -17,20 +17,21 @@ import { isInTable } from "@knowt/prosemirror-tables";
 import isInList from "../queries/isInList";
 import isMarkActive from "../queries/isMarkActive";
 import isNodeActive from "../queries/isNodeActive";
-import { MenuItem } from "../types";
+import { MenuItem, DeviceType } from "../types";
 import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import _isSelectionEmpty from "../queries/isSelectionEmpty";
 import isHeading from '../queries/isHeading';
 import { parseShortcut } from '../lib/parseShortcut';
 import { BOLD_SHORTCUT2, STRIKETHROUGH_SHORTCUT2,
-  CODE_SHORTCUT, BLUE_HIGHLIGHT_SHORTCUT, 
+  CODE_SHORTCUT2, BLUE_HIGHLIGHT_SHORTCUT, 
   YELLOW_HIGHLIGHT_SHORTCUT, LINK_SHORTCUT2 } from '../lib/constants';
 
 export default function formattingMenuItems(
   view: EditorView,
   isTemplate: boolean,
   dictionary: typeof baseDictionary,
+  deviceType?: DeviceType,
 ): MenuItem[] {
   const { state } = view;
   const { schema, selection } = state;
@@ -61,6 +62,7 @@ export default function formattingMenuItems(
       visible: !isSelectionEmpty,
       shortcut: parseShortcut( { 
         shortcut: BOLD_SHORTCUT2,
+        deviceType,
       } ),
     },
     {
@@ -71,6 +73,7 @@ export default function formattingMenuItems(
       visible: !isSelectionEmpty,
       shortcut: parseShortcut( { 
         shortcut: STRIKETHROUGH_SHORTCUT2,
+        deviceType,
       } ),
     },
     {
@@ -79,7 +82,8 @@ export default function formattingMenuItems(
       icon: CodeIcon,
       active: isMarkActive(schema.marks.code_inline),
       shortcut: parseShortcut( { 
-        shortcut: CODE_SHORTCUT,
+        shortcut: CODE_SHORTCUT2,
+        deviceType,
       } ),
     },
     {
@@ -95,6 +99,7 @@ export default function formattingMenuItems(
       visible: !isTemplate && !isSelectionEmpty,
       shortcut: parseShortcut( { 
         shortcut: BLUE_HIGHLIGHT_SHORTCUT,
+        deviceType,
       } ),
     },
     {
@@ -106,6 +111,7 @@ export default function formattingMenuItems(
       visible: !isTemplate && !isSelectionEmpty,
       shortcut: parseShortcut( { 
         shortcut: YELLOW_HIGHLIGHT_SHORTCUT,
+        deviceType,
       } ),
     },
     {
@@ -181,6 +187,7 @@ export default function formattingMenuItems(
       attrs: { href: "" },
       shortcut: parseShortcut( { 
         shortcut: LINK_SHORTCUT2,
+        deviceType,
       } ),
     },
   ];

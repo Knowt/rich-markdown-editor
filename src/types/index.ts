@@ -51,3 +51,5 @@ export type GroupMenuItem = {
 export type GroupData = {
   name: string;
 };
+
+export type DeviceType = 'mac' | 'windows';

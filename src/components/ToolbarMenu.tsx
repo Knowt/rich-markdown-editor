@@ -24,8 +24,9 @@ const RelativeWrapper = styled.div`
       flex-direction: column;
 
       .shortcut {
-        font-size: 80%;
+        font-size: 85%;
         margin-top: 2px;
+        color: ${props => props.theme.toolbarShortcutText};
       }
     }
   }
