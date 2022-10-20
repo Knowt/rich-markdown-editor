@@ -62,6 +62,12 @@ export default class CodeFence extends Node {
     return "code_fence";
   }
 
+  get defaultOptions() {
+    return {
+      softToDOM: false
+    }
+  }
+
   get schema() {
     return {
       attrs: {
@@ -114,7 +120,7 @@ export default class CodeFence extends Node {
         return [
           "div",
           { class: "code-block", "data-language": node.attrs.language },
-          ["div", { contentEditable: false }, select ?? "select", button ?? "button"],
+          ["div", { contentEditable: false }, ...(this.options.softToDOM ? [] :  [select ?? "select", button ?? "button"])],
           ["pre", ["code", { spellCheck: false }, 0]]
         ];
       }
