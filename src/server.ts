@@ -58,7 +58,7 @@ const extensions = new ExtensionManager([
   new Emoji(),
   new BulletList(),
   new CodeBlock(),
-  new CodeFence({ softToDOM: true }),
+  new CodeFence(),
   new CheckboxList(),
   new CheckboxItem(),
   new Embed(),
