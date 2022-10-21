@@ -411,7 +411,8 @@ export const StyledEditor = styled("div")<{
   ul,
   ol {
     margin: ${(props) => (props.rtl ? "0 0 0 0.1em" : "0 0.1em 0 0")};
-    padding: ${(props) => (props.rtl ? "0 36px 0 0" : "0 0 0 36px")};
+    padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
+    margin-left: 14px;
   }
 
   ol ol {
@@ -425,16 +426,18 @@ export const StyledEditor = styled("div")<{
   ul.checkbox_list {
     list-style: none;
     padding: 0;
-    margin: ${(props) => (props.rtl ? "0 -24px 0 0" : "0 0 0 -24px")};
+    margin: ${(props) => (props.rtl ? "0 -14px 0 0" : "0 0 0 -14px")};
   }
 
   ul li,
   ol li {
     position: relative;
     white-space: initial;
+    margin-block: auto;
 
     p {
       white-space: pre-wrap;
+      margin-block: auto;
     }
 
     > div {
@@ -445,6 +448,10 @@ export const StyledEditor = styled("div")<{
   ul.checkbox_list li {
     display: flex;
     padding-${(props) => (props.rtl ? "right" : "left")}: 24px;
+
+    input {
+      margin-top: 1px;
+    }
   }
 
   ul.checkbox_list li.checked > div > p {
