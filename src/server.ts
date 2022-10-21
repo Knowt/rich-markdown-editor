@@ -111,6 +111,15 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
+
+  // temp solution to remove code blocks from serialzed html
+  // prevents button and select content from messing up flashcard and quiz generation
+  // as a trade off, content in code blocks will not appear in note searches
+  const codeChilds = throwAwayDiv.getElementsByClassName( 'code-block' );
+  while (codeChilds.length > 0) {
+    codeChilds[0]?.parentNode?.removeChild(codeChilds[0]);
+  }
+
   return throwAwayDiv.innerHTML;
 };
 
