@@ -1,2 +1,0 @@
-// April 11, 2022 05:00:00
-export const LEGACY_NOTE_TIMESTAMP = 1649667600;
