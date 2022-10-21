@@ -608,9 +608,6 @@ export const StyledEditor = styled("div")<{
       select,
       button {
         right: 4px;
-      }
-
-      select {
         color: ${(props) => props.theme.text};
       }
     }
