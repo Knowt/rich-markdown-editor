@@ -561,6 +561,10 @@ export const StyledEditor = styled("div")<{
       color: ${(props) => props.theme.textHighlightForeground};
     }
 
+    &.background {
+      display: flex;
+    }
+
     &.red {
         background: ${(props) => props.theme.highlights["red"]};
     }

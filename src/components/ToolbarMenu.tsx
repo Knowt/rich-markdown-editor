@@ -77,7 +77,6 @@ const ToolbarItem = ( {
           commands,
         })}
       >
-        {/** item.tooltip */}
         <Icon className={!isDarkMode && item.iconColor ? 
           'toolbar-icon light' : 'toolbar-icon'}
           color={item.iconColor || theme.toolbarItem} />

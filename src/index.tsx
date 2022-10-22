@@ -68,6 +68,9 @@ import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
+import { BlueBackground, RedBackground,
+  OrangeBackground, YellowBackground,
+  GreenBackground } from './marks/backgrounds';
 import Italic from "./marks/Italic";
 import Link from "./marks/Link";
 import Strikethrough from "./marks/Strikethrough";
@@ -352,6 +355,14 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             onSelectColumn: this.handleSelectColumn,
           }),
           new TableRow(),
+          // backgrounds take precedence over other marks
+          // this makes all below marks wrapped inside the background mark
+          // do not change order of these marks unless you know what you are doing
+          new BlueBackground(),
+          new RedBackground(),
+          new OrangeBackground(),
+          new YellowBackground(),
+          new GreenBackground(),
           new Bold(),
           new Code(),
           new OrangeHighlight(),
