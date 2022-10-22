@@ -46,7 +46,7 @@ import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
-import DefaultHighlight from "./marks/highlights/DefaultHighlight";
+import RedHighlight from "./marks/highlights/RedHighlight";
 import { BlueBackground, RedBackground,
   OrangeBackground, YellowBackground,
   GreenBackground } from './marks/backgrounds';
@@ -91,7 +91,7 @@ const extensions = new ExtensionManager([
   new YellowHighlight(),
   new BlueHighlight(),
   new GreenHighlight(),
-  new DefaultHighlight(),
+  new RedHighlight(),
 ]);
 
 export const schema = new Schema({

@@ -63,7 +63,7 @@ import TableRow from "./nodes/TableRow";
 // marks
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
-import DefaultHighlight from "./marks/highlights/DefaultHighlight";
+import RedHighlight from "./marks/highlights/RedHighlight";
 import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
@@ -369,7 +369,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
           new YellowHighlight(),
           new BlueHighlight(),
           new GreenHighlight(),
-          new DefaultHighlight(), // the order matters here!! since it's the default marker
+          new RedHighlight(), // the order matters here!! since it's the default marker
           new Italic(),
           new TemplatePlaceholder(),
           new Underline(),

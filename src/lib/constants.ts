@@ -1,5 +1,5 @@
 /* SHORTCUTS */
-export const DEFAULT_HIGHLIGHT_SHORTCUT = 'Alt-Shift-1';
+export const RED_HIGHLIGHT_SHORTCUT = 'Alt-Shift-1';
 export const ORANGE_HIGHLIGHT_SHORTCUT = 'Alt-Shift-2';
 export const YELLOW_HIGHLIGHT_SHORTCUT = 'Alt-Shift-3';
 export const GREEN_HIGHLIGHT_SHORTCUT = 'Alt-Shift-4';

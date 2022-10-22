@@ -31,7 +31,7 @@ export const getGroupedMenuItems = (
   const { schema } = state;
   
   const allMarks = [
-    schema.marks.highlight_default,
+    schema.marks.highlight_red,
     schema.marks.highlight_orange,
     schema.marks.highlight_yellow,
     schema.marks.highlight_green,
@@ -162,14 +162,14 @@ export const getGroupedMenuItems = (
       },
       items: [
         {
-          name: "highlight_default",
+          name: "highlight_red",
           title: "Red",
           icon: CircleIcon,
           iconSVGProps: {
             r: HIGHLIGHT_RADIUS,
             cx: HIGHLIGHT_RADIUS,
             cy: HIGHLIGHT_RADIUS,
-            fill: schema.marks.highlight_default.attrs.color.default,
+            fill: schema.marks.highlight_red.attrs.color.default,
           },
           keywords: "highlight red",
           searchKeyword: "red",
