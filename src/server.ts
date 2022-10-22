@@ -57,7 +57,7 @@ const extensions = new ExtensionManager([
   new Blockquote(),
   new Emoji(),
   new BulletList(),
-  new CodeBlock(),
+  new CodeBlock( { softToDOM: true } ),
   new CodeFence(),
   new CheckboxList(),
   new CheckboxItem(),
@@ -111,18 +111,6 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
-
-  // removes button and select html elements from code blocks 
-  // prevents these html elements from messing up flashcard and quiz generation
-  const codeChilds = throwAwayDiv.getElementsByClassName( 'code-block' );
-
-  Array.from( codeChilds ).forEach( ( child ) => {
-    const firstChild = child.firstChild;
-
-    if ( firstChild ) {
-      child.removeChild( firstChild );
-    }
-  } );
 
   return throwAwayDiv.innerHTML;
 };
