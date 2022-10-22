@@ -1,19 +1,13 @@
+/**
+ * Detects any html within note content.
+ * BE CAREFUL when using this function as a precursor to parsing
+ * note content as HTML since HTML can occur naturally within the note -
+ * i.e -> computer science notes
+ * This function is used for the backend quiz generation
+ */
 export const isHTML = (str) => {
   const doc = new DOMParser().parseFromString(str, "text/html");
-  const childNodes = doc.body.childNodes;
-
-  return Array.from(childNodes).some(( node, index ) => {
-    if ( node.nodeType === 1 ) {
-      const nextElemText = childNodes[ index + 1 ]?.textContent;
-
-      // this checks to see if the html is residing within a code block
-      // the next block is a new line, that means the html resides within a code block
-      return !nextElemText ? true :
-        !nextElemText.startsWith( '\n' );
-    }
-
-    return false;
-  });
+  return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
 };
 
 export const remToPx = (rem) => {
