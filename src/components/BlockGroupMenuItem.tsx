@@ -2,7 +2,8 @@ import * as React from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import styled, { withTheme } from "styled-components";
 import { theme } from "..";
-import { ArrowIcon, Icon } from 'outline-icons';
+import { ArrowIcon } from 'outline-icons';
+import MenuItem from './MenuItem';
 
 export type Props = {
   title: string;
@@ -54,43 +55,6 @@ function BlockGroupMenuItem(props: Props) {
     </MenuItem>
   );
 }
-
-const MenuItem = styled.button<{
-  selected: boolean;
-}>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1;
-  width: 100%;
-  height: 40px;
-  cursor: pointer;
-  border: none;
-  opacity: ${(props) => (props.disabled ? ".5" : "1")};
-  color: ${(props) =>
-    props.selected
-      ? props.theme.blockToolbarTextSelected
-      : props.theme.blockToolbarText};
-  background: ${(props) =>
-    props.selected
-      ? props.theme.blockToolbarSelectedBackground ||
-        props.theme.blockToolbarTrigger
-      : "none"};
-  padding: 0 16px;
-  outline: none;
-
-  &:hover,
-  &:active {
-    color: ${(props) => props.theme.blockToolbarTextSelected};
-    background: ${(props) =>
-      props.selected
-        ? props.theme.blockToolbarSelectedBackground ||
-          props.theme.blockToolbarTrigger
-        : props.theme.blockToolbarHoverBackground};
-  }
-`;
 
 const CIRCLE_RADIUS = 20;
 
