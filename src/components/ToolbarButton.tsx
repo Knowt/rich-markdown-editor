@@ -17,6 +17,7 @@ export default styled.button<Props>`
   outline: none;
   pointer-events: all;
   position: relative;
+  height: 100%;
 
   &:first-child {
     margin-left: 0;

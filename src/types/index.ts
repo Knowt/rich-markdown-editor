@@ -8,6 +8,7 @@ export enum ToastType {
 
 export interface SubMenuItems {
   orientation: 'left' | 'right';
+  tooltip?: string;
   items: MenuItem[];
 }
 

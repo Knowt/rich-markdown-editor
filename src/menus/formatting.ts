@@ -52,15 +52,17 @@ interface OrganizeMenuItemsInput<T extends string> {
   items: MenuItem[];
   name: T;
   orientation: 'left' | 'right';
+  tooltip?: string;
   commands: Record<string, any>;
   setFn?: ( input: T ) => void;
 }
+
 const organizeMenuItemByDefault = <T extends string = string>(
   input: OrganizeMenuItemsInput<T>,
 ) => {
-  const { items, name, orientation, setFn, commands } = input;
+  const { items, name, orientation, setFn, command, tooltip } = input;
 
-  let  organizedItem: MenuItem = {};
+  let organizedItem: MenuItem = {};
   const subItems: MenuItem[] = [];
 
   const handleMenuItemCustomOnClick = <T extends string = string>(
@@ -70,6 +72,18 @@ const organizeMenuItemByDefault = <T extends string = string>(
     commands[ name ]();
     setFn && setFn( name );
   }
+
+  const addCustomOnClickToSubMenuItems = (
+    items: MenuItem[],
+  ) => {
+    return items.map( ( item ) => ( { 
+      ...item,
+      customOnClick: () => handleMenuItemCustomOnClick( 
+        item.name as string,
+        setFn,
+      ),
+    } ) );
+  } 
 
   for ( let i=0; i < items.length; i++ ) {
     const item = items[i];
@@ -81,9 +95,13 @@ const organizeMenuItemByDefault = <T extends string = string>(
         ...item,
         subItems: {
           orientation,
+          tooltip,
           items: nextIndex < items.length ? 
-            [ ...subItems, ...items.slice( nextIndex ) ] :
-            subItems,
+            [ 
+              ...addCustomOnClickToSubMenuItems( subItems ), 
+              ...addCustomOnClickToSubMenuItems( items.slice( nextIndex ) ),
+            ] :
+            addCustomOnClickToSubMenuItems( subItems ),
         }
       }
 
@@ -93,9 +111,9 @@ const organizeMenuItemByDefault = <T extends string = string>(
       subItems.push( {
         ...item,
         customOnClick: () => handleMenuItemCustomOnClick( 
-          name,
+          item.name as string,
           setFn,
-        )
+        ),
       } );
     }
   }
@@ -112,7 +130,7 @@ export default function formattingMenuItems(
     deviceType,
     commands,
     defaultHighlight='highlight_red',
-    defaultBackground='background_red',
+    defaultBackground='background_blue',
     setDefaultBackground,
     setDefaultHighlight, } = input;
   const { state } = view;
@@ -186,7 +204,7 @@ export default function formattingMenuItems(
       } ),
     },
   ];
-  
+
   const ALL_BACKGROUNDS: MenuItem[] = [
     {
       name: "background_red",
@@ -333,6 +351,7 @@ export default function formattingMenuItems(
       items: ALL_HIGHLIGHTS,
       name: defaultHighlight,
       orientation: 'left',
+      tooltip: 'More Highlights',
       commands,
       setFn: setDefaultHighlight,
     } ),
@@ -341,6 +360,7 @@ export default function formattingMenuItems(
       items: ALL_BACKGROUNDS,
       name: defaultBackground,
       orientation: 'right',
+      tooltip: 'More Backgrounds',
       commands,
       setFn: setDefaultBackground,
     } ),

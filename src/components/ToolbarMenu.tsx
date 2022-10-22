@@ -1,19 +1,20 @@
-import React, { useRef, Component } from "react";
+import React, { useRef, Component, useState } from "react";
 import { EditorView } from "prosemirror-view";
 import styled, { withTheme } from "styled-components";
 import ToolbarButton from "./ToolbarButton";
 import ToolbarSeparator from "./ToolbarSeparator";
 import theme from "../styles/theme";
-import { MenuItem } from "../types";
+import { MenuItem, SubMenuItems } from "../types";
 import { defaultMarkClick } from '../commands/defaultMarkClick';
 import Tooltip from './Tooltip';
 import { EditorState } from "prosemirror-state";
+import { ChevronIcon } from '../icons';
 
 const FlexibleWrapper = styled.div`
   display: flex;
 `;
 
-const RelativeWrapper = styled.div`
+const MainIconWrapper = styled.div`
   display: flex;
   position: relative;
 
@@ -37,6 +38,43 @@ const RelativeWrapper = styled.div`
     }
   }
 `;
+
+const ToolbarMenuItemWrapper = styled.div`
+  position: relative;
+`;
+
+/* CONSTANTS */
+const TOOLTIP_DELAY = 500;
+
+interface ToolbarSubItemsProps {
+  id: string;
+  subItems: SubMenuItems;
+  theme: typeof theme;
+}
+const ToolbarSubItems = ( {
+  id,
+  subItems,
+  theme,
+}: ToolbarSubItemsProps ) => {
+  const { orientation, tooltip, items } = subItems;
+
+  const ref = useRef<HTMLButtonElement>( null );
+
+  return (
+    <ToolbarMenuItemWrapper>
+      <ToolbarButton ref={ref} style={orientation === 'left' ? {
+        transform: 'rotate(180deg)',
+        } : {}}>
+        <ChevronIcon fill={theme.blockToolbarExpandArrowColor} />
+      </ToolbarButton>
+      <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
+          <p className='item-name'>
+            {tooltip}
+          </p>
+      </Tooltip>
+    </ToolbarMenuItemWrapper>
+  );
+}
 
 interface ToolbarItemProps {
   item: MenuItem;
@@ -64,7 +102,14 @@ const ToolbarItem = ( {
   const id = `${item.name}${index}`;
 
   return (
-    <RelativeWrapper>
+    <MainIconWrapper>
+      {
+          item.subItems?.orientation === 'left' ? (
+            <ToolbarSubItems id={`${item.name}-left${index}`}
+              subItems={item.subItems}
+              theme={theme} />
+          ) : ''
+      }
       <ToolbarButton
         className='toolbar-selection-item-button'
         ref={ref}
@@ -82,7 +127,14 @@ const ToolbarItem = ( {
           color={item.iconColor || theme.toolbarItem}
           {...item.iconSVGProps} />
       </ToolbarButton>
-      <Tooltip id={id} ref={ref} delayShowTime={500} position='top'>
+      {
+        item.subItems?.orientation === 'right' ? (
+          <ToolbarSubItems id={`${item.name}-right${index}`}
+            subItems={item.subItems}
+            theme={theme} />
+        ) : ''
+      }
+      <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
           <p className='item-name'>
             {item.tooltip}
           </p>
@@ -94,7 +146,7 @@ const ToolbarItem = ( {
             ) : ''
           }
       </Tooltip>
-    </RelativeWrapper>
+    </MainIconWrapper>
   );
 }
 
