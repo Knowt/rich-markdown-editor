@@ -28,3 +28,6 @@ export const STRIKETHROUGH_SHORTCUT2 = 'Mod-D';
 
 export const UNDERLINE_SHORTCUT1 = 'Mod-u';
 export const UNDERLINE_SHORTCUT2 = 'Mod-U';
+
+export const BACKGROUND_RADIUS = 12;
+export const BACKGROUND_ICON_SIZE = 18;

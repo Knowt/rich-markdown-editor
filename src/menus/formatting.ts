@@ -13,11 +13,14 @@ import {
   InputIcon,
   HighlightIcon,
 } from "outline-icons";
+import { CircleIcon } from '../icons';
 import { isInTable } from "@knowt/prosemirror-tables";
 import isInList from "../queries/isInList";
 import isMarkActive from "../queries/isMarkActive";
 import isNodeActive from "../queries/isNodeActive";
-import { MenuItem, DeviceType } from "../types";
+import { MenuItem, DeviceType, DefaultHighlight,
+  DefaultBackground, SetDefaultBackground,
+  SetDefaultHighlight } from "../types";
 import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import _isSelectionEmpty from "../queries/isSelectionEmpty";
@@ -25,22 +28,257 @@ import isHeading from '../queries/isHeading';
 import { parseShortcut } from '../lib/parseShortcut';
 import { BOLD_SHORTCUT2, STRIKETHROUGH_SHORTCUT2,
   CODE_SHORTCUT2, BLUE_HIGHLIGHT_SHORTCUT, 
-  YELLOW_HIGHLIGHT_SHORTCUT, LINK_SHORTCUT2 } from '../lib/constants';
+  YELLOW_HIGHLIGHT_SHORTCUT, LINK_SHORTCUT2, 
+  ORANGE_HIGHLIGHT_SHORTCUT, GREEN_HIGHLIGHT_SHORTCUT, 
+  ORANGE_BACKGROUND_SHORTCUT, RED_BACKGROUND_SHORTCUT, 
+  YELLOW_BACKGROUND_SHORTCUT, GREEN_BACKGROUND_SHORTCUT, 
+  BLUE_BACKGROUND_SHORTCUT, BACKGROUND_RADIUS,
+  BACKGROUND_ICON_SIZE } from '../lib/constants';
 
-export default function formattingMenuItems(
-  view: EditorView,
-  isTemplate: boolean,
-  dictionary: typeof baseDictionary,
+/* TYPES */
+interface FormattingMenuItemsInput {
+  view: EditorView;
+  isTemplate: boolean;
+  dictionary: typeof baseDictionary;
   deviceType?: DeviceType,
+  commands: Record<string, any>;
+  defaultHighlight?: DefaultHighlight;
+  defaultBackground?: DefaultBackground;
+  setDefaultHighlight?: SetDefaultHighlight;
+  setDefaultBackground?: SetDefaultBackground;
+}
+
+interface OrganizeMenuItemsInput<T extends string> {
+  items: MenuItem[];
+  name: T;
+  orientation: 'left' | 'right';
+  commands: Record<string, any>;
+  setFn?: ( input: T ) => void;
+}
+const organizeMenuItemByDefault = <T extends string = string>(
+  input: OrganizeMenuItemsInput<T>,
+) => {
+  const { items, name, orientation, setFn, commands } = input;
+
+  let  organizedItem: MenuItem = {};
+  const subItems: MenuItem[] = [];
+
+  const handleMenuItemCustomOnClick = <T extends string = string>(
+    name: T,
+    setFn?: ( input: T ) => void,
+  ) => {
+    commands[ name ]();
+    setFn && setFn( name );
+  }
+
+  for ( let i=0; i < items.length; i++ ) {
+    const item = items[i];
+
+    if ( item.name === name ) {
+      const nextIndex = i + 1;
+
+      organizedItem = {
+        ...item,
+        subItems: {
+          orientation,
+          items: nextIndex < items.length ? 
+            [ ...subItems, ...items.slice( nextIndex ) ] :
+            subItems,
+        }
+      }
+
+      break;
+    }
+    else {
+      subItems.push( {
+        ...item,
+        customOnClick: () => handleMenuItemCustomOnClick( 
+          name,
+          setFn,
+        )
+      } );
+    }
+  }
+
+  return organizedItem;
+}
+
+export default function formattingMenuItems( 
+  input: FormattingMenuItemsInput,
 ): MenuItem[] {
+  const { view, 
+    isTemplate, 
+    dictionary, 
+    deviceType,
+    commands,
+    defaultHighlight='highlight_red',
+    defaultBackground='background_red',
+    setDefaultBackground,
+    setDefaultHighlight, } = input;
   const { state } = view;
   const { schema, selection } = state;
   const isTable = isInTable(state);
   const isList = isInList(state);
   const isSelectionEmpty = _isSelectionEmpty(selection);
   const isSelHeading = isHeading( state );
-
+  
   const allowBlocks = !isTable && !isList;
+
+  const ALL_HIGHLIGHTS: MenuItem[] = [
+    {
+      name: "highlight_red",
+      tooltip: "Red Highlight",
+      icon: HighlightIcon,
+      iconColor: schema.marks.highlight_red.attrs.color.default,
+      active: isMarkActive(schema.marks.highlight_red),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: ORANGE_HIGHLIGHT_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "highlight_orange",
+      tooltip: "Orange Highlight",
+      icon: HighlightIcon,
+      iconColor: schema.marks.highlight_orange.attrs.color.default,
+      active: isMarkActive(schema.marks.highlight_orange),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: BLUE_HIGHLIGHT_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "highlight_yellow",
+      tooltip: "Yellow Highlight",
+      icon: HighlightIcon,
+      iconColor: schema.marks.highlight_yellow.attrs.color.default,
+      active: isMarkActive(schema.marks.highlight_yellow),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: YELLOW_HIGHLIGHT_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "highlight_green",
+      tooltip: "Green Highlight",
+      icon: HighlightIcon,
+      iconColor: schema.marks.highlight_green.attrs.color.default,
+      active: isMarkActive(schema.marks.highlight_green),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: GREEN_HIGHLIGHT_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "highlight_blue",
+      tooltip: "Blue Highlight",
+      icon: HighlightIcon,
+      iconColor: schema.marks.highlight_blue.attrs.color.default,
+      active: isMarkActive(schema.marks.highlight_blue),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: BLUE_HIGHLIGHT_SHORTCUT,
+        deviceType,
+      } ),
+    },
+  ];
+  
+  const ALL_BACKGROUNDS: MenuItem[] = [
+    {
+      name: "background_red",
+      tooltip: "Red Background",
+      icon: CircleIcon,
+      iconSVGProps: {
+        r: BACKGROUND_RADIUS,
+        cx: BACKGROUND_RADIUS,
+        cy: BACKGROUND_RADIUS,
+        fill: schema.marks.background_red.attrs.color.default,
+        size: BACKGROUND_ICON_SIZE,
+      },
+      active: isMarkActive(schema.marks.background_red),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: RED_BACKGROUND_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "background_orange",
+      tooltip: "Orange Background",
+      icon: CircleIcon,
+      iconSVGProps: {
+        r: BACKGROUND_RADIUS,
+        cx: BACKGROUND_RADIUS,
+        cy: BACKGROUND_RADIUS,
+        fill: schema.marks.background_orange.attrs.color.default,
+        size: BACKGROUND_ICON_SIZE,
+      },
+      active: isMarkActive(schema.marks.background_orange),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: ORANGE_BACKGROUND_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "background_yellow",
+      tooltip: "Yellow Background",
+      icon: CircleIcon,
+      iconSVGProps: {
+        r: BACKGROUND_RADIUS,
+        cx: BACKGROUND_RADIUS,
+        cy: BACKGROUND_RADIUS,
+        fill: schema.marks.background_yellow.attrs.color.default,
+        size: BACKGROUND_ICON_SIZE,
+      },
+      active: isMarkActive(schema.marks.background_yellow),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: YELLOW_BACKGROUND_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "background_green",
+      tooltip: "Green Background",
+      icon: CircleIcon,
+      iconSVGProps: {
+        r: BACKGROUND_RADIUS,
+        cx: BACKGROUND_RADIUS,
+        cy: BACKGROUND_RADIUS,
+        fill: schema.marks.background_green.attrs.color.default,
+        size: BACKGROUND_ICON_SIZE,
+      },
+      active: isMarkActive(schema.marks.background_green),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: GREEN_BACKGROUND_SHORTCUT,
+        deviceType,
+      } ),
+    },
+    {
+      name: "background_blue",
+      tooltip: "Blue Background",
+      icon: CircleIcon,
+      iconSVGProps: {
+        r: BACKGROUND_RADIUS,
+        cx: BACKGROUND_RADIUS,
+        cy: BACKGROUND_RADIUS,
+        fill: schema.marks.background_blue.attrs.color.default,
+        size: BACKGROUND_ICON_SIZE,
+      },
+      active: isMarkActive(schema.marks.background_blue),
+      visible: !isTemplate && !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: BLUE_BACKGROUND_SHORTCUT,
+        deviceType,
+      } ),
+    },
+  ];
 
   return [
     {
@@ -90,30 +328,22 @@ export default function formattingMenuItems(
       name: "separator",
       visible: !isSelectionEmpty,
     },
-    {
-      name: "highlight_blue",
-      tooltip: "Blue Highlight",
-      icon: HighlightIcon,
-      iconColor: schema.marks.highlight_blue.attrs.color.default,
-      active: isMarkActive(schema.marks.highlight_blue),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: BLUE_HIGHLIGHT_SHORTCUT,
-        deviceType,
-      } ),
-    },
-    {
-      name: "highlight_yellow",
-      tooltip: "Yellow Highlight",
-      icon: HighlightIcon,
-      iconColor: schema.marks.highlight_yellow.attrs.color.default,
-      active: isMarkActive(schema.marks.highlight_yellow),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: YELLOW_HIGHLIGHT_SHORTCUT,
-        deviceType,
-      } ),
-    },
+    // highlight
+    organizeMenuItemByDefault( {
+      items: ALL_HIGHLIGHTS,
+      name: defaultHighlight,
+      orientation: 'left',
+      commands,
+      setFn: setDefaultHighlight,
+    } ),
+    // background
+    organizeMenuItemByDefault( {
+      items: ALL_BACKGROUNDS,
+      name: defaultBackground,
+      orientation: 'right',
+      commands,
+      setFn: setDefaultBackground,
+    } ),
     {
       name: "separator",
       visible: allowBlocks,

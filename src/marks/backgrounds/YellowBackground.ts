@@ -14,7 +14,7 @@ export default class YellowBackground extends Mark {
     return {
       attrs: {
         color: {
-          default: "#D9EDFF",
+          default: "#FFFCCF",
         },
       },
       excludes: "background",

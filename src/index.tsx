@@ -22,7 +22,9 @@ import { light as lightTheme, dark as darkTheme } from "./styles/theme";
 import baseDictionary from "./dictionary";
 import Flex from "./components/Flex";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType, DeviceType } from "./types";
+import { EmbedDescriptor, ToastType, DeviceType,
+  DefaultHighlight, DefaultBackground, SetDefaultHighlight,
+  SetDefaultBackground } from "./types";
 import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
@@ -165,6 +167,10 @@ export type Props = {
   style?: React.CSSProperties;
   parseAsHTML: boolean;
   deviceType?: DeviceType;
+  defaultHighlight?: DefaultHighlight;
+  defaultBackground?: DefaultBackground;
+  setDefaultHighlight?: SetDefaultHighlight;
+  setDefaultBackground?: SetDefaultBackground;
 };
 
 type State = {
@@ -811,6 +817,10 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onCreateLink={this.props.onCreateLink}
                   isDarkMode={this.props.dark}
                   deviceType={this.props.deviceType || 'mac'}
+                  defaultHighlight={this.props.defaultHighlight}
+                  defaultBackground={this.props.defaultBackground}
+                  setDefaultHighlight={this.props.setDefaultHighlight}
+                  setDefaultBackground={this.props.setDefaultBackground}
                 />
                 <LinkToolbar
                   view={this.view}

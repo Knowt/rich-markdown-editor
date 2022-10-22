@@ -19,7 +19,9 @@ import isNodeActive from "../queries/isNodeActive";
 import getColumnIndex from "../queries/getColumnIndex";
 import getRowIndex from "../queries/getRowIndex";
 import createAndInsertLink from "../commands/createAndInsertLink";
-import { MenuItem, DeviceType } from "../types";
+import { MenuItem, DeviceType, DefaultHighlight,
+  DefaultBackground, SetDefaultHighlight,
+  SetDefaultBackground } from "../types";
 import baseDictionary from "../dictionary";
 
 type Props = {
@@ -36,6 +38,10 @@ type Props = {
   view: EditorView;
   isDarkMode?: boolean;
   deviceType?: DeviceType;
+  defaultHighlight?: DefaultHighlight;
+  defaultBackground?: DefaultBackground;
+  setDefaultHighlight?: SetDefaultHighlight;
+  setDefaultBackground?: SetDefaultBackground;
 };
 
 function isVisible(props) {
@@ -161,7 +167,16 @@ export default class SelectionToolbar extends React.Component<Props> {
   };
 
   render() {
-    const { dictionary, onCreateLink, isTemplate, rtl, deviceType, ...rest } = this.props;
+    const { dictionary, 
+      onCreateLink, 
+      isTemplate, 
+      rtl, 
+      deviceType,
+      defaultBackground,
+      defaultHighlight,
+      setDefaultBackground,
+      setDefaultHighlight, 
+      ...rest } = this.props;
     const { view } = rest;
     const { state } = view;
     const { selection }: { selection: any } = state;
@@ -200,7 +215,18 @@ export default class SelectionToolbar extends React.Component<Props> {
     } else if (isDividerSelection) {
       items = getDividerMenuItems(state, dictionary);
     } else {
-      items = getFormattingMenuItems(view, isTemplate, dictionary, deviceType);
+      items = getFormattingMenuItems( {
+        view,
+        isTemplate,
+        dictionary,
+        deviceType,
+        defaultHighlight,
+        defaultBackground,
+        setDefaultBackground,
+        setDefaultHighlight,
+        commands: this.props.commands,
+      } );
+
       isTextSelection = true;
     }
 

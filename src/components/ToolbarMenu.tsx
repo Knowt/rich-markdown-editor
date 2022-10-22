@@ -77,9 +77,10 @@ const ToolbarItem = ( {
           commands,
         })}
       >
-        <Icon className={!isDarkMode && item.iconColor ? 
+        <Icon className={!isDarkMode && ( item.iconColor || item?.iconSVGProps?.fill ) ? 
           'toolbar-icon light' : 'toolbar-icon'}
-          color={item.iconColor || theme.toolbarItem} />
+          color={item.iconColor || theme.toolbarItem}
+          {...item.iconSVGProps} />
       </ToolbarButton>
       <Tooltip id={id} ref={ref} delayShowTime={500} position='top'>
           <p className='item-name'>
