@@ -112,6 +112,11 @@ class CodeFence extends Node_1.default {
     get languageOptions() {
         return Object.entries(Prism_1.LANGUAGES);
     }
+    get defaultOptions() {
+        return {
+            softToDOM: false,
+        };
+    }
     get name() {
         return "code_fence";
     }
@@ -144,7 +149,7 @@ class CodeFence extends Node_1.default {
             toDOM: (node) => {
                 const isServer = typeof document === "undefined";
                 let button, select;
-                if (!isServer) {
+                if (!this.options.softToDOM && !isServer) {
                     button = document.createElement("button");
                     button.innerText = "Copy";
                     button.type = "button";
@@ -163,7 +168,11 @@ class CodeFence extends Node_1.default {
                 return [
                     "div",
                     { class: "code-block", "data-language": node.attrs.language },
-                    ["div", { contentEditable: false }, select !== null && select !== void 0 ? select : "select", button !== null && button !== void 0 ? button : "button"],
+                    ...(this.options.softToDOM ?
+                        [] :
+                        [
+                            ["div", { contentEditable: false }, select !== null && select !== void 0 ? select : "select", button !== null && button !== void 0 ? button : "button"]
+                        ]),
                     ["pre", ["code", { spellCheck: false }, 0]]
                 ];
             }
