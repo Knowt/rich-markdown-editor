@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 const MenuItem = styled.button<{
     selected: boolean;
+    fontSize?: number;
   }>`
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: 500;
-    font-size: 17px;
+    font-size: ${(props) => props.fontSize || 17}px;
     line-height: 1;
     width: 100%;
     height: 40px;

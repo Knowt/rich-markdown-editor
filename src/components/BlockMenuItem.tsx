@@ -3,6 +3,7 @@ import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import styled, { withTheme } from "styled-components";
 import theme from "../styles/theme";
 import MenuItem from './MenuItem';
+import GreenAccentText from './GreenAccentText';
 
 export type Props = {
   selected: boolean;
@@ -63,7 +64,9 @@ function BlockMenuItem({
       </Group>
       <Group>
         {mainSearchKeyword && (
-          <SearchKeyword>{mainSearchKeyword}</SearchKeyword>
+          <GreenAccentText>
+            {mainSearchKeyword}
+          </GreenAccentText>
         )}
       </Group>
     </MenuItem>
@@ -77,19 +80,6 @@ const Group = styled.div`
 
 const Title = styled.span`
   margin-right: 60px;
-`;
-
-const SearchKeyword = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 6px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  color: ${(props) => props.theme.knowtGreen};
-  background-color: ${(props) => props.theme.blockToolbarTagBackgroundColor};
 `;
 
 export default withTheme(BlockMenuItem);

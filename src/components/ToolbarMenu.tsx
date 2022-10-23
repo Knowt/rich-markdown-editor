@@ -9,6 +9,7 @@ import { defaultMarkClick } from '../commands/defaultMarkClick';
 import Tooltip from './Tooltip';
 import { EditorState } from "prosemirror-state";
 import { ChevronIcon } from '../icons';
+import ToolbarPopout from './ToolbarPopout';
 
 const FlexibleWrapper = styled.div`
   display: flex;
@@ -58,20 +59,40 @@ const ToolbarSubItems = ( {
 }: ToolbarSubItemsProps ) => {
   const { orientation, tooltip, items } = subItems;
 
+  const [ isActive, setIsActive ] = useState<boolean>( false );
   const ref = useRef<HTMLButtonElement>( null );
+
+  const toggleActive = () => {
+    setIsActive( state => !state );
+  }
+
+  const ariaControls = `${id}-popout`;
 
   return (
     <ToolbarMenuItemWrapper>
-      <ToolbarButton ref={ref} style={orientation === 'left' ? {
-        transform: 'rotate(180deg)',
-        } : {}}>
+      <ToolbarButton ref={ref} 
+        type='button'
+        onClick={toggleActive}
+        aria-label={tooltip}
+        aria-pressed={isActive}
+        aria-controls={ariaControls}
+        aria-describedby={id}
+        style={orientation === 'left' ? {
+          transform: 'rotate(180deg)',
+          } : {}}>
         <ChevronIcon fill={theme.blockToolbarExpandArrowColor} />
       </ToolbarButton>
-      <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
-          <p className='item-name'>
-            {tooltip}
-          </p>
-      </Tooltip>
+      {
+        tooltip ? (
+          <Tooltip id={id} ref={ref} 
+            delayShowTime={TOOLTIP_DELAY} position='top'>
+              <p className='item-name'>
+                {tooltip}
+              </p>
+          </Tooltip>
+        ) : ''
+      }
+      <ToolbarPopout />
     </ToolbarMenuItemWrapper>
   );
 }
