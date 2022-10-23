@@ -57,7 +57,7 @@ const extensions = new ExtensionManager([
   new Blockquote(),
   new Emoji(),
   new BulletList(),
-  new CodeBlock(),
+  new CodeBlock( { softToDOM: true } ),
   new CodeFence(),
   new CheckboxList(),
   new CheckboxItem(),
@@ -111,6 +111,7 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
+
   return throwAwayDiv.innerHTML;
 };
 
