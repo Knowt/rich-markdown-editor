@@ -3,16 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceHeaderByStrong = exports.getStyleValue = exports.isValidHeading = exports.getHeadingLevelByFontSize = exports.getParsedValue = exports.remToPx = exports.isHTML = void 0;
 const isHTML = (str) => {
     const doc = new DOMParser().parseFromString(str, "text/html");
-    const childNodes = doc.body.childNodes;
-    return Array.from(childNodes).some((node, index) => {
-        var _a;
-        if (node.nodeType === 1) {
-            const nextElemText = (_a = childNodes[index + 1]) === null || _a === void 0 ? void 0 : _a.textContent;
-            return !nextElemText ? true :
-                !nextElemText.startsWith('\n');
-        }
-        return false;
-    });
+    return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
 };
 exports.isHTML = isHTML;
 const remToPx = (rem) => {

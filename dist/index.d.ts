@@ -150,6 +150,7 @@ export declare type Props = {
     tooltip: typeof React.Component | React.FC<any>;
     className?: string;
     style?: React.CSSProperties;
+    parseAsHTML: boolean;
 };
 declare type State = {
     isRTL: boolean;

@@ -604,9 +604,6 @@ exports.StyledEditor = styled_components_1.default("div") `
       select,
       button {
         right: 4px;
-      }
-
-      select {
         color: ${(props) => props.theme.text};
       }
     }
