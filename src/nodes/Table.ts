@@ -20,7 +20,7 @@ import {
   createTable,
   getCellsInColumn,
 } from "@knowt/prosemirror-utils";
-import { Plugin, TextSelection, EditorState } from "prosemirror-state";
+import { Plugin, TextSelection } from "prosemirror-state";
 import tablesRule from "../rules/tables";
 
 export default class Table extends Node {
