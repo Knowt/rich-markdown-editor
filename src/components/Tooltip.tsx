@@ -26,14 +26,14 @@ const TOOLTIP_PADDING = 14;
 
 /* FUNCTIONS */
 interface GetTooltipStylesInput {
-  ref:  RefObject<HTMLElement>;
+  ref: RefObject<HTMLElement>;
   tooltipRef: RefObject<HTMLDivElement>;
   position: TooltipPositions;
 }
 const getTooltipStyles = ( input: GetTooltipStylesInput ) => {
   const { ref, tooltipRef, position } = input;
-  const tooltipRect = tooltipRef.current?.getBoundingClientRect();
   const refRect = ref.current?.getBoundingClientRect();
+  const tooltipRect = tooltipRef.current?.getBoundingClientRect();
 
   if ( tooltipRect && refRect ) {
     if ( position === 'top' ) {
@@ -78,6 +78,9 @@ const TooltipWrapper = styled.div`
   &.not-active {
     opacity: 0;
     visibility: hidden;
+
+    transform: scaleY( 0.8 )
+                translate( -50%, -50% );
   }
 
   .tooltip {
@@ -116,14 +119,6 @@ const TooltipWrapper = styled.div`
 
   &.bottom {
     transform-origin: top;
-  }
-
-  &.top,
-  &.bottom {
-      &.not-active {
-        transform: scaleY( 0.8 )
-                    translate( -50%, -50% );
-      }
   }
 `;
 

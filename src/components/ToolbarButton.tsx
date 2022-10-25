@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-type Props = { active?: boolean; disabled?: boolean };
+interface Props { 
+  active?: boolean; 
+  disabled?: boolean;
+  showBackgroundOnActive?: boolean;
+};
 
 export default styled.button<Props>`
   display: flex;
@@ -48,5 +52,9 @@ export default styled.button<Props>`
     bottom: -4px;
   }
 
-  ${props => props.active && "opacity: 1;"};
+  ${props => props.active && `
+    opacity: 1; 
+    background: ${props.showBackgroundOnActive ? props.theme.toolbarHoverBackground : 'none'};
+  `
+  };
 `;

@@ -60,7 +60,7 @@ interface OrganizeMenuItemsInput<T extends string> {
 const organizeMenuItemByDefault = <T extends string = string>(
   input: OrganizeMenuItemsInput<T>,
 ) => {
-  const { items, name, orientation, setFn, command, tooltip } = input;
+  const { items, name, orientation, setFn, commands, tooltip } = input;
 
   let organizedItem: MenuItem = {};
   const subItems: MenuItem[] = [];

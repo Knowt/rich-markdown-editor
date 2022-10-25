@@ -67,8 +67,7 @@ class BlockMenu extends React.Component<BlockMenuProps> {
               icon={item.icon}
               iconSVGProps={item.iconSVGProps}
               title={item.title}
-              shortcut={item.shortcut}
-              mainSearchKeyword={item.searchKeyword}
+              accentText={item.searchKeyword}
             />
           );
         }}

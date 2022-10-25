@@ -14,9 +14,8 @@ export type Props = {
   iconSVGProps?: any;
   innerRef?: (ref: HTMLDivElement) => void;
   title: React.ReactNode;
-  shortcut?: string;
   containerId?: string;
-  mainSearchKeyword?: string;
+  accentText?: string;
 };
 
 function BlockMenuItem({
@@ -27,9 +26,9 @@ function BlockMenuItem({
   icon,
   iconSVGProps,
   innerRef,
-  mainSearchKeyword,
+  accentText,
   containerId = "block-menu-container",
-  theme
+  theme,
 }: Props) {
   const Icon = icon;
 
@@ -63,9 +62,9 @@ function BlockMenuItem({
         <Title>{title}</Title>
       </Group>
       <Group>
-        {mainSearchKeyword && (
+        {accentText && (
           <GreenAccentText>
-            {mainSearchKeyword}
+            {accentText}
           </GreenAccentText>
         )}
       </Group>

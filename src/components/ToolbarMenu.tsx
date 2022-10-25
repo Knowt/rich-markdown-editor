@@ -51,11 +51,15 @@ interface ToolbarSubItemsProps {
   id: string;
   subItems: SubMenuItems;
   theme: typeof theme;
+  commands: Record<string, any>;
+  shouldLightIcon: boolean;
 }
 const ToolbarSubItems = ( {
   id,
   subItems,
   theme,
+  commands,
+  shouldLightIcon,
 }: ToolbarSubItemsProps ) => {
   const { orientation, tooltip, items } = subItems;
 
@@ -66,16 +70,23 @@ const ToolbarSubItems = ( {
     setIsActive( state => !state );
   }
 
+  const closePopout = () => {
+    setIsActive( false );
+  }
+
   const ariaControls = `${id}-popout`;
 
   return (
     <ToolbarMenuItemWrapper>
-      <ToolbarButton ref={ref} 
+      <ToolbarButton ref={ref}
+        className='chevron-toolbar-button'
         type='button'
+        showBackgroundOnActive={true}
         onClick={toggleActive}
         aria-label={tooltip}
         aria-pressed={isActive}
         aria-controls={ariaControls}
+        active={isActive}
         aria-describedby={id}
         style={orientation === 'left' ? {
           transform: 'rotate(180deg)',
@@ -92,7 +103,15 @@ const ToolbarSubItems = ( {
           </Tooltip>
         ) : ''
       }
-      <ToolbarPopout />
+      <ToolbarPopout id={ariaControls}
+        ref={ref}
+        position={orientation}
+        items={items}
+        isActive={isActive} 
+        close={closePopout}
+        commands={commands}
+        theme={theme}
+        shouldLightIcon={shouldLightIcon} />
     </ToolbarMenuItemWrapper>
   );
 }
@@ -121,6 +140,8 @@ const ToolbarItem = ( {
   const Icon = item.icon as typeof Component;
   const isActive = item.active ? item.active(state) : false;
   const id = `${item.name}${index}`;
+  const shouldLightIcon = !!( !isDarkMode && 
+    ( item.iconColor || item?.iconSVGProps?.fill ) );
 
   return (
     <MainIconWrapper>
@@ -128,7 +149,9 @@ const ToolbarItem = ( {
           item.subItems?.orientation === 'left' ? (
             <ToolbarSubItems id={`${item.name}-left${index}`}
               subItems={item.subItems}
-              theme={theme} />
+              theme={theme}
+              commands={commands}
+              shouldLightIcon={shouldLightIcon} />
           ) : ''
       }
       <ToolbarButton
@@ -143,7 +166,7 @@ const ToolbarItem = ( {
           commands,
         })}
       >
-        <Icon className={!isDarkMode && ( item.iconColor || item?.iconSVGProps?.fill ) ? 
+        <Icon className={shouldLightIcon ? 
           'toolbar-icon light' : 'toolbar-icon'}
           color={item.iconColor || theme.toolbarItem}
           {...item.iconSVGProps} />
@@ -152,7 +175,9 @@ const ToolbarItem = ( {
         item.subItems?.orientation === 'right' ? (
           <ToolbarSubItems id={`${item.name}-right${index}`}
             subItems={item.subItems}
-            theme={theme} />
+            theme={theme}
+            commands={commands}
+            shouldLightIcon={shouldLightIcon} />
         ) : ''
       }
       <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>

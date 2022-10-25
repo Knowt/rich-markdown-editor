@@ -1,20 +1,228 @@
-import React from 'react';
-import GreenAccentText from './GreenAccentText';
-import MenuItem from './MenuItem';
+import React, { forwardRef, RefObject, useRef, useEffect, MouseEvent,
+    useState } from 'react';
+import styled from 'styled-components';
+import type { MenuItem as Item } from '../types';
+import { defaultMarkClick } from '../commands/defaultMarkClick';
+import { Portal } from "react-portal";
+import theme from "../styles/theme";
+
+const List = styled.ul`
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    font-size: 90%;
+    list-style-type: none;
+    color: ${(props) => props.theme.text};
+    background: ${props => props.theme.toolbarBackground};
+    z-index: 1000;
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
+                0px 0px 0.9px ${props => props.theme.toolbarShadow},
+                0px 0px 1.8px ${props => props.theme.toolbarShadow},
+                0px 0px 3.7px ${props => props.theme.toolbarShadow},
+                0px 0px 10px ${props => props.theme.toolbarShadow};
+
+    transform: scale( 1 );
+    transition: opacity 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                visibility 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &.not-active {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX( 4px ) scale(0.95);
+    }
+
+    /* POSITION */
+    &.left {
+        transform-origin: right;
+    }
+
+    &.right {
+        transform-origin: left;
+    }
+`;
+
+const Title = styled.span`
+    margin-left: 5px;
+`;
+
+const Button = styled.button`
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding-block: 7px;
+
+    &:first-of-type {
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+
+    &:last-of-type {
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    transition: background-color 85ms ease-in-out;
+
+    &:hover,
+    &:focus {
+        outline: none;
+        background: ${(props) => props.theme.toolbarHoverBackground};
+    }
+
+    .toolbar-icon {
+        &.light {
+            filter: saturate( 1100% ) brightness( 90% );
+        }
+    }
+`;
 
 /* TYPES */
+interface Styles {
+  top?: string;
+  left?: string;
+  bottom?: string;
+  right?: string;
+}
+
+type Position = 'left' | 'right';
+
 interface Props {
-
+    id: string;
+    position: Position;
+    items: Item[];
+    close: () => void;
+    isActive: boolean;
+    commands: Record<string, any>;
+    theme: typeof theme;
+    shouldLightIcon: boolean;
 }
 
-const ToolbarPopout = ( {
+/* FUNCTIONS */
+interface CalcPopoutStylesInput {
+    ref: RefObject<HTMLElement>;
+    popoutRef:  RefObject<HTMLUListElement>;
+    position: Position;
+}
+const calcPopoutStyles = ( input: CalcPopoutStylesInput ) => {
+    const { ref, popoutRef, position } = input;
+    const refRect = ref.current?.getBoundingClientRect();
+    const popoutRefRect = popoutRef.current?.getBoundingClientRect();
 
-}: Props ) => {
+    if ( refRect && popoutRefRect ) {
+        if ( position === 'left' ) {
+            return {
+                left: `${refRect.left - refRect.width - popoutRefRect.width}px`,
+                bottom: `${refRect.bottom / 2 + refRect.height}px`
+            }
+        }
+        else {
+            return {
+                left: `${refRect.left}px`,
+            }
+        }
+    }
+
+    return {};
+}
+
+const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
+    id,
+    position,
+    items,
+    close,
+    isActive,
+    commands,
+    theme,
+    shouldLightIcon,
+}, ref ) => {
+    const popoutRef = useRef<HTMLUListElement>( null );
+    const firstMenuItemRef = useRef<HTMLButtonElement>( null );
+    const [ popoutStyles, setPopoutStyles ] = useState<Styles>( {} );
+
+    let className = position;
+
+    if ( isActive ) {
+        className += ' active';
+    }
+    else {
+        className += ' not-active';
+    }
+
+    useEffect( () => {
+        if (
+            typeof ref !== 'function' &&
+            ref?.current
+        ) {
+            setPopoutStyles( calcPopoutStyles( {
+                ref,
+                popoutRef,
+                position,
+            } ) );
+        }
+    }, [] );
+
+    if ( isActive ) {
+        setTimeout( () => {
+            if ( firstMenuItemRef.current ) {
+                firstMenuItemRef.current.focus();
+            }
+        }, 28 );
+    }
+
     return (
-        <>
-        
-        </>
+        <Portal>
+            <List id={id} ref={popoutRef}
+                className={className}
+                style={popoutStyles}>
+                {
+                    items.map( ( item, index ) => {
+                        const { name,
+                            tooltip, 
+                            icon, 
+                            iconColor, 
+                            iconSVGProps, } = item;
+                        const Icon = icon;
+
+                        const handleClick = () => {
+                            defaultMarkClick( {
+                                item,
+                                commands,
+                            } );
+
+                            close();
+                        }
+
+                        const handleMouseUp = ( event: MouseEvent ) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+
+                        return (
+                            <Button ref={index === 0 ? firstMenuItemRef : undefined}
+                                onMouseUp={handleMouseUp}
+                                onClick={handleClick}
+                                key={`${name}${index}`}>
+                                {
+                                    Icon ? (
+                                        <Icon className={shouldLightIcon ? 
+                                            'toolbar-icon light' : 'toolbar-icon'}
+                                            color={iconColor || theme.toolbarItem} 
+                                            size={25} {...iconSVGProps} />   
+                                    ) : ''
+                                }
+                                <Title>{tooltip}</Title>
+                            </Button>
+                        )
+                    } )
+                }
+            </List>
+        </Portal>
     )
-}
+} )
 
 export default ToolbarPopout;
