@@ -16,6 +16,8 @@ export type Props = {
   title: React.ReactNode;
   containerId?: string;
   accentText?: string;
+  iconColor?: string;
+  isDarkMode?: boolean;
 };
 
 function BlockMenuItem({
@@ -29,6 +31,8 @@ function BlockMenuItem({
   accentText,
   containerId = "block-menu-container",
   theme,
+  iconColor,
+  isDarkMode,
 }: Props) {
   const Icon = icon;
 
@@ -55,7 +59,10 @@ function BlockMenuItem({
       <Group>
         {Icon && (
           <>
-            <Icon color={theme.blockToolbarIconColor} size={20} {...iconSVGProps} />
+            <Icon color={iconColor || theme.blockToolbarIconColor}
+              className={!isDarkMode && iconColor ? 
+                'block-menu-item-icon light' : 'block-menu-item-icon'}
+              size={20} {...iconSVGProps} />
             &nbsp;&nbsp;
           </>
         )}
@@ -75,6 +82,12 @@ function BlockMenuItem({
 const Group = styled.div`
   display: flex;
   align-items: center;
+
+  .block-menu-item-icon {
+    &.light {
+      filter: saturate( 1100% ) brightness( 90% );
+    }
+  }
 `;
 
 const Title = styled.span`

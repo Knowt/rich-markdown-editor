@@ -68,6 +68,8 @@ class BlockMenu extends React.Component<BlockMenuProps> {
               iconSVGProps={item.iconSVGProps}
               title={item.title}
               accentText={item.searchKeyword}
+              iconColor={item.iconColor}
+              isDarkMode={this.props.isDarkMode}
             />
           );
         }}

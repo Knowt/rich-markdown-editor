@@ -68,6 +68,7 @@ export type Props = {
   allGroups: GroupMenuItem[];
   visibleGroups: GroupMenuItem[];
   id?: string;
+  isDarkMode?: boolean;
 };
 
 type State = {

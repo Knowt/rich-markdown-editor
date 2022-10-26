@@ -11,6 +11,7 @@ import {
   TodoListIcon,
   ImageIcon,
   LinkIcon,
+  HighlightIcon,
 } from "outline-icons";
 import { EmbedDescriptor, GroupMenuItem } from "../types";
 import baseDictionary from "../dictionary";
@@ -164,13 +165,8 @@ export const getGroupedMenuItems = (
         {
           name: "highlight_red",
           title: "Red",
-          icon: CircleIcon,
-          iconSVGProps: {
-            r: BACKGROUND_RADIUS,
-            cx: BACKGROUND_RADIUS,
-            cy: BACKGROUND_RADIUS,
-            fill: schema.marks.highlight_red.attrs.color.default,
-          },
+          icon: HighlightIcon,
+          iconColor: schema.marks.highlight_red.attrs.color.default,
           keywords: "highlight red",
           searchKeyword: "red",
           shortcut: "alt shift 1",
@@ -178,13 +174,8 @@ export const getGroupedMenuItems = (
         {
           name: "highlight_orange",
           title: "Orange",
-          icon: CircleIcon,
-          iconSVGProps: {
-            r: BACKGROUND_RADIUS,
-            cx: BACKGROUND_RADIUS,
-            cy: BACKGROUND_RADIUS,
-            fill: schema.marks.highlight_orange.attrs.color.default,
-          },
+          icon: HighlightIcon,
+          iconColor: schema.marks.highlight_orange.attrs.color.default,
           keywords: "highlight orange",
           searchKeyword: "orange",
           shortcut: "alt shift 2",
@@ -192,13 +183,8 @@ export const getGroupedMenuItems = (
         {
           name: "highlight_yellow",
           title: "Yellow",
-          icon: CircleIcon,
-          iconSVGProps: {
-            r: BACKGROUND_RADIUS,
-            cx: BACKGROUND_RADIUS,
-            cy: BACKGROUND_RADIUS,
-            fill: schema.marks.highlight_yellow.attrs.color.default,
-          },
+          icon: HighlightIcon,
+          iconColor: schema.marks.highlight_yellow.attrs.color.default,
           keywords: "highlight yellow",
           searchKeyword: "yellow",
           shortcut: "alt shift 3",
@@ -206,13 +192,8 @@ export const getGroupedMenuItems = (
         {
           name: "highlight_green",
           title: "Green",
-          icon: CircleIcon,
-          iconSVGProps: {
-            r: BACKGROUND_RADIUS,
-            cx: BACKGROUND_RADIUS,
-            cy: BACKGROUND_RADIUS,
-            fill: schema.marks.highlight_green.attrs.color.default,
-          },
+          icon: HighlightIcon,
+          iconColor: schema.marks.highlight_green.attrs.color.default,
           keywords: "highlight green",
           searchKeyword: "green",
           shortcut: "alt shift 4",
@@ -220,13 +201,8 @@ export const getGroupedMenuItems = (
         {
           name: "highlight_blue",
           title: "Blue",
-          icon: CircleIcon,
-          iconSVGProps: {
-            r: BACKGROUND_RADIUS,
-            cx: BACKGROUND_RADIUS,
-            cy: BACKGROUND_RADIUS,
-            fill: schema.marks.highlight_blue.attrs.color.default,
-          },
+          icon: HighlightIcon,
+          iconColor: schema.marks.highlight_blue.attrs.color.default,
           keywords: "highlight blue",
           searchKeyword: "blue",
           shortcut: "alt shift 5",
@@ -245,6 +221,100 @@ export const getGroupedMenuItems = (
           },
           keywords: "highlight remove unhighlight",
           searchKeyword: "unhighlight",
+          shortcut: "", //TODO: add shortcut
+          customOnClick: () => removeMarks(view, allMarks),
+        },
+      ],
+    },
+    {
+      groupData: {
+        name: "Background",
+      },
+      items: [
+        {
+          name: "background_red",
+          title: "Red",
+          icon: CircleIcon,
+          iconColor: schema.marks.background_red.attrs.color.default,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS,
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+          },
+          keywords: "background red",
+          searchKeyword: "red",
+          shortcut: "alt shift 6",
+        },
+        {
+          name: "background_orange",
+          title: "Orange",
+          icon: CircleIcon,
+          iconColor: schema.marks.background_orange.attrs.color.default,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS,
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+          },
+          keywords: "background orange",
+          searchKeyword: "orange",
+          shortcut: "alt shift 7",
+        },
+        {
+          name: "background_yellow",
+          title: "Yellow",
+          icon: CircleIcon,
+          iconColor: schema.marks.background_yellow.attrs.color.default,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS,
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+          },
+          keywords: "background yellow",
+          searchKeyword: "yellow",
+          shortcut: "alt shift 8",
+        },
+        {
+          name: "background_green",
+          title: "Green",
+          icon: CircleIcon,
+          iconColor: schema.marks.background_green.attrs.color.default,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS,
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+          },
+          keywords: "background green",
+          searchKeyword: "green",
+          shortcut: "alt shift 9",
+        },
+        {
+          name: "background_blue",
+          title: "Blue",
+          icon: CircleIcon,
+          iconColor: schema.marks.background_blue.attrs.color.default,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS,
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+          },
+          keywords: "background blue",
+          searchKeyword: "blue",
+          shortcut: "alt shift 0",
+        },
+        {
+          name: "background_remove",
+          title: "No Background",
+          icon: CircleIcon,
+          iconSVGProps: {
+            r: BACKGROUND_RADIUS - 1, // 1 is stroke width
+            cx: BACKGROUND_RADIUS,
+            cy: BACKGROUND_RADIUS,
+            strokeWidth: 1,
+            fill: "#fff",
+            stroke: "#777",
+          },
+          keywords: "background remove unbackground",
+          searchKeyword: "unbackground",
           shortcut: "", //TODO: add shortcut
           customOnClick: () => removeMarks(view, allMarks),
         },

@@ -855,6 +855,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onImageUploadStop={this.props.onImageUploadStop}
                   onShowToast={this.props.onShowToast}
                   embeds={this.props.embeds}
+                  isDarkMode={this.props.dark}
                 />
               </React.Fragment>
             )}
