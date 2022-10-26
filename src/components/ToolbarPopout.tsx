@@ -12,7 +12,6 @@ const List = styled.ul`
     position: absolute;
     font-size: 90%;
     list-style-type: none;
-    color: ${(props) => props.theme.text};
     background: ${props => props.theme.toolbarBackground};
     z-index: 1000;
     border-radius: 4px;
@@ -56,6 +55,7 @@ const Button = styled.button`
     background: none;
     cursor: pointer;
     padding-block: 7px;
+    color: ${(props) => props.theme.text};
 
     &:first-of-type {
         border-top-right-radius: 4px;
@@ -152,7 +152,7 @@ const calcPopoutStyles = ( input: CalcPopoutStylesInput ) => {
         else {
             const left = refRect.x - 
                 refRect.width +
-                ( popoutRefRect.width / 4 ) -
+                ( popoutRefRect.width / 2 ) -
                 POPOUT_PADDING;
                 
             if ( left + popoutRefRect.width > window.innerWidth ) {
@@ -266,7 +266,7 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                                         <Icon className={shouldLightIcon ? 
                                             'toolbar-icon light' : 'toolbar-icon'}
                                             color={iconColor || theme.toolbarItem} 
-                                            size={25} {...iconSVGProps} />   
+                                            size={22} {...iconSVGProps} />   
                                     ) : ''
                                 }
                                 <Title>{tooltip}</Title>

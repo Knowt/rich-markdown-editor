@@ -78,6 +78,7 @@ const organizeMenuItemByDefault = <T extends string = string>(
   ) => {
     return items.map( ( item ) => ( { 
       ...item,
+      tooltip: item.tooltip?.split( ' ' )[0],
       customOnClick: () => handleMenuItemCustomOnClick( 
         item.name as string,
         setFn,
@@ -110,6 +111,7 @@ const organizeMenuItemByDefault = <T extends string = string>(
     else {
       subItems.push( {
         ...item,
+        tooltip: item.tooltip?.split( ' ' )[0],
         customOnClick: () => handleMenuItemCustomOnClick( 
           item.name as string,
           setFn,

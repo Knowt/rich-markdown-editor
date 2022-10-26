@@ -13,23 +13,22 @@ import {
   LinkIcon,
   HighlightIcon,
 } from "outline-icons";
-import { EmbedDescriptor, GroupMenuItem } from "../types";
+import { EmbedDescriptor, GroupMenuItem, DeviceType } from "../types";
 import baseDictionary from "../dictionary";
 import { EditorView } from "prosemirror-view";
 import { CircleIcon } from "../icons";
 import removeMarks from "../commands/removeMarks";
 import { BACKGROUND_RADIUS } from '../lib/constants';
 
-const SSR = typeof window === "undefined";
-const isMac = !SSR && window.navigator.platform === "MacIntel";
-const mod = isMac ? "⌘" : "ctrl";
-
 export const getGroupedMenuItems = (
   view: EditorView,
-  dictionary: typeof baseDictionary
+  dictionary: typeof baseDictionary,
+  deviceType,
 ): GroupMenuItem[] => {
   const { state } = view;
   const { schema } = state;
+  
+  const mod = deviceType === 'mac' ? '⌘' : 'ctrl';
   
   const allMarks = [
     schema.marks.highlight_red,

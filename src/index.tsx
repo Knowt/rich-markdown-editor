@@ -856,6 +856,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onShowToast={this.props.onShowToast}
                   embeds={this.props.embeds}
                   isDarkMode={this.props.dark}
+                  deviceType={this.props.deviceType || 'mac'}
                 />
               </React.Fragment>
             )}
