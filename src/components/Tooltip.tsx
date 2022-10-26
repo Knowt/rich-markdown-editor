@@ -166,7 +166,7 @@ const Tooltip = forwardRef<HTMLElement, Props>( ( {
             ref.current?.removeEventListener( 'pointerleave', handlePointeLeave );
         }
     }
-}, [] );
+}, [ ref ] );
 
   return (
     <TooltipWrapper id={id} ref={tooltipRef}

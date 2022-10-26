@@ -40,10 +40,6 @@ const MainIconWrapper = styled.div`
   }
 `;
 
-const ToolbarMenuItemWrapper = styled.div`
-  position: relative;
-`;
-
 /* CONSTANTS */
 const TOOLTIP_DELAY = 500;
 
@@ -77,7 +73,7 @@ const ToolbarSubItems = ( {
   const ariaControls = `${id}-popout`;
 
   return (
-    <ToolbarMenuItemWrapper>
+    <>
       <ToolbarButton ref={ref}
         className='chevron-toolbar-button'
         type='button'
@@ -112,7 +108,7 @@ const ToolbarSubItems = ( {
         commands={commands}
         theme={theme}
         shouldLightIcon={shouldLightIcon} />
-    </ToolbarMenuItemWrapper>
+    </>
   );
 }
 

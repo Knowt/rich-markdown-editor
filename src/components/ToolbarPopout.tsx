@@ -31,7 +31,8 @@ const List = styled.ul`
     &.not-active {
         opacity: 0;
         visibility: hidden;
-        transform: translateX( 4px ) scale(0.95);
+        transform: translate( 4px ) 
+                    scale(0.95);
     }
 
     /* POSITION */
@@ -102,6 +103,10 @@ interface Props {
     shouldLightIcon: boolean;
 }
 
+/* CONSTANTS */
+const POPOUT_PADDING = 5;
+const TOOLBAR_HEIGHT = 35;
+
 /* FUNCTIONS */
 interface CalcPopoutStylesInput {
     ref: RefObject<HTMLElement>;
@@ -115,14 +120,61 @@ const calcPopoutStyles = ( input: CalcPopoutStylesInput ) => {
 
     if ( refRect && popoutRefRect ) {
         if ( position === 'left' ) {
+            const left = refRect.x - 
+                refRect.width - 
+                popoutRefRect.width +
+                POPOUT_PADDING;
+
+            if ( left < 0 ) {
+                let top = refRect.top - 
+                     ( refRect.width / 2 ) - 
+                     POPOUT_PADDING + 
+                     TOOLBAR_HEIGHT;
+
+                if ( top + popoutRefRect.height > window.innerHeight ) {
+                    return {
+                        left: '0px',
+                        top: `${refRect.top - popoutRefRect.height - TOOLBAR_HEIGHT / 2}px`,
+                    }
+                }
+
+                return {
+                    left: '0px',
+                    top: `${top}px`,
+                }
+            }
+                
             return {
-                left: `${refRect.left - refRect.width - popoutRefRect.width}px`,
-                bottom: `${refRect.bottom / 2 + refRect.height}px`
+                left: `${left}px`,
+                top: `${refRect.top - refRect.width / 2 - POPOUT_PADDING}px`,
             }
         }
         else {
+            const left = refRect.x - 
+                refRect.width +
+                ( popoutRefRect.width / 4 ) -
+                POPOUT_PADDING;
+                
+            if ( left + popoutRefRect.width > window.innerWidth ) {
+                let top = refRect.top - 
+                    ( refRect.width / 2 ) - 
+                    POPOUT_PADDING;
+
+                if ( top + popoutRefRect.height > window.innerHeight ) {
+                    return {
+                        right: '0px',
+                        top: `${top - popoutRefRect.height - POPOUT_PADDING}px`,
+                    }
+                }
+
+                return {
+                    right: '0px',
+                    top: `${top + TOOLBAR_HEIGHT}px`,
+                }
+            }
             return {
-                left: `${refRect.left}px`,
+                left : `${left}px`,
+                top: `${refRect.top - refRect.width / 2 - POPOUT_PADDING}px`,
             }
         }
     }
@@ -164,7 +216,7 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                 position,
             } ) );
         }
-    }, [] );
+    }, [ isActive ] );
 
     if ( isActive ) {
         setTimeout( () => {
@@ -183,7 +235,7 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                     items.map( ( item, index ) => {
                         const { name,
                             tooltip, 
-                            icon, 
+                            icon,
                             iconColor, 
                             iconSVGProps, } = item;
                         const Icon = icon;
@@ -206,7 +258,9 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                             <Button ref={index === 0 ? firstMenuItemRef : undefined}
                                 onMouseUp={handleMouseUp}
                                 onClick={handleClick}
-                                key={`${name}${index}`}>
+                                key={`${name}${index}`}
+                                type='button'
+                                aria-pressed={false}>
                                 {
                                     Icon ? (
                                         <Icon className={shouldLightIcon ? 
