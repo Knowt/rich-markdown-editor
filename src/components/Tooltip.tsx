@@ -57,7 +57,7 @@ const TooltipWrapper = styled.div`
   display: flex;
   position: absolute;
   padding-inline: 4px;
-  font-size: 75%;
+  font-size: 83%;
   background: ${props => props.theme.toolbarBackground};
   font-family: ${props => props.theme.fontFamily};
   border-radius: 4px;

@@ -17,13 +17,13 @@ const FlexibleWrapper = styled.div`
 
 const MainIconWrapper = styled.div`
   display: flex;
-  position: relative;
 
   .tooltip-wrapper {
     text-align: center;
 
     .tooltip {
       flex-direction: column;
+      line-height: 0;
 
       .shortcut {
         font-size: 85%;
@@ -83,22 +83,23 @@ const ToolbarSubItems = ( {
         aria-pressed={isActive}
         aria-controls={ariaControls}
         active={isActive}
-        aria-describedby={id}
-        style={orientation === 'left' ? {
+        aria-describedby={id}>
+        <span style={orientation === 'left' ? {
           transform: 'rotate(180deg)',
           } : {}}>
-        <ChevronIcon fill={theme.blockToolbarExpandArrowColor} />
+          <ChevronIcon fill={theme.blockToolbarExpandArrowColor} />
+        </span>
+        {
+          tooltip ? (
+            <Tooltip id={id} ref={ref}
+              delayShowTime={TOOLTIP_DELAY} position='top'>
+                <p className='item-name'>
+                  {tooltip}
+                </p>
+            </Tooltip>
+          ) : ''
+        }
       </ToolbarButton>
-      {
-        tooltip ? (
-          <Tooltip id={id} ref={ref} 
-            delayShowTime={TOOLTIP_DELAY} position='top'>
-              <p className='item-name'>
-                {tooltip}
-              </p>
-          </Tooltip>
-        ) : ''
-      }
       <ToolbarPopout id={ariaControls}
         ref={ref}
         position={orientation}
@@ -166,6 +167,18 @@ const ToolbarItem = ( {
           'toolbar-icon light' : 'toolbar-icon'}
           color={item.iconColor || theme.toolbarItem}
           {...item.iconSVGProps} />
+           <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
+              <p className='item-name'>
+                {item.tooltip}
+              </p>
+              {
+                item.shortcut ? (
+                  <p className='shortcut'>
+                    {item.shortcut}
+                  </p>
+                ) : ''
+              }
+          </Tooltip>
       </ToolbarButton>
       {
         item.subItems?.orientation === 'right' ? (
@@ -176,18 +189,6 @@ const ToolbarItem = ( {
             shouldLightIcon={shouldLightIcon} />
         ) : ''
       }
-      <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
-          <p className='item-name'>
-            {item.tooltip}
-          </p>
-          {
-            item.shortcut ? (
-              <p className='shortcut'>
-                {item.shortcut}
-              </p>
-            ) : ''
-          }
-      </Tooltip>
     </MainIconWrapper>
   );
 }
