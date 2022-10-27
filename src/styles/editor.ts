@@ -152,6 +152,55 @@ export const StyledEditor = styled("div")<{
         opacity: 1;
       }
     }
+
+    mark {
+      &.background {
+        display: inline;
+        position: absolute;
+        width: 100%;
+        left: 0;
+
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          z-index: -1;
+          height: 100%;
+          width: 100%;
+          background: ${(props) => props.theme.highlights["red"]};
+        }
+  
+        &.red {
+          &:after {
+            background: ${(props) => props.theme.highlights["red"]};
+          }
+        }
+  
+        &.orange {
+          &:after {
+            background: ${(props) => props.theme.highlights["orange"]};
+          }
+        }
+  
+        &.yellow {
+          &:after {
+            background: ${(props) => props.theme.highlights["yellow"]};
+          }
+        }
+  
+        &.green {
+          &:after {
+            background: ${(props) => props.theme.highlights["green"]};
+          }
+        }
+  
+        &.blue {
+          &:after {
+            background: ${(props) => props.theme.highlights["blue"]};
+          }
+        }
+      }
+    }
   }
 
   .heading-content {

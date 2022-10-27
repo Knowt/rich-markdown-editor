@@ -1,7 +1,7 @@
 import markInputRule from "../../lib/markInputRule";
 import Mark from "../Mark";
 import markRule from "../../rules/mark";
-import { toggleMark } from "prosemirror-commands";
+import { toggleMarkBackground } from '../../commands/toggleMarkBackground';
 import { RED_BACKGROUND_SHORTCUT } from '../../lib/constants';
 
 
@@ -40,12 +40,12 @@ export default class RedBackground extends Mark {
 
   keys({ type }) {
     return {
-      [ RED_BACKGROUND_SHORTCUT ]: toggleMark(type),
+      [ RED_BACKGROUND_SHORTCUT ]: toggleMarkBackground(type),
     };
   }
 
   commands({ type }) {
-    return () => toggleMark(type);
+    return () => toggleMarkBackground(type);
   }
 
   get rulePlugins() {
