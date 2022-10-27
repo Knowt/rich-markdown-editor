@@ -33,7 +33,8 @@ import { BOLD_SHORTCUT2, STRIKETHROUGH_SHORTCUT2,
   ORANGE_BACKGROUND_SHORTCUT, RED_BACKGROUND_SHORTCUT, 
   YELLOW_BACKGROUND_SHORTCUT, GREEN_BACKGROUND_SHORTCUT, 
   BLUE_BACKGROUND_SHORTCUT, BACKGROUND_RADIUS,
-  BACKGROUND_ICON_SIZE } from '../lib/constants';
+  BACKGROUND_ICON_SIZE, DEFAULT_HIGHLIGHT,
+  DEFAULT_BACKGROUND } from '../lib/constants';
 
 /* TYPES */
 interface FormattingMenuItemsInput {
@@ -131,8 +132,8 @@ export default function formattingMenuItems(
     dictionary, 
     deviceType,
     commands,
-    defaultHighlight='highlight_red',
-    defaultBackground='background_blue',
+    defaultHighlight=DEFAULT_HIGHLIGHT,
+    defaultBackground=DEFAULT_BACKGROUND,
     setDefaultBackground,
     setDefaultHighlight, } = input;
   const { state } = view;

@@ -23,8 +23,7 @@ import baseDictionary from "./dictionary";
 import Flex from "./components/Flex";
 import { SearchResult } from "./components/LinkEditor";
 import { EmbedDescriptor, ToastType, DeviceType,
-  DefaultHighlight, DefaultBackground, SetDefaultHighlight,
-  SetDefaultBackground } from "./types";
+  DefaultHighlight, DefaultBackground } from "./types";
 import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
@@ -33,6 +32,8 @@ import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
 import headingToSlug from "./lib/headingToSlug";
+import { DEFAULT_BACKGROUND_KEY, DEFAULT_HIGHLIGHT_KEY,
+  DEFAULT_HIGHLIGHT, DEFAULT_BACKGROUND } from './lib/constants';
 
 // styles
 import { StyledEditor } from "./styles/editor";
@@ -167,10 +168,8 @@ export type Props = {
   style?: React.CSSProperties;
   parseAsHTML: boolean;
   deviceType?: DeviceType;
-  defaultHighlight?: DefaultHighlight;
-  defaultBackground?: DefaultBackground;
-  setDefaultHighlight?: SetDefaultHighlight;
-  setDefaultBackground?: SetDefaultBackground;
+  defaultHighlightKey?: string;
+  defaultBackgroundKey?: string;
 };
 
 type State = {
@@ -181,6 +180,8 @@ type State = {
   linkMenuOpen: boolean;
   blockMenuSearch: string;
   emojiMenuOpen: boolean;
+  defaultHighlight?: DefaultHighlight | null;
+  defaultBackground?: DefaultBackground | null;
 };
 
 type Step = {
@@ -214,6 +215,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     linkMenuOpen: false,
     blockMenuSearch: "",
     emojiMenuOpen: false,
+    defaultHighlight: undefined,
+    defaultBackground: undefined,
   };
 
   isBlurred: boolean;
@@ -244,6 +247,14 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
 
     this.calculateDir();
+
+    const { defaultHighlight, defaultBackground } = this.getLocalStorageDefaults();
+
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultHighlight,
+      defaultBackground,
+    } ) );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -770,6 +781,41 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
   );
 
+  getDefaultHighlightKey = () => {
+    return this.props.defaultHighlightKey || DEFAULT_HIGHLIGHT_KEY;
+  }
+
+  getDefaultBackgroundKey = () => {
+    return this.props.defaultBackgroundKey || DEFAULT_BACKGROUND_KEY;
+  }
+
+  setDefaultHighlight = ( defaultHighlight: DefaultHighlight ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultHighlight,
+    } ) );
+
+    window.localStorage.setItem( this.getDefaultHighlightKey(), defaultHighlight );
+  }
+
+  setDefaultBackground = ( defaultBackground: DefaultBackground ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultBackground,
+    } ) )
+
+    window.localStorage.setItem( this.getDefaultBackgroundKey(), defaultBackground );
+  }
+
+  getLocalStorageDefaults = () => {
+    return {
+      defaultHighlight: window.localStorage.getItem( 
+        this.getDefaultHighlightKey() ) as DefaultHighlight | null,
+      defaultBackground: window.localStorage.getItem( 
+        this.getDefaultBackgroundKey() ) as DefaultBackground | null,
+    }
+  }
+
   render() {
     const {
       dir,
@@ -816,11 +862,11 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
                   isDarkMode={this.props.dark}
-                  deviceType={this.props.deviceType || 'mac'}
-                  defaultHighlight={this.props.defaultHighlight}
-                  defaultBackground={this.props.defaultBackground}
-                  setDefaultHighlight={this.props.setDefaultHighlight}
-                  setDefaultBackground={this.props.setDefaultBackground}
+                  deviceType={this.props.deviceType}
+                  defaultHighlight={this.state.defaultHighlight || DEFAULT_HIGHLIGHT}
+                  defaultBackground={this.state.defaultBackground || DEFAULT_BACKGROUND}
+                  setDefaultHighlight={this.setDefaultHighlight}
+                  setDefaultBackground={this.setDefaultBackground}
                 />
                 <LinkToolbar
                   view={this.view}
@@ -856,7 +902,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onShowToast={this.props.onShowToast}
                   embeds={this.props.embeds}
                   isDarkMode={this.props.dark}
-                  deviceType={this.props.deviceType || 'mac'}
+                  deviceType={this.props.deviceType}
                 />
               </React.Fragment>
             )}

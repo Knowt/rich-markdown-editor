@@ -31,3 +31,9 @@ export const UNDERLINE_SHORTCUT2 = 'Mod-U';
 
 export const BACKGROUND_RADIUS = 12;
 export const BACKGROUND_ICON_SIZE = 18;
+
+export const DEFAULT_HIGHLIGHT_KEY = 'editorDefaultHighlight';
+export const DEFAULT_BACKGROUND_KEY = 'editorDefaultBackground';
+
+export const DEFAULT_HIGHLIGHT = 'highlight_red';
+export const DEFAULT_BACKGROUND = 'background_blue';
