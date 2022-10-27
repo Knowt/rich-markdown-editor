@@ -155,10 +155,9 @@ export const StyledEditor = styled("div")<{
 
     mark {
       &.background {
-        display: inline;
-        position: absolute;
+        display: inline-flex;
+        position: relative;
         width: 100%;
-        left: 0;
 
         &:after {
           content: '';
@@ -167,7 +166,6 @@ export const StyledEditor = styled("div")<{
           z-index: -1;
           height: 100%;
           width: 100%;
-          background: ${(props) => props.theme.highlights["red"]};
         }
   
         &.red {
