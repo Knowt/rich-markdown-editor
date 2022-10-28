@@ -1,5 +1,8 @@
 import markdownit, { PluginSimple } from "markdown-it";
 
+/* CONSTANTS */
+const BLOCK_RULER_DISABLED = [ 'code' ];
+
 export default function rules({
   rules = {},
   plugins = [],
@@ -13,6 +16,10 @@ export default function rules({
     linkify: false,
     ...rules,
   });
+
   plugins.forEach((plugin) => markdownIt.use(plugin));
+
+  markdownIt.block.ruler.disable( BLOCK_RULER_DISABLED );
+
   return markdownIt;
 }
