@@ -1,5 +1,5 @@
-import React, { forwardRef, RefObject, useRef, useEffect, MouseEvent,
-    useState } from 'react';
+import React, { forwardRef, RefObject, useRef, 
+    useEffect, MouseEvent, useState } from 'react';
 import styled from 'styled-components';
 import type { MenuItem as Item } from '../types';
 import { defaultMarkClick } from '../commands/defaultMarkClick';
@@ -103,84 +103,92 @@ interface Props {
     shouldLightIcon: boolean;
 }
 
-/* CONSTANTS */
-const POPOUT_PADDING = 5;
-const TOOLBAR_HEIGHT = 35;
-
-/* FUNCTIONS */
 interface CalcPopoutStylesInput {
     ref: RefObject<HTMLElement>;
     popoutRef:  RefObject<HTMLUListElement>;
     position: Position;
 }
+
+/* UTIL FUNCTIONS */
 const calcPopoutStyles = ( input: CalcPopoutStylesInput ) => {
     const { ref, popoutRef, position } = input;
     const refRect = ref.current?.getBoundingClientRect();
     const popoutRefRect = popoutRef.current?.getBoundingClientRect();
 
     if ( refRect && popoutRefRect ) {
+        const SCROLL_HEIGHT = window.innerHeight + window.scrollY;
+
+        let top = refRect.top - 
+            ( refRect.height / 2 ) + 
+            window.scrollY +
+            POPOUT_PADDING;
+
+        const getDefaultVerticalStyles = () => {
+            if ( top + popoutRefRect.height > SCROLL_HEIGHT ) {
+                top -= popoutRefRect.height;
+            }
+
+            return {
+                top: `${top}px`
+            }
+        }
+
+        const getShiftedVertialStyles = () => {
+            top += TOOLBAR_HEIGHT;
+
+            if ( top + popoutRefRect.height > SCROLL_HEIGHT ) {
+                top -= TOOLBAR_HEIGHT + popoutRefRect.height;
+            }
+
+            return {
+                top: `${top}px`,
+            }
+        }
+
         if ( position === 'left' ) {
-            const left = refRect.x - 
-                refRect.width - 
+            const left = refRect.x -
+                ( refRect.width / 2 ) - 
                 popoutRefRect.width +
                 POPOUT_PADDING;
 
             if ( left < 0 ) {
-                let top = refRect.top - 
-                     ( refRect.width / 2 ) - 
-                     POPOUT_PADDING + 
-                     TOOLBAR_HEIGHT;
-
-                if ( top + popoutRefRect.height > window.innerHeight ) {
-                    return {
-                        left: '0px',
-                        top: `${refRect.top - popoutRefRect.height - TOOLBAR_HEIGHT / 2}px`,
-                    }
-                }
-
                 return {
                     left: '0px',
-                    top: `${top}px`,
+                    ...getShiftedVertialStyles(),
                 }
             }
                 
             return {
                 left: `${left}px`,
-                top: `${refRect.top - refRect.width / 2 - POPOUT_PADDING}px`,
+                ...getDefaultVerticalStyles(),
             }
         }
         else {
             const left = refRect.x - 
                 refRect.width +
                 ( popoutRefRect.width / 2 ) -
-                POPOUT_PADDING;
+                POPOUT_PADDING - 2;
                 
-            if ( left + popoutRefRect.width > window.innerWidth ) {
-                let top = refRect.top - 
-                    ( refRect.width / 2 ) - 
-                    POPOUT_PADDING;
-
-                if ( top + popoutRefRect.height > window.innerHeight ) {
-                    return {
-                        right: '0px',
-                        top: `${top - popoutRefRect.height - POPOUT_PADDING}px`,
-                    }
-                }
-
+            if ( left + popoutRefRect.width > window.innerWidth + window.scrollX ) {
                 return {
                     right: '0px',
-                    top: `${top + TOOLBAR_HEIGHT}px`,
+                    ...getShiftedVertialStyles(),
                 }
             }
+
             return {
-                left : `${left}px`,
-                top: `${refRect.top - refRect.width / 2 - POPOUT_PADDING}px`,
+                left: `${left}px`,
+                ...getDefaultVerticalStyles(),
             }
         }
     }
 
     return {};
 }
+
+/* CONSTANTS */
+const POPOUT_PADDING = 3;
+const TOOLBAR_HEIGHT = 35;
 
 const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
     id,
@@ -196,19 +204,11 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
     const firstMenuItemRef = useRef<HTMLButtonElement>( null );
     const [ popoutStyles, setPopoutStyles ] = useState<Styles>( {} );
 
-    let className = position;
-
-    if ( isActive ) {
-        className += ' active';
-    }
-    else {
-        className += ' not-active';
-    }
-
     useEffect( () => {
         if (
             typeof ref !== 'function' &&
-            ref?.current
+            ref?.current &&
+            isActive
         ) {
             setPopoutStyles( calcPopoutStyles( {
                 ref,
@@ -216,7 +216,7 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                 position,
             } ) );
         }
-    }, [ isActive ] );
+    }, [ isActive, ref ] );
 
     if ( isActive ) {
         setTimeout( () => {
@@ -224,6 +224,15 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                 firstMenuItemRef.current.focus();
             }
         }, 28 );
+    }
+
+    let className = position;
+
+    if ( isActive ) {
+        className += ' active';
+    }
+    else {
+        className += ' not-active';
     }
 
     return (
