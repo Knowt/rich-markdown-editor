@@ -34,6 +34,7 @@ import ComponentView from "./lib/ComponentView";
 import headingToSlug from "./lib/headingToSlug";
 import { DEFAULT_BACKGROUND_KEY, DEFAULT_HIGHLIGHT_KEY,
   DEFAULT_HIGHLIGHT, DEFAULT_BACKGROUND } from './lib/constants';
+import { isMacOs, isWindows } from "react-device-detect";
 
 // styles
 import { StyledEditor } from "./styles/editor";
@@ -167,7 +168,6 @@ export type Props = {
   className?: string;
   style?: React.CSSProperties;
   parseAsHTML: boolean;
-  deviceType?: DeviceType;
   defaultHighlightKey?: string;
   defaultBackgroundKey?: string;
 };
@@ -828,6 +828,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     } = this.props;
     const { isRTL } = this.state;
     const dictionary = this.dictionary(this.props.dictionary);
+    const deviceType = isMacOs ? "mac" : isWindows ? "windows" : undefined;
 
     return (
       <Flex
@@ -862,7 +863,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
                   isDarkMode={this.props.dark}
-                  deviceType={this.props.deviceType}
+                  deviceType={deviceType}
                   defaultHighlight={this.state.defaultHighlight || DEFAULT_HIGHLIGHT}
                   defaultBackground={this.state.defaultBackground || DEFAULT_BACKGROUND}
                   setDefaultHighlight={this.setDefaultHighlight}
@@ -902,7 +903,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onShowToast={this.props.onShowToast}
                   embeds={this.props.embeds}
                   isDarkMode={this.props.dark}
-                  deviceType={this.props.deviceType}
+                  deviceType={deviceType}
                 />
               </React.Fragment>
             )}
