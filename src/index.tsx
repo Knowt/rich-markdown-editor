@@ -163,6 +163,7 @@ export type Props = {
   className?: string;
   style?: React.CSSProperties;
   parseAsHTML: boolean;
+  spellCheck?: boolean;
 };
 
 type State = {
