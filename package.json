@@ -55,9 +55,9 @@
   },
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0",
+    "react-device-detect": "^2.2.2",
     "react-dom": "^16.0.0 || ^17.0.0",
-    "styled-components": "^5.0.0",
-    "react-device-detect": "^1.6.2"
+    "styled-components": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
