@@ -4,9 +4,9 @@ import KnowtCommandMenu, { Props } from "./KnowtCommandMenu";
 import BlockMenuItem from "./BlockMenuItem";
 import BlockGroupMenuItem from "./BlockGroupMenuItem";
 import { getEmbedsGroup, getGroupedMenuItems } from "../menus/block";
-import { GroupMenuItem } from "../types";
+import { GroupMenuItem, DeviceType } from "../types";
 
-type BlockMenuProps = Omit<
+type PartialBlockMenuProps = Omit<
   Props,
   | "renderMenuItem"
   | "renderGroupMenuItem"
@@ -16,9 +16,18 @@ type BlockMenuProps = Omit<
 > &
   Required<Pick<Props, "onLinkToolbarOpen" | "embeds">>;
 
+interface BlockMenuProps extends PartialBlockMenuProps {
+  isDarkMode?: boolean;
+  deviceType?: DeviceType;
+}
+
 class BlockMenu extends React.Component<BlockMenuProps> {
   get groupedItems(): GroupMenuItem[] {
-    return getGroupedMenuItems(this.props.view, this.props.dictionary);
+    return getGroupedMenuItems(
+      this.props.view, 
+      this.props.dictionary, 
+      this.props.deviceType
+    );
   }
 
   get embedsGroup(): GroupMenuItem {
@@ -67,8 +76,9 @@ class BlockMenu extends React.Component<BlockMenuProps> {
               icon={item.icon}
               iconSVGProps={item.iconSVGProps}
               title={item.title}
-              shortcut={item.shortcut}
-              mainSearchKeyword={item.searchKeyword}
+              accentText={item.searchKeyword}
+              iconColor={item.iconColor}
+              isDarkMode={this.props.isDarkMode}
             />
           );
         }}

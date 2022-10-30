@@ -1,11 +1,12 @@
 import markInputRule from "../../lib/markInputRule";
 import Mark from "../Mark";
 import markRule from "../../rules/mark";
-import applyHighlight from "../../commands/applyHighlight";
+import { toggleMark } from "prosemirror-commands";
+import { RED_HIGHLIGHT_SHORTCUT } from '../../lib/constants';
 
-export default class DefaultHighlight extends Mark {
+export default class RedHighlight extends Mark {
   get name() {
-    return "highlight_default";
+    return "highlight_red";
   }
 
   get schema() {
@@ -36,16 +37,16 @@ export default class DefaultHighlight extends Mark {
 
   keys({ type }) {
     return {
-      "Alt-Shift-1": applyHighlight(type),
+      [ RED_HIGHLIGHT_SHORTCUT ]: toggleMark(type),
     };
   }
 
   commands({ type }) {
-    return () => applyHighlight(type);
+    return () => toggleMark(type);
   }
 
   get rulePlugins() {
-    return [markRule({ delim: "==", mark: "highlight_default" })];
+    return [markRule({ delim: "==", mark: "highlight_red" })];
   }
 
   get toMarkdown() {
@@ -54,10 +55,11 @@ export default class DefaultHighlight extends Mark {
       close: "==",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 
   parseMarkdown() {
-    return { mark: "highlight_default" };
+    return { mark: "highlight_red" };
   }
 }

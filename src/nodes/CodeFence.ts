@@ -58,6 +58,12 @@ export default class CodeFence extends Node {
     return Object.entries(LANGUAGES);
   }
 
+  get defaultOptions() {
+    return {
+      softToDOM: false,
+    }
+  }
+
   get name() {
     return "code_fence";
   }
@@ -92,7 +98,7 @@ export default class CodeFence extends Node {
         const isServer = typeof document === "undefined";
         let button, select;
 
-        if (!isServer) {
+        if (!this.options.softToDOM && !isServer) {
           button = document.createElement("button");
           button.innerText = "Copy";
           button.type = "button";
@@ -114,7 +120,12 @@ export default class CodeFence extends Node {
         return [
           "div",
           { class: "code-block", "data-language": node.attrs.language },
-          ["div", { contentEditable: false }, select ?? "select", button ?? "button"],
+          ...(this.options.softToDOM ? 
+            [] :
+            [
+              ["div", { contentEditable: false }, select ?? "select", button ?? "button"]
+            ]
+          ),
           ["pre", ["code", { spellCheck: false }, 0]]
         ];
       }

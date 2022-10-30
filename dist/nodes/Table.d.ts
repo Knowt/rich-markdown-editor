@@ -33,9 +33,8 @@ export default class Table extends Node {
         addColumnBefore: () => any;
         addColumnAfter: () => any;
         deleteColumn: () => any;
-        addRowAfter: ({ index }: {
-            index: any;
-        }) => (state: any, dispatch: any) => void;
+        addRowBefore: () => any;
+        addRowAfter: () => any;
         deleteRow: () => any;
         deleteTable: () => any;
         toggleHeaderColumn: () => any;
@@ -47,7 +46,6 @@ export default class Table extends Node {
     keys(): {
         Tab: any;
         "Shift-Tab": any;
-        Enter: (state: any, dispatch: any) => boolean;
     };
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {

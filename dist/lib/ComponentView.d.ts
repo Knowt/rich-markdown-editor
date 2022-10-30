@@ -18,9 +18,7 @@ export default class ComponentView {
     node: Node;
     view: EditorView;
     getPos: () => number;
-    decorations: Decoration<{
-        [key: string]: any;
-    }>[];
+    decorations: Decoration[];
     isSelected: boolean;
     dom: HTMLElement | null;
     constructor(component: any, { editor, extension, node, view, getPos, decorations }: {

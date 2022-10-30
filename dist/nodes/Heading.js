@@ -99,7 +99,6 @@ class Heading extends Node_1.default {
                     }
                     return false;
                 },
-                contentElement: ".heading-content"
             })),
             toDOM: (node) => {
                 const isServer = typeof document === "undefined";

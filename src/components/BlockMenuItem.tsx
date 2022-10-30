@@ -2,6 +2,8 @@ import * as React from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import styled, { withTheme } from "styled-components";
 import theme from "../styles/theme";
+import MenuItem from './MenuItem';
+import GreenAccentText from './GreenAccentText';
 
 export type Props = {
   selected: boolean;
@@ -12,9 +14,10 @@ export type Props = {
   iconSVGProps?: any;
   innerRef?: (ref: HTMLDivElement) => void;
   title: React.ReactNode;
-  shortcut?: string;
   containerId?: string;
-  mainSearchKeyword?: string;
+  accentText?: string;
+  iconColor?: string;
+  isDarkMode?: boolean;
 };
 
 function BlockMenuItem({
@@ -25,9 +28,11 @@ function BlockMenuItem({
   icon,
   iconSVGProps,
   innerRef,
-  mainSearchKeyword,
+  accentText,
   containerId = "block-menu-container",
-  theme
+  theme,
+  iconColor,
+  isDarkMode,
 }: Props) {
   const Icon = icon;
 
@@ -54,78 +59,39 @@ function BlockMenuItem({
       <Group>
         {Icon && (
           <>
-            <Icon color={theme.blockToolbarIconColor} size={20} {...iconSVGProps} />
+            <Icon color={iconColor || theme.blockToolbarIconColor}
+              className={!isDarkMode && iconColor ? 
+                'block-menu-item-icon light' : 'block-menu-item-icon'}
+              size={20} {...iconSVGProps} />
             &nbsp;&nbsp;
           </>
         )}
         <Title>{title}</Title>
       </Group>
       <Group>
-        {mainSearchKeyword && (
-          <SearchKeyword>{mainSearchKeyword}</SearchKeyword>
+        {accentText && (
+          <GreenAccentText>
+            {accentText}
+          </GreenAccentText>
         )}
       </Group>
     </MenuItem>
   );
 }
 
-const MenuItem = styled.button<{
-  selected: boolean;
-}>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1;
-  width: 100%;
-  height: 40px;
-  cursor: pointer;
-  border: none;
-  opacity: ${(props) => (props.disabled ? ".5" : "1")};
-  color: ${(props) =>
-    props.selected
-      ? props.theme.blockToolbarTextSelected
-      : props.theme.blockToolbarText};
-  background: ${(props) =>
-    props.selected
-      ? props.theme.blockToolbarSelectedBackground ||
-        props.theme.blockToolbarTrigger
-      : "none"};
-  padding: 0 16px;
-  outline: none;
-
-  &:hover,
-  &:active {
-    color: ${(props) => props.theme.blockToolbarTextSelected};
-    background: ${(props) =>
-      props.selected
-        ? props.theme.blockToolbarSelectedBackground ||
-          props.theme.blockToolbarTrigger
-        : props.theme.blockToolbarHoverBackground};
-  }
-`;
-
 const Group = styled.div`
   display: flex;
   align-items: center;
+
+  .block-menu-item-icon {
+    &.light {
+      filter: saturate( 1100% ) brightness( 90% );
+    }
+  }
 `;
 
 const Title = styled.span`
   margin-right: 60px;
-`;
-
-const SearchKeyword = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 6px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  color: ${(props) => props.theme.knowtGreen};
-  background-color: ${(props) => props.theme.blockToolbarTagBackgroundColor};
 `;
 
 export default withTheme(BlockMenuItem);

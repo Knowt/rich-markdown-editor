@@ -1,7 +1,7 @@
 /* global window File Promise */
 import * as React from "react";
 import memoize from "lodash/memoize";
-import { EditorState, Selection, Plugin } from "prosemirror-state";
+import { EditorState, Plugin } from "prosemirror-state";
 import { dropCursor } from "prosemirror-dropcursor";
 import { gapCursor } from "prosemirror-gapcursor";
 import { MarkdownParser, MarkdownSerializer } from "prosemirror-markdown";
@@ -22,16 +22,19 @@ import { light as lightTheme, dark as darkTheme } from "./styles/theme";
 import baseDictionary from "./dictionary";
 import Flex from "./components/Flex";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType } from "./types";
+import { EmbedDescriptor, ToastType, DeviceType,
+  DefaultHighlight, DefaultBackground } from "./types";
 import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
 import LinkToolbar from "./components/LinkToolbar";
-import Tooltip from "./components/Tooltip";
 import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
 import headingToSlug from "./lib/headingToSlug";
+import { DEFAULT_BACKGROUND_KEY, DEFAULT_HIGHLIGHT_KEY,
+  DEFAULT_HIGHLIGHT, DEFAULT_BACKGROUND } from './lib/constants';
+import { isMacOs, isWindows } from "react-device-detect";
 
 // styles
 import { StyledEditor } from "./styles/editor";
@@ -64,11 +67,14 @@ import TableRow from "./nodes/TableRow";
 // marks
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
-import DefaultHighlight from "./marks/highlights/DefaultHighlight";
+import RedHighlight from "./marks/highlights/RedHighlight";
 import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
+import { BlueBackground, RedBackground,
+  OrangeBackground, YellowBackground,
+  GreenBackground } from './marks/backgrounds';
 import Italic from "./marks/Italic";
 import Link from "./marks/Link";
 import Strikethrough from "./marks/Strikethrough";
@@ -87,11 +93,8 @@ import SmartText from "./plugins/SmartText";
 import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 import { PluginSimple } from "markdown-it";
-import { isHTML, replaceHeaderByStrong } from "./domHelpers";
+import { replaceHeaderByStrong } from "./domHelpers";
 import GoToPreviousInputTrigger from "./plugins/GoToPreviousInputTrigger";
-
-// export { schema, parser, serializer, renderToHtml } from "./server";
-
 export { default as Extension } from "./lib/Extension";
 
 export const theme = lightTheme;
@@ -148,7 +151,7 @@ export type Props = {
   uploadImage?: (file: File) => Promise<string>;
   onBlur?: () => void;
   onFocus?: () => void;
-  onSave?: ({ done: boolean }) => void;
+  onSave?: (input: { done: boolean }) => void;
   onCancel?: () => void;
   onChange?: (value: () => string) => void;
   onImageUploadStart?: () => void;
@@ -162,9 +165,12 @@ export type Props = {
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   embeds: EmbedDescriptor[];
   onShowToast?: (message: string, code: ToastType) => void;
-  tooltip: typeof React.Component | React.FC<any>;
   className?: string;
   style?: React.CSSProperties;
+  parseAsHTML: boolean;
+  spellCheck?: boolean;
+  defaultHighlightKey?: string;
+  defaultBackgroundKey?: string;
 };
 
 type State = {
@@ -175,6 +181,8 @@ type State = {
   linkMenuOpen: boolean;
   blockMenuSearch: string;
   emojiMenuOpen: boolean;
+  defaultHighlight?: DefaultHighlight | null;
+  defaultBackground?: DefaultBackground | null;
 };
 
 type Step = {
@@ -198,7 +206,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     },
     embeds: [],
     extensions: [],
-    tooltip: Tooltip,
   };
 
   state = {
@@ -209,6 +216,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     linkMenuOpen: false,
     blockMenuSearch: "",
     emojiMenuOpen: false,
+    defaultHighlight: undefined,
+    defaultBackground: undefined,
   };
 
   isBlurred: boolean;
@@ -239,6 +248,14 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
 
     this.calculateDir();
+
+    const { defaultHighlight, defaultBackground } = this.getLocalStorageDefaults();
+
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultHighlight,
+      defaultBackground,
+    } ) );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -356,13 +373,21 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             onSelectColumn: this.handleSelectColumn,
           }),
           new TableRow(),
+          // backgrounds take precedence over other marks
+          // this makes all below marks wrapped inside the background mark
+          // do not change order of these marks unless you know what you are doing
+          new BlueBackground(),
+          new RedBackground(),
+          new OrangeBackground(),
+          new YellowBackground(),
+          new GreenBackground(),
           new Bold(),
           new Code(),
           new OrangeHighlight(),
           new YellowHighlight(),
           new BlueHighlight(),
           new GreenHighlight(),
-          new DefaultHighlight(), // the order matters here!! since it's the default marker
+          new RedHighlight(), // the order matters here!! since it's the default marker
           new Italic(),
           new TemplatePlaceholder(),
           new Underline(),
@@ -528,7 +553,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   }
 
   createDocument(content: string) {
-    if (isHTML(content)) {
+    if (this.props.parseAsHTML) {
       return this.parseHtmlContent(content);
     }
     return this.mdParser.parse(content) ?? undefined;
@@ -757,19 +782,54 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     }
   );
 
+  getDefaultHighlightKey = () => {
+    return this.props.defaultHighlightKey || DEFAULT_HIGHLIGHT_KEY;
+  }
+
+  getDefaultBackgroundKey = () => {
+    return this.props.defaultBackgroundKey || DEFAULT_BACKGROUND_KEY;
+  }
+
+  setDefaultHighlight = ( defaultHighlight: DefaultHighlight ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultHighlight,
+    } ) );
+
+    window.localStorage.setItem( this.getDefaultHighlightKey(), defaultHighlight );
+  }
+
+  setDefaultBackground = ( defaultBackground: DefaultBackground ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultBackground,
+    } ) )
+
+    window.localStorage.setItem( this.getDefaultBackgroundKey(), defaultBackground );
+  }
+
+  getLocalStorageDefaults = () => {
+    return {
+      defaultHighlight: window.localStorage.getItem( 
+        this.getDefaultHighlightKey() ) as DefaultHighlight | null,
+      defaultBackground: window.localStorage.getItem( 
+        this.getDefaultBackgroundKey() ) as DefaultBackground | null,
+    }
+  }
+
   render() {
     const {
       dir,
       readOnly,
       readOnlyWriteCheckboxes,
       style,
-      tooltip,
       className,
       onKeyDown,
       fontScale,
     } = this.props;
     const { isRTL } = this.state;
     const dictionary = this.dictionary(this.props.dictionary);
+    const deviceType = isMacOs ? "mac" : isWindows ? "windows" : undefined;
 
     return (
       <Flex
@@ -780,6 +840,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         justify="center"
         dir={dir}
         column
+        spellCheck={typeof this.props.spellCheck === 'boolean' ?
+          this.props.spellCheck : true}
       >
         <ThemeProvider theme={this.theme()}>
           <React.Fragment>
@@ -803,7 +865,12 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onSearchLink={this.props.onSearchLink}
                   onClickLink={this.props.onClickLink}
                   onCreateLink={this.props.onCreateLink}
-                  tooltip={tooltip}
+                  isDarkMode={this.props.dark}
+                  deviceType={deviceType}
+                  defaultHighlight={this.state.defaultHighlight || DEFAULT_HIGHLIGHT}
+                  defaultBackground={this.state.defaultBackground || DEFAULT_BACKGROUND}
+                  setDefaultHighlight={this.setDefaultHighlight}
+                  setDefaultBackground={this.setDefaultBackground}
                 />
                 <LinkToolbar
                   view={this.view}
@@ -814,7 +881,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClickLink={this.props.onClickLink}
                   onShowToast={this.props.onShowToast}
                   onClose={this.handleCloseLinkMenu}
-                  tooltip={tooltip}
                 />
                 <EmojiMenu
                   view={this.view}
@@ -839,6 +905,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onImageUploadStop={this.props.onImageUploadStop}
                   onShowToast={this.props.onShowToast}
                   embeds={this.props.embeds}
+                  isDarkMode={this.props.dark}
+                  deviceType={deviceType}
                 />
               </React.Fragment>
             )}

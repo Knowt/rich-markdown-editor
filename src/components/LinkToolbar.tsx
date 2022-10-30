@@ -4,11 +4,11 @@ import LinkEditor, { SearchResult } from "./LinkEditor";
 import FloatingToolbar from "./FloatingToolbar";
 import createAndInsertLink from "../commands/createAndInsertLink";
 import baseDictionary from "../dictionary";
+import Tooltip from '../components/Tooltip';
 
 type Props = {
   isActive: boolean;
   view: EditorView;
-  tooltip: typeof React.Component | React.FC<any>;
   dictionary: typeof baseDictionary;
   onCreateLink?: (title: string) => Promise<string>;
   onSearchLink?: (term: string) => Promise<SearchResult[]>;

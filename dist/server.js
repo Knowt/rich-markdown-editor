@@ -50,7 +50,7 @@ const extensions = new ExtensionManager_1.default([
     new Blockquote_1.default(),
     new Emoji_1.default(),
     new BulletList_1.default(),
-    new CodeBlock_1.default(),
+    new CodeBlock_1.default({ softToDOM: true }),
     new CodeFence_1.default(),
     new CheckboxList_1.default(),
     new CheckboxItem_1.default(),
