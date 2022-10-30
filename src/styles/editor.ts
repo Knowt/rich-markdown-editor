@@ -152,6 +152,53 @@ export const StyledEditor = styled("div")<{
         opacity: 1;
       }
     }
+
+    mark {
+      &.background {
+        display: inline-flex;
+        position: relative;
+        width: 100%;
+
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          z-index: -1;
+          height: 100%;
+          width: 100%;
+        }
+  
+        &.red {
+          &:after {
+            background: ${(props) => props.theme.highlights["red"]};
+          }
+        }
+  
+        &.orange {
+          &:after {
+            background: ${(props) => props.theme.highlights["orange"]};
+          }
+        }
+  
+        &.yellow {
+          &:after {
+            background: ${(props) => props.theme.highlights["yellow"]};
+          }
+        }
+  
+        &.green {
+          &:after {
+            background: ${(props) => props.theme.highlights["green"]};
+          }
+        }
+  
+        &.blue {
+          &:after {
+            background: ${(props) => props.theme.highlights["blue"]};
+          }
+        }
+      }
+    }
   }
 
   .heading-content {
@@ -559,6 +606,10 @@ export const StyledEditor = styled("div")<{
 
     a {
       color: ${(props) => props.theme.textHighlightForeground};
+    }
+
+    &.background {
+      display: flex;
     }
 
     &.red {
