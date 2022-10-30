@@ -130,6 +130,14 @@ const getGroupedMenuItems = (view, dictionary) => {
                     searchKeyword: "divider",
                 },
                 {
+                    name: "hr",
+                    title: dictionary.pageBreak,
+                    icon: outline_icons_1.PageBreakIcon,
+                    keywords: "page print break line",
+                    searchKeyword: "page break",
+                    attrs: { markup: "***" },
+                },
+                {
                     name: "link",
                     title: dictionary.link,
                     icon: outline_icons_1.LinkIcon,

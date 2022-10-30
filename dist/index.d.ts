@@ -131,8 +131,8 @@ export declare type Props = {
     uploadImage?: (file: File) => Promise<string>;
     onBlur?: () => void;
     onFocus?: () => void;
-    onSave?: (input: {
-        done: boolean;
+    onSave?: ({ done: boolean }: {
+        done: any;
     }) => void;
     onCancel?: () => void;
     onChange?: (value: () => string) => void;
@@ -150,7 +150,6 @@ export declare type Props = {
     tooltip: typeof React.Component | React.FC<any>;
     className?: string;
     style?: React.CSSProperties;
-    parseAsHTML: boolean;
 };
 declare type State = {
     isRTL: boolean;

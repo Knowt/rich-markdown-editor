@@ -182,30 +182,37 @@ const Wrapper = styled.div<{
   active?: boolean;
   offset: number;
 }>`
-  display: flex;
   will-change: opacity, transform;
+  padding: 8px 16px;
   position: absolute;
   z-index: ${props => props.theme.zIndex + 100};
   opacity: 0;
-  background: ${props => props.theme.toolbarBackground};
+  background-color: ${props => props.theme.toolbarBackground};
   border-radius: 4px;
   transform: scale(0.95);
   transition: opacity 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transition-delay: 150ms;
   line-height: 0;
-  height: 35px;
+  height: 40px;
   box-sizing: border-box;
   pointer-events: none;
   white-space: nowrap;
-  // DO NOT REMOVE THIS
-  // idk why but you need this to calc position of toolbar
-  min-width: 1px;
-  box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
-              0px 0px 0.9px ${props => props.theme.toolbarShadow},
-              0px 0px 1.8px ${props => props.theme.toolbarShadow},
-              0px 0px 3.7px ${props => props.theme.toolbarShadow},
-              0px 0px 10px ${props => props.theme.toolbarShadow};
+
+  &::before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    transform: translateX(-50%) rotate(45deg);
+    background: ${props => props.theme.toolbarBackground};
+    border-radius: 3px;
+    z-index: -1;
+    position: absolute;
+    bottom: -2px;
+    left: calc(50% - ${props => props.offset || 0}px);
+    pointer-events: none;
+  }
 
   * {
     box-sizing: border-box;
@@ -223,6 +230,10 @@ const Wrapper = styled.div<{
   }
 
   @media (hover: none) and (pointer: coarse) {
+    &:before {
+      display: none;
+    }
+
     transition: opacity 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform: scale(1);
     border-radius: 0;

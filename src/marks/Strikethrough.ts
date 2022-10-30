@@ -1,7 +1,6 @@
 import { toggleMark } from "prosemirror-commands";
 import markInputRule from "../lib/markInputRule";
 import Mark from "./Mark";
-import { STRIKETHROUGH_SHORTCUT1, STRIKETHROUGH_SHORTCUT2 } from '../lib/constants';
 
 export default class Strikethrough extends Mark {
   get name() {
@@ -27,8 +26,7 @@ export default class Strikethrough extends Mark {
 
   keys({ type }) {
     return {
-      [ STRIKETHROUGH_SHORTCUT1 ]: toggleMark(type),
-      [ STRIKETHROUGH_SHORTCUT2 ]: toggleMark(type),
+      "Mod-d": toggleMark(type),
     };
   }
 
@@ -42,7 +40,6 @@ export default class Strikethrough extends Mark {
       close: "~~",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

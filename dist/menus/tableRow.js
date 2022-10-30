@@ -4,11 +4,12 @@ const outline_icons_1 = require("outline-icons");
 function tableRowMenuItems(state, index, dictionary) {
     return [
         {
-            name: "addRowBefore",
+            name: "addRowAfter",
             tooltip: dictionary.addRowBefore,
             icon: outline_icons_1.InsertAboveIcon,
             attrs: { index: index - 1 },
             active: () => false,
+            visible: index !== 0,
         },
         {
             name: "addRowAfter",

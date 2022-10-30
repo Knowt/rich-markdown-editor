@@ -28,6 +28,7 @@ type Props = {
   mark?: Mark;
   from: number;
   to: number;
+  tooltip: typeof React.Component | React.FC<any>;
   dictionary: typeof baseDictionary;
   onRemoveLink?: () => void;
   onCreateLink?: (title: string) => Promise<void>;
@@ -280,6 +281,7 @@ class LinkEditor extends React.Component<Props, State> {
       this.state.results[this.state.previousValue] ||
       [];
 
+    const Tooltip = this.props.tooltip;
     const looksLikeUrl = value.match(/^https?:\/\//i);
 
     const suggestedLinkTitle = this.suggestedLinkTitle;
@@ -296,7 +298,6 @@ class LinkEditor extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Input
-          className='link-editor-input'
           value={value}
           placeholder={
             showCreateLink
@@ -308,25 +309,22 @@ class LinkEditor extends React.Component<Props, State> {
           onChange={this.handleChange}
           autoFocus={this.href === ""}
         />
+
         <ToolbarButton onClick={this.handleOpenLink} disabled={!value}>
-          <span title={dictionary.openLink}
-            aria-label={dictionary.openLink}>
+          <Tooltip tooltip={dictionary.openLink} placement="top">
             <OpenIcon color={theme.toolbarItem} />
-          </span>
+          </Tooltip>
         </ToolbarButton>
         <ToolbarButton onClick={this.handleRemoveLink}>
-          {this.initialValue ? (
-            <span title={dictionary.removeLink}
-              aria-label={dictionary.removeLink}>
+          <Tooltip tooltip={dictionary.removeLink} placement="top">
+            {this.initialValue ? (
               <TrashIcon color={theme.toolbarItem} />
-            </span>
-          ) : (
-            <span title={dictionary.removeLink}
-              aria-label={dictionary.removeLink}>
+            ) : (
               <CloseIcon color={theme.toolbarItem} />
-            </span>
-          )}
+            )}
+          </Tooltip>
         </ToolbarButton>
+
         {showResults && (
           <SearchResults id="link-search-results">
             {results.map((result, index) => (
@@ -340,6 +338,7 @@ class LinkEditor extends React.Component<Props, State> {
                 selected={index === selectedIndex}
               />
             ))}
+
             {showCreateLink && (
               <LinkSearchResult
                 key="create"
@@ -369,22 +368,19 @@ const Wrapper = styled(Flex)`
   margin-right: -8px;
   min-width: 336px;
   pointer-events: all;
-  padding-inline: 8px;
-  display: flex;
-
-  .link-editor-input {
-    margin: 3px 6px;
-  }
 `;
 
 const SearchResults = styled.ol`
   background: ${(props) => props.theme.toolbarBackground};
   position: absolute;
-  top: calc( 100% - 3px );
+  top: 100%;
   width: 100%;
   height: auto;
   left: 0;
   padding: 4px 8px 8px;
+  margin: 0;
+  margin-top: -3px;
+  margin-bottom: 0;
   border-radius: 0 0 4px 4px;
   overflow-y: auto;
   max-height: 25vh;

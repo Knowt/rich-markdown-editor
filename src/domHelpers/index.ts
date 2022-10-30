@@ -1,10 +1,3 @@
-/**
- * Detects any html within note content.
- * BE CAREFUL when using this function as a precursor to parsing
- * note content as HTML since HTML can occur naturally within the note -
- * i.e -> computer science notes
- * This function is used for the backend quiz generation
- */
 export const isHTML = (str) => {
   const doc = new DOMParser().parseFromString(str, "text/html");
   return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
@@ -18,8 +11,7 @@ export const remToPx = (rem) => {
 };
 
 const isRem = (val) => {
-  return typeof val === "string" && 
-    ( val.includes("rem") || val.includes("em") );
+  return typeof val === "string" && val.includes("rem");
 };
 
 // Converts string dimension to float (in px)

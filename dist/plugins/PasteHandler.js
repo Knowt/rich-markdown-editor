@@ -11,6 +11,7 @@ const isUrl_1 = __importDefault(require("../lib/isUrl"));
 const isMarkdown_1 = __importDefault(require("../lib/isMarkdown"));
 const isInCode_1 = __importDefault(require("../queries/isInCode"));
 const Prism_1 = require("./Prism");
+const domHelpers_1 = require("../domHelpers");
 function normalizePastedMarkdown(text) {
     const CHECKBOX_REGEX = /^\s?(\[(X|\s|_|-)\]\s(.*)?)/gim;
     while (text.match(CHECKBOX_REGEX)) {
@@ -26,6 +27,9 @@ class PasteHandler extends Extension_1.default {
         return [
             new prosemirror_state_1.Plugin({
                 props: {
+                    transformPastedHTML: (html) => {
+                        return domHelpers_1.replaceHeaderByStrong(html);
+                    },
                     handlePaste: (view, event) => {
                         if (view.props.editable && !view.props.editable(view.state)) {
                             return false;
@@ -85,12 +89,10 @@ class PasteHandler extends Extension_1.default {
                             pasteCodeLanguage === "markdown") {
                             event.preventDefault();
                             const paste = this.editor.pasteParser.parse(normalizePastedMarkdown(text));
-                            if (paste) {
-                                const slice = paste.slice(0);
-                                const transaction = view.state.tr.replaceSelection(slice);
-                                view.dispatch(transaction);
-                                return true;
-                            }
+                            const slice = paste.slice(0);
+                            const transaction = view.state.tr.replaceSelection(slice);
+                            view.dispatch(transaction);
+                            return true;
                         }
                         return false;
                     },

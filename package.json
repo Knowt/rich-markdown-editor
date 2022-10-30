@@ -1,7 +1,7 @@
 {
   "name": "@knowt/rich-markdown-editor",
   "description": "A rich text editor with Markdown shortcuts",
-  "version": "11.21.6",
+  "version": "11.21.1",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "BSD-3-Clause",
@@ -10,9 +10,8 @@
     "test": "jest",
     "start": "start-storybook -p 6006",
     "build": "tsc",
-    "preinstall": "npx only-allow yarn",
-    "build-storybook": "build-storybook",
-    "type-check": "tsc --noEmit"
+    "preversion": "npm run build",
+    "build-storybook": "build-storybook"
   },
   "serve": {
     "open": true,
@@ -56,8 +55,7 @@
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0",
     "react-dom": "^16.0.0 || ^17.0.0",
-    "styled-components": "^5.0.0",
-    "react-device-detect": "^1.6.2"
+    "styled-components": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

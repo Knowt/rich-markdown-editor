@@ -33,7 +33,7 @@ declare type State = {
     isAbove: boolean;
     selectedIndex: number;
 };
-declare class CommandMenu<T extends MenuItem = MenuItem> extends React.Component<Props<T>, State> {
+declare class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
     menuRef: React.RefObject<HTMLDivElement>;
     inputRef: React.RefObject<HTMLInputElement>;
     state: State;

@@ -12,8 +12,7 @@ const remToPx = (rem) => {
 };
 exports.remToPx = remToPx;
 const isRem = (val) => {
-    return typeof val === "string" &&
-        (val.includes("rem") || val.includes("em"));
+    return typeof val === "string" && val.includes("rem");
 };
 const getParsedValue = (val) => {
     if (!val)

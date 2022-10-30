@@ -1,9 +1,5 @@
 import { setBlockType } from "prosemirror-commands";
 import Node from "./Node";
-// import { EditorState } from 'prosemirror-state';
-// import { isInTable } from "@knowt/prosemirror-tables";
-// import isNodeActive from '../queries/isNodeActive';
-// import isInList from "../queries/isInList";
 
 export default class Paragraph extends Node {
   get name() {
@@ -22,19 +18,6 @@ export default class Paragraph extends Node {
   keys({ type }) {
     return {
       "Shift-Ctrl-0": setBlockType(type),
-      // Tab: ( state: EditorState, dispatch ) => {
-      //   if ( 
-      //     isInTable( state ) ||
-      //     isNodeActive(state.schema.nodes.image)(state) ||
-      //     isNodeActive(state.schema.nodes.hr)(state) ||
-      //     isInList(state)
-      //   )
-      //     return;
-
-      //   const { tr } = state;
-      //   tr.insertText( '    ' );
-      //   dispatch( tr );
-      // }
     };
   }
 

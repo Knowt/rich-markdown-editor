@@ -1,7 +1,7 @@
 import { EditorState } from "prosemirror-state";
 
 export default function addMarkToSelection(type, attrs = {}) {
-  return (state: EditorState, dispatch): boolean => {
+  return (state: EditorState<any>, dispatch): boolean => {
     dispatch(
       state.tr.addMark(
         state.selection.from,

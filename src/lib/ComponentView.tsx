@@ -22,7 +22,7 @@ export default class ComponentView {
   node: Node;
   view: EditorView;
   getPos: () => number;
-  decorations: Decoration[];
+  decorations: Decoration<{ [key: string]: any }>[];
   isSelected = false;
   dom: HTMLElement | null;
 

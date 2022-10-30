@@ -1,8 +1,7 @@
 import markInputRule from "../../lib/markInputRule";
 import Mark from "../Mark";
 import markRule from "../../rules/mark";
-import { toggleMark } from "prosemirror-commands";
-import { GREEN_HIGHLIGHT_SHORTCUT } from '../../lib/constants';
+import applyHighlight from "../../commands/applyHighlight";
 
 export default class GreenHighlight extends Mark {
   get name() {
@@ -38,12 +37,12 @@ export default class GreenHighlight extends Mark {
 
   keys({ type }) {
     return {
-      [ GREEN_HIGHLIGHT_SHORTCUT ]: toggleMark(type),
+      "Alt-Shift-4": applyHighlight(type),
     };
   }
 
   commands({ type }) {
-    return () => toggleMark(type);
+    return () => applyHighlight(type);
   }
 
   get rulePlugins() {
@@ -56,7 +55,6 @@ export default class GreenHighlight extends Mark {
       close: "%%",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

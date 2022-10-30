@@ -159,12 +159,8 @@ class SelectionToolbar extends React.Component {
         const isImageSelection = selection.node && selection.node.type.name === "image";
         let isTextSelection = false;
         let items = [];
-        if (isTableSelection &&
-            typeof rowIndex === 'number') {
-            items = table_1.default(dictionary, {
-                rowIndex,
-                rtl,
-            });
+        if (isTableSelection) {
+            items = table_1.default(dictionary);
         }
         else if (colIndex !== undefined) {
             items = tableCol_1.default(state, colIndex, rtl, dictionary);

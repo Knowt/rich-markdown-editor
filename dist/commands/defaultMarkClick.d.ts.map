@@ -1,1 +1,0 @@
-{"version":3,"file":"defaultMarkClick.d.ts","sourceRoot":"","sources":["../../src/commands/defaultMarkClick.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,UAAU,CAAC;AAEpC,UAAU,KAAK;IACX,IAAI,EAAE,QAAQ,CAAC;IACf,QAAQ,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC;CACjC;AAID,eAAO,MAAM,gBAAgB,UAClB,KAAK,SAUf,CAAA"}

@@ -40,7 +40,6 @@ class Strikethrough extends Mark_1.default {
             close: "~~",
             mixable: true,
             expelEnclosingWhitespace: true,
-            escape: false,
         };
     }
     get markdownToken() {

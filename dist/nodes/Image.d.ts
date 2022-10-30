@@ -23,6 +23,8 @@ export default class Image extends Node {
         content: string;
         marks: string;
         group: string;
+        selectable: boolean;
+        draggable: boolean;
         parseDOM: {
             tag: string;
             getAttrs: (dom: HTMLDivElement) => {
@@ -45,7 +47,7 @@ export default class Image extends Node {
     }) => (event: any) => void;
     handleSelect: ({ getPos }: {
         getPos: any;
-    }) => () => void;
+    }) => (event: any) => void;
     resizeImage: ({ node, getPos, width, height }: {
         node: any;
         getPos: any;

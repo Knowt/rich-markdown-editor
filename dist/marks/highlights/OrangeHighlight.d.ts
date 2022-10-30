@@ -28,18 +28,17 @@ export default class OrangeHighlight extends Mark {
     keys({ type }: {
         type: any;
     }): {
-        "Alt-Shift-2": import("prosemirror-state").Command;
+        "Alt-Shift-2": (state: import("prosemirror-state").EditorState, dispatch: any) => boolean;
     };
     commands({ type }: {
         type: any;
-    }): () => import("prosemirror-state").Command;
+    }): () => (state: import("prosemirror-state").EditorState, dispatch: any) => boolean;
     get rulePlugins(): ((md: any) => void)[];
     get toMarkdown(): {
         open: string;
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
-        escape: boolean;
     };
     parseMarkdown(): {
         mark: string;

@@ -1,41 +1,29 @@
 import styled from "styled-components";
 
-interface Props { 
-  active?: boolean; 
-  disabled?: boolean;
-  showBackgroundOnActive?: boolean;
-};
+type Props = { active?: boolean; disabled?: boolean };
 
 export default styled.button<Props>`
-  display: flex;
-  justify-content: center;
-  border-radius: 4px;
-  align-items: center;
+  display: inline-block;
+  flex: 0;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  padding: 10px 3px;
+  margin-left: 8px;
   border: none;
   background: none;
-  transition: opacity 85ms ease-in-out,
-              background-color 85ms ease-in-out;
+  transition: opacity 100ms ease-in-out;
+  padding: 0;
   opacity: 0.7;
   outline: none;
   pointer-events: all;
   position: relative;
-  height: 100%;
 
   &:first-child {
     margin-left: 0;
   }
 
-  .toolbar-icon {
-    &.light {
-      filter: saturate( 1100% ) brightness( 90% );
-    }
-  }
-
   &:hover {
     opacity: 1;
-    background: ${(props) => props.theme.toolbarHoverBackground};
   }
 
   &:disabled {
@@ -52,9 +40,5 @@ export default styled.button<Props>`
     bottom: -4px;
   }
 
-  ${props => props.active && `
-    opacity: 1; 
-    background: ${props.showBackgroundOnActive ? props.theme.toolbarHoverBackground : 'none'};
-  `
-  };
+  ${props => props.active && "opacity: 1;"};
 `;

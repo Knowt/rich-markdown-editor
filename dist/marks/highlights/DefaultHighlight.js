@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const markInputRule_1 = __importDefault(require("../../lib/markInputRule"));
 const Mark_1 = __importDefault(require("../Mark"));
 const mark_1 = __importDefault(require("../../rules/mark"));
-const prosemirror_commands_1 = require("prosemirror-commands");
+const applyHighlight_1 = __importDefault(require("../../commands/applyHighlight"));
 class DefaultHighlight extends Mark_1.default {
     get name() {
         return "highlight_default";
@@ -37,11 +37,11 @@ class DefaultHighlight extends Mark_1.default {
     }
     keys({ type }) {
         return {
-            "Alt-Shift-1": prosemirror_commands_1.toggleMark(type),
+            "Alt-Shift-1": applyHighlight_1.default(type),
         };
     }
     commands({ type }) {
-        return () => prosemirror_commands_1.toggleMark(type);
+        return () => applyHighlight_1.default(type);
     }
     get rulePlugins() {
         return [mark_1.default({ delim: "==", mark: "highlight_default" })];
@@ -52,7 +52,6 @@ class DefaultHighlight extends Mark_1.default {
             close: "==",
             mixable: true,
             expelEnclosingWhitespace: true,
-            escape: false,
         };
     }
     parseMarkdown() {

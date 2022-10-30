@@ -29,15 +29,6 @@ exports.StyledEditor = styled_components_1.default("div") `
     padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
   }
 
-  img {
-    &.ProseMirror-separator {
-      display: none;
-
-      + .ProseMirror-trailingBreak {
-        display: none;
-      }
-    }
-  }
 
   pre {
     white-space: pre-wrap;
@@ -155,8 +146,6 @@ exports.StyledEditor = styled_components_1.default("div") `
   }
 
   .heading-content {
-    line-height: 120%;
-
     &:before {
       content: "​";
       display: inline;
@@ -353,7 +342,6 @@ exports.StyledEditor = styled_components_1.default("div") `
 
   blockquote {
     margin: 0;
-    margin-bottom: 0.3rem;
     padding-left: 1.5em;
     font-style: italic;
     overflow: hidden;
@@ -410,8 +398,7 @@ exports.StyledEditor = styled_components_1.default("div") `
   ul,
   ol {
     margin: ${(props) => (props.rtl ? "0 0 0 0.1em" : "0 0.1em 0 0")};
-    padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
-    margin-left: 14px;
+    padding: ${(props) => (props.rtl ? "0 36px 0 0" : "0 0 0 36px")};
   }
 
   ol ol {
@@ -425,18 +412,16 @@ exports.StyledEditor = styled_components_1.default("div") `
   ul.checkbox_list {
     list-style: none;
     padding: 0;
-    margin: ${(props) => (props.rtl ? "0 -14px 0 0" : "0 0 0 -14px")};
+    margin: ${(props) => (props.rtl ? "0 -24px 0 0" : "0 0 0 -24px")};
   }
 
   ul li,
   ol li {
     position: relative;
     white-space: initial;
-    margin-block: auto;
 
     p {
       white-space: pre-wrap;
-      margin-block: auto;
     }
 
     > div {
@@ -447,10 +432,6 @@ exports.StyledEditor = styled_components_1.default("div") `
   ul.checkbox_list li {
     display: flex;
     padding-${(props) => (props.rtl ? "right" : "left")}: 24px;
-
-    input {
-      margin-top: 1px;
-    }
   }
 
   ul.checkbox_list li.checked > div > p {
@@ -576,12 +557,9 @@ exports.StyledEditor = styled_components_1.default("div") `
     &.blue {
         background: ${(props) => props.theme.highlights["blue"]};
     }
+
   }
 
-  .code-block {
-    margin-bottom: 0.3rem;
-  }
-  
   .code-block,
   .notice-block {
     position: relative;
@@ -604,7 +582,6 @@ exports.StyledEditor = styled_components_1.default("div") `
       select,
       button {
         right: 4px;
-        color: ${(props) => props.theme.text};
       }
     }
 
@@ -774,15 +751,12 @@ exports.StyledEditor = styled_components_1.default("div") `
     border-radius: 4px;
     margin-top: 1em;
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat( auto-fill, 1fr );
 
     * {
       box-sizing: border-box;
     }
 
     tr {
-      display: flex;
       position: relative;
       border-bottom: 1px solid ${(props) => props.theme.tableDivider};
     }
@@ -796,16 +770,10 @@ exports.StyledEditor = styled_components_1.default("div") `
       position: relative;
       vertical-align: top;
       border: 1px solid ${(props) => props.theme.tableDivider};
+      position: relative;
       padding: 4px 8px;
       text-align: ${(props) => (props.rtl ? "right" : "left")};
-      width: 100%;
-
-      p {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        -ms-word-break: break-all;
-        word-break: break-word;
-      }
+      min-width: 100px;
     }
 
     .selectedCell {

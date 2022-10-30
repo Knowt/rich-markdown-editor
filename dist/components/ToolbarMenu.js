@@ -26,7 +26,6 @@ const React = __importStar(require("react"));
 const styled_components_1 = __importStar(require("styled-components"));
 const ToolbarButton_1 = __importDefault(require("./ToolbarButton"));
 const ToolbarSeparator_1 = __importDefault(require("./ToolbarSeparator"));
-const defaultMarkClick_1 = require("../commands/defaultMarkClick");
 const FlexibleWrapper = styled_components_1.default.div `
   display: flex;
 `;
@@ -44,10 +43,14 @@ class ToolbarMenu extends React.Component {
             }
             const Icon = item.icon;
             const isActive = item.active ? item.active(state) : false;
-            return (React.createElement(ToolbarButton_1.default, { key: index, active: isActive, onClick: () => defaultMarkClick_1.defaultMarkClick({
-                    item,
-                    commands: this.props.commands,
-                }) },
+            return (React.createElement(ToolbarButton_1.default, { key: index, active: isActive, onClick: () => {
+                    if (item.customOnClick) {
+                        return item.customOnClick();
+                    }
+                    if (!item.name)
+                        return;
+                    this.props.commands[item.name](item.attrs);
+                } },
                 React.createElement(Tooltip, { tooltip: item.tooltip, placement: "top" },
                     React.createElement(Icon, { color: item.iconColor || this.props.theme.toolbarItem }))));
         })));

@@ -29,15 +29,6 @@ export const StyledEditor = styled("div")<{
     padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
   }
 
-  img {
-    &.ProseMirror-separator {
-      display: none;
-
-      + .ProseMirror-trailingBreak {
-        display: none;
-      }
-    }
-  }
 
   pre {
     white-space: pre-wrap;
@@ -152,58 +143,9 @@ export const StyledEditor = styled("div")<{
         opacity: 1;
       }
     }
-
-    mark {
-      &.background {
-        display: inline-flex;
-        position: relative;
-        width: 100%;
-
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          z-index: -1;
-          height: 100%;
-          width: 100%;
-        }
-  
-        &.red {
-          &:after {
-            background: ${(props) => props.theme.highlights["red"]};
-          }
-        }
-  
-        &.orange {
-          &:after {
-            background: ${(props) => props.theme.highlights["orange"]};
-          }
-        }
-  
-        &.yellow {
-          &:after {
-            background: ${(props) => props.theme.highlights["yellow"]};
-          }
-        }
-  
-        &.green {
-          &:after {
-            background: ${(props) => props.theme.highlights["green"]};
-          }
-        }
-  
-        &.blue {
-          &:after {
-            background: ${(props) => props.theme.highlights["blue"]};
-          }
-        }
-      }
-    }
   }
 
   .heading-content {
-    line-height: 120%;
-
     &:before {
       content: "​";
       display: inline;
@@ -400,7 +342,6 @@ export const StyledEditor = styled("div")<{
 
   blockquote {
     margin: 0;
-    margin-bottom: 0.3rem;
     padding-left: 1.5em;
     font-style: italic;
     overflow: hidden;
@@ -458,8 +399,7 @@ export const StyledEditor = styled("div")<{
   ul,
   ol {
     margin: ${(props) => (props.rtl ? "0 0 0 0.1em" : "0 0.1em 0 0")};
-    padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
-    margin-left: 14px;
+    padding: ${(props) => (props.rtl ? "0 36px 0 0" : "0 0 0 36px")};
   }
 
   ol ol {
@@ -473,18 +413,16 @@ export const StyledEditor = styled("div")<{
   ul.checkbox_list {
     list-style: none;
     padding: 0;
-    margin: ${(props) => (props.rtl ? "0 -14px 0 0" : "0 0 0 -14px")};
+    margin: ${(props) => (props.rtl ? "0 -24px 0 0" : "0 0 0 -24px")};
   }
 
   ul li,
   ol li {
     position: relative;
     white-space: initial;
-    margin-block: auto;
 
     p {
       white-space: pre-wrap;
-      margin-block: auto;
     }
 
     > div {
@@ -495,10 +433,6 @@ export const StyledEditor = styled("div")<{
   ul.checkbox_list li {
     display: flex;
     padding-${(props) => (props.rtl ? "right" : "left")}: 24px;
-
-    input {
-      margin-top: 1px;
-    }
   }
 
   ul.checkbox_list li.checked > div > p {
@@ -608,10 +542,6 @@ export const StyledEditor = styled("div")<{
       color: ${(props) => props.theme.textHighlightForeground};
     }
 
-    &.background {
-      display: flex;
-    }
-
     &.red {
         background: ${(props) => props.theme.highlights["red"]};
     }
@@ -631,12 +561,9 @@ export const StyledEditor = styled("div")<{
     &.blue {
         background: ${(props) => props.theme.highlights["blue"]};
     }
+
   }
 
-  .code-block {
-    margin-bottom: 0.3rem;
-  }
-  
   .code-block,
   .notice-block {
     position: relative;
@@ -659,7 +586,6 @@ export const StyledEditor = styled("div")<{
       select,
       button {
         right: 4px;
-        color: ${(props) => props.theme.text};
       }
     }
 
@@ -829,15 +755,12 @@ export const StyledEditor = styled("div")<{
     border-radius: 4px;
     margin-top: 1em;
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat( auto-fill, 1fr );
 
     * {
       box-sizing: border-box;
     }
 
     tr {
-      display: flex;
       position: relative;
       border-bottom: 1px solid ${(props) => props.theme.tableDivider};
     }
@@ -851,16 +774,10 @@ export const StyledEditor = styled("div")<{
       position: relative;
       vertical-align: top;
       border: 1px solid ${(props) => props.theme.tableDivider};
+      position: relative;
       padding: 4px 8px;
       text-align: ${(props) => (props.rtl ? "right" : "left")};
-      width: 100%;
-
-      p {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        -ms-word-break: break-all;
-        word-break: break-word;
-      }
+      min-width: 100px;
     }
 
     .selectedCell {

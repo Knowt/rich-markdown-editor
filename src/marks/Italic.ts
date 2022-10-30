@@ -1,7 +1,6 @@
 import { toggleMark } from "prosemirror-commands";
 import markInputRule from "../lib/markInputRule";
 import Mark from "./Mark";
-import { ITALIC_SHORTCUT1, ITALIC_SHORTCUT2 } from '../lib/constants';
 
 export default class Italic extends Mark {
   get name() {
@@ -28,8 +27,8 @@ export default class Italic extends Mark {
 
   keys({ type }) {
     return {
-      [ ITALIC_SHORTCUT1 ]: toggleMark(type),
-      [ ITALIC_SHORTCUT2 ]: toggleMark(type),
+      "Mod-i": toggleMark(type),
+      "Mod-I": toggleMark(type),
     };
   }
 
@@ -39,7 +38,6 @@ export default class Italic extends Mark {
       close: "*",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

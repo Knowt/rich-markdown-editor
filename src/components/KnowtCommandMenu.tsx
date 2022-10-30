@@ -751,17 +751,10 @@ class KnowtCommandMenu extends React.Component<Props, State> {
     const { dictionary, isActive, uploadImage } = this.props;
     const selectedGroup = this.filtered[this.state.selectedIndex];
 
-    // this is necessary to escape search within the editor
-    // DO NOT change or assign custom id
-    let id = "block-menu-container";
-
-    if ( !isActive )
-      id += '-empty';
-
     return (
       <Portal>
         <Wrapper
-          id={id}
+          id={this.props.id || "block-menu-container"}
           active={isActive}
           ref={this.menuRef}
           style={{ maxHeight: this.state.menu1MaxHeight }}

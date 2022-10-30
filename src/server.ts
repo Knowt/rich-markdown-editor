@@ -46,10 +46,7 @@ import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
-import RedHighlight from "./marks/highlights/RedHighlight";
-import { BlueBackground, RedBackground,
-  OrangeBackground, YellowBackground,
-  GreenBackground } from './marks/backgrounds';
+import DefaultHighlight from "./marks/highlights/DefaultHighlight";
 import { isHTML } from "./domHelpers";
 
 const extensions = new ExtensionManager([
@@ -60,7 +57,7 @@ const extensions = new ExtensionManager([
   new Blockquote(),
   new Emoji(),
   new BulletList(),
-  new CodeBlock( { softToDOM: true } ),
+  new CodeBlock(),
   new CodeFence(),
   new CheckboxList(),
   new CheckboxItem(),
@@ -74,11 +71,6 @@ const extensions = new ExtensionManager([
   new TableCell(),
   new TableHeadCell(),
   new TableRow(),
-  new BlueBackground(),
-  new RedBackground(),
-  new OrangeBackground(),
-  new YellowBackground(),
-  new GreenBackground(),
   new Bold(),
   new Code(),
   new Italic(),
@@ -91,7 +83,7 @@ const extensions = new ExtensionManager([
   new YellowHighlight(),
   new BlueHighlight(),
   new GreenHighlight(),
-  new RedHighlight(),
+  new DefaultHighlight(),
 ]);
 
 export const schema = new Schema({
@@ -119,7 +111,6 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   });
   const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(serializedFragment);
-
   return throwAwayDiv.innerHTML;
 };
 
