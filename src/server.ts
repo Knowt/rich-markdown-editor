@@ -107,7 +107,7 @@ const markdownParser = extensions.parser({
   plugins: extensions.rulePlugins,
 });
 
-const parseHTML = (document: Document) => (html: string) => {
+export const parseHTML = (document: Document) => (html: string) => {
   const domNode = document.createElement("div");
   domNode.innerHTML = html;
   return domParser.parse(domNode);
