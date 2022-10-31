@@ -4,6 +4,8 @@ import styled, { withTheme } from "styled-components";
 import theme from "../styles/theme";
 import MenuItem from './MenuItem';
 import GreenAccentText from './GreenAccentText';
+import { getIconClasses } from '../lib/getIconClasses';
+import { CUSTOM_ICON_YELLOW } from '../lib/constants';
 
 export type Props = {
   selected: boolean;
@@ -18,6 +20,7 @@ export type Props = {
   accentText?: string;
   iconColor?: string;
   isDarkMode?: boolean;
+  itemName?: string;
 };
 
 function BlockMenuItem({
@@ -33,6 +36,7 @@ function BlockMenuItem({
   theme,
   iconColor,
   isDarkMode,
+  itemName,
 }: Props) {
   const Icon = icon;
 
@@ -59,9 +63,9 @@ function BlockMenuItem({
       <Group>
         {Icon && (
           <>
-            <Icon color={iconColor || theme.blockToolbarIconColor}
-              className={!isDarkMode && iconColor ? 
-                'block-menu-item-icon light' : 'block-menu-item-icon'}
+            <Icon className={getIconClasses( !!( !isDarkMode && iconColor ) )}
+              color={itemName === 'highlight_yellow' ? CUSTOM_ICON_YELLOW : 
+                iconColor || theme.blockToolbarIconColor}
               size={20} {...iconSVGProps} />
             &nbsp;&nbsp;
           </>
@@ -83,7 +87,7 @@ const Group = styled.div`
   display: flex;
   align-items: center;
 
-  .block-menu-item-icon {
+  .icon {
     &.light {
       filter: saturate( 300% ) brightness( 93% );
     }

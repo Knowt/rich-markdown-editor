@@ -27,9 +27,13 @@ export default styled.button<Props>`
     margin-left: 0;
   }
 
-  .toolbar-icon {
+  .icon {
     &.light {
       filter: saturate( 300% ) brightness( 93% );
+
+      // &.yellow {
+      //   filter: saturate( 1500% ) brightness( 90% );
+      // }
     }
   }
 

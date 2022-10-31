@@ -79,6 +79,7 @@ class BlockMenu extends React.Component<BlockMenuProps> {
               accentText={item.searchKeyword}
               iconColor={item.iconColor}
               isDarkMode={this.props.isDarkMode}
+              itemName={item.name}
             />
           );
         }}

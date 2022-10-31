@@ -5,6 +5,8 @@ import type { MenuItem as Item } from '../types';
 import { defaultMarkClick } from '../commands/defaultMarkClick';
 import { Portal } from "react-portal";
 import theme from "../styles/theme";
+import { getIconClasses } from '../lib/getIconClasses';
+import { CUSTOM_ICON_YELLOW } from '../lib/constants';
 
 const List = styled.ul`
     display: flex;
@@ -75,7 +77,7 @@ const Button = styled.button`
         background: ${(props) => props.theme.toolbarHoverBackground};
     }
 
-    .toolbar-icon {
+    .icon {
         &.light {
             filter: saturate( 300% ) brightness( 93% );
         }
@@ -272,9 +274,9 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
                                 aria-pressed={false}>
                                 {
                                     Icon ? (
-                                        <Icon className={shouldLightIcon ? 
-                                            'toolbar-icon light' : 'toolbar-icon'}
-                                            color={iconColor || theme.toolbarItem} 
+                                        <Icon className={getIconClasses( shouldLightIcon )}
+                                            color={item.name === 'highlight_yellow ' ?
+                                                CUSTOM_ICON_YELLOW : iconColor || theme.toolbarItem} 
                                             size={22} {...iconSVGProps} />   
                                     ) : ''
                                 }

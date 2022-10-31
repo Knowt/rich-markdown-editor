@@ -37,3 +37,5 @@ export const DEFAULT_BACKGROUND_KEY = 'editorDefaultBackground';
 
 export const DEFAULT_HIGHLIGHT = 'highlight_red';
 export const DEFAULT_BACKGROUND = 'background_blue';
+
+export const CUSTOM_ICON_YELLOW = '#F3F29B';

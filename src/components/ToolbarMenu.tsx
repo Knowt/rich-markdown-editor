@@ -10,6 +10,8 @@ import Tooltip from './Tooltip';
 import { EditorState } from "prosemirror-state";
 import { ChevronIcon } from '../icons';
 import ToolbarPopout from './ToolbarPopout';
+import { getIconClasses } from '../lib/getIconClasses';
+import { CUSTOM_ICON_YELLOW } from '../lib/constants';
 
 const FlexibleWrapper = styled.div`
   display: flex;
@@ -163,9 +165,9 @@ const ToolbarItem = ( {
           commands,
         })}
       >
-        <Icon className={shouldLightIcon ? 
-          'toolbar-icon light' : 'toolbar-icon'}
-          color={item.iconColor || theme.toolbarItem}
+        <Icon className={getIconClasses( shouldLightIcon )}
+          color={item.name === 'highlight_yellow ' ?
+            CUSTOM_ICON_YELLOW : item.iconColor || theme.toolbarItem}
           {...item.iconSVGProps} />
            <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
               <p className='item-name'>
