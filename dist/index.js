@@ -42,10 +42,11 @@ const SelectionToolbar_1 = __importDefault(require("./components/SelectionToolba
 const BlockMenu_1 = __importDefault(require("./components/BlockMenu"));
 const EmojiMenu_1 = __importDefault(require("./components/EmojiMenu"));
 const LinkToolbar_1 = __importDefault(require("./components/LinkToolbar"));
-const Tooltip_1 = __importDefault(require("./components/Tooltip"));
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const ComponentView_1 = __importDefault(require("./lib/ComponentView"));
 const headingToSlug_1 = __importDefault(require("./lib/headingToSlug"));
+const constants_1 = require("./lib/constants");
+const react_device_detect_1 = require("react-device-detect");
 const editor_1 = require("./styles/editor");
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
@@ -71,11 +72,12 @@ const TableHeadCell_1 = __importDefault(require("./nodes/TableHeadCell"));
 const TableRow_1 = __importDefault(require("./nodes/TableRow"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
 const Code_1 = __importDefault(require("./marks/Code"));
-const DefaultHighlight_1 = __importDefault(require("./marks/highlights/DefaultHighlight"));
+const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
 const OrangeHighlight_1 = __importDefault(require("./marks/highlights/OrangeHighlight"));
 const YellowHighlight_1 = __importDefault(require("./marks/highlights/YellowHighlight"));
 const GreenHighlight_1 = __importDefault(require("./marks/highlights/GreenHighlight"));
 const BlueHighlight_1 = __importDefault(require("./marks/highlights/BlueHighlight"));
+const backgrounds_1 = require("./marks/backgrounds");
 const Italic_1 = __importDefault(require("./marks/Italic"));
 const Link_1 = __importDefault(require("./marks/Link"));
 const Strikethrough_1 = __importDefault(require("./marks/Strikethrough"));
@@ -107,6 +109,8 @@ class RichMarkdownEditor extends React.PureComponent {
             linkMenuOpen: false,
             blockMenuSearch: "",
             emojiMenuOpen: false,
+            defaultHighlight: undefined,
+            defaultBackground: undefined,
         };
         this.calculateDir = () => {
             if (!this.element)
@@ -214,6 +218,26 @@ class RichMarkdownEditor extends React.PureComponent {
         this.dictionary = memoize_1.default((providedDictionary) => {
             return Object.assign(Object.assign({}, dictionary_1.default), providedDictionary);
         });
+        this.getDefaultHighlightKey = () => {
+            return this.props.defaultHighlightKey || constants_1.DEFAULT_HIGHLIGHT_KEY;
+        };
+        this.getDefaultBackgroundKey = () => {
+            return this.props.defaultBackgroundKey || constants_1.DEFAULT_BACKGROUND_KEY;
+        };
+        this.setDefaultHighlight = (defaultHighlight) => {
+            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultHighlight })));
+            window.localStorage.setItem(this.getDefaultHighlightKey(), defaultHighlight);
+        };
+        this.setDefaultBackground = (defaultBackground) => {
+            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultBackground })));
+            window.localStorage.setItem(this.getDefaultBackgroundKey(), defaultBackground);
+        };
+        this.getLocalStorageDefaults = () => {
+            return {
+                defaultHighlight: window.localStorage.getItem(this.getDefaultHighlightKey()),
+                defaultBackground: window.localStorage.getItem(this.getDefaultBackgroundKey()),
+            };
+        };
     }
     componentDidMount() {
         this.init();
@@ -221,6 +245,9 @@ class RichMarkdownEditor extends React.PureComponent {
             this.scrollToAnchor(this.props.scrollTo);
         }
         this.calculateDir();
+        const { defaultHighlight, defaultBackground } = this.getLocalStorageDefaults();
+        this.setState((state) => (Object.assign(Object.assign({}, state), { defaultHighlight,
+            defaultBackground })));
     }
     componentDidUpdate(prevProps) {
         if (prevProps.readOnly !== this.props.readOnly) {
@@ -320,13 +347,18 @@ class RichMarkdownEditor extends React.PureComponent {
                     onSelectColumn: this.handleSelectColumn,
                 }),
                 new TableRow_1.default(),
+                new backgrounds_1.BlueBackground(),
+                new backgrounds_1.RedBackground(),
+                new backgrounds_1.OrangeBackground(),
+                new backgrounds_1.YellowBackground(),
+                new backgrounds_1.GreenBackground(),
                 new Bold_1.default(),
                 new Code_1.default(),
                 new OrangeHighlight_1.default(),
                 new YellowHighlight_1.default(),
                 new BlueHighlight_1.default(),
                 new GreenHighlight_1.default(),
-                new DefaultHighlight_1.default(),
+                new RedHighlight_1.default(),
                 new Italic_1.default(),
                 new Placeholder_1.default(),
                 new Underline_1.default(),
@@ -531,18 +563,20 @@ class RichMarkdownEditor extends React.PureComponent {
         }
     }
     render() {
-        const { dir, readOnly, readOnlyWriteCheckboxes, style, tooltip, className, onKeyDown, fontScale, } = this.props;
+        const { dir, readOnly, readOnlyWriteCheckboxes, style, className, onKeyDown, fontScale, } = this.props;
         const { isRTL } = this.state;
         const dictionary = this.dictionary(this.props.dictionary);
-        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true },
+        const deviceType = react_device_detect_1.isMacOs ? "mac" : react_device_detect_1.isWindows ? "windows" : undefined;
+        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
+                this.props.spellCheck : true },
             React.createElement(styled_components_1.ThemeProvider, { theme: this.theme() },
                 React.createElement(React.Fragment, null,
                     React.createElement(editor_1.StyledEditor, { ref: (ref) => (this.element = ref), fontScale: fontScale !== null && fontScale !== void 0 ? fontScale : 1, rtl: isRTL, readOnly: readOnly, readOnlyWriteCheckboxes: readOnlyWriteCheckboxes }),
                     !readOnly && this.view && (React.createElement(React.Fragment, null,
-                        React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, tooltip: tooltip }),
-                        React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu, tooltip: tooltip }),
+                        React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, isDarkMode: this.props.dark, deviceType: deviceType, defaultHighlight: this.state.defaultHighlight || constants_1.DEFAULT_HIGHLIGHT, defaultBackground: this.state.defaultBackground || constants_1.DEFAULT_BACKGROUND, setDefaultHighlight: this.setDefaultHighlight, setDefaultBackground: this.setDefaultBackground }),
+                        React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu }),
                         React.createElement(EmojiMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.emojiMenuOpen, search: this.state.blockMenuSearch, onClose: () => this.setState({ emojiMenuOpen: false }) }),
-                        React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds })))))));
+                        React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds, isDarkMode: this.props.dark, deviceType: deviceType })))))));
     }
 }
 RichMarkdownEditor.defaultProps = {
@@ -559,7 +593,6 @@ RichMarkdownEditor.defaultProps = {
     },
     embeds: [],
     extensions: [],
-    tooltip: Tooltip_1.default,
 };
 exports.default = RichMarkdownEditor;
 //# sourceMappingURL=index.js.map

@@ -22,7 +22,7 @@ class BlockMenu extends react_1.default.Component {
         };
     }
     get groupedItems() {
-        return block_1.getGroupedMenuItems(this.props.view, this.props.dictionary);
+        return block_1.getGroupedMenuItems(this.props.view, this.props.dictionary, this.props.deviceType);
     }
     get embedsGroup() {
         return block_1.getEmbedsGroup(this.props.embeds);
@@ -37,7 +37,7 @@ class BlockMenu extends react_1.default.Component {
     }
     render() {
         return (react_1.default.createElement(KnowtCommandMenu_1.default, Object.assign({}, this.props, { filterable: true, onClearSearch: this.clearSearch, allGroups: this.allGroups, visibleGroups: this.visibleGroups, renderMenuItem: (item, _index, innerRef, options) => {
-                return (react_1.default.createElement(BlockMenuItem_1.default, { key: item.title, innerRef: innerRef, onClick: options.onClick, selected: options.selected, icon: item.icon, iconSVGProps: item.iconSVGProps, title: item.title, shortcut: item.shortcut, mainSearchKeyword: item.searchKeyword }));
+                return (react_1.default.createElement(BlockMenuItem_1.default, { key: item.title, innerRef: innerRef, onClick: options.onClick, selected: options.selected, icon: item.icon, iconSVGProps: item.iconSVGProps, title: item.title, accentText: item.searchKeyword, iconColor: item.iconColor, isDarkMode: this.props.isDarkMode, itemName: item.name }));
             }, renderGroupMenuItem: (item, _index, innerRef, options) => {
                 return (react_1.default.createElement(BlockGroupMenuItem_1.default, { innerRef: innerRef, key: item.groupData.name, title: item.groupData.name, selected: options.selected, onClick: options.onClick }));
             } })));

@@ -40,7 +40,8 @@ const OrangeHighlight_1 = __importDefault(require("./marks/highlights/OrangeHigh
 const YellowHighlight_1 = __importDefault(require("./marks/highlights/YellowHighlight"));
 const BlueHighlight_1 = __importDefault(require("./marks/highlights/BlueHighlight"));
 const GreenHighlight_1 = __importDefault(require("./marks/highlights/GreenHighlight"));
-const DefaultHighlight_1 = __importDefault(require("./marks/highlights/DefaultHighlight"));
+const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
+const backgrounds_1 = require("./marks/backgrounds");
 const domHelpers_1 = require("./domHelpers");
 const extensions = new ExtensionManager_1.default([
     new Doc_1.default(),
@@ -64,6 +65,11 @@ const extensions = new ExtensionManager_1.default([
     new TableCell_1.default(),
     new TableHeadCell_1.default(),
     new TableRow_1.default(),
+    new backgrounds_1.BlueBackground(),
+    new backgrounds_1.RedBackground(),
+    new backgrounds_1.OrangeBackground(),
+    new backgrounds_1.YellowBackground(),
+    new backgrounds_1.GreenBackground(),
     new Bold_1.default(),
     new Code_1.default(),
     new Italic_1.default(),
@@ -76,7 +82,7 @@ const extensions = new ExtensionManager_1.default([
     new YellowHighlight_1.default(),
     new BlueHighlight_1.default(),
     new GreenHighlight_1.default(),
-    new DefaultHighlight_1.default(),
+    new RedHighlight_1.default(),
 ]);
 exports.schema = new prosemirror_model_1.Schema({
     nodes: extensions.nodes,

@@ -1,8 +1,12 @@
-import * as React from "react";
-declare type Props = {
-    tooltip: string;
-    children: React.ReactNode;
-};
-export default function Tooltip({ tooltip, children }: Props): JSX.Element;
-export {};
+import React, { ReactNode } from 'react';
+declare type TooltipPositions = 'top' | 'bottom';
+interface Props {
+    children: ReactNode;
+    id: string;
+    position?: TooltipPositions;
+    includeArrow?: boolean;
+    delayShowTime?: number;
+}
+declare const Tooltip: React.ForwardRefExoticComponent<Props & React.RefAttributes<HTMLElement>>;
+export default Tooltip;
 //# sourceMappingURL=Tooltip.d.ts.map

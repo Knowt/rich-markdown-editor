@@ -1,4 +1,5 @@
 import Mark from "../Mark";
+import { GREEN_HIGHLIGHT_SHORTCUT } from '../../lib/constants';
 export default class GreenHighlight extends Mark {
     get name(): string;
     get schema(): {

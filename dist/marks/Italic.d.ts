@@ -1,4 +1,5 @@
 import Mark from "./Mark";
+import { ITALIC_SHORTCUT1, ITALIC_SHORTCUT2 } from '../lib/constants';
 export default class Italic extends Mark {
     get name(): string;
     get schema(): {

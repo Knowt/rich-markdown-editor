@@ -1,6 +1,7 @@
 import { Plugin } from "prosemirror-state";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
+import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
 export default class Link extends Mark {
     get name(): string;
     get schema(): {
@@ -18,6 +19,7 @@ export default class Link extends Mark {
         }[];
         toDOM: (node: any) => any[];
     };
+    private handleLinkShortcut;
     inputRules({ type }: {
         type: any;
     }): InputRule[];
@@ -30,6 +32,7 @@ export default class Link extends Mark {
         type: any;
     }): {
         "Mod-k": (state: any, dispatch: any) => boolean;
+        "Mod-K": (state: any, dispatch: any) => boolean;
     };
     get plugins(): Plugin<any>[];
     get toMarkdown(): {

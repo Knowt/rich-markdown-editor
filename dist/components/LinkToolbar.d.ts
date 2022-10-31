@@ -5,7 +5,6 @@ import baseDictionary from "../dictionary";
 declare type Props = {
     isActive: boolean;
     view: EditorView;
-    tooltip: typeof React.Component | React.FC<any>;
     dictionary: typeof baseDictionary;
     onCreateLink?: (title: string) => Promise<string>;
     onSearchLink?: (term: string) => Promise<SearchResult[]>;

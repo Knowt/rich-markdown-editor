@@ -81,9 +81,11 @@ export declare const light: {
     cursor: string;
     divider: string;
     toolbarBackground: string;
+    toolbarShadow: string;
     toolbarHoverBackground: string;
     toolbarInput: string;
     toolbarItem: string;
+    toolbarShortcutText: string;
     tableDivider: string;
     tableSelected: string;
     tableSelectedBackground: string;
@@ -186,9 +188,11 @@ export declare const dark: {
     blockToolbarTagBackgroundColor: string;
     blockToolbarExpandArrowColor: string;
     toolbarBackground: string;
+    toolbarShadow: string;
     toolbarHoverBackground: string;
     toolbarInput: string;
     toolbarItem: string;
+    toolbarShortcutText: string;
     tableDivider: string;
     tableSelected: string;
     tableSelectedBackground: string;

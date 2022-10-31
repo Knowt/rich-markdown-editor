@@ -1,5 +1,6 @@
 import Mark from "./Mark";
 import underlinesRule from "../rules/underlines";
+import { UNDERLINE_SHORTCUT1, UNDERLINE_SHORTCUT2 } from '../lib/constants';
 export default class Underline extends Mark {
     get name(): string;
     get schema(): {
@@ -22,6 +23,7 @@ export default class Underline extends Mark {
         type: any;
     }): {
         "Mod-u": import("prosemirror-state").Command;
+        "Mod-U": import("prosemirror-state").Command;
     };
     get toMarkdown(): {
         open: string;

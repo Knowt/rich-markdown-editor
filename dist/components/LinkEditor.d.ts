@@ -12,7 +12,6 @@ declare type Props = {
     mark?: Mark;
     from: number;
     to: number;
-    tooltip: typeof React.Component | React.FC<any>;
     dictionary: typeof baseDictionary;
     onRemoveLink?: () => void;
     onCreateLink?: (title: string) => Promise<void>;
@@ -59,7 +58,6 @@ declare class LinkEditor extends React.Component<Props, State> {
 declare const _default: React.ForwardRefExoticComponent<{
     mark?: Mark | undefined;
     view: EditorView;
-    tooltip: typeof React.Component | React.FC<any>;
     ref?: ((instance: LinkEditor | null) => void) | React.RefObject<LinkEditor> | null | undefined;
     key?: string | number | null | undefined;
     from: number;

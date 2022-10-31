@@ -1,0 +1,1 @@
+{"version":3,"file":"useDelay.d.ts","sourceRoot":"","sources":["../../src/hooks/useDelay.ts"],"names":[],"mappings":"AAIA,UAAU,aAAa;IACnB,QAAQ,EAAE,OAAO,CAAC;IAClB,SAAS,EAAE,MAAM,CAAC;IAClB,IAAI,CAAC,EAAE,OAAO,GAAG,SAAS,CAAC;CAC9B;AAMD,QAAA,MAAM,QAAQ,UAAY,aAAa,YAmCtC,CAAA;AAED,eAAe,QAAQ,CAAC"}

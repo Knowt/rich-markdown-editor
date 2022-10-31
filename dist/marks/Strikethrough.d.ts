@@ -1,4 +1,5 @@
 import Mark from "./Mark";
+import { STRIKETHROUGH_SHORTCUT1, STRIKETHROUGH_SHORTCUT2 } from '../lib/constants';
 export default class Strikethrough extends Mark {
     get name(): string;
     get schema(): {
@@ -11,6 +12,7 @@ export default class Strikethrough extends Mark {
         type: any;
     }): {
         "Mod-d": import("prosemirror-state").Command;
+        "Mod-D": import("prosemirror-state").Command;
     };
     inputRules({ type }: {
         type: any;

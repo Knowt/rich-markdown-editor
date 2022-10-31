@@ -4,6 +4,15 @@ export declare enum ToastType {
     Error = "error",
     Info = "info"
 }
+export interface SubMenuItems {
+    orientation: 'left' | 'right';
+    tooltip?: string;
+    items: MenuItem[];
+}
+export declare type DefaultHighlight = 'highlight_blue' | 'highlight_green' | 'highlight_orange' | 'highlight_red' | 'highlight_yellow';
+export declare type DefaultBackground = 'background_blue' | 'background_green' | 'background_orange' | 'background_red' | 'background_yellow';
+export declare type SetDefaultHighlight = (highlight: DefaultHighlight) => void;
+export declare type SetDefaultBackground = (background: DefaultBackground) => void;
 export declare type MenuItem = {
     icon?: typeof React.Component | React.FC<any>;
     iconColor?: string;
@@ -14,6 +23,7 @@ export declare type MenuItem = {
         fill?: string;
         stroke?: string;
         strokeWidth?: number;
+        size?: number;
     };
     name?: string;
     title?: string;
@@ -26,6 +36,7 @@ export declare type MenuItem = {
     visible?: boolean;
     active?: (state: EditorState) => boolean;
     customOnClick?: () => void;
+    subItems?: SubMenuItems;
 };
 export declare type EmbedDescriptor = MenuItem & {
     matcher: (url: string) => boolean | [] | RegExpMatchArray;
@@ -45,4 +56,5 @@ export declare type GroupMenuItem = {
 export declare type GroupData = {
     name: string;
 };
+export declare type DeviceType = 'mac' | 'windows';
 //# sourceMappingURL=index.d.ts.map

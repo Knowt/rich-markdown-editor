@@ -9,9 +9,11 @@ export declare type Props = {
     iconSVGProps?: any;
     innerRef?: (ref: HTMLDivElement) => void;
     title: React.ReactNode;
-    shortcut?: string;
     containerId?: string;
-    mainSearchKeyword?: string;
+    accentText?: string;
+    iconColor?: string;
+    isDarkMode?: boolean;
+    itemName?: string;
 };
 declare const _default: React.ForwardRefExoticComponent<{
     disabled?: boolean | undefined;
@@ -19,11 +21,13 @@ declare const _default: React.ForwardRefExoticComponent<{
     icon?: typeof React.Component | React.FC<any> | undefined;
     onClick: () => void;
     selected: boolean;
+    iconColor?: string | undefined;
     iconSVGProps?: any;
+    isDarkMode?: boolean | undefined;
     innerRef?: ((ref: HTMLDivElement) => void) | undefined;
-    mainSearchKeyword?: string | undefined;
+    accentText?: string | undefined;
     containerId?: string | undefined;
-    shortcut?: string | undefined;
+    itemName?: string | undefined;
 } & {
     theme?: any;
 }>;

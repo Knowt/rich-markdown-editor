@@ -142,7 +142,7 @@ class SelectionToolbar extends React.Component {
         window.removeEventListener("mouseup", this.handleClickOutside);
     }
     render() {
-        const _a = this.props, { dictionary, onCreateLink, isTemplate, rtl } = _a, rest = __rest(_a, ["dictionary", "onCreateLink", "isTemplate", "rtl"]);
+        const _a = this.props, { dictionary, onCreateLink, isTemplate, rtl, deviceType, defaultBackground, defaultHighlight, setDefaultBackground, setDefaultHighlight } = _a, rest = __rest(_a, ["dictionary", "onCreateLink", "isTemplate", "rtl", "deviceType", "defaultBackground", "defaultHighlight", "setDefaultBackground", "setDefaultHighlight"]);
         const { view } = rest;
         const { state } = view;
         const { selection } = state;
@@ -179,7 +179,17 @@ class SelectionToolbar extends React.Component {
             items = divider_1.default(state, dictionary);
         }
         else {
-            items = formatting_1.default(view, isTemplate, dictionary);
+            items = formatting_1.default({
+                view,
+                isTemplate,
+                dictionary,
+                deviceType,
+                defaultHighlight,
+                defaultBackground,
+                setDefaultBackground,
+                setDefaultHighlight,
+                commands: this.props.commands,
+            });
             isTextSelection = true;
         }
         items = items.filter((item) => {

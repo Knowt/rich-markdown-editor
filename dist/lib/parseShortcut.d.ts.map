@@ -1,0 +1,1 @@
+{"version":3,"file":"parseShortcut.d.ts","sourceRoot":"","sources":["../../src/lib/parseShortcut.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,UAAU,CAAC;AAG3C,UAAU,kBAAkB;IACxB,UAAU,CAAC,EAAE,UAAU,CAAC;IACxB,QAAQ,EAAE,MAAM,CAAC;CACpB;AAiBD,eAAO,MAAM,aAAa,UAAY,kBAAkB,uBAgBvD,CAAA"}

@@ -7,15 +7,13 @@ exports.getEmbedsGroup = exports.getGroupedMenuItems = void 0;
 const outline_icons_1 = require("outline-icons");
 const icons_1 = require("../icons");
 const removeMarks_1 = __importDefault(require("../commands/removeMarks"));
-const SSR = typeof window === "undefined";
-const isMac = !SSR && window.navigator.platform === "MacIntel";
-const mod = isMac ? "⌘" : "ctrl";
-const HIGHLIGHT_RADIUS = 12;
-const getGroupedMenuItems = (view, dictionary) => {
+const constants_1 = require("../lib/constants");
+const getGroupedMenuItems = (view, dictionary, deviceType) => {
     const { state } = view;
     const { schema } = state;
+    const mod = deviceType === 'mac' ? '⌘' : 'ctrl';
     const allMarks = [
-        schema.marks.highlight_default,
+        schema.marks.highlight_red,
         schema.marks.highlight_orange,
         schema.marks.highlight_yellow,
         schema.marks.highlight_green,
@@ -145,15 +143,10 @@ const getGroupedMenuItems = (view, dictionary) => {
             },
             items: [
                 {
-                    name: "highlight_default",
+                    name: "highlight_red",
                     title: "Red",
-                    icon: icons_1.CircleIcon,
-                    iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
-                        fill: schema.marks.highlight_default.attrs.color.default,
-                    },
+                    icon: outline_icons_1.HighlightIcon,
+                    iconColor: schema.marks.highlight_red.attrs.color.default,
                     keywords: "highlight red",
                     searchKeyword: "red",
                     shortcut: "alt shift 1",
@@ -161,13 +154,8 @@ const getGroupedMenuItems = (view, dictionary) => {
                 {
                     name: "highlight_orange",
                     title: "Orange",
-                    icon: icons_1.CircleIcon,
-                    iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
-                        fill: schema.marks.highlight_orange.attrs.color.default,
-                    },
+                    icon: outline_icons_1.HighlightIcon,
+                    iconColor: schema.marks.highlight_orange.attrs.color.default,
                     keywords: "highlight orange",
                     searchKeyword: "orange",
                     shortcut: "alt shift 2",
@@ -175,13 +163,8 @@ const getGroupedMenuItems = (view, dictionary) => {
                 {
                     name: "highlight_yellow",
                     title: "Yellow",
-                    icon: icons_1.CircleIcon,
-                    iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
-                        fill: schema.marks.highlight_yellow.attrs.color.default,
-                    },
+                    icon: outline_icons_1.HighlightIcon,
+                    iconColor: schema.marks.highlight_yellow.attrs.color.default,
                     keywords: "highlight yellow",
                     searchKeyword: "yellow",
                     shortcut: "alt shift 3",
@@ -189,13 +172,8 @@ const getGroupedMenuItems = (view, dictionary) => {
                 {
                     name: "highlight_green",
                     title: "Green",
-                    icon: icons_1.CircleIcon,
-                    iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
-                        fill: schema.marks.highlight_green.attrs.color.default,
-                    },
+                    icon: outline_icons_1.HighlightIcon,
+                    iconColor: schema.marks.highlight_green.attrs.color.default,
                     keywords: "highlight green",
                     searchKeyword: "green",
                     shortcut: "alt shift 4",
@@ -203,13 +181,8 @@ const getGroupedMenuItems = (view, dictionary) => {
                 {
                     name: "highlight_blue",
                     title: "Blue",
-                    icon: icons_1.CircleIcon,
-                    iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
-                        fill: schema.marks.highlight_blue.attrs.color.default,
-                    },
+                    icon: outline_icons_1.HighlightIcon,
+                    iconColor: schema.marks.highlight_blue.attrs.color.default,
                     keywords: "highlight blue",
                     searchKeyword: "blue",
                     shortcut: "alt shift 5",
@@ -219,15 +192,109 @@ const getGroupedMenuItems = (view, dictionary) => {
                     title: "No highlight",
                     icon: icons_1.CircleIcon,
                     iconSVGProps: {
-                        r: HIGHLIGHT_RADIUS - 1,
-                        cx: HIGHLIGHT_RADIUS,
-                        cy: HIGHLIGHT_RADIUS,
+                        r: constants_1.BACKGROUND_RADIUS - 1,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
                         strokeWidth: 1,
                         fill: "#fff",
                         stroke: "#777",
                     },
                     keywords: "highlight remove unhighlight",
                     searchKeyword: "unhighlight",
+                    shortcut: "",
+                    customOnClick: () => removeMarks_1.default(view, allMarks),
+                },
+            ],
+        },
+        {
+            groupData: {
+                name: "Background",
+            },
+            items: [
+                {
+                    name: "background_red",
+                    title: "Red",
+                    icon: icons_1.CircleIcon,
+                    iconColor: schema.marks.background_red.attrs.color.default,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                    },
+                    keywords: "background red",
+                    searchKeyword: "red",
+                    shortcut: "alt shift 6",
+                },
+                {
+                    name: "background_orange",
+                    title: "Orange",
+                    icon: icons_1.CircleIcon,
+                    iconColor: schema.marks.background_orange.attrs.color.default,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                    },
+                    keywords: "background orange",
+                    searchKeyword: "orange",
+                    shortcut: "alt shift 7",
+                },
+                {
+                    name: "background_yellow",
+                    title: "Yellow",
+                    icon: icons_1.CircleIcon,
+                    iconColor: schema.marks.background_yellow.attrs.color.default,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                    },
+                    keywords: "background yellow",
+                    searchKeyword: "yellow",
+                    shortcut: "alt shift 8",
+                },
+                {
+                    name: "background_green",
+                    title: "Green",
+                    icon: icons_1.CircleIcon,
+                    iconColor: schema.marks.background_green.attrs.color.default,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                    },
+                    keywords: "background green",
+                    searchKeyword: "green",
+                    shortcut: "alt shift 9",
+                },
+                {
+                    name: "background_blue",
+                    title: "Blue",
+                    icon: icons_1.CircleIcon,
+                    iconColor: schema.marks.background_blue.attrs.color.default,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                    },
+                    keywords: "background blue",
+                    searchKeyword: "blue",
+                    shortcut: "alt shift 0",
+                },
+                {
+                    name: "background_remove",
+                    title: "No Background",
+                    icon: icons_1.CircleIcon,
+                    iconSVGProps: {
+                        r: constants_1.BACKGROUND_RADIUS - 1,
+                        cx: constants_1.BACKGROUND_RADIUS,
+                        cy: constants_1.BACKGROUND_RADIUS,
+                        strokeWidth: 1,
+                        fill: "#fff",
+                        stroke: "#777",
+                    },
+                    keywords: "background remove unbackground",
+                    searchKeyword: "unbackground",
                     shortcut: "",
                     customOnClick: () => removeMarks_1.default(view, allMarks),
                 },

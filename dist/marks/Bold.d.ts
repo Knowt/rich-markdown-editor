@@ -1,4 +1,5 @@
 import Mark from "./Mark";
+import { BOLD_SHORTCUT1, BOLD_SHORTCUT2 } from '../lib/constants';
 export default class Bold extends Mark {
     get name(): string;
     get schema(): {

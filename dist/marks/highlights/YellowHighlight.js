@@ -7,6 +7,7 @@ const markInputRule_1 = __importDefault(require("../../lib/markInputRule"));
 const Mark_1 = __importDefault(require("../Mark"));
 const mark_1 = __importDefault(require("../../rules/mark"));
 const prosemirror_commands_1 = require("prosemirror-commands");
+const constants_1 = require("../../lib/constants");
 class YellowHighlight extends Mark_1.default {
     get name() {
         return "highlight_yellow";
@@ -38,7 +39,7 @@ class YellowHighlight extends Mark_1.default {
     }
     keys({ type }) {
         return {
-            "Alt-Shift-3": prosemirror_commands_1.toggleMark(type),
+            [constants_1.YELLOW_HIGHLIGHT_SHORTCUT]: prosemirror_commands_1.toggleMark(type),
         };
     }
     commands({ type }) {

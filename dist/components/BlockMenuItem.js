@@ -25,7 +25,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
 const smooth_scroll_into_view_if_needed_1 = __importDefault(require("smooth-scroll-into-view-if-needed"));
 const styled_components_1 = __importStar(require("styled-components"));
-function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps, innerRef, mainSearchKeyword, containerId = "block-menu-container", theme }) {
+const MenuItem_1 = __importDefault(require("./MenuItem"));
+const GreenAccentText_1 = __importDefault(require("./GreenAccentText"));
+const getIconClasses_1 = require("../lib/getIconClasses");
+const constants_1 = require("../lib/constants");
+function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps, innerRef, accentText, containerId = "block-menu-container", theme, iconColor, isDarkMode, itemName, }) {
     const Icon = icon;
     const ref = React.useCallback((node) => {
         innerRef === null || innerRef === void 0 ? void 0 : innerRef(node);
@@ -37,63 +41,27 @@ function BlockMenuItem({ selected, disabled, onClick, title, icon, iconSVGProps,
             });
         }
     }, [selected, containerId]);
-    return (React.createElement(MenuItem, { selected: selected, onClick: disabled ? undefined : onClick, ref: ref },
+    return (React.createElement(MenuItem_1.default, { selected: selected, onClick: disabled ? undefined : onClick, ref: ref },
         React.createElement(Group, null,
             Icon && (React.createElement(React.Fragment, null,
-                React.createElement(Icon, Object.assign({ color: theme.blockToolbarIconColor, size: 20 }, iconSVGProps)),
+                React.createElement(Icon, Object.assign({ className: getIconClasses_1.getIconClasses(!!(!isDarkMode && iconColor)), color: itemName === 'highlight_yellow' ? constants_1.CUSTOM_ICON_YELLOW :
+                        iconColor || theme.blockToolbarIconColor, size: 20 }, iconSVGProps)),
                 "\u00A0\u00A0")),
             React.createElement(Title, null, title)),
-        React.createElement(Group, null, mainSearchKeyword && (React.createElement(SearchKeyword, null, mainSearchKeyword)))));
+        React.createElement(Group, null, accentText && (React.createElement(GreenAccentText_1.default, null, accentText)))));
 }
-const MenuItem = styled_components_1.default.button `
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1;
-  width: 100%;
-  height: 40px;
-  cursor: pointer;
-  border: none;
-  opacity: ${(props) => (props.disabled ? ".5" : "1")};
-  color: ${(props) => props.selected
-    ? props.theme.blockToolbarTextSelected
-    : props.theme.blockToolbarText};
-  background: ${(props) => props.selected
-    ? props.theme.blockToolbarSelectedBackground ||
-        props.theme.blockToolbarTrigger
-    : "none"};
-  padding: 0 16px;
-  outline: none;
-
-  &:hover,
-  &:active {
-    color: ${(props) => props.theme.blockToolbarTextSelected};
-    background: ${(props) => props.selected
-    ? props.theme.blockToolbarSelectedBackground ||
-        props.theme.blockToolbarTrigger
-    : props.theme.blockToolbarHoverBackground};
-  }
-`;
 const Group = styled_components_1.default.div `
   display: flex;
   align-items: center;
+
+  .icon {
+    &.light {
+      filter: saturate( 300% ) brightness( 93% );
+    }
+  }
 `;
 const Title = styled_components_1.default.span `
   margin-right: 60px;
-`;
-const SearchKeyword = styled_components_1.default.span `
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 6px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  color: ${(props) => props.theme.knowtGreen};
-  background-color: ${(props) => props.theme.blockToolbarTagBackgroundColor};
 `;
 exports.default = styled_components_1.withTheme(BlockMenuItem);
 //# sourceMappingURL=BlockMenuItem.js.map

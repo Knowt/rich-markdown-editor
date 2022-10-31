@@ -6,8 +6,7 @@ import { Schema, NodeSpec, MarkSpec, DOMParser } from "prosemirror-model";
 import { InputRule } from "prosemirror-inputrules";
 import baseDictionary from "./dictionary";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType } from "./types";
-import Tooltip from "./components/Tooltip";
+import { EmbedDescriptor, ToastType, DefaultHighlight, DefaultBackground } from "./types";
 import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
@@ -20,9 +19,11 @@ export declare const theme: {
     cursor: string;
     divider: string;
     toolbarBackground: string;
+    toolbarShadow: string;
     toolbarHoverBackground: string;
     toolbarInput: string;
     toolbarItem: string;
+    toolbarShortcutText: string;
     tableDivider: string;
     tableSelected: string;
     tableSelectedBackground: string;
@@ -147,10 +148,12 @@ export declare type Props = {
     onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
     embeds: EmbedDescriptor[];
     onShowToast?: (message: string, code: ToastType) => void;
-    tooltip: typeof React.Component | React.FC<any>;
     className?: string;
     style?: React.CSSProperties;
     parseAsHTML: boolean;
+    spellCheck?: boolean;
+    defaultHighlightKey?: string;
+    defaultBackgroundKey?: string;
 };
 declare type State = {
     isRTL: boolean;
@@ -160,6 +163,8 @@ declare type State = {
     linkMenuOpen: boolean;
     blockMenuSearch: string;
     emojiMenuOpen: boolean;
+    defaultHighlight?: DefaultHighlight | null;
+    defaultBackground?: DefaultBackground | null;
 };
 declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     static defaultProps: {
@@ -172,7 +177,6 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         onClickLink: (href: any) => void;
         embeds: never[];
         extensions: never[];
-        tooltip: typeof Tooltip;
     };
     state: {
         isRTL: boolean;
@@ -182,6 +186,8 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         linkMenuOpen: boolean;
         blockMenuSearch: string;
         emojiMenuOpen: boolean;
+        defaultHighlight: undefined;
+        defaultBackground: undefined;
     };
     isBlurred: boolean;
     extensions: ExtensionManager;
@@ -260,9 +266,11 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         cursor: string;
         divider: string;
         toolbarBackground: string;
+        toolbarShadow: string;
         toolbarHoverBackground: string;
         toolbarInput: string;
         toolbarItem: string;
+        toolbarShortcutText: string;
         tableDivider: string;
         tableSelected: string;
         tableSelectedBackground: string;
@@ -471,6 +479,14 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         warning: string;
         warningNotice: string;
     }) & import("lodash").MemoizedFunction;
+    getDefaultHighlightKey: () => string;
+    getDefaultBackgroundKey: () => string;
+    setDefaultHighlight: (defaultHighlight: DefaultHighlight) => void;
+    setDefaultBackground: (defaultBackground: DefaultBackground) => void;
+    getLocalStorageDefaults: () => {
+        defaultHighlight: "highlight_blue" | "highlight_green" | "highlight_orange" | "highlight_red" | "highlight_yellow" | null;
+        defaultBackground: "background_blue" | "background_green" | "background_orange" | "background_red" | "background_yellow" | null;
+    };
     render(): JSX.Element;
 }
 export default RichMarkdownEditor;

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_commands_1 = require("prosemirror-commands");
 const markInputRule_1 = __importDefault(require("../lib/markInputRule"));
 const Mark_1 = __importDefault(require("./Mark"));
+const constants_1 = require("../lib/constants");
 class Strikethrough extends Mark_1.default {
     get name() {
         return "strikethrough";
@@ -28,7 +29,8 @@ class Strikethrough extends Mark_1.default {
     }
     keys({ type }) {
         return {
-            "Mod-d": prosemirror_commands_1.toggleMark(type),
+            [constants_1.STRIKETHROUGH_SHORTCUT1]: prosemirror_commands_1.toggleMark(type),
+            [constants_1.STRIKETHROUGH_SHORTCUT2]: prosemirror_commands_1.toggleMark(type),
         };
     }
     inputRules({ type }) {

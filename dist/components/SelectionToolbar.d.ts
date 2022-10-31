@@ -1,10 +1,10 @@
 import * as React from "react";
 import { EditorView } from "prosemirror-view";
 import { SearchResult } from "./LinkEditor";
+import { DeviceType, DefaultHighlight, DefaultBackground, SetDefaultHighlight, SetDefaultBackground } from "../types";
 import baseDictionary from "../dictionary";
 declare type Props = {
     dictionary: typeof baseDictionary;
-    tooltip: typeof React.Component | React.FC<any>;
     rtl: boolean;
     isTemplate: boolean;
     commands: Record<string, any>;
@@ -15,6 +15,12 @@ declare type Props = {
     onCreateLink?: (title: string) => Promise<string>;
     onShowToast?: (msg: string, code: string) => void;
     view: EditorView;
+    isDarkMode?: boolean;
+    deviceType?: DeviceType;
+    defaultHighlight?: DefaultHighlight;
+    defaultBackground?: DefaultBackground;
+    setDefaultHighlight?: SetDefaultHighlight;
+    setDefaultBackground?: SetDefaultBackground;
 };
 export default class SelectionToolbar extends React.Component<Props> {
     isActive: boolean;

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_commands_1 = require("prosemirror-commands");
 const markInputRule_1 = __importDefault(require("../lib/markInputRule"));
 const Mark_1 = __importDefault(require("./Mark"));
+const constants_1 = require("../lib/constants");
 class Italic extends Mark_1.default {
     get name() {
         return "em";
@@ -28,8 +29,8 @@ class Italic extends Mark_1.default {
     }
     keys({ type }) {
         return {
-            "Mod-i": prosemirror_commands_1.toggleMark(type),
-            "Mod-I": prosemirror_commands_1.toggleMark(type),
+            [constants_1.ITALIC_SHORTCUT1]: prosemirror_commands_1.toggleMark(type),
+            [constants_1.ITALIC_SHORTCUT2]: prosemirror_commands_1.toggleMark(type),
         };
     }
     get toMarkdown() {

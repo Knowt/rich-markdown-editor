@@ -7,6 +7,7 @@ const prosemirror_commands_1 = require("prosemirror-commands");
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const Mark_1 = __importDefault(require("./Mark"));
+const constants_1 = require("../lib/constants");
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
 class Link extends Mark_1.default {
     get name() {
@@ -35,6 +36,13 @@ class Link extends Mark_1.default {
             ],
         };
     }
+    handleLinkShortcut(type, state, dispatch) {
+        if (state.selection.empty) {
+            this.options.onKeyboardShortcut();
+            return true;
+        }
+        return prosemirror_commands_1.toggleMark(type, { href: "" })(state, dispatch);
+    }
     inputRules({ type }) {
         return [
             new prosemirror_inputrules_1.InputRule(LINK_INPUT_REGEX, (state, match, start, end) => {
@@ -51,14 +59,10 @@ class Link extends Mark_1.default {
         return ({ href } = { href: "" }) => prosemirror_commands_1.toggleMark(type, { href });
     }
     keys({ type }) {
+        const linkShortcutFn = (state, dispatch) => this.handleLinkShortcut(type, state, dispatch);
         return {
-            "Mod-k": (state, dispatch) => {
-                if (state.selection.empty) {
-                    this.options.onKeyboardShortcut();
-                    return true;
-                }
-                return prosemirror_commands_1.toggleMark(type, { href: "" })(state, dispatch);
-            },
+            [constants_1.LINK_SHORTCUT1]: linkShortcutFn,
+            [constants_1.LINK_SHORTCUT2]: linkShortcutFn,
         };
     }
     get plugins() {

@@ -212,7 +212,6 @@ class LinkEditor extends React.Component {
         const results = this.state.results[value.trim()] ||
             this.state.results[this.state.previousValue] ||
             [];
-        const Tooltip = this.props.tooltip;
         const looksLikeUrl = value.match(/^https?:\/\//i);
         const suggestedLinkTitle = this.suggestedLinkTitle;
         const showCreateLink = !!this.props.onCreateLink &&
@@ -221,14 +220,15 @@ class LinkEditor extends React.Component {
             !looksLikeUrl;
         const showResults = !!suggestedLinkTitle && (showCreateLink || results.length > 0);
         return (React.createElement(Wrapper, null,
-            React.createElement(Input_1.default, { value: value, placeholder: showCreateLink
+            React.createElement(Input_1.default, { className: 'link-editor-input', value: value, placeholder: showCreateLink
                     ? dictionary.findOrCreateDoc
                     : dictionary.searchOrPasteLink, onKeyDown: this.handleKeyDown, onPaste: this.handlePaste, onChange: this.handleChange, autoFocus: this.href === "" }),
             React.createElement(ToolbarButton_1.default, { onClick: this.handleOpenLink, disabled: !value },
-                React.createElement(Tooltip, { tooltip: dictionary.openLink, placement: "top" },
+                React.createElement("span", { title: dictionary.openLink, "aria-label": dictionary.openLink },
                     React.createElement(outline_icons_1.OpenIcon, { color: theme.toolbarItem }))),
-            React.createElement(ToolbarButton_1.default, { onClick: this.handleRemoveLink },
-                React.createElement(Tooltip, { tooltip: dictionary.removeLink, placement: "top" }, this.initialValue ? (React.createElement(outline_icons_1.TrashIcon, { color: theme.toolbarItem })) : (React.createElement(outline_icons_1.CloseIcon, { color: theme.toolbarItem })))),
+            React.createElement(ToolbarButton_1.default, { onClick: this.handleRemoveLink }, this.initialValue ? (React.createElement("span", { title: dictionary.removeLink, "aria-label": dictionary.removeLink },
+                React.createElement(outline_icons_1.TrashIcon, { color: theme.toolbarItem }))) : (React.createElement("span", { title: dictionary.removeLink, "aria-label": dictionary.removeLink },
+                React.createElement(outline_icons_1.CloseIcon, { color: theme.toolbarItem })))),
             showResults && (React.createElement(SearchResults, { id: "link-search-results" },
                 results.map((result, index) => (React.createElement(LinkSearchResult_1.default, { key: result.url, title: result.title, subtitle: result.subtitle, icon: React.createElement(outline_icons_1.DocumentIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(index), onClick: this.handleSelectLink(result.url, result.title), selected: index === selectedIndex }))),
                 showCreateLink && (React.createElement(LinkSearchResult_1.default, { key: "create", title: suggestedLinkTitle, subtitle: dictionary.createNewDoc, icon: React.createElement(outline_icons_1.PlusIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(results.length), onClick: () => {
@@ -244,18 +244,21 @@ const Wrapper = styled_components_1.default(Flex_1.default) `
   margin-right: -8px;
   min-width: 336px;
   pointer-events: all;
+  padding-inline: 8px;
+  display: flex;
+
+  .link-editor-input {
+    margin: 3px 6px;
+  }
 `;
 const SearchResults = styled_components_1.default.ol `
   background: ${(props) => props.theme.toolbarBackground};
   position: absolute;
-  top: 100%;
+  top: calc( 100% - 3px );
   width: 100%;
   height: auto;
   left: 0;
   padding: 4px 8px 8px;
-  margin: 0;
-  margin-top: -3px;
-  margin-bottom: 0;
   border-radius: 0 0 4px 4px;
   overflow-y: auto;
   max-height: 25vh;

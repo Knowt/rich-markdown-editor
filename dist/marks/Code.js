@@ -8,6 +8,7 @@ const markInputRule_1 = __importDefault(require("../lib/markInputRule"));
 const moveLeft_1 = __importDefault(require("../commands/moveLeft"));
 const moveRight_1 = __importDefault(require("../commands/moveRight"));
 const Mark_1 = __importDefault(require("./Mark"));
+const constants_1 = require("../lib/constants");
 function backticksFor(node, side) {
     const ticks = /`+/g;
     let match;
@@ -42,7 +43,8 @@ class Code extends Mark_1.default {
     }
     keys({ type }) {
         return {
-            "Mod`": prosemirror_commands_1.toggleMark(type),
+            [constants_1.CODE_SHORTCUT1]: prosemirror_commands_1.toggleMark(type),
+            [constants_1.CODE_SHORTCUT2]: prosemirror_commands_1.toggleMark(type),
             ArrowLeft: moveLeft_1.default(),
             ArrowRight: moveRight_1.default(),
         };

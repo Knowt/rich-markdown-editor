@@ -1,0 +1,1 @@
+{"version":3,"file":"getIconClasses.js","sourceRoot":"","sources":["../../src/lib/getIconClasses.ts"],"names":[],"mappings":";;;AAAO,MAAM,cAAc,GAAG,CAC1B,eAAwB,EAC1B,EAAE;IACA,IAAI,WAAW,GAAG,MAAM,CAAC;IAEzB,IAAK,eAAe,EAAG;QACnB,WAAW,IAAI,QAAQ,CAAC;KAC3B;IAED,OAAO,WAAW,CAAC;AACvB,CAAC,CAAA;AAVY,QAAA,cAAc,kBAU1B"}
