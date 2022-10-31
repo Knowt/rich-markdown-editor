@@ -51,6 +51,7 @@ import { BlueBackground, RedBackground,
   OrangeBackground, YellowBackground,
   GreenBackground } from './marks/backgrounds';
 import { isHTML } from "./domHelpers";
+import { replaceHeaderByStrong } from "./domHelpers";
 
 const extensions = new ExtensionManager([
   new Doc(),
@@ -110,7 +111,14 @@ const markdownParser = extensions.parser({
 const parseHTML = (document: Document) => (html: string) => {
   const domNode = document.createElement("div");
   domNode.innerHTML = html;
-  return domParser.parse(domNode);
+  try {
+    return domParser.parse(domNode);
+  } catch (error) {
+    // TODO: parsing `h` tags throws sometimes, so we
+    //  replace headers by strong till we found the problem
+    domNode.innerHTML = replaceHeaderByStrong(html);
+    return domParser.parse(domNode);
+  }
 };
 
 const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
