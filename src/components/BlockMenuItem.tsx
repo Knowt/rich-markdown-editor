@@ -85,7 +85,7 @@ const Group = styled.div`
 
   .block-menu-item-icon {
     &.light {
-      filter: saturate( 1100% ) brightness( 90% );
+      filter: saturate( 300% ) brightness( 93% );
     }
   }
 `;

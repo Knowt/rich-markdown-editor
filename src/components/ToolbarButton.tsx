@@ -29,7 +29,7 @@ export default styled.button<Props>`
 
   .toolbar-icon {
     &.light {
-      filter: saturate( 1100% ) brightness( 90% );
+      filter: saturate( 300% ) brightness( 93% );
     }
   }
 
