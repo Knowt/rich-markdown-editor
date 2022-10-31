@@ -43,6 +43,7 @@ const GreenHighlight_1 = __importDefault(require("./marks/highlights/GreenHighli
 const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
 const backgrounds_1 = require("./marks/backgrounds");
 const domHelpers_1 = require("./domHelpers");
+const domHelpers_2 = require("./domHelpers");
 const extensions = new ExtensionManager_1.default([
     new Doc_1.default(),
     new Text_1.default(),
@@ -97,7 +98,13 @@ const markdownParser = extensions.parser({
 const parseHTML = (document) => (html) => {
     const domNode = document.createElement("div");
     domNode.innerHTML = html;
-    return domParser.parse(domNode);
+    try {
+        return domParser.parse(domNode);
+    }
+    catch (error) {
+        domNode.innerHTML = domHelpers_2.replaceHeaderByStrong(html);
+        return domParser.parse(domNode);
+    }
 };
 const serializeToHTML = (document) => (doc) => {
     const serializedFragment = domSerializer.serializeFragment(doc.content, {
