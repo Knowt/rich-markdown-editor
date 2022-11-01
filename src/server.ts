@@ -123,6 +123,10 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   return throwAwayDiv.innerHTML;
 };
 
+export const serializeHTML = (html: string) => {
+  return extensions.serializer().serialize(html);
+}
+
 export const parseMarkdown = (markdown: string) => {
   return markdownParser.parse(markdown);
 };
