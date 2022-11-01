@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.parseHTML = exports.schema = void 0;
+exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.serializeHTML = exports.parseHTML = exports.schema = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const dictionary_1 = __importDefault(require("./dictionary"));
@@ -108,6 +108,10 @@ const serializeToHTML = (document) => (doc) => {
     throwAwayDiv.appendChild(serializedFragment);
     return throwAwayDiv.innerHTML;
 };
+const serializeHTML = (html) => {
+    return extensions.serializer().serialize(html);
+};
+exports.serializeHTML = serializeHTML;
 const parseMarkdown = (markdown) => {
     return markdownParser.parse(markdown);
 };
