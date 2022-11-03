@@ -58,7 +58,6 @@ export default class GreenBackground extends Mark {
       close: "}}",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

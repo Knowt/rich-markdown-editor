@@ -154,48 +154,9 @@ export const StyledEditor = styled("div")<{
     }
 
     mark {
-      &.background {
-        display: inline-flex;
-        position: relative;
-        width: 100%;
-
+      &.highlight {
         &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          z-index: -1;
-          height: 100%;
-          width: 100%;
-        }
-  
-        &.red {
-          &:after {
-            background: ${(props) => props.theme.highlights["red"]};
-          }
-        }
-  
-        &.orange {
-          &:after {
-            background: ${(props) => props.theme.highlights["orange"]};
-          }
-        }
-  
-        &.yellow {
-          &:after {
-            background: ${(props) => props.theme.highlights["yellow"]};
-          }
-        }
-  
-        &.green {
-          &:after {
-            background: ${(props) => props.theme.highlights["green"]};
-          }
-        }
-  
-        &.blue {
-          &:after {
-            background: ${(props) => props.theme.highlights["blue"]};
-          }
+          transform: translateY( 0 );
         }
       }
     }
@@ -609,27 +570,73 @@ export const StyledEditor = styled("div")<{
     }
 
     &.background {
-      display: flex;
-    }
+      display: block;
 
-    &.red {
+      &.red {
         background: ${(props) => props.theme.highlights["red"]};
-    }
-
-    &.orange {
+      }
+  
+      &.orange {
         background: ${(props) => props.theme.highlights["orange"]};
-    }
-
-    &.yellow {
+      }
+  
+      &.yellow {
         background: ${(props) => props.theme.highlights["yellow"]};
-    }
-
-    &.green {
+      }
+  
+      &.green {
         background: ${(props) => props.theme.highlights["green"]};
+      }
+  
+      &.blue {
+        background: ${(props) => props.theme.highlights["blue"]};
+      }
     }
 
-    &.blue {
-        background: ${(props) => props.theme.highlights["blue"]};
+    &.highlight {
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        z-index: 0;
+        height: 100%;
+        width: 100%;
+        transform: translateY( 50% );
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      &.red {
+        &:before {
+          background: ${(props) => props.theme.highlights["red"]};
+        }
+      }
+
+      &.orange {
+        &:before {
+          background: ${(props) => props.theme.highlights["orange"]};
+        }
+      }
+
+      &.yellow {
+        &:before {
+          background: ${(props) => props.theme.highlights["yellow"]};
+        }
+      }
+
+      &.green {
+        &:before {
+          background: ${(props) => props.theme.highlights["green"]};
+        }
+      }
+
+      &.blue {
+        &:after {
+          background: ${(props) => props.theme.highlights["blue"]};
+        }
+      }
     }
   }
 

@@ -22,14 +22,14 @@ export default class BlueHighlight extends Mark {
       parseDOM: [
         {
           tag: "mark",
-          getAttrs: (node) => node.getAttribute("class") === "blue",
+          getAttrs: (node) => node.getAttribute("class") === "blue highlight",
         },
         {
           style: "background-color",
           getAttrs: (value) => !!value && value === "blue",
         },
       ],
-      toDOM: () => ["mark", { class: "blue" }],
+      toDOM: () => ["mark", { class: "blue highlight" }],
     };
   }
 

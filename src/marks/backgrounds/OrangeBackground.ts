@@ -58,7 +58,6 @@ export default class OrangeBackground extends Mark {
       close: "]]",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 
