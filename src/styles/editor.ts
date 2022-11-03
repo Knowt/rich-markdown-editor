@@ -132,6 +132,9 @@ export const StyledEditor = styled("div")<{
   h4,
   h5,
   h6 {
+    display: flex;
+    position: relative;
+    width: 100%;
     margin: 1em 0 0.5em;
     font-weight: 500;
     cursor: text;
@@ -153,21 +156,9 @@ export const StyledEditor = styled("div")<{
       }
     }
 
-    mark {
-      &.highlight {
-        &:after {
-          transform: translateY( 0 );
-        }
-      }
-    }
-  }
-
-  .heading-content {
-    line-height: 120%;
-
-    &:before {
-      content: "​";
-      display: inline;
+    .heading-content {
+      line-height: 120%;
+      width: 100%;
     }
   }
 
@@ -219,12 +210,13 @@ export const StyledEditor = styled("div")<{
   }
 
   .heading-actions {
+    position: absolute;
+    left: 0;
     opacity: 0;
     background: ${(props) => props.theme.background};
     margin-${(props) => (props.rtl ? "right" : "left")}: -26px;
     flex-direction: ${(props) => (props.rtl ? "row-reverse" : "row")};
     display: inline-flex;
-    position: relative;
     width: 26px;
 
     &.collapsed {
@@ -242,25 +234,25 @@ export const StyledEditor = styled("div")<{
 
   h1 {
     .heading-actions {
-      top: 0;
+      top: 6px;
     }
   }
 
   h2 {
     .heading-actions {
-      top: 3px;
+      top: 2px;
     }
   }
 
   h3 {
     .heading-actions {
-      top: 5px;
+      top: -1px;
     }
   }
 
   h4 {
     .heading-actions {
-      top: 6px;
+      top: -3px;
     }
   }
 
@@ -571,29 +563,6 @@ export const StyledEditor = styled("div")<{
 
     &.background {
       display: block;
-
-      &.red {
-        background: ${(props) => props.theme.highlights["red"]};
-      }
-  
-      &.orange {
-        background: ${(props) => props.theme.highlights["orange"]};
-      }
-  
-      &.yellow {
-        background: ${(props) => props.theme.highlights["yellow"]};
-      }
-  
-      &.green {
-        background: ${(props) => props.theme.highlights["green"]};
-      }
-  
-      &.blue {
-        background: ${(props) => props.theme.highlights["blue"]};
-      }
-    }
-
-    &.highlight {
       position: relative;
 
       &:before {
@@ -603,7 +572,6 @@ export const StyledEditor = styled("div")<{
         z-index: 0;
         height: 100%;
         width: 100%;
-        transform: translateY( 50% );
         mix-blend-mode: multiply;
         pointer-events: none;
       }
@@ -636,6 +604,28 @@ export const StyledEditor = styled("div")<{
         &:after {
           background: ${(props) => props.theme.highlights["blue"]};
         }
+      }
+    }
+
+    &.highlight {
+      &.red {
+        background: ${(props) => props.theme.highlights["red"]};
+      }
+  
+      &.orange {
+        background: ${(props) => props.theme.highlights["orange"]};
+      }
+  
+      &.yellow {
+        background: ${(props) => props.theme.highlights["yellow"]};
+      }
+  
+      &.green {
+        background: ${(props) => props.theme.highlights["green"]};
+      }
+  
+      &.blue {
+        background: ${(props) => props.theme.highlights["blue"]};
       }
     }
   }
