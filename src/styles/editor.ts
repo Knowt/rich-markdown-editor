@@ -564,15 +564,15 @@ export const StyledEditor = styled("div")<{
     &.background {
       display: block;
       position: relative;
+      z-index: 2;
 
       &:before {
         content: '';
         position: absolute;
         left: 0;
-        z-index: 0;
+        z-index: -1;
         height: 100%;
         width: 100%;
-        mix-blend-mode: multiply;
         pointer-events: none;
       }
 
@@ -601,7 +601,7 @@ export const StyledEditor = styled("div")<{
       }
 
       &.blue {
-        &:after {
+        &:before {
           background: ${(props) => props.theme.highlights["blue"]};
         }
       }
