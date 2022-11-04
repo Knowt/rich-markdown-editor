@@ -1031,7 +1031,7 @@ exports.StyledEditor = styled_components_1.default("div") `
     border: 0;
     padding: 0;
     margin-top: 4px;
-    margin-${(props) => (props.rtl ? "right" : "left")}: -24px;
+    margin-${(props) => (props.rtl ? "right" : "left")}: -30px;
 
     &:hover,
     &:focus {

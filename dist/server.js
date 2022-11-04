@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.serializeHTML = exports.parseHTML = exports.schema = void 0;
+exports.externalHtmlOrMdToHtml = exports.mdToHtml = exports.parseMarkdown = exports.serializeHTML = exports.schema = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const dictionary_1 = __importDefault(require("./dictionary"));
@@ -99,7 +99,6 @@ const parseHTML = (document) => (html) => {
     domNode.innerHTML = html;
     return domParser.parse(domNode);
 };
-exports.parseHTML = parseHTML;
 const serializeToHTML = (document) => (doc) => {
     const serializedFragment = domSerializer.serializeFragment(doc.content, {
         document,
@@ -108,8 +107,9 @@ const serializeToHTML = (document) => (doc) => {
     throwAwayDiv.appendChild(serializedFragment);
     return throwAwayDiv.innerHTML;
 };
-const serializeHTML = (html) => {
-    return extensions.serializer().serialize(html);
+const serializeHTML = (document_ = document) => (text) => {
+    return extensions.serializer()
+        .serialize(parseHTML(document_)(text));
 };
 exports.serializeHTML = serializeHTML;
 const parseMarkdown = (markdown) => {
@@ -123,7 +123,7 @@ const mdToHtml = (document) => (markdown) => {
 exports.mdToHtml = mdToHtml;
 const externalHtmlOrMdToHtml = (isHTML_ = domHelpers_1.isHTML, document_ = document) => (content) => {
     if (isHTML_(content)) {
-        return serializeToHTML(document_)(exports.parseHTML(document_)(content));
+        return serializeToHTML(document_)(parseHTML(document_)(content));
     }
     else {
         return exports.mdToHtml(document_)(content);
