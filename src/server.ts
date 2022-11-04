@@ -107,7 +107,7 @@ const markdownParser = extensions.parser({
   plugins: extensions.rulePlugins,
 });
 
-export const parseHTML = (document: Document) => (html: string) => {
+const parseHTML = (document: Document) => (html: string) => {
   const domNode = document.createElement("div");
   domNode.innerHTML = html;
   return domParser.parse(domNode);
@@ -123,8 +123,11 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
   return throwAwayDiv.innerHTML;
 };
 
-export const serializeHTML = (html: string) => {
-  return extensions.serializer().serialize(html);
+export const serializeHTML =
+  (document_ = document) =>
+  (text: string) => {
+    return extensions.serializer()
+      .serialize(parseHTML(document_)(text));
 }
 
 export const parseMarkdown = (markdown: string) => {
