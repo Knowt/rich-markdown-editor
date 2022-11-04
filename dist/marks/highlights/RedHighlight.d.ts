@@ -12,8 +12,8 @@ export default class RedHighlight extends Mark {
         group: string;
         parseDOM: ({
             tag: string;
+            getAttrs: (node: any) => boolean;
             style?: undefined;
-            getAttrs?: undefined;
         } | {
             style: string;
             getAttrs: (value: any) => boolean;

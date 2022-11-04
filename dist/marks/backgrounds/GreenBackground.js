@@ -55,7 +55,6 @@ class GreenBackground extends Mark_1.default {
             close: "}}",
             mixable: true,
             expelEnclosingWhitespace: true,
-            escape: false,
         };
     }
     parseMarkdown() {

@@ -12,6 +12,10 @@ export class MarkdownSerializerState {
     out: string;
     closed: boolean;
     inTightList: boolean;
+    ESACPED_MARKS: string[];
+    escapedMarksCount: {};
+    lastEscapedMark: string;
+    textInEscapedMark: string;
     options: any;
     flushClose(size: any): void;
     wrapBlock(delim: any, firstDelim: any, node: any, f: any): void;
@@ -29,6 +33,7 @@ export class MarkdownSerializerState {
     inTable: any;
     esc(str: string | undefined, startOfLine: any): string;
     quote(str: any): string;
+    removeTrailingSpaces(str: any): any;
     repeat(str: any, n: any): string;
     markString(mark: any, open: any, parent: any, index: any): any;
     getEnclosingWhitespace(text: any): {

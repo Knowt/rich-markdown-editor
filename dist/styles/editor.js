@@ -132,6 +132,9 @@ exports.StyledEditor = styled_components_1.default("div") `
   h4,
   h5,
   h6 {
+    display: flex;
+    position: relative;
+    width: 100%;
     margin: 1em 0 0.5em;
     font-weight: 500;
     cursor: text;
@@ -153,60 +156,9 @@ exports.StyledEditor = styled_components_1.default("div") `
       }
     }
 
-    mark {
-      &.background {
-        display: inline-flex;
-        position: relative;
-        width: 100%;
-
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          z-index: -1;
-          height: 100%;
-          width: 100%;
-        }
-  
-        &.red {
-          &:after {
-            background: ${(props) => props.theme.highlights["red"]};
-          }
-        }
-  
-        &.orange {
-          &:after {
-            background: ${(props) => props.theme.highlights["orange"]};
-          }
-        }
-  
-        &.yellow {
-          &:after {
-            background: ${(props) => props.theme.highlights["yellow"]};
-          }
-        }
-  
-        &.green {
-          &:after {
-            background: ${(props) => props.theme.highlights["green"]};
-          }
-        }
-  
-        &.blue {
-          &:after {
-            background: ${(props) => props.theme.highlights["blue"]};
-          }
-        }
-      }
-    }
-  }
-
-  .heading-content {
-    line-height: 120%;
-
-    &:before {
-      content: "​";
-      display: inline;
+    .heading-content {
+      line-height: 120%;
+      width: 100%;
     }
   }
 
@@ -258,12 +210,13 @@ exports.StyledEditor = styled_components_1.default("div") `
   }
 
   .heading-actions {
+    position: absolute;
+    left: 0;
     opacity: 0;
     background: ${(props) => props.theme.background};
     margin-${(props) => (props.rtl ? "right" : "left")}: -26px;
     flex-direction: ${(props) => (props.rtl ? "row-reverse" : "row")};
     display: inline-flex;
-    position: relative;
     width: 26px;
 
     &.collapsed {
@@ -281,25 +234,25 @@ exports.StyledEditor = styled_components_1.default("div") `
 
   h1 {
     .heading-actions {
-      top: 0;
+      top: 6px;
     }
   }
 
   h2 {
     .heading-actions {
-      top: 3px;
+      top: 2px;
     }
   }
 
   h3 {
     .heading-actions {
-      top: 5px;
+      top: -1px;
     }
   }
 
   h4 {
     .heading-actions {
-      top: 6px;
+      top: -3px;
     }
   }
 
@@ -605,27 +558,71 @@ exports.StyledEditor = styled_components_1.default("div") `
     }
 
     &.background {
-      display: flex;
+      display: block;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        z-index: 0;
+        height: 100%;
+        width: 100%;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      &.red {
+        &:before {
+          background: ${(props) => props.theme.highlights["red"]};
+        }
+      }
+
+      &.orange {
+        &:before {
+          background: ${(props) => props.theme.highlights["orange"]};
+        }
+      }
+
+      &.yellow {
+        &:before {
+          background: ${(props) => props.theme.highlights["yellow"]};
+        }
+      }
+
+      &.green {
+        &:before {
+          background: ${(props) => props.theme.highlights["green"]};
+        }
+      }
+
+      &.blue {
+        &:after {
+          background: ${(props) => props.theme.highlights["blue"]};
+        }
+      }
     }
 
-    &.red {
+    &.highlight {
+      &.red {
         background: ${(props) => props.theme.highlights["red"]};
-    }
-
-    &.orange {
+      }
+  
+      &.orange {
         background: ${(props) => props.theme.highlights["orange"]};
-    }
-
-    &.yellow {
+      }
+  
+      &.yellow {
         background: ${(props) => props.theme.highlights["yellow"]};
-    }
-
-    &.green {
+      }
+  
+      &.green {
         background: ${(props) => props.theme.highlights["green"]};
-    }
-
-    &.blue {
+      }
+  
+      &.blue {
         background: ${(props) => props.theme.highlights["blue"]};
+      }
     }
   }
 
@@ -827,6 +824,7 @@ exports.StyledEditor = styled_components_1.default("div") `
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat( auto-fill, 1fr );
+    margin-bottom: 0.3rem;
 
     * {
       box-sizing: border-box;

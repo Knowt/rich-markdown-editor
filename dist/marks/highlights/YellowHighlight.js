@@ -24,14 +24,14 @@ class YellowHighlight extends Mark_1.default {
             parseDOM: [
                 {
                     tag: "mark",
-                    getAttrs: (node) => node.getAttribute("class") === "yellow",
+                    getAttrs: (node) => node.getAttribute("class") === "yellow highlight",
                 },
                 {
                     style: "background-color",
                     getAttrs: (value) => !!value && value === "yellow",
                 },
             ],
-            toDOM: () => ["mark", { class: "yellow" }],
+            toDOM: () => ["mark", { class: "yellow highlight" }],
         };
     }
     inputRules({ type }) {
