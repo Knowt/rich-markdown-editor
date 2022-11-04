@@ -125,9 +125,9 @@ const serializeToHTML = (document: Document) => (doc: ProsemirrorNode) => {
 
 export const serializeHTML =
   (document_ = document) =>
-  (text: string) => {
+  (html: string) => {
     return extensions.serializer()
-      .serialize(parseHTML(document_)(text));
+      .serialize(parseHTML(document_)(html));
 }
 
 export const parseMarkdown = (markdown: string) => {
