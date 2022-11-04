@@ -67,6 +67,7 @@ export class MarkdownSerializerState {
     this.closed = false;
     this.inTightList = false;
 
+    // These symbols correspond to the background marks
     this.ESACPED_MARKS = [ ']]', '<<', '}}', '[[', '{{' ];
     this.escapedMarksCount = {};
     this.lastEscapedMark = '';
@@ -154,6 +155,15 @@ export class MarkdownSerializerState {
       const subText = lines[i];
       this.write();
 
+      // We need to escape certain marks (allow it to default to true),
+      // otherwise a bug occurs where text is double wrapped when marks are mixed.
+      // For marks that don't disable escape,
+      // a bug occurs when marks are mixed IF they are applied to an empty string.
+      // The editor saves the empty string in between the marked text,
+      // causing a the actual text to be rendered rather than the desired style.
+      // For example, "}}Hello! }}" would literally be rendered in the editor instead of
+      // the text "Hello!" in a green background
+      // To bypass this, we check the background marks for trailing spaces prior to saving.
       if ( this.ESACPED_MARKS.includes( subText ) ) {
         this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
 
