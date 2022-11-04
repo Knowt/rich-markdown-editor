@@ -66,6 +66,12 @@ export class MarkdownSerializerState {
     this.delim = this.out = "";
     this.closed = false;
     this.inTightList = false;
+
+    this.ESACPED_MARKS = [ ']]', '<<', '}}', '[[', '{{' ];
+    this.escapedMarksCount = {};
+    this.lastEscapedMark = '';
+    this.textInEscapedMark = '';
+
     // :: Object
     // The options passed to the serializer.
     //   tightLists:: ?bool
@@ -137,11 +143,44 @@ export class MarkdownSerializerState {
   // it will be escaped.
   text(text, escape) {
     const lines = text.split("\n");
+
+    const buildOut = (subText, startOfLine, i) => {
+      this.out += escape !== false ? this.esc(subText, startOfLine) : subText;
+      if (i !== lines.length - 1) this.out += "\n";
+    }
+    
     for (let i = 0; i < lines.length; i++) {
       const startOfLine = this.atBlank() || this.closed;
+      const subText = lines[i];
       this.write();
-      this.out += escape !== false ? this.esc(lines[i], startOfLine) : lines[i];
-      if (i !== lines.length - 1) this.out += "\n";
+
+      if ( this.ESACPED_MARKS.includes( subText ) ) {
+        this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
+
+        if ( this.escapedMarksCount[subText] > 1 ) {
+          buildOut(
+            this.removeTrailingSpaces( this.textInEscapedMark ) + subText, 
+            startOfLine,
+            i,
+          );
+
+          this.escapedMarksCount[subText] = 0;
+          this.lastEscapedMark = '';
+          this.textInEscapedMark = '';
+
+          continue;
+        }
+        else {
+          this.lastEscapedMark = subText;
+        }
+      }
+      
+      if ( this.escapedMarksCount[this.lastEscapedMark] ) {
+        this.textInEscapedMark += subText;
+      }
+      else {
+        buildOut(subText, startOfLine, i);
+      }
     }
   }
 
@@ -374,6 +413,21 @@ export class MarkdownSerializerState {
     const wrap =
       str.indexOf('"') === -1 ? '""' : str.indexOf("'") === -1 ? "''" : "()";
     return wrap[0] + str + wrap[1];
+  }
+
+  removeTrailingSpaces(str) {
+    let going = true;
+    
+    while ( going ) {
+      if ( str[str.length - 1] === ' ' ) {
+        str = str.substring(0, str.length - 1);
+      }
+      else {
+        going = false;
+      }
+    }
+
+    return str;
   }
 
   // :: (string, number) → string
