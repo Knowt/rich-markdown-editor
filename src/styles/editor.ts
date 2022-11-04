@@ -828,6 +828,7 @@ export const StyledEditor = styled("div")<{
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat( auto-fill, 1fr );
+    margin-bottom: 0.3rem;
 
     * {
       box-sizing: border-box;
