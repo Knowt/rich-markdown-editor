@@ -130,6 +130,11 @@ export const serializeHTML =
       .serialize(parseHTML(document_)(html));
 }
 
+export const serializeParsedHTML = (html: string) => {
+    return extensions.serializer()
+      .serialize(html);
+}
+
 export const parseMarkdown = (markdown: string) => {
   return markdownParser.parse(markdown);
 };
