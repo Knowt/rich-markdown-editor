@@ -23,7 +23,7 @@ import { MenuItem, DeviceType, DefaultHighlight,
   DefaultBackground, SetDefaultHighlight,
   SetDefaultBackground } from "../types";
 import baseDictionary from "../dictionary";
-import { deleteRow, deleteColumn } from '@knowt/prosemirror-tables';
+import { deleteRow, deleteColumn, deleteTable } from '@knowt/prosemirror-tables';
 
 type Props = {
   dictionary: typeof baseDictionary;
@@ -45,9 +45,10 @@ type Props = {
   setDefaultBackground?: SetDefaultBackground;
 };
 
-type HandleTableBackspaceInput = {
+type HandleTableDeleteInput = {
   isTableRowSelected: boolean;
   isTableColSelected: boolean;
+  isTableSelected: boolean;
 }
 
 function isVisible(props) {
@@ -74,15 +75,21 @@ function isVisible(props) {
 export default class SelectionToolbar extends React.Component<Props> {
   isActive = false;
   menuRef = React.createRef<HTMLDivElement>();
+  isCutInProgress = false;
   isTableRowSelected = false;
   isTableColSelected = false;
+  isTableSelected = false;
 
   componentDidUpdate(): void {
     const visible = isVisible(this.props);
     if (this.isActive && !visible) {
       this.isActive = false;
       this.props.onClose();
-      this.resetTrackedSelections();
+      // for some reason tracked selections are reset prior to a cut event
+      // this makes sure we save selections until after cut event is complete
+      if ( !this.isCutInProgress ) {
+        this.resetTrackedSelections();
+      }
     }
     if (!this.isActive && visible) {
       this.isActive = true;
@@ -92,50 +99,80 @@ export default class SelectionToolbar extends React.Component<Props> {
 
   componentDidMount(): void {
     window.addEventListener("mouseup", this.handleClickOutside);
-    document.addEventListener( 
-      'keydown', 
-      (event) => this.handleTableBackspace(event, {
-        isTableRowSelected: this.isTableRowSelected,
-        isTableColSelected: this.isTableColSelected,
-      } ),
-    );
+
+    document.addEventListener( 'keydown', (event) => this.handleKeydown(event) );
+    document.addEventListener( 'beforecut', () => this.handleBeforeCut() );
+    document.addEventListener( 'cut', () => this.handleCut() );
   }
 
   componentWillUnmount(): void {
     window.removeEventListener("mouseup", this.handleClickOutside);
-    document.removeEventListener( 
-      'keydown', 
-      (event) => this.handleTableBackspace(event, {
-        isTableRowSelected: this.isTableRowSelected,
-        isTableColSelected: this.isTableColSelected,
-      } ),
-    );
+
+    document.removeEventListener( 'keydown', (event) => this.handleKeydown(event) );
+    document.removeEventListener( 'beforecut', () => this.handleBeforeCut() );
+    document.removeEventListener( 'cut', () => this.handleCut() );
   }
 
-  handleTableBackspace(event: KeyboardEvent, input: HandleTableBackspaceInput): void {
+  handleBeforeCut(): void {
+    this.isCutInProgress = true;
+  }
+
+  handleCut(): void {
+    const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
+
+    this.handleTableDelete( {
+      isTableRowSelected,
+      isTableColSelected,
+      isTableSelected
+    } );
+
+    this.isCutInProgress = false;
+  }
+
+  handleKeydown(event: KeyboardEvent): void {
     if ( event.key === 'Backspace' ) {
-      const { isTableRowSelected, isTableColSelected } = input;
+      const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
 
-      if ( isTableRowSelected ) {
+      const didDelete = this.handleTableDelete( {
+        isTableRowSelected,
+        isTableColSelected,
+        isTableSelected,
+      } );
+
+      if ( didDelete ) {
         event.preventDefault();
         event.stopImmediatePropagation();
-
-        const { state, dispatch } = this.props.view;
-        deleteRow(state, dispatch);
-      }
-      else if ( isTableColSelected ) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
-        const { state, dispatch } = this.props.view;
-        deleteColumn(state, dispatch);
       }
     }
+  }
+
+  handleTableDelete(input: HandleTableDeleteInput): boolean {
+    const { isTableRowSelected, isTableColSelected, isTableSelected } = input;
+
+    if ( isTableRowSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteRow(state, dispatch);
+
+      return true;
+    }
+    else if ( isTableColSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteColumn(state, dispatch);
+
+      return true;
+    }
+    else if ( isTableSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteTable(state, dispatch);
+    }
+
+    return false;
   }
 
   resetTrackedSelections(): void {
     this.isTableColSelected = false;
     this.isTableRowSelected = false;
+    this.isTableSelected = false;
   }
 
   handleClickOutside = (ev: MouseEvent): void => {
@@ -255,11 +292,15 @@ export default class SelectionToolbar extends React.Component<Props> {
         rowIndex,
         rtl,
       });
+      this.resetTrackedSelections();
+      this.isTableSelected = true;
     } else if (colIndex !== undefined) {
       items = getTableColMenuItems(state, colIndex, rtl, dictionary);
+      this.resetTrackedSelections();
       this.isTableColSelected = true;
     } else if (rowIndex !== undefined) {
       items = getTableRowMenuItems(state, rowIndex, dictionary);
+      this.resetTrackedSelections();
       this.isTableRowSelected = true;
     } else if (isImageSelection) {
       items = getImageMenuItems(state, dictionary);
