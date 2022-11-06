@@ -23,6 +23,7 @@ import { MenuItem, DeviceType, DefaultHighlight,
   DefaultBackground, SetDefaultHighlight,
   SetDefaultBackground } from "../types";
 import baseDictionary from "../dictionary";
+import { deleteRow, deleteColumn } from '@knowt/prosemirror-tables';
 
 type Props = {
   dictionary: typeof baseDictionary;
@@ -43,6 +44,11 @@ type Props = {
   setDefaultHighlight?: SetDefaultHighlight;
   setDefaultBackground?: SetDefaultBackground;
 };
+
+type HandleTableBackspaceInput = {
+  isTableRowSelected: boolean;
+  isTableColSelected: boolean;
+}
 
 function isVisible(props) {
   const { view } = props;
@@ -68,12 +74,15 @@ function isVisible(props) {
 export default class SelectionToolbar extends React.Component<Props> {
   isActive = false;
   menuRef = React.createRef<HTMLDivElement>();
+  isTableRowSelected = false;
+  isTableColSelected = false;
 
   componentDidUpdate(): void {
     const visible = isVisible(this.props);
     if (this.isActive && !visible) {
       this.isActive = false;
       this.props.onClose();
+      this.resetTrackedSelections();
     }
     if (!this.isActive && visible) {
       this.isActive = true;
@@ -83,10 +92,50 @@ export default class SelectionToolbar extends React.Component<Props> {
 
   componentDidMount(): void {
     window.addEventListener("mouseup", this.handleClickOutside);
+    document.addEventListener( 
+      'keydown', 
+      (event) => this.handleTableBackspace(event, {
+        isTableRowSelected: this.isTableRowSelected,
+        isTableColSelected: this.isTableColSelected,
+      } ),
+    );
   }
 
   componentWillUnmount(): void {
     window.removeEventListener("mouseup", this.handleClickOutside);
+    document.removeEventListener( 
+      'keydown', 
+      (event) => this.handleTableBackspace(event, {
+        isTableRowSelected: this.isTableRowSelected,
+        isTableColSelected: this.isTableColSelected,
+      } ),
+    );
+  }
+
+  handleTableBackspace(event: KeyboardEvent, input: HandleTableBackspaceInput): void {
+    if ( event.key === 'Backspace' ) {
+      const { isTableRowSelected, isTableColSelected } = input;
+
+      if ( isTableRowSelected ) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const { state, dispatch } = this.props.view;
+        deleteRow(state, dispatch);
+      }
+      else if ( isTableColSelected ) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const { state, dispatch } = this.props.view;
+        deleteColumn(state, dispatch);
+      }
+    }
+  }
+
+  resetTrackedSelections(): void {
+    this.isTableColSelected = false;
+    this.isTableRowSelected = false;
   }
 
   handleClickOutside = (ev: MouseEvent): void => {
@@ -208,8 +257,10 @@ export default class SelectionToolbar extends React.Component<Props> {
       });
     } else if (colIndex !== undefined) {
       items = getTableColMenuItems(state, colIndex, rtl, dictionary);
+      this.isTableColSelected = true;
     } else if (rowIndex !== undefined) {
       items = getTableRowMenuItems(state, rowIndex, dictionary);
+      this.isTableRowSelected = true;
     } else if (isImageSelection) {
       items = getImageMenuItems(state, dictionary);
     } else if (isDividerSelection) {
