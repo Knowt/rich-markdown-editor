@@ -388,6 +388,11 @@ const SearchResults = styled.ol`
   border-radius: 0 0 4px 4px;
   overflow-y: auto;
   max-height: 25vh;
+  box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
+              0px 0px 0.9px ${props => props.theme.toolbarShadow},
+              0px 0px 1.8px ${props => props.theme.toolbarShadow},
+              0px 0px 3.7px ${props => props.theme.toolbarShadow},
+              0px 0px 10px ${props => props.theme.toolbarShadow};
 
   @media (hover: none) and (pointer: coarse) {
     position: fixed;
