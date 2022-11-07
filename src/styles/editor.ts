@@ -162,6 +162,27 @@ export const StyledEditor = styled("div")<{
     }
   }
 
+  h1,
+  h2 {
+    .heading-content {
+      a {
+        &:after {
+          height: 2.5px;
+        }
+      }
+    }
+  }
+
+  h3 {
+    .heading-content {
+      a {
+        &:after {
+          height: 2px;
+        }
+      }
+    }
+  }
+
   .heading-name {
     color: ${(props) => props.theme.text};
 
@@ -397,15 +418,51 @@ export const StyledEditor = styled("div")<{
     span:first-child + br:last-child {
       display: none;
     }
+
+    a {
+      &:after {
+        height: 1.5px;
+      }
+    }
   }
 
-  a {
-    color: ${(props) => props.theme.link};
-    cursor: pointer;
-  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      position: relative;
+      border-radius: 3px;
+      text-decoration: none;
+      color: ${(props) => props.theme.link};
+      cursor: pointer;
 
-  a:hover {
-    text-decoration: ${(props) => (props.readOnly ? "underline" : "none")};
+      transition: background-color 0.17s ease;
+
+      &:after {
+        content: '';
+        position: absolute;
+        background: ${(props) => props.theme.link};
+        left: 0;
+        bottom: 0;
+        width: 100%;
+
+        transition: opacity 0.17s ease,
+                    transform 0.17s ease;
+      }
+
+      &:hover {
+        background: ${(props) => props.theme.linkHover};
+
+        &:after {
+          opacity: 0;
+          transform: translateY( 1px );
+        }
+      }
+    }
   }
 
   ul,
@@ -559,6 +616,10 @@ export const StyledEditor = styled("div")<{
 
     a {
       color: ${(props) => props.theme.textHighlightForeground};
+
+      &:after {
+        background: ${(props) => props.theme.textHighlightForeground};
+      }
     }
 
     &.background {
