@@ -90,6 +90,7 @@ export const light = {
   code: colors.lightBlack,
   cursor: colors.black,
   divider: colors.greyMid,
+  linkHover: "#dbf2ff",
 
   toolbarBackground: colors.white,
   toolbarShadow: colors.knowtGrey,
@@ -121,6 +122,7 @@ export const dark = {
   cursor: colors.white,
   divider: "#4E5C6E",
   placeholder: colors.white40,
+  linkHover: "#b8e5ff",
 
   blockToolbarBackground: colors.lightBlack,
   blockToolbarText: colors.almostWhite,
