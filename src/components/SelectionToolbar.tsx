@@ -23,6 +23,7 @@ import { MenuItem, DeviceType, DefaultHighlight,
   DefaultBackground, SetDefaultHighlight,
   SetDefaultBackground } from "../types";
 import baseDictionary from "../dictionary";
+import { deleteRow, deleteColumn, deleteTable } from '@knowt/prosemirror-tables';
 
 type Props = {
   dictionary: typeof baseDictionary;
@@ -43,6 +44,12 @@ type Props = {
   setDefaultHighlight?: SetDefaultHighlight;
   setDefaultBackground?: SetDefaultBackground;
 };
+
+type HandleTableDeleteInput = {
+  isTableRowSelected: boolean;
+  isTableColSelected: boolean;
+  isTableSelected: boolean;
+}
 
 function isVisible(props) {
   const { view } = props;
@@ -68,12 +75,21 @@ function isVisible(props) {
 export default class SelectionToolbar extends React.Component<Props> {
   isActive = false;
   menuRef = React.createRef<HTMLDivElement>();
+  isCutInProgress = false;
+  isTableRowSelected = false;
+  isTableColSelected = false;
+  isTableSelected = false;
 
   componentDidUpdate(): void {
     const visible = isVisible(this.props);
     if (this.isActive && !visible) {
       this.isActive = false;
       this.props.onClose();
+      // for some reason tracked selections are reset prior to a cut event
+      // this makes sure we save selections until after cut event is complete
+      if ( !this.isCutInProgress ) {
+        this.resetTrackedSelections();
+      }
     }
     if (!this.isActive && visible) {
       this.isActive = true;
@@ -83,10 +99,80 @@ export default class SelectionToolbar extends React.Component<Props> {
 
   componentDidMount(): void {
     window.addEventListener("mouseup", this.handleClickOutside);
+
+    document.addEventListener( 'keydown', (event) => this.handleKeydown(event) );
+    document.addEventListener( 'beforecut', () => this.handleBeforeCut() );
+    document.addEventListener( 'cut', () => this.handleCut() );
   }
 
   componentWillUnmount(): void {
     window.removeEventListener("mouseup", this.handleClickOutside);
+
+    document.removeEventListener( 'keydown', (event) => this.handleKeydown(event) );
+    document.removeEventListener( 'beforecut', () => this.handleBeforeCut() );
+    document.removeEventListener( 'cut', () => this.handleCut() );
+  }
+
+  handleBeforeCut(): void {
+    this.isCutInProgress = true;
+  }
+
+  handleCut(): void {
+    const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
+
+    this.handleTableDelete( {
+      isTableRowSelected,
+      isTableColSelected,
+      isTableSelected
+    } );
+
+    this.isCutInProgress = false;
+  }
+
+  handleKeydown(event: KeyboardEvent): void {
+    if ( event.key === 'Backspace' ) {
+      const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
+
+      const didDelete = this.handleTableDelete( {
+        isTableRowSelected,
+        isTableColSelected,
+        isTableSelected,
+      } );
+
+      if ( didDelete ) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }
+  }
+
+  handleTableDelete(input: HandleTableDeleteInput): boolean {
+    const { isTableRowSelected, isTableColSelected, isTableSelected } = input;
+
+    if ( isTableRowSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteRow(state, dispatch);
+
+      return true;
+    }
+    else if ( isTableColSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteColumn(state, dispatch);
+
+      return true;
+    }
+    else if ( isTableSelected ) {
+      const { state, dispatch } = this.props.view;
+      deleteTable(state, dispatch);
+    }
+
+    return false;
+  }
+
+  resetTrackedSelections(): void {
+    this.isTableColSelected = false;
+    this.isTableRowSelected = false;
+    this.isTableSelected = false;
   }
 
   handleClickOutside = (ev: MouseEvent): void => {
@@ -206,10 +292,16 @@ export default class SelectionToolbar extends React.Component<Props> {
         rowIndex,
         rtl,
       });
+      this.resetTrackedSelections();
+      this.isTableSelected = true;
     } else if (colIndex !== undefined) {
       items = getTableColMenuItems(state, colIndex, rtl, dictionary);
+      this.resetTrackedSelections();
+      this.isTableColSelected = true;
     } else if (rowIndex !== undefined) {
       items = getTableRowMenuItems(state, rowIndex, dictionary);
+      this.resetTrackedSelections();
+      this.isTableRowSelected = true;
     } else if (isImageSelection) {
       items = getImageMenuItems(state, dictionary);
     } else if (isDividerSelection) {
