@@ -97,6 +97,10 @@ export default class TableCell extends Node {
                       event.stopImmediatePropagation();
                       this.options.onSelectRow(index, state);
                     });
+                    grip.addEventListener("mouseup", (event) => {
+                      event.preventDefault();
+                      event.stopImmediatePropagation();
+                    });
                     return grip;
                   })
                 );
