@@ -18,6 +18,7 @@ export declare const theme: {
     code: string;
     cursor: string;
     divider: string;
+    linkHover: string;
     toolbarBackground: string;
     toolbarShadow: string;
     toolbarHoverBackground: string;
@@ -251,6 +252,15 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     handleSelectRow: (index: number, state: EditorState) => void;
     handleSelectColumn: (index: number, state: EditorState) => void;
     handleSelectTable: (state: EditorState) => void;
+    getDefaultHighlightKey: () => string;
+    getDefaultBackgroundKey: () => string;
+    setDefaultHighlight: (defaultHighlight: DefaultHighlight) => void;
+    setDefaultBackground: (defaultBackground: DefaultBackground) => void;
+    getLocalStorageDefaults: () => {
+        defaultHighlight: "highlight_blue" | "highlight_green" | "highlight_orange" | "highlight_red" | "highlight_yellow" | null;
+        defaultBackground: "background_blue" | "background_green" | "background_orange" | "background_red" | "background_yellow" | null;
+    };
+    onHoverLink: () => void;
     forceUpdateContent: (newValue: string, options: {
         triggerOnChange?: boolean;
     }) => void;
@@ -265,6 +275,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         code: string;
         cursor: string;
         divider: string;
+        linkHover: string;
         toolbarBackground: string;
         toolbarShadow: string;
         toolbarHoverBackground: string;
@@ -479,14 +490,6 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         warning: string;
         warningNotice: string;
     }) & import("lodash").MemoizedFunction;
-    getDefaultHighlightKey: () => string;
-    getDefaultBackgroundKey: () => string;
-    setDefaultHighlight: (defaultHighlight: DefaultHighlight) => void;
-    setDefaultBackground: (defaultBackground: DefaultBackground) => void;
-    getLocalStorageDefaults: () => {
-        defaultHighlight: "highlight_blue" | "highlight_green" | "highlight_orange" | "highlight_red" | "highlight_yellow" | null;
-        defaultBackground: "background_blue" | "background_green" | "background_orange" | "background_red" | "background_yellow" | null;
-    };
     render(): JSX.Element;
 }
 export default RichMarkdownEditor;

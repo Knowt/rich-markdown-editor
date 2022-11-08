@@ -14,6 +14,13 @@ exports.StyledEditor = styled_components_1.default("div") `
   line-height: 1.7em;
   width: 100%;
 
+  .link-popout {
+    border: 5px solid black;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+  }
+  
   .ProseMirror {
     position: relative;
     outline: none;
@@ -159,6 +166,27 @@ exports.StyledEditor = styled_components_1.default("div") `
     .heading-content {
       line-height: 120%;
       width: 100%;
+    }
+  }
+
+  h1,
+  h2 {
+    .heading-content {
+      a {
+        &:after {
+          height: 2.5px;
+        }
+      }
+    }
+  }
+
+  h3 {
+    .heading-content {
+      a {
+        &:after {
+          height: 2px;
+        }
+      }
     }
   }
 
@@ -396,15 +424,51 @@ exports.StyledEditor = styled_components_1.default("div") `
     span:first-child + br:last-child {
       display: none;
     }
+
+    a {
+      &:after {
+        height: 1.5px;
+      }
+    }
   }
 
-  a {
-    color: ${(props) => props.theme.link};
-    cursor: pointer;
-  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      position: relative;
+      border-radius: 3px;
+      text-decoration: none;
+      color: ${(props) => props.theme.link};
+      cursor: pointer;
 
-  a:hover {
-    text-decoration: ${(props) => (props.readOnly ? "underline" : "none")};
+      transition: background-color 0.17s ease;
+
+      &:after {
+        content: '';
+        position: absolute;
+        background: ${(props) => props.theme.link};
+        left: 0;
+        bottom: 0;
+        width: 100%;
+
+        transition: opacity 0.17s ease,
+                    transform 0.17s ease;
+      }
+
+      &:hover {
+        background: ${(props) => props.theme.linkHover};
+
+        &:after {
+          opacity: 0;
+          transform: translateY( 1px );
+        }
+      }
+    }
   }
 
   ul,
@@ -555,6 +619,10 @@ exports.StyledEditor = styled_components_1.default("div") `
 
     a {
       color: ${(props) => props.theme.textHighlightForeground};
+
+      &:after {
+        background: ${(props) => props.theme.textHighlightForeground};
+      }
     }
 
     &.background {

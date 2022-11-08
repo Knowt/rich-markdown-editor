@@ -22,12 +22,26 @@ declare type Props = {
     setDefaultHighlight?: SetDefaultHighlight;
     setDefaultBackground?: SetDefaultBackground;
 };
+declare type HandleTableDeleteInput = {
+    isTableRowSelected: boolean;
+    isTableColSelected: boolean;
+    isTableSelected: boolean;
+};
 export default class SelectionToolbar extends React.Component<Props> {
     isActive: boolean;
     menuRef: React.RefObject<HTMLDivElement>;
+    isCutInProgress: boolean;
+    isTableRowSelected: boolean;
+    isTableColSelected: boolean;
+    isTableSelected: boolean;
     componentDidUpdate(): void;
     componentDidMount(): void;
     componentWillUnmount(): void;
+    handleBeforeCut(): void;
+    handleCut(): void;
+    handleKeydown(event: KeyboardEvent): void;
+    handleTableDelete(input: HandleTableDeleteInput): boolean;
+    resetTrackedSelections(): void;
     handleClickOutside: (ev: MouseEvent) => void;
     handleOnCreateLink: (title: string) => Promise<void>;
     handleOnSelectLink: ({ href, from, to, }: {

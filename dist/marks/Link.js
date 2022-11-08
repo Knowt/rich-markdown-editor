@@ -3,11 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const react_dom_1 = require("react-dom");
+const styled_components_1 = __importDefault(require("styled-components"));
 const prosemirror_commands_1 = require("prosemirror-commands");
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const Mark_1 = __importDefault(require("./Mark"));
 const constants_1 = require("../lib/constants");
+const LinkPopout = styled_components_1.default.div `
+  position: fixed;
+  left: 50%;
+  top: 50%;
+`;
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
 class Link extends Mark_1.default {
     get name() {
@@ -73,11 +80,27 @@ class Link extends Mark_1.default {
                         mouseover: (_view, event) => {
                             if (event.target instanceof HTMLAnchorElement &&
                                 !event.target.className.includes("ProseMirror-widget")) {
+                                const editor = document.getElementById('knowt-markdown-editor');
+                                if (editor) {
+                                    const popout = document.createElement('div');
+                                    popout.innerHTML = 'Popout';
+                                    react_dom_1.createPortal("Popout", editor);
+                                }
                                 if (this.options.onHoverLink) {
                                     return this.options.onHoverLink(event);
                                 }
                             }
                             return false;
+                        },
+                        mouseleave: (_, event) => {
+                            console.log('leave');
+                            const editor = document.getElementById('knowt-markdown-editor');
+                            if (editor) {
+                                const word = document.getElementsByClassName('link-popout');
+                                Array.from(word).forEach((node) => {
+                                    editor.removeChild(node);
+                                });
+                            }
                         },
                         click: (_view, event) => {
                             if (event.target instanceof HTMLAnchorElement) {

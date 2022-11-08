@@ -80,6 +80,7 @@ export declare const light: {
     code: string;
     cursor: string;
     divider: string;
+    linkHover: string;
     toolbarBackground: string;
     toolbarShadow: string;
     toolbarHoverBackground: string;
@@ -179,6 +180,7 @@ export declare const dark: {
     cursor: string;
     divider: string;
     placeholder: string;
+    linkHover: string;
     blockToolbarBackground: string;
     blockToolbarText: string;
     blockToolbarHoverBackground: string;

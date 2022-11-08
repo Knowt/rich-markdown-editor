@@ -157,13 +157,12 @@ class Image extends Node_1.default {
         };
         this.component = (props) => {
             const { isSelected, node, getPos } = props;
-            const { alt, src, title, width, height } = props.node.attrs;
-            const className = "image";
+            const { alt, src, title, width, height } = node.attrs;
             const resizableWrapperRef = React.useRef(null);
             useResizeObserver_1.default(resizableWrapperRef, (entry) => {
                 this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
             });
-            return (React.createElement("div", { contentEditable: false, className: className, onClick: () => this.handleSelect(props)(), role: 'button' },
+            return (React.createElement("div", { contentEditable: false, className: "image", onClick: () => this.handleSelect(props)(), role: 'button' },
                 React.createElement(ImageWrapper, { draggable: true, className: isSelected ? "ProseMirror-selectednode" : "", onDragStartCapture: (event) => {
                         this.handleSelect(props)();
                         event.dataTransfer.effectAllowed = 'move';

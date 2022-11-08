@@ -53,6 +53,7 @@ const isNodeActive_1 = __importDefault(require("../queries/isNodeActive"));
 const getColumnIndex_1 = __importDefault(require("../queries/getColumnIndex"));
 const getRowIndex_1 = __importDefault(require("../queries/getRowIndex"));
 const createAndInsertLink_1 = __importDefault(require("../commands/createAndInsertLink"));
+const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
 function isVisible(props) {
     const { view } = props;
     const { selection } = view.state;
@@ -78,6 +79,10 @@ class SelectionToolbar extends React.Component {
         super(...arguments);
         this.isActive = false;
         this.menuRef = React.createRef();
+        this.isCutInProgress = false;
+        this.isTableRowSelected = false;
+        this.isTableColSelected = false;
+        this.isTableSelected = false;
         this.handleClickOutside = (ev) => {
             if (ev.target instanceof Node &&
                 this.menuRef.current &&
@@ -129,6 +134,9 @@ class SelectionToolbar extends React.Component {
         if (this.isActive && !visible) {
             this.isActive = false;
             this.props.onClose();
+            if (!this.isCutInProgress) {
+                this.resetTrackedSelections();
+            }
         }
         if (!this.isActive && visible) {
             this.isActive = true;
@@ -137,9 +145,64 @@ class SelectionToolbar extends React.Component {
     }
     componentDidMount() {
         window.addEventListener("mouseup", this.handleClickOutside);
+        document.addEventListener('keydown', (event) => this.handleKeydown(event));
+        document.addEventListener('beforecut', () => this.handleBeforeCut());
+        document.addEventListener('cut', () => this.handleCut());
     }
     componentWillUnmount() {
         window.removeEventListener("mouseup", this.handleClickOutside);
+        document.removeEventListener('keydown', (event) => this.handleKeydown(event));
+        document.removeEventListener('beforecut', () => this.handleBeforeCut());
+        document.removeEventListener('cut', () => this.handleCut());
+    }
+    handleBeforeCut() {
+        this.isCutInProgress = true;
+    }
+    handleCut() {
+        const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
+        this.handleTableDelete({
+            isTableRowSelected,
+            isTableColSelected,
+            isTableSelected
+        });
+        this.isCutInProgress = false;
+    }
+    handleKeydown(event) {
+        if (event.key === 'Backspace') {
+            const { isTableRowSelected, isTableColSelected, isTableSelected } = this;
+            const didDelete = this.handleTableDelete({
+                isTableRowSelected,
+                isTableColSelected,
+                isTableSelected,
+            });
+            if (didDelete) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }
+    }
+    handleTableDelete(input) {
+        const { isTableRowSelected, isTableColSelected, isTableSelected } = input;
+        if (isTableRowSelected) {
+            const { state, dispatch } = this.props.view;
+            prosemirror_tables_1.deleteRow(state, dispatch);
+            return true;
+        }
+        else if (isTableColSelected) {
+            const { state, dispatch } = this.props.view;
+            prosemirror_tables_1.deleteColumn(state, dispatch);
+            return true;
+        }
+        else if (isTableSelected) {
+            const { state, dispatch } = this.props.view;
+            prosemirror_tables_1.deleteTable(state, dispatch);
+        }
+        return false;
+    }
+    resetTrackedSelections() {
+        this.isTableColSelected = false;
+        this.isTableRowSelected = false;
+        this.isTableSelected = false;
     }
     render() {
         const _a = this.props, { dictionary, onCreateLink, isTemplate, rtl, deviceType, defaultBackground, defaultHighlight, setDefaultBackground, setDefaultHighlight } = _a, rest = __rest(_a, ["dictionary", "onCreateLink", "isTemplate", "rtl", "deviceType", "defaultBackground", "defaultHighlight", "setDefaultBackground", "setDefaultHighlight"]);
@@ -165,12 +228,18 @@ class SelectionToolbar extends React.Component {
                 rowIndex,
                 rtl,
             });
+            this.resetTrackedSelections();
+            this.isTableSelected = true;
         }
         else if (colIndex !== undefined) {
             items = tableCol_1.default(state, colIndex, rtl, dictionary);
+            this.resetTrackedSelections();
+            this.isTableColSelected = true;
         }
         else if (rowIndex !== undefined) {
             items = tableRow_1.default(state, rowIndex, dictionary);
+            this.resetTrackedSelections();
+            this.isTableRowSelected = true;
         }
         else if (isImageSelection) {
             items = image_1.default(state, dictionary);

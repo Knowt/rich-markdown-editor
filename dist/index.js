@@ -184,6 +184,28 @@ class RichMarkdownEditor extends React.PureComponent {
         this.handleSelectTable = (state) => {
             this.view.dispatch(prosemirror_utils_1.selectTable(state.tr));
         };
+        this.getDefaultHighlightKey = () => {
+            return this.props.defaultHighlightKey || constants_1.DEFAULT_HIGHLIGHT_KEY;
+        };
+        this.getDefaultBackgroundKey = () => {
+            return this.props.defaultBackgroundKey || constants_1.DEFAULT_BACKGROUND_KEY;
+        };
+        this.setDefaultHighlight = (defaultHighlight) => {
+            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultHighlight })));
+            window.localStorage.setItem(this.getDefaultHighlightKey(), defaultHighlight);
+        };
+        this.setDefaultBackground = (defaultBackground) => {
+            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultBackground })));
+            window.localStorage.setItem(this.getDefaultBackgroundKey(), defaultBackground);
+        };
+        this.getLocalStorageDefaults = () => {
+            return {
+                defaultHighlight: window.localStorage.getItem(this.getDefaultHighlightKey()),
+                defaultBackground: window.localStorage.getItem(this.getDefaultBackgroundKey()),
+            };
+        };
+        this.onHoverLink = () => {
+        };
         this.forceUpdateContent = (newValue, options) => {
             const newState = this.createState(newValue);
             this.view.updateState(newState);
@@ -218,26 +240,6 @@ class RichMarkdownEditor extends React.PureComponent {
         this.dictionary = memoize_1.default((providedDictionary) => {
             return Object.assign(Object.assign({}, dictionary_1.default), providedDictionary);
         });
-        this.getDefaultHighlightKey = () => {
-            return this.props.defaultHighlightKey || constants_1.DEFAULT_HIGHLIGHT_KEY;
-        };
-        this.getDefaultBackgroundKey = () => {
-            return this.props.defaultBackgroundKey || constants_1.DEFAULT_BACKGROUND_KEY;
-        };
-        this.setDefaultHighlight = (defaultHighlight) => {
-            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultHighlight })));
-            window.localStorage.setItem(this.getDefaultHighlightKey(), defaultHighlight);
-        };
-        this.setDefaultBackground = (defaultBackground) => {
-            this.setState((state) => (Object.assign(Object.assign({}, state), { defaultBackground })));
-            window.localStorage.setItem(this.getDefaultBackgroundKey(), defaultBackground);
-        };
-        this.getLocalStorageDefaults = () => {
-            return {
-                defaultHighlight: window.localStorage.getItem(this.getDefaultHighlightKey()),
-                defaultBackground: window.localStorage.getItem(this.getDefaultBackgroundKey()),
-            };
-        };
     }
     componentDidMount() {
         this.init();
@@ -567,7 +569,7 @@ class RichMarkdownEditor extends React.PureComponent {
         const { isRTL } = this.state;
         const dictionary = this.dictionary(this.props.dictionary);
         const deviceType = react_device_detect_1.isMacOs ? "mac" : react_device_detect_1.isWindows ? "windows" : undefined;
-        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
+        return (React.createElement(Flex_1.default, { id: 'knowt-markdown-editor', onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
                 this.props.spellCheck : true },
             React.createElement(styled_components_1.ThemeProvider, { theme: this.theme() },
                 React.createElement(React.Fragment, null,
