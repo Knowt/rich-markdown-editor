@@ -728,6 +728,45 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     this.view.dispatch(selectTable(state.tr));
   };
 
+  getDefaultHighlightKey = () => {
+    return this.props.defaultHighlightKey || DEFAULT_HIGHLIGHT_KEY;
+  }
+
+  getDefaultBackgroundKey = () => {
+    return this.props.defaultBackgroundKey || DEFAULT_BACKGROUND_KEY;
+  }
+
+  setDefaultHighlight = ( defaultHighlight: DefaultHighlight ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultHighlight,
+    } ) );
+
+    window.localStorage.setItem( this.getDefaultHighlightKey(), defaultHighlight );
+  }
+
+  setDefaultBackground = ( defaultBackground: DefaultBackground ) => {
+    this.setState( ( state ) => ( {
+      ...state,
+      defaultBackground,
+    } ) )
+
+    window.localStorage.setItem( this.getDefaultBackgroundKey(), defaultBackground );
+  }
+
+  getLocalStorageDefaults = () => {
+    return {
+      defaultHighlight: window.localStorage.getItem( 
+        this.getDefaultHighlightKey() ) as DefaultHighlight | null,
+      defaultBackground: window.localStorage.getItem( 
+        this.getDefaultBackgroundKey() ) as DefaultBackground | null,
+    }
+  }
+
+  onHoverLink = () => {
+    
+  }
+
   // 'public' methods
 
   forceUpdateContent = (
@@ -781,41 +820,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       return { ...baseDictionary, ...providedDictionary };
     }
   );
-
-  getDefaultHighlightKey = () => {
-    return this.props.defaultHighlightKey || DEFAULT_HIGHLIGHT_KEY;
-  }
-
-  getDefaultBackgroundKey = () => {
-    return this.props.defaultBackgroundKey || DEFAULT_BACKGROUND_KEY;
-  }
-
-  setDefaultHighlight = ( defaultHighlight: DefaultHighlight ) => {
-    this.setState( ( state ) => ( {
-      ...state,
-      defaultHighlight,
-    } ) );
-
-    window.localStorage.setItem( this.getDefaultHighlightKey(), defaultHighlight );
-  }
-
-  setDefaultBackground = ( defaultBackground: DefaultBackground ) => {
-    this.setState( ( state ) => ( {
-      ...state,
-      defaultBackground,
-    } ) )
-
-    window.localStorage.setItem( this.getDefaultBackgroundKey(), defaultBackground );
-  }
-
-  getLocalStorageDefaults = () => {
-    return {
-      defaultHighlight: window.localStorage.getItem( 
-        this.getDefaultHighlightKey() ) as DefaultHighlight | null,
-      defaultBackground: window.localStorage.getItem( 
-        this.getDefaultBackgroundKey() ) as DefaultBackground | null,
-    }
-  }
 
   render() {
     const {

@@ -252,8 +252,7 @@ export default class Image extends Node {
 
   component = (props) => {
     const { isSelected, node, getPos } = props;
-    const { alt, src, title, width, height } = props.node.attrs;
-    const className = "image";
+    const { alt, src, title, width, height } = node.attrs;
 
     const resizableWrapperRef = React.useRef(null);
 
@@ -262,7 +261,7 @@ export default class Image extends Node {
     });
 
     return (
-      <div contentEditable={false} className={className}
+      <div contentEditable={false} className="image"
         onClick={() => this.handleSelect(props)()} role='button'>
         <ImageWrapper draggable={true}
           className={isSelected ? "ProseMirror-selectednode" : ""}
