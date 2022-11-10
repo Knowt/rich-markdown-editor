@@ -6,8 +6,8 @@ import {
   TextSelection,
 } from "prosemirror-state";
 import { DecorationSet, Decoration } from "prosemirror-view";
-import { findParentNodeClosestToPos } from "@knowt/prosemirror-utils";
-
+import { findParentNodeClosestToPos, replaceParentNodeOfType,
+  findParentNode } from "@knowt/prosemirror-utils";
 import Node from "./Node";
 import isList from "../queries/isList";
 import isInList from "../queries/isInList";
@@ -257,6 +257,31 @@ export default class ListItem extends Node {
         );
         return true;
       },
+      Backspace: (state: EditorState, dispatch) => {
+        // TODO - this is a temp solution.
+        // For some reason having a table as a prior node messed up list deletion.
+        // This only happens if the list occurs at the END of the document.
+        // To prevent the previous node from being focused, we manually check if backspace
+        // occurs in a list item with no content.
+        // NOTE - this happens only sometimes, which makes it even wierder
+        const parentList = findParentNode((node) => isList(node, state.schema))(
+          state.selection
+        );
+
+        if (
+          parentList &&
+          parentList.node.content.childCount === 1 &&
+          parentList.node.content?.firstChild?.textContent === ''
+        ) {
+          const p = state.schema.nodes.paragraph.create();
+
+          dispatch(
+            replaceParentNodeOfType( parentList.node.type, p )(state.tr),
+          );
+          
+          return true;
+        }
+      }
     };
   }
 
