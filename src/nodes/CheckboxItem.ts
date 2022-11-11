@@ -8,11 +8,17 @@ export default class CheckboxItem extends Node {
     return "checkbox_item";
   }
 
+  get defaultOptions() {
+    return {
+      softToDOM: false,
+    };
+  }
+
   get schema() {
     return {
       attrs: {
         checked: {
-          default: false
+          default: false,
         }
       },
       content: "paragraph block*",
@@ -54,6 +60,7 @@ export default class CheckboxItem extends Node {
             "data-type": this.name,
             class: node.attrs.checked ? "checked" : undefined
           },
+          this.options.softToDOM ? 0 :
           [
             "span",
             {
