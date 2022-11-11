@@ -3,7 +3,6 @@ import { EditorState, Transaction } from "prosemirror-state";
 import { wrapInList, liftListItem } from "prosemirror-schema-list";
 import { findParentNode } from "@knowt/prosemirror-utils";
 import isList from "../queries/isList";
-import { replaceParentNodeOfType } from '@knowt/prosemirror-utils';
 
 export default function toggleList(listType: NodeType, itemType: NodeType) {
   return (state: EditorState, dispatch: (tr: Transaction) => void) => {
@@ -35,19 +34,16 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
   
           return false;
         }
-        /**
-         * Current solution has 2 problems:
-         * 1. After change, selection gets reset unlike change between bullet and ordered
-         * 2. Messed up undo and redo.
-         */
-        else {
+        else if ( parentList.node.type.name === 'checkbox_list' ) {
           const newParentList = { ...parentList };
+          console.log( 'PARENT CONTENT BEFFORE' );
+          console.log( newParentList.node.content )
+
           // @ts-ignore
           const content = parentList.node.content?.content as any[];
 
-          // @ts-ignore
-          newParentList.node.content.content = content.map( ( node ) => {
-            const newItem = itemType.create( 
+          parentList.node.content.content = content.map( ( node ) => {
+            const newItem = state.schema.nodes.list_item.create( 
               undefined,
               node.content,
             );
@@ -55,16 +51,19 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
             return newItem;
           } );
 
-          const newList = listType.create( 
+          console.log( 'PARENT CONTENT AFTER' );
+          console.log( newParentList.node.content );
+
+          const newList = state.schema.nodes.bullet_list.create( 
             undefined,
-            newParentList.node.content,
+            parentList.node.content,
           );
 
-          if ( dispatch ) {
-            dispatch(
-              replaceParentNodeOfType(newParentList.node.type, newList)(state.tr)
-            );
-          }
+          dispatch(
+            state.tr.replaceSelectionWith(
+              newList
+            ),
+          );
 
           return false;
         }
