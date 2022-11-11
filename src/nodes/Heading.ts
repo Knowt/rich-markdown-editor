@@ -21,7 +21,7 @@ export default class Heading extends Node {
     return {
       levels: [1, 2, 3, 4],
       collapsed: undefined,
-      softToDOM: false,
+      softToDOM: false
     };
   }
 
