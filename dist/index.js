@@ -569,7 +569,7 @@ class RichMarkdownEditor extends React.PureComponent {
         const { isRTL } = this.state;
         const dictionary = this.dictionary(this.props.dictionary);
         const deviceType = react_device_detect_1.isMacOs ? "mac" : react_device_detect_1.isWindows ? "windows" : undefined;
-        return (React.createElement(Flex_1.default, { id: 'knowt-markdown-editor', onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
+        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
                 this.props.spellCheck : true },
             React.createElement(styled_components_1.ThemeProvider, { theme: this.theme() },
                 React.createElement(React.Fragment, null,

@@ -14,13 +14,6 @@ exports.StyledEditor = styled_components_1.default("div") `
   line-height: 1.7em;
   width: 100%;
 
-  .link-popout {
-    border: 5px solid black;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-  }
-  
   .ProseMirror {
     position: relative;
     outline: none;

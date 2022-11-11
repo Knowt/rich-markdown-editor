@@ -1,4 +1,5 @@
 import Node from "./Node";
+import { EditorState } from 'prosemirror-state';
 export default class Blockquote extends Node {
     get name(): string;
     get schema(): {
@@ -22,6 +23,7 @@ export default class Blockquote extends Node {
         "Ctrl->": (state: any, dispatch: any) => boolean;
         "Mod-]": (state: any, dispatch: any) => boolean;
         "Shift-Enter": (state: any, dispatch: any) => boolean;
+        Backspace: (state: EditorState, dispatch: any) => true | undefined;
     };
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {

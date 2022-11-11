@@ -189,6 +189,17 @@ class ListItem extends Node_1.default {
                     .delete(pos, pos + li.nodeSize));
                 return true;
             },
+            Backspace: (state, dispatch) => {
+                var _a, _b;
+                const parentList = prosemirror_utils_1.findParentNode((node) => isList_1.default(node, state.schema))(state.selection);
+                if (parentList &&
+                    parentList.node.content.childCount === 1 &&
+                    ((_b = (_a = parentList.node.content) === null || _a === void 0 ? void 0 : _a.firstChild) === null || _b === void 0 ? void 0 : _b.textContent) === '') {
+                    const p = state.schema.nodes.paragraph.create();
+                    dispatch(prosemirror_utils_1.replaceParentNodeOfType(parentList.node.type, p)(state.tr));
+                    return true;
+                }
+            }
         };
     }
     toMarkdown(state, node) {

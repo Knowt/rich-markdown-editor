@@ -1,4 +1,4 @@
-import { Plugin } from "prosemirror-state";
+import { EditorState, Plugin } from "prosemirror-state";
 import { DecorationSet } from "prosemirror-view";
 import Node from "./Node";
 export default class ListItem extends Node {
@@ -24,6 +24,7 @@ export default class ListItem extends Node {
         "Shift-Enter": (state: any, dispatch: any) => boolean;
         "Alt-ArrowUp": (state: any, dispatch: any) => boolean;
         "Alt-ArrowDown": (state: any, dispatch: any) => boolean;
+        Backspace: (state: EditorState, dispatch: any) => true | undefined;
     };
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
