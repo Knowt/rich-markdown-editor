@@ -38,14 +38,15 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
         /**
          * Current solution has 2 problems:
          * 1. After change, selection gets reset unlike change between bullet and ordered
-         * 2. Messed up undo and redo -> this is the big one
+         * 2. Messed up undo and redo.
          */
         else {
+          const newParentList = { ...parentList };
           // @ts-ignore
           const content = parentList.node.content?.content as any[];
 
           // @ts-ignore
-          parentList.node.content.content = content.map( ( node ) => {
+          newParentList.node.content.content = content.map( ( node ) => {
             const newItem = itemType.create( 
               undefined,
               node.content,
@@ -56,12 +57,12 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
 
           const newList = listType.create( 
             undefined,
-            parentList.node.content,
+            newParentList.node.content,
           );
 
           if ( dispatch ) {
             dispatch(
-              replaceParentNodeOfType(parentList.node.type, newList)(state.tr)
+              replaceParentNodeOfType(newParentList.node.type, newList)(state.tr)
             );
           }
 
