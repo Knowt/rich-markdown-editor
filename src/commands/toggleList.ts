@@ -25,10 +25,20 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
       }
 
       if ( isList(parentList.node, schema) ) {
+        if ( listType.validContent(parentList.node.content) ) {
+          const { tr } = state;
+          tr.setNodeMarkup(parentList.pos, listType);
+
+          if (dispatch) {
+            dispatch(tr);
+          }
+  
+          return false;
+        }
         // Handles conversion between checklists and other lists.
         // TODO - conversions between checklists resets selection
         // stop that from happening!
-        if ( !listType.validContent(parentList.node.content) ) {
+        else {
           try {
             // @ts-ignore
             const content = parentList.node.content?.content as Node[];
@@ -64,16 +74,6 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
           catch ( error ) {
             console.warn( error?.message );
           }
-        }
-        else {
-          const { tr } = state;
-          tr.setNodeMarkup(parentList.pos, listType);
-
-          if (dispatch) {
-            dispatch(tr);
-          }
-  
-          return false;
         }
       }
     }
