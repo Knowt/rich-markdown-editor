@@ -72,6 +72,10 @@ export default class TableHeadCell extends Node {
                       event.stopImmediatePropagation();
                       this.options.onSelectColumn(index, state);
                     });
+                    grip.addEventListener("mouseup", (event) => {
+                      event.preventDefault();
+                      event.stopImmediatePropagation();
+                    });
                     return grip;
                   })
                 );
