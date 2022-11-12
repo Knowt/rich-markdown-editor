@@ -25,7 +25,9 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
       }
 
       if ( isList(parentList.node, schema) ) {
-        // handles conversion between checklists and other lists
+        // Handles conversion between checklists and other lists.
+        // TODO - conversions between checklists resets selection
+        // stop that from happening!
         if ( !listType.validContent(parentList.node.content) ) {
           try {
             // @ts-ignore
