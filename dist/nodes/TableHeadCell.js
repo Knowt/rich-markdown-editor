@@ -70,6 +70,10 @@ class TableHeadCell extends Node_1.default {
                                         event.stopImmediatePropagation();
                                         this.options.onSelectColumn(index, state);
                                     });
+                                    grip.addEventListener("mouseup", (event) => {
+                                        event.preventDefault();
+                                        event.stopImmediatePropagation();
+                                    });
                                     return grip;
                                 }));
                             });

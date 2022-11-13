@@ -439,7 +439,8 @@ exports.StyledEditor = styled_components_1.default("div") `
       color: ${(props) => props.theme.link};
       cursor: pointer;
 
-      transition: background-color 0.17s ease;
+      transition: background-color 0.17s ease,
+                  color 0.17s ease;
 
       &:after {
         content: '';
@@ -454,7 +455,8 @@ exports.StyledEditor = styled_components_1.default("div") `
       }
 
       &:hover {
-        background: ${(props) => props.theme.linkHover};
+        background: ${(props) => props.theme.linkHoverBackground};
+        color: ${(props) => props.theme.linkHover || props.theme.link};
 
         &:after {
           opacity: 0;

@@ -139,6 +139,7 @@ function FloatingToolbar(props) {
 }
 const Wrapper = styled_components_1.default.div `
   display: flex;
+  overflow: hidden;
   will-change: opacity, transform;
   position: absolute;
   z-index: ${props => props.theme.zIndex + 100};

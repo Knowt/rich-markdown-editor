@@ -18,7 +18,7 @@ export declare const theme: {
     code: string;
     cursor: string;
     divider: string;
-    linkHover: string;
+    linkHoverBackground: string;
     toolbarBackground: string;
     toolbarShadow: string;
     toolbarHoverBackground: string;
@@ -275,7 +275,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         code: string;
         cursor: string;
         divider: string;
-        linkHover: string;
+        linkHoverBackground: string;
         toolbarBackground: string;
         toolbarShadow: string;
         toolbarHoverBackground: string;
