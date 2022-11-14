@@ -1,4 +1,3 @@
-import * as React from "react";
 import { theme } from "..";
 export declare type Props = {
     title: string;
@@ -9,15 +8,6 @@ export declare type Props = {
     onClick: () => void;
     containerId?: string;
 };
-declare const _default: React.ForwardRefExoticComponent<{
-    disabled?: boolean | undefined;
-    title: string;
-    onClick: () => void;
-    selected: boolean;
-    innerRef?: ((ref: HTMLDivElement) => void) | undefined;
-    containerId?: string | undefined;
-} & {
-    theme?: any;
-}>;
+declare const _default;
 export default _default;
 //# sourceMappingURL=BlockGroupMenuItem.d.ts.map

@@ -15,21 +15,6 @@ export declare type Props = {
     isDarkMode?: boolean;
     itemName?: string;
 };
-declare const _default: React.ForwardRefExoticComponent<{
-    disabled?: boolean | undefined;
-    title: React.ReactNode;
-    icon?: typeof React.Component | React.FC<any> | undefined;
-    onClick: () => void;
-    selected: boolean;
-    iconColor?: string | undefined;
-    iconSVGProps?: any;
-    isDarkMode?: boolean | undefined;
-    innerRef?: ((ref: HTMLDivElement) => void) | undefined;
-    accentText?: string | undefined;
-    containerId?: string | undefined;
-    itemName?: string | undefined;
-} & {
-    theme?: any;
-}>;
+declare const _default;
 export default _default;
 //# sourceMappingURL=BlockMenuItem.d.ts.map
