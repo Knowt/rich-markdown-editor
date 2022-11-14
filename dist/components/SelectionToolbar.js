@@ -276,7 +276,7 @@ class SelectionToolbar extends React.Component {
         if (isTextSelection && !selectionText) {
             return null;
         }
-        return (React.createElement(react_portal_1.Portal, null,
+        return (React.createElement(react_portal_1.Portal, { node: document.getElementById('knowt-editor-wrapper') },
             React.createElement(FloatingToolbar_1.default, { view: view, active: isVisible(this.props), ref: this.menuRef }, link && range ? (React.createElement(LinkEditor_1.default, Object.assign({ dictionary: dictionary, mark: range.mark, from: range.from, to: range.to, onCreateLink: onCreateLink ? this.handleOnCreateLink : undefined, onSelectLink: this.handleOnSelectLink }, rest))) : (React.createElement(ToolbarMenu_1.default, Object.assign({ items: items }, rest))))));
     }
 }

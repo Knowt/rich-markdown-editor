@@ -182,7 +182,7 @@ const ToolbarPopout = react_1.forwardRef(({ id, position, items, close, isActive
     else {
         className += ' not-active';
     }
-    return (react_1.default.createElement(react_portal_1.Portal, null,
+    return (react_1.default.createElement(react_portal_1.Portal, { node: document.getElementById('knowt-editor-wrapper') },
         react_1.default.createElement(List, { id: id, ref: popoutRef, className: className, style: popoutStyles }, items.map((item, index) => {
             const { name, tooltip, icon, iconColor, iconSVGProps, } = item;
             const Icon = icon;
