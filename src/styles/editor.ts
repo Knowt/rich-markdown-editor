@@ -166,6 +166,24 @@ export const StyledEditor = styled("div")<{
     }
   }
 
+  .link-popout {
+    display: flex;
+    align-items: center;
+    border: 2px solid red;
+
+    .link-popout-text {
+      font-size: 80%;
+    }
+
+    .copy-link-button {
+
+    }
+
+    .edit-link-button {
+
+    }
+  }
+
   h1,
   h2 {
     .heading-content {

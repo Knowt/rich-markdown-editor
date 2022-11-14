@@ -1,13 +1,17 @@
 import { toggleMark } from "prosemirror-commands";
 import { Plugin } from "prosemirror-state";
+import { Decoration, DecorationSet } from "prosemirror-view";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
 import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
 
 /* CONSTANTS */
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
+const LINK_META_KEY = 'link-popout';
 
 export default class Link extends Mark {
+  isPopoutDisplayed = false;
+
   get name() {
     return "link";
   }
@@ -85,22 +89,118 @@ export default class Link extends Mark {
   }
 
   get plugins() {
+
     return [
       new Plugin({
+        state: {
+          init: () => {
+            return DecorationSet.empty;
+          },
+          apply: (tr, value) => {
+            const { doc, getMeta } = tr;
+            const hover = getMeta( LINK_META_KEY );
+            if ( !hover ) {
+              return value;
+            }
+
+            const decorations: Decoration[] = [];
+
+            doc.descendants( ( node, pos ) => {
+              if ( node.type.name !== 'text' ) {
+                return;
+              }
+      
+              node.marks.forEach( ( { attrs, type } ) => {
+                if ( type.name !== this.name ) {
+                  return;
+                }
+      
+                decorations.push(
+                  Decoration.widget(
+                    pos,
+                    (view, d)=> {
+                      const wrapper = document.createElement( 'div' );
+                      wrapper.className = 'link-popout';
+      
+                      // TODO - test to see if the image is valid
+                      // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
+                      const img = document.createElement( 'img' );
+                      img.src = `${attrs.href}/favicon.ico`;
+                      img.width = 15;
+                      img.height = 15;
+      
+                      wrapper.appendChild( img );
+      
+                      // TODO - strip https:// to just show base url
+                      const linkText = document.createElement( 'span' );
+                      linkText.className = 'link-popout-text';
+                      linkText.innerText = attrs.href;
+      
+                      wrapper.appendChild( linkText );
+      
+                      const copyButton = document.createElement( 'button' );
+                      copyButton.className = 'copy-link-button';
+                      copyButton.type = 'button';
+                      copyButton.onclick = () => {}
+      
+                      wrapper.appendChild( copyButton );
+                      
+                      if ( !this.options.readOnly ) {
+                        const editButton = document.createElement( 'button' );
+                        editButton.className = 'edit-link-button';
+                        editButton.type = 'button';
+                        editButton.onclick = () => {}
+      
+                        wrapper.appendChild( editButton );
+                      }
+      
+                      return wrapper;
+                    }
+                  )
+                )
+              } );
+            } );
+      
+            return DecorationSet.create(doc, decorations);
+          },
+        },
         props: {
+          decorations(state) {
+            return this.getState(state);
+          },
           handleDOMEvents: {
-            mouseover: (_view, event: MouseEvent) => {
+            mouseover: (view, event: MouseEvent) => {
               if (
                 event.target instanceof HTMLAnchorElement &&
                 !event.target.className.includes("ProseMirror-widget")
               ) {
+                const { dispatch, state } = view;
+                dispatch( state.tr.setMeta( LINK_META_KEY, {
+                  event: 'mouseover',
+                  rect: event.target.getBoundingClientRect(),
+                } ) );
+
+                this.isPopoutDisplayed = true;
+
                 if (this.options.onHoverLink) {
                   return this.options.onHoverLink(event);
                 }
               }
               return false;
             },
-            click: (_view, event: MouseEvent) => {
+            mouseout: (view, event) => {
+              const target = event.target as HTMLAreaElement;
+
+              if ( this.isPopoutDisplayed && target?.closest("a") ) {
+                const { dispatch, state } = view;
+                dispatch( state.tr.setMeta( LINK_META_KEY, {
+                  event: 'mouseout',
+                } ) );
+
+                this.isPopoutDisplayed = false;
+              }
+            },
+            click: (_, event: MouseEvent) => {
               if (event.target instanceof HTMLAnchorElement) {
                 const href =
                   event.target.href ||
