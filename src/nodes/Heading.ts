@@ -9,6 +9,7 @@ import splitHeading from "../commands/splitHeading";
 import headingToSlug, { headingToPersistenceKey } from "../lib/headingToSlug";
 import Node from "./Node";
 import { getHeadingLevelByFontSize, getParsedValue, isValidHeading } from "../domHelpers";
+import { findParentNode } from "@knowt/prosemirror-utils";
 
 export default class Heading extends Node {
   className = "heading-name";
@@ -228,8 +229,10 @@ export default class Heading extends Node {
         init: (config, state) => {
           return getAnchors(state.doc);
         },
-        apply: (tr, oldState) => {
-          return tr.docChanged ? getAnchors(tr.doc) : oldState;
+        apply: (tr, value) => {
+          return tr.docChanged && 
+            findParentNode( ( node ) => node.type.name === this.name )(tr.selection) ? 
+            getAnchors(tr.doc) : value;
         }
       },
       props: {
