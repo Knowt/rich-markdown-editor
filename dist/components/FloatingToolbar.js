@@ -131,7 +131,7 @@ function FloatingToolbar(props) {
             window.removeEventListener("mouseup", handleMouseUp);
         };
     }, [props.active]);
-    return (React.createElement(react_portal_1.Portal, null,
+    return (React.createElement(react_portal_1.Portal, { node: document.getElementById('knowt-editor-wrapper') },
         React.createElement(Wrapper, { active: props.active && position.visible, ref: menuRef, offset: position.offset, style: {
                 top: `${position.top}px`,
                 left: `${position.left}px`,
