@@ -162,7 +162,7 @@ function FloatingToolbar(props) {
   // only render children when state is updated to visible
   // to prevent gaining input focus before calculatePosition runs
   return (
-    <Portal>
+    <Portal node={document.getElementById('knowt-editor-wrapper')}>
       <Wrapper
         active={props.active && position.visible}
         ref={menuRef}
