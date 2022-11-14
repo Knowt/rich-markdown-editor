@@ -83,6 +83,7 @@
     "@types/prosemirror-state": "^1.2.4",
     "@types/prosemirror-view": "^1.11.4",
     "@types/react-dom": "^16.9.5",
+    "@types/react-portal": "^4.0.4",
     "@types/refractor": "^2.8.0",
     "@types/styled-components": "^5.1.7",
     "babel-jest": "^26.6.3",
