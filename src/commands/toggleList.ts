@@ -1,6 +1,6 @@
 import { EditorState, Transaction } from "prosemirror-state";
 import { wrapInList, liftListItem } from "prosemirror-schema-list";
-import { findParentNode } from "@knowt/prosemirror-utils";
+import { findParentNode, setTextSelection } from "@knowt/prosemirror-utils";
 import isList from "../queries/isList";
 import { replaceParentNodeOfType } from '@knowt/prosemirror-utils';
 import type { NodeType, Fragment, Node } from "prosemirror-model";
@@ -25,54 +25,72 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
       }
 
       if ( isList(parentList.node, schema) ) {
-        if ( listType.validContent(parentList.node.content) ) {
-          const { tr } = state;
-          tr.setNodeMarkup(parentList.pos, listType);
-
-          if (dispatch) {
-            dispatch(tr);
-          }
-  
-          return false;
-        }
-        // Handles conversion between checklists and other lists.
-        // TODO - conversions between checklists resets selection
-        // stop that from happening!
-        else {
-          try {
-            // @ts-ignore
-            const content = parentList.node.content?.content as Node[];
+        try {
+          const convertListItemContent = ( 
+            content: Node[],
+            outerList: Fragment,
+          ) => {
             let newContent: Fragment | undefined = undefined;
 
             content.forEach( ( node, index ) => {
-              const contentToUse = newContent || parentList.node.content;
               const newItem = itemType.create( 
                 undefined,
                 node.content,
               );
-  
+
+              const contentToUse = newContent || outerList;
               newContent = contentToUse.replaceChild(index, newItem);
+
+              if (
+                // @ts-ignore
+                newContent?.content?.[index]?.content?.content?.[1] &&
+                // @ts-ignore
+                isList( newContent.content[index].content.content[1], state.schema )
+              ) {
+                // @ts-ignore
+                newContent.content[index].content.content[1] = convertListItemContent(
+                  // @ts-ignore
+                  newContent.content[index].content.content[1].content.content,
+                  // @ts-ignore
+                  newContent.content[index].content.content[1].content,
+                );
+              }
             } );
 
-            const newList = listType.create( 
+            return listType.create( 
               undefined,
               newContent,
             );
-
-            if ( !newContent ) {
-              throw( new Error( `Could not convert list from ${parentList.node.type.name} to ${listType.name}`) );
-            }
-
-            if ( dispatch ) {
-              dispatch(
-                replaceParentNodeOfType(parentList.node.type, newList)(state.tr)
-              );
-            }
-  
-            return false;
           }
-          catch ( error ) {
-            console.warn( error?.message );
+
+          const newList = convertListItemContent( 
+            // @ts-ignore
+            parentList.node.content?.content, 
+            parentList.node.content 
+          );
+
+          if ( dispatch ) {
+            dispatch(
+              setTextSelection( parentList.pos )(
+                replaceParentNodeOfType(parentList.node.type, newList)(state.tr)
+              )
+            );
+          }
+
+          return false;
+        }
+        catch ( error ) {
+          console.warn( `Could not convert list from ${parentList.node.type.name} to ${listType.name}` );
+
+          if ( listType.validContent(parentList.node.content) ) {
+            const { tr } = state;
+            tr.setNodeMarkup(parentList.pos, listType);
+  
+            if (dispatch) {
+              dispatch(tr);
+            }
+    
+            return false;
           }
         }
       }
