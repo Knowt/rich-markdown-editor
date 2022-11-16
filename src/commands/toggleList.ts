@@ -1,6 +1,6 @@
 import { EditorState, Transaction } from "prosemirror-state";
 import { wrapInList, liftListItem } from "prosemirror-schema-list";
-import { findParentNode, setTextSelection } from "@knowt/prosemirror-utils";
+import { findParentNode } from "@knowt/prosemirror-utils";
 import isList from "../queries/isList";
 import { replaceParentNodeOfType } from '@knowt/prosemirror-utils';
 import type { NodeType, Fragment, Node } from "prosemirror-model";
@@ -74,9 +74,7 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
 
           if ( dispatch ) {
             dispatch(
-              setTextSelection( parentList.pos )(
-                replaceParentNodeOfType(parentList.node.type, newList)(state.tr)
-              )
+              replaceParentNodeOfType(parentList.node.type, newList)(state.tr)
             );
           }
 
