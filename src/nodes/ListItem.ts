@@ -13,6 +13,7 @@ import isList from "../queries/isList";
 import isInList from "../queries/isInList";
 import getParentListItem from "../queries/getParentListItem";
 import { customSplitListItem } from "../commands/customSplitListItem";
+import type { Node as ProsemirrorNode } from 'prosemirror-model';
 
 export default class ListItem extends Node {
   get name() {
@@ -268,21 +269,80 @@ export default class ListItem extends Node {
           state.selection
         );
 
-        if (
-          parentList &&
-          parentList.node.content.childCount === 1 &&
-          parentList.node.content?.firstChild?.textContent === ''
-        ) {
-          const p = state.schema.nodes.paragraph.create();
-
-          dispatch(
-            replaceParentNodeOfType( parentList.node.type, p )(state.tr),
+        if ( parentList ) {
+          if (   
+            parentList.node.content.childCount === 1 &&
+            parentList.node.content?.firstChild?.textContent === ''
+          ) {
+            const p = state.schema.nodes.paragraph.create();
+  
+            dispatch(
+              replaceParentNodeOfType( parentList.node.type, p )(state.tr),
+            );
+            
+            return true;
+          }
+        }
+        else {
+          // handles backspaces going to last list item when current selection
+          // is a paragraph and is empty
+          const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
+            state.selection
           );
-          
-          return true;
+
+          if ( parentParagraph && !parentParagraph.node.textContent ) {
+            const newPos = state.doc.resolve( state.selection.from - 2 );
+
+            const prevList = findParentNodeClosestToPos( 
+              newPos, 
+              ( node ) => isList( node, state.schema ) 
+            );
+
+            if ( prevList ) {
+              const steps = this.getLastListItemDepth( prevList.node );
+
+              dispatch(
+                state.tr.setSelection( new TextSelection(
+                  // increments of 2 depending on how nested that last list item is
+                  state.doc.resolve( state.selection.from - 4 - steps * 2 )
+                ) ),
+              );
+              return true;
+            }
+          }
         }
       }
     };
+  }
+
+  getLastListItemDepth( node: ProsemirrorNode ) {
+    let depth = 0;
+
+    const traverseList = ( node: ProsemirrorNode ) => {
+      try {
+        // @ts-ignore
+        const innerNodes = node.content.content as ProsemirrorNode[];
+        const lastListItem = innerNodes[ innerNodes.length - 1 ];
+        // @ts-ignore
+        const lastListItemContent = lastListItem.content.content as ProsemirrorNode[];
+
+        // when the last list item has another list inside of it as the second element
+        if ( lastListItemContent.length === 2 ) {
+          depth += 1;
+
+          traverseList( lastListItemContent[ lastListItemContent.length - 1 ] );
+        }
+      }
+      catch ( error ) {
+        console.warn( error );
+
+        return depth;
+      }
+    }
+
+    traverseList( node );
+
+    return depth;
   }
 
   toMarkdown(state, node) {
