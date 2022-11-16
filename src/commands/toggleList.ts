@@ -48,11 +48,14 @@ export default function toggleList(listType: NodeType, itemType: NodeType) {
                 isList( newContent.content[index].content.content[1], state.schema )
               ) {
                 // @ts-ignore
-                newContent.content[index].content.content[1] = convertListItemContent(
-                  // @ts-ignore
-                  newContent.content[index].content.content[1].content.content,
-                  // @ts-ignore
-                  newContent.content[index].content.content[1].content,
+                newContent.content[index].content = newContent.content[index].content.replaceChild(
+                  1,
+                  convertListItemContent(
+                    // @ts-ignore
+                    newContent.content[index].content.content[1].content.content,
+                    // @ts-ignore
+                    newContent.content[index].content.content[1].content,
+                  )
                 );
               }
             } );
