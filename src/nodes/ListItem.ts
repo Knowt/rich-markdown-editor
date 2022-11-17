@@ -6,13 +6,13 @@ import {
   TextSelection,
 } from "prosemirror-state";
 import { DecorationSet, Decoration } from "prosemirror-view";
-import { findParentNodeClosestToPos, replaceParentNodeOfType,
-  findParentNode } from "@knowt/prosemirror-utils";
 import Node from "./Node";
 import isList from "../queries/isList";
 import isInList from "../queries/isInList";
 import getParentListItem from "../queries/getParentListItem";
 import { customSplitListItem } from "../commands/customSplitListItem";
+import { findParentNodeClosestToPos, replaceParentNodeOfType,
+  findParentNode } from "@knowt/prosemirror-utils";
 import type { Node as ProsemirrorNode } from 'prosemirror-model';
 
 export default class ListItem extends Node {
@@ -259,53 +259,64 @@ export default class ListItem extends Node {
         return true;
       },
       Backspace: (state: EditorState, dispatch) => {
-        // TODO - this is a temp solution.
-        // For some reason having a table as a prior node messed up list deletion.
-        // This only happens if the list occurs at the END of the document.
-        // To prevent the previous node from being focused, we manually check if backspace
-        // occurs in a list item with no content.
-        // NOTE - this happens only sometimes, which makes it even wierder
-        const parentList = findParentNode((node) => isList(node, state.schema))(
-          state.selection
+        const { tr, doc, selection, schema }  = state;
+
+        const parentList = findParentNode((node) => isList(node, schema))(
+          selection
         );
 
         if ( parentList ) {
+          // TODO - this is a temp solution.
+          // For some reason having a table as a prior node messed up list deletion.
+          // This only happens if the list occurs at the END of the document.
+          // To prevent the previous node from being focused, we manually check if backspace
+          // occurs in a list item with no content.
+          // NOTE - this happens only sometimes, which makes it even wierder
           if (   
             parentList.node.content.childCount === 1 &&
             parentList.node.content?.firstChild?.textContent === ''
           ) {
-            const p = state.schema.nodes.paragraph.create();
+            const p = schema.nodes.paragraph.create();
   
             dispatch(
-              replaceParentNodeOfType( parentList.node.type, p )(state.tr),
+              replaceParentNodeOfType( parentList.node.type, p )( tr )
             );
             
             return true;
           }
         }
         else {
-          // handles backspaces going to last list item when current selection
-          // is a paragraph and is empty
+          // handles backspaces going to last list item 
+          // when current selection is a paragraph
           const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
-            state.selection
+            selection
           );
 
-          if ( parentParagraph && !parentParagraph.node.textContent ) {
-            const newPos = state.doc.resolve( state.selection.from - 2 );
-
+          if ( 
+            parentParagraph &&
+            selection.from === selection.to &&
+            parentParagraph.start === selection.from
+          ) {
+            const newPos = doc.resolve( selection.from - 2 );
             const prevList = findParentNodeClosestToPos( 
               newPos, 
-              ( node ) => isList( node, state.schema ) 
+              ( node ) => isList( node, schema ) 
             );
 
             if ( prevList ) {
               const steps = this.getLastListItemDepth( prevList.node );
+              const lastListItemPos = selection.from - 4 - steps * 2;
+              const paragraphNode = parentParagraph.node;
 
               dispatch(
-                state.tr.setSelection( new TextSelection(
-                  // increments of 2 depending on how nested that last list item is
-                  state.doc.resolve( state.selection.from - 4 - steps * 2 )
-                ) ),
+                tr.delete(
+                  selection.from,
+                  selection.from + paragraphNode.nodeSize,
+                )
+                .insertText( paragraphNode.textContent, lastListItemPos )
+                .setSelection( TextSelection.near(
+                  tr.doc.resolve( lastListItemPos )
+                ) )
               );
               return true;
             }
