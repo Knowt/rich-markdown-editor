@@ -6,13 +6,14 @@ import {
   TextSelection,
 } from "prosemirror-state";
 import { DecorationSet, Decoration } from "prosemirror-view";
-import { findParentNodeClosestToPos, replaceParentNodeOfType,
-  findParentNode } from "@knowt/prosemirror-utils";
 import Node from "./Node";
 import isList from "../queries/isList";
 import isInList from "../queries/isInList";
 import getParentListItem from "../queries/getParentListItem";
 import { customSplitListItem } from "../commands/customSplitListItem";
+import { findParentNodeClosestToPos, replaceParentNodeOfType,
+  findParentNode } from "@knowt/prosemirror-utils";
+import type { Node as ProsemirrorNode } from 'prosemirror-model';
 
 export default class ListItem extends Node {
   get name() {
@@ -258,31 +259,127 @@ export default class ListItem extends Node {
         return true;
       },
       Backspace: (state: EditorState, dispatch) => {
-        // TODO - this is a temp solution.
-        // For some reason having a table as a prior node messed up list deletion.
-        // This only happens if the list occurs at the END of the document.
-        // To prevent the previous node from being focused, we manually check if backspace
-        // occurs in a list item with no content.
-        // NOTE - this happens only sometimes, which makes it even wierder
-        const parentList = findParentNode((node) => isList(node, state.schema))(
-          state.selection
+        const { tr, doc, selection, schema }  = state;
+
+        const parentList = findParentNode((node) => isList(node, schema))(
+          selection
+        );
+        const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
+          selection
         );
 
-        if (
-          parentList &&
-          parentList.node.content.childCount === 1 &&
-          parentList.node.content?.firstChild?.textContent === ''
-        ) {
-          const p = state.schema.nodes.paragraph.create();
+        if ( parentList ) {
+          // TODO - this is a temp solution.
+          // For some reason having a table as a prior node messed up list deletion.
+          // This only happens if the list occurs at the END of the document.
+          // To prevent the previous node from being focused, we manually check if backspace
+          // occurs in a list item with no content.
+          // NOTE - this happens only sometimes, which makes it even wierder
+          if (   
+            parentList.node.content.childCount === 1 &&
+            parentList.node.content?.firstChild?.textContent === ''
+          ) {
+            const p = schema.nodes.paragraph.create();
+  
+            dispatch(
+              replaceParentNodeOfType( parentList.node.type, p )( tr )
+            );
+            
+            return true;
+          }
+          else if (
+            parentParagraph &&
+            parentParagraph.node.textContent &&
+            selection.from === selection.to &&
+            parentParagraph.start === selection.from
+          ) {
+            const parentListItem = findParentNode( 
+              ( node ) => node.type.name === 'list_item' ||  node.type.name === 'checkbox_item' )(
+              selection
+            );
 
-          dispatch(
-            replaceParentNodeOfType( parentList.node.type, p )(state.tr),
-          );
-          
-          return true;
+            if ( parentListItem ) {
+              return liftListItem(parentListItem.node.type)(state, dispatch);
+            }
+          }
+        }
+        else {
+          // handles backspaces going to last list item 
+          // when current selection is a paragraph
+          if ( 
+            parentParagraph &&
+            selection.from === selection.to &&
+            parentParagraph.start === selection.from
+          ) {
+            const newPos = doc.resolve( selection.from - 2 );
+            const prevList = findParentNodeClosestToPos( 
+              newPos, 
+              ( node ) => isList( node, schema ) 
+            );
+
+            if ( prevList ) {
+              const steps = this.getLastListItemDepth( prevList.node );
+              const lastListItemPos = selection.from - 4 - steps * 2;
+              const paragraphText = parentParagraph.node.textContent;
+
+              const handleDispatch = ( rangeEnd: number=0 ) => {
+                dispatch(
+                  tr.deleteRange(
+                    selection.from,
+                    selection.from + paragraphText.length + rangeEnd,
+                  )
+                  .insertText( paragraphText, lastListItemPos )
+                  .setSelection( TextSelection.near(
+                    tr.doc.resolve( lastListItemPos )
+                  ) )
+                );
+              }
+
+              try {
+                // +2 handles deletion of line
+                handleDispatch( 2 );
+              }
+              catch {
+                // edge case for if writing on bottom of doc and there is no line to delete
+                handleDispatch();
+              }
+
+              return true;
+            }
+          }
         }
       }
     };
+  }
+
+  getLastListItemDepth( node: ProsemirrorNode ) {
+    let depth = 0;
+
+    const traverseList = ( node: ProsemirrorNode ) => {
+      try {
+        // @ts-ignore
+        const innerNodes = node.content.content as ProsemirrorNode[];
+        const lastListItem = innerNodes[ innerNodes.length - 1 ];
+        // @ts-ignore
+        const lastListItemContent = lastListItem.content.content as ProsemirrorNode[];
+
+        // when the last list item has another list inside of it as the second element
+        if ( lastListItemContent.length === 2 ) {
+          depth += 1;
+
+          traverseList( lastListItemContent[ lastListItemContent.length - 1 ] );
+        }
+      }
+      catch ( error ) {
+        console.warn( error );
+
+        return depth;
+      }
+    }
+
+    traverseList( node );
+
+    return depth;
   }
 
   toMarkdown(state, node) {
