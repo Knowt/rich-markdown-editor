@@ -289,6 +289,7 @@ export default class ListItem extends Node {
           }
           else if (
             parentParagraph &&
+            parentParagraph.node.textContent &&
             selection.from === selection.to &&
             parentParagraph.start === selection.from
           ) {
