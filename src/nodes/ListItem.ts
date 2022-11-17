@@ -322,12 +322,11 @@ export default class ListItem extends Node {
               const lastListItemPos = selection.from - 4 - steps * 2;
               const paragraphText = parentParagraph.node.textContent;
 
-              try {
+              const handleDispatch = ( rangeEnd: number=0 ) => {
                 dispatch(
                   tr.deleteRange(
                     selection.from,
-                    // +2 handles deletion of line
-                    selection.from + paragraphText.length + 2,
+                    selection.from + paragraphText.length + rangeEnd,
                   )
                   .insertText( paragraphText, lastListItemPos )
                   .setSelection( TextSelection.near(
@@ -335,19 +334,16 @@ export default class ListItem extends Node {
                   ) )
                 );
               }
-              // edge case for if writing on bottom of doc and there is no line to delete
+
+              try {
+                // +2 handles deletion of line
+                handleDispatch( 2 );
+              }
               catch {
-                dispatch(
-                  tr.delete(
-                    selection.from,
-                    selection.from + paragraphText.length,
-                  )
-                  .insertText( paragraphText, lastListItemPos )
-                  .setSelection( TextSelection.near(
-                    tr.doc.resolve( lastListItemPos )
-                  ) )
-                );
+                // edge case for if writing on bottom of doc and there is no line to delete
+                handleDispatch();
               }
+
               return true;
             }
           }
