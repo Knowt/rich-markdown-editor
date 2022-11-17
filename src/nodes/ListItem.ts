@@ -264,6 +264,9 @@ export default class ListItem extends Node {
         const parentList = findParentNode((node) => isList(node, schema))(
           selection
         );
+        const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
+          selection
+        );
 
         if ( parentList ) {
           // TODO - this is a temp solution.
@@ -284,14 +287,24 @@ export default class ListItem extends Node {
             
             return true;
           }
+          else if (
+            parentParagraph &&
+            selection.from === selection.to &&
+            parentParagraph.start === selection.from
+          ) {
+            const parentListItem = findParentNode( 
+              ( node ) => node.type.name === 'list_item' ||  node.type.name === 'checkbox_item' )(
+              selection
+            );
+
+            if ( parentListItem ) {
+              return liftListItem(parentListItem.node.type)(state, dispatch);
+            }
+          }
         }
         else {
           // handles backspaces going to last list item 
           // when current selection is a paragraph
-          const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
-            selection
-          );
-
           if ( 
             parentParagraph &&
             selection.from === selection.to &&
