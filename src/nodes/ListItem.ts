@@ -320,18 +320,34 @@ export default class ListItem extends Node {
             if ( prevList ) {
               const steps = this.getLastListItemDepth( prevList.node );
               const lastListItemPos = selection.from - 4 - steps * 2;
-              const paragraphNode = parentParagraph.node;
+              const paragraphText = parentParagraph.node.textContent;
 
-              dispatch(
-                tr.delete(
-                  selection.from,
-                  selection.from + paragraphNode.nodeSize,
-                )
-                .insertText( paragraphNode.textContent, lastListItemPos )
-                .setSelection( TextSelection.near(
-                  tr.doc.resolve( lastListItemPos )
-                ) )
-              );
+              try {
+                dispatch(
+                  tr.delete(
+                    selection.from,
+                    // +2 handles deletion of line
+                    selection.from + paragraphText.length + 2,
+                  )
+                  .insertText( paragraphText, lastListItemPos )
+                  .setSelection( TextSelection.near(
+                    tr.doc.resolve( lastListItemPos )
+                  ) )
+                );
+              }
+              // edge case for if writing on bottom of doc and there is no line to delete
+              catch {
+                dispatch(
+                  tr.delete(
+                    selection.from,
+                    selection.from + paragraphText.length,
+                  )
+                  .insertText( paragraphText, lastListItemPos )
+                  .setSelection( TextSelection.near(
+                    tr.doc.resolve( lastListItemPos )
+                  ) )
+                );
+              }
               return true;
             }
           }
