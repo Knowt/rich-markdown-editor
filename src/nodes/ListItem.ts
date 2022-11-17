@@ -324,7 +324,7 @@ export default class ListItem extends Node {
 
               try {
                 dispatch(
-                  tr.delete(
+                  tr.deleteRange(
                     selection.from,
                     // +2 handles deletion of line
                     selection.from + paragraphText.length + 2,
