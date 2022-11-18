@@ -809,7 +809,6 @@ class KnowtCommandMenu extends React.Component<Props, State> {
         </Wrapper>
         <Wrapper
           ref={this.nestedMenuRef}
-          id={"block-menu-container-2"}
           active={this.state.nestedMenuOpen && !this.props.search}
           {...this.state.menu2Position}
         >

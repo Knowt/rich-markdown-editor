@@ -1,4 +1,3 @@
-/* global window File Promise */
 import * as React from "react";
 import memoize from "lodash/memoize";
 import { EditorState, Plugin } from "prosemirror-state";
@@ -22,23 +21,17 @@ import { light as lightTheme, dark as darkTheme } from "./styles/theme";
 import baseDictionary from "./dictionary";
 import Flex from "./components/Flex";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType,
-  DefaultHighlight, DefaultBackground } from "./types";
 import SelectionToolbar from "./components/SelectionToolbar";
 import BlockMenu from "./components/BlockMenu";
 import EmojiMenu from "./components/EmojiMenu";
 import LinkToolbar from "./components/LinkToolbar";
-import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
 import headingToSlug from "./lib/headingToSlug";
 import { DEFAULT_BACKGROUND_KEY, DEFAULT_HIGHLIGHT_KEY,
   DEFAULT_HIGHLIGHT, DEFAULT_BACKGROUND } from './lib/constants';
 import { isMacOs, isWindows } from "react-device-detect";
-
-// styles
-import { StyledEditor } from "./styles/editor";
-
+import Extension from "./lib/Extension";
 // nodes
 import ReactNode from "./nodes/ReactNode";
 import Doc from "./nodes/Doc";
@@ -63,7 +56,6 @@ import Table from "./nodes/Table";
 import TableCell from "./nodes/TableCell";
 import TableHeadCell from "./nodes/TableHeadCell";
 import TableRow from "./nodes/TableRow";
-
 // marks
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
@@ -80,7 +72,6 @@ import Link from "./marks/Link";
 import Strikethrough from "./marks/Strikethrough";
 import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
-
 // plugins
 import BlockMenuTrigger from "./plugins/BlockMenuTrigger";
 import EmojiTrigger from "./plugins/EmojiTrigger";
@@ -96,6 +87,11 @@ import { PluginSimple } from "markdown-it";
 import { replaceHeaderByStrong } from "./domHelpers";
 import GoToPreviousInputTrigger from "./plugins/GoToPreviousInputTrigger";
 export { default as Extension } from "./lib/Extension";
+// types
+import { EmbedDescriptor, ToastType,
+  DefaultHighlight, DefaultBackground, ExtensionNames } from "./types";
+// styles
+import { StyledEditor } from "./styles/editor";
 
 export const theme = lightTheme;
 
@@ -103,37 +99,7 @@ export type Props = {
   id?: string;
   defaultValue: string;
   placeholder: string;
-  extensions?: Extension[];
-  disableExtensions?: (
-    | "strong"
-    | "code_inline"
-    | "highlight"
-    | "em"
-    | "link"
-    | "placeholder"
-    | "strikethrough"
-    | "underline"
-    | "blockquote"
-    | "bullet_list"
-    | "checkbox_item"
-    | "checkbox_list"
-    | "code_block"
-    | "code_fence"
-    | "embed"
-    | "br"
-    | "heading"
-    | "hr"
-    | "image"
-    | "list_item"
-    | "container_notice"
-    | "ordered_list"
-    | "paragraph"
-    | "table"
-    | "td"
-    | "th"
-    | "tr"
-    | "emoji"
-  )[];
+  disableExtensions?: ExtensionNames[];
   fontScale?: number;
   readOnly?: boolean;
   readOnlyWriteCheckboxes?: boolean;
@@ -171,6 +137,9 @@ export type Props = {
   spellCheck?: boolean;
   defaultHighlightKey?: string;
   defaultBackgroundKey?: string;
+  // When provided, the following extensions will be used INSTEAD of the default ones.
+  customExtensions?: Extension[];
+  disableBlockMenu?: boolean;
 };
 
 type State = {
@@ -303,7 +272,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   }
 
   init() {
-    this.extensions = this.createExtensions();
+    this.extensions = this.createExtensions(this.props.customExtensions);
     this.nodes = this.createNodes();
     this.marks = this.createMarks();
     this.schema = this.createSchema();
@@ -320,131 +289,153 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     this.commands = this.createCommands();
   }
 
-  createExtensions() {
+  createExtensions(customExtensions: Extension[] | undefined) {
     const dictionary = this.dictionary(this.props.dictionary);
 
     // adding nodes here? Update schema.ts for serialization on the server
-    return new ExtensionManager(
-      [
-        ...[
-          new Doc(),
-          new HardBreak(),
-          new Paragraph(),
-          new Blockquote(),
-          new CodeBlock({
-            dictionary,
-            onShowToast: this.props.onShowToast,
-          }),
-          new CodeFence({
-            dictionary,
-            onShowToast: this.props.onShowToast,
-          }),
-          new Emoji(),
-          new Text(),
-          new CheckboxList(),
-          new CheckboxItem(),
-          new BulletList(),
-          new Embed({
-            embeds: this.props.embeds,
-          }),
-          new ListItem(),
-          new Notice({
-            dictionary,
-          }),
-          new Heading({
-            dictionary,
-            onShowToast: this.props.onShowToast,
-            offset: this.props.headingsOffset,
-          }),
-          new HorizontalRule(),
-          new Image({
-            dictionary,
-            uploadImage: this.props.uploadImage,
-            onImageUploadStart: this.props.onImageUploadStart,
-            onImageUploadStop: this.props.onImageUploadStop,
-            onShowToast: this.props.onShowToast,
-          }),
-          new Table(),
-          new TableCell({
-            onSelectTable: this.handleSelectTable,
-            onSelectRow: this.handleSelectRow,
-          }),
-          new TableHeadCell({
-            onSelectColumn: this.handleSelectColumn,
-          }),
-          new TableRow(),
-          // backgrounds take precedence over other marks
-          // this makes all below marks wrapped inside the background mark
-          // do not change order of these marks unless you know what you are doing
-          new BlueBackground(),
-          new RedBackground(),
-          new OrangeBackground(),
-          new YellowBackground(),
-          new GreenBackground(),
-          new Bold(),
-          new Code(),
-          new OrangeHighlight(),
-          new YellowHighlight(),
-          new BlueHighlight(),
-          new GreenHighlight(),
-          new RedHighlight(), // the order matters here!! since it's the default marker
-          new Italic(),
-          new TemplatePlaceholder(),
-          new Underline(),
-          new Link({
-            onKeyboardShortcut: this.handleOpenLinkMenu,
-            onClickLink: this.props.onClickLink,
-            onClickHashtag: this.props.onClickHashtag,
-            onHoverLink: this.props.onHoverLink,
-          }),
-          new Strikethrough(),
-          new OrderedList(),
-          new History(),
-          new Folding(),
-          new SmartText(),
-          new TrailingNode(),
-          new PasteHandler(),
-          new Keys({
-            onBlur: this.handleEditorBlur,
-            onFocus: this.handleEditorFocus,
-            onSave: this.handleSave,
-            onSaveAndExit: this.handleSaveAndExit,
-            onCancel: this.props.onCancel,
-          }),
-          new BlockMenuTrigger({
-            dictionary,
-            onOpen: this.handleOpenBlockMenu,
-            onClose: this.handleCloseBlockMenu,
-          }),
-          new EmojiTrigger({
-            onOpen: (search: string) => {
+    const extensions = customExtensions ? [
+      ...customExtensions,
+      new Link({
+        onKeyboardShortcut: this.handleOpenLinkMenu,
+        onClickLink: this.props.onClickLink,
+        onClickHashtag: this.props.onClickHashtag,
+        onHoverLink: this.props.onHoverLink,
+      }),
+      new Keys({
+          onBlur: this.handleEditorBlur,
+          onFocus: this.handleEditorFocus,
+          onSave: this.handleSave,
+          onSaveAndExit: this.handleSaveAndExit,
+          onCancel: this.props.onCancel,
+      }),
+      new EmojiTrigger({
+          onOpen: (search: string) => {
               this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
-            },
-            onClose: () => {
+          },
+          onClose: () => {
               this.setState({ emojiMenuOpen: false });
-            },
-          }),
-          new GoToPreviousInputTrigger({
-            onGoToPreviousInput: this.handleGoToPreviousInput,
-          }),
-          new Placeholder({
-            placeholder: this.props.placeholder,
-          }),
-          new MaxLength({
-            maxLength: this.props.maxLength,
-          }),
-        ].filter((extension) => {
-          // Optionally disable extensions
-          if (this.props.disableExtensions) {
-            return !(this.props.disableExtensions as string[]).includes(
-              extension.name
-            );
-          }
-          return true;
-        }),
-        ...(this.props.extensions || []),
-      ],
-      this
+          },
+      }),
+      new GoToPreviousInputTrigger({
+          onGoToPreviousInput: this.handleGoToPreviousInput,
+      }),
+    ] : [
+      new Doc(),
+      new HardBreak(),
+      new Paragraph(),
+      new Blockquote(),
+      new CodeBlock({
+        dictionary,
+        onShowToast: this.props.onShowToast,
+      }),
+      new CodeFence({
+        dictionary,
+        onShowToast: this.props.onShowToast,
+      }),
+      new Emoji(),
+      new Text(),
+      new CheckboxList(),
+      new CheckboxItem(),
+      new BulletList(),
+      new Embed({
+        embeds: this.props.embeds,
+      }),
+      new ListItem(),
+      new Notice({
+        dictionary,
+      }),
+      new Heading({
+        dictionary,
+        onShowToast: this.props.onShowToast,
+        offset: this.props.headingsOffset,
+      }),
+      new HorizontalRule(),
+      new Image({
+        dictionary,
+        uploadImage: this.props.uploadImage,
+        onImageUploadStart: this.props.onImageUploadStart,
+        onImageUploadStop: this.props.onImageUploadStop,
+        onShowToast: this.props.onShowToast,
+      }),
+      new Table(),
+      new TableCell({
+        onSelectTable: this.handleSelectTable,
+        onSelectRow: this.handleSelectRow,
+      }),
+      new TableHeadCell({
+        onSelectColumn: this.handleSelectColumn,
+      }),
+      new TableRow(),
+      // backgrounds take precedence over other marks
+      // this makes all below marks wrapped inside the background mark
+      // do not change order of these marks unless you know what you are doing
+      new BlueBackground(),
+      new RedBackground(),
+      new OrangeBackground(),
+      new YellowBackground(),
+      new GreenBackground(),
+      new Bold(),
+      new Code(),
+      new OrangeHighlight(),
+      new YellowHighlight(),
+      new BlueHighlight(),
+      new GreenHighlight(),
+      new RedHighlight(), // the order matters here!! since it's the default marker
+      new Italic(),
+      new TemplatePlaceholder(),
+      new Underline(),
+      new Link({
+        onKeyboardShortcut: this.handleOpenLinkMenu,
+        onClickLink: this.props.onClickLink,
+        onClickHashtag: this.props.onClickHashtag,
+        onHoverLink: this.props.onHoverLink,
+      }),
+      new Strikethrough(),
+      new OrderedList(),
+      new History(),
+      new Folding(),
+      new SmartText(),
+      new TrailingNode(),
+      new PasteHandler(),
+      new Keys({
+        onBlur: this.handleEditorBlur,
+        onFocus: this.handleEditorFocus,
+        onSave: this.handleSave,
+        onSaveAndExit: this.handleSaveAndExit,
+        onCancel: this.props.onCancel,
+      }),
+      new BlockMenuTrigger({
+        dictionary,
+        onOpen: this.handleOpenBlockMenu,
+        onClose: this.handleCloseBlockMenu,
+      }),
+      new EmojiTrigger({
+        onOpen: (search: string) => {
+          this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
+        },
+        onClose: () => {
+          this.setState({ emojiMenuOpen: false });
+        },
+      }),
+      new GoToPreviousInputTrigger({
+        onGoToPreviousInput: this.handleGoToPreviousInput,
+      }),
+      new Placeholder({
+        placeholder: this.props.placeholder,
+      }),
+      new MaxLength({
+        maxLength: this.props.maxLength,
+      }),
+    ];
+
+    return new ExtensionManager( 
+      this.props.disableExtensions ?  
+        extensions.filter((extension) => {
+          return !(this.props.disableExtensions as string[]).includes(
+            extension.name
+          );
+        }) : extensions, 
+      this 
     );
   }
 
@@ -837,7 +828,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
     return (
       <Flex
-        id='knowt-editor-wrapper'
         onKeyDown={onKeyDown}
         style={style}
         className={className}
@@ -896,23 +886,27 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   search={this.state.blockMenuSearch}
                   onClose={() => this.setState({ emojiMenuOpen: false })}
                 />
-                <BlockMenu
-                  view={this.view}
-                  commands={this.commands}
-                  dictionary={dictionary}
-                  rtl={isRTL}
-                  isActive={this.state.blockMenuOpen}
-                  search={this.state.blockMenuSearch}
-                  onClose={this.handleCloseBlockMenu}
-                  uploadImage={this.props.uploadImage}
-                  onLinkToolbarOpen={this.handleOpenLinkMenu}
-                  onImageUploadStart={this.props.onImageUploadStart}
-                  onImageUploadStop={this.props.onImageUploadStop}
-                  onShowToast={this.props.onShowToast}
-                  embeds={this.props.embeds}
-                  isDarkMode={this.props.dark}
-                  deviceType={deviceType}
-                />
+                {
+                  !this.props.disableBlockMenu ? (
+                    <BlockMenu
+                      view={this.view}
+                      commands={this.commands}
+                      dictionary={dictionary}
+                      rtl={isRTL}
+                      isActive={this.state.blockMenuOpen}
+                      search={this.state.blockMenuSearch}
+                      onClose={this.handleCloseBlockMenu}
+                      uploadImage={this.props.uploadImage}
+                      onLinkToolbarOpen={this.handleOpenLinkMenu}
+                      onImageUploadStart={this.props.onImageUploadStart}
+                      onImageUploadStop={this.props.onImageUploadStop}
+                      onShowToast={this.props.onShowToast}
+                      embeds={this.props.embeds}
+                      isDarkMode={this.props.dark}
+                      deviceType={deviceType}
+                    />
+                  ) : ''
+                }
               </React.Fragment>
             )}
           </React.Fragment>

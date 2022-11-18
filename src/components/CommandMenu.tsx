@@ -46,7 +46,6 @@ export type Props<T extends MenuItem = MenuItem> = {
   ) => React.ReactNode;
   filterable?: boolean;
   items: T[];
-  id?: string;
 };
 
 type State = {
@@ -463,7 +462,6 @@ class CommandMenu<T extends MenuItem = MenuItem>
     return (
       <Portal>
         <Wrapper
-          id={this.props.id || "block-menu-container"}
           active={isActive}
           ref={this.menuRef}
           {...positioning}

@@ -71,7 +71,6 @@ class EmojiMenu extends React.Component<
     return (
       <CommandMenu
         {...this.props}
-        id="emoji-menu-container"
         filterable={false}
         onClearSearch={this.clearSearch}
         renderMenuItem={(item, _index, options) => {
@@ -81,7 +80,6 @@ class EmojiMenu extends React.Component<
               selected={options.selected}
               title={item.description}
               emoji={item.emoji}
-              containerId="emoji-menu-container"
             />
           );
         }}
