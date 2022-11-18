@@ -183,7 +183,6 @@ const Wrapper = styled.div<{
   offset: number;
 }>`
   display: flex;
-  overflow: hidden;
   will-change: opacity, transform;
   position: absolute;
   z-index: ${props => props.theme.zIndex + 100};
