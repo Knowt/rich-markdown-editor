@@ -22,7 +22,7 @@ function LinkSearchResult({ title, subtitle, selected, icon, ...rest }: Props) {
             // All the parent elements of your target are checked until they
             // reach the #link-search-results. Prevents body and other parent
             // elements from being scrolled
-            return parent.id !== "link-search-results";
+            return parent.className !== "link-search-results";
           },
         });
       }
