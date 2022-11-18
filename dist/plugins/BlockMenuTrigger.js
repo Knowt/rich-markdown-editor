@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -6,9 +25,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.run = void 0;
 const prosemirror_inputrules_1 = require("prosemirror-inputrules");
 const react_dom_1 = __importDefault(require("react-dom"));
+const React = __importStar(require("react"));
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_tables_1 = require("@knowt/prosemirror-tables");
 const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
+const outline_icons_1 = require("outline-icons");
 const prosemirror_view_1 = require("prosemirror-view");
 const Extension_1 = __importDefault(require("../lib/Extension"));
 const MAX_MATCH = 500;
@@ -39,7 +60,7 @@ class BlockMenuTrigger extends Extension_1.default {
         const button = document.createElement("button");
         button.className = "block-menu-trigger";
         button.type = "button";
-        react_dom_1.default.render(color, "currentColor" /  > , button);
+        react_dom_1.default.render(React.createElement(outline_icons_1.PlusIcon, { color: "currentColor" }), button);
         return [
             new prosemirror_state_1.Plugin({
                 props: {
