@@ -1,5 +1,5 @@
 import baseDictionary from "./dictionary";
-import type { ToastType } from './types';
+import { ToastType } from './types';
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
 import RedHighlight from "./marks/highlights/RedHighlight";
