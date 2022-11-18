@@ -32,6 +32,7 @@ const icons_1 = require("../icons");
 const ToolbarPopout_1 = __importDefault(require("./ToolbarPopout"));
 const getIconClasses_1 = require("../lib/getIconClasses");
 const constants_1 = require("../lib/constants");
+const getRandomId_1 = require("../lib/getRandomId");
 const FlexibleWrapper = styled_components_1.default.div `
   display: flex;
 `;
@@ -70,7 +71,7 @@ const ToolbarSubItems = ({ id, subItems, theme, commands, shouldLightIcon, }) =>
     const closePopout = () => {
         setIsActive(false);
     };
-    const ariaControls = `${id}-popout`;
+    const ariaControls = `${id}-popout${getRandomId_1.getRandomId()}`;
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(ToolbarButton_1.default, { ref: ref, className: 'chevron-toolbar-button', type: 'button', showBackgroundOnActive: true, onClick: toggleActive, "aria-label": tooltip, "aria-pressed": isActive, "aria-controls": ariaControls, active: isActive, "aria-describedby": id },
             react_1.default.createElement("span", { style: orientation === 'left' ? {
@@ -86,11 +87,11 @@ const ToolbarItem = ({ item, theme, commands, state, isDarkMode, index, }) => {
     const ref = react_1.useRef(null);
     const Icon = item.icon;
     const isActive = item.active ? item.active(state) : false;
-    const id = `${item.name}${index}`;
+    const id = `${item.name}${index}${getRandomId_1.getRandomId()}`;
     const shouldLightIcon = !!(!isDarkMode &&
         (item.iconColor || ((_a = item === null || item === void 0 ? void 0 : item.iconSVGProps) === null || _a === void 0 ? void 0 : _a.fill)));
     return (react_1.default.createElement(MainIconWrapper, null,
-        ((_b = item.subItems) === null || _b === void 0 ? void 0 : _b.orientation) === 'left' ? (react_1.default.createElement(ToolbarSubItems, { id: `${item.name}-left${index}`, subItems: item.subItems, theme: theme, commands: commands, shouldLightIcon: shouldLightIcon })) : '',
+        ((_b = item.subItems) === null || _b === void 0 ? void 0 : _b.orientation) === 'left' ? (react_1.default.createElement(ToolbarSubItems, { id: `${item.name}-left${index}${getRandomId_1.getRandomId()}`, subItems: item.subItems, theme: theme, commands: commands, shouldLightIcon: shouldLightIcon })) : '',
         react_1.default.createElement(ToolbarButton_1.default, { className: 'toolbar-selection-item-button', ref: ref, active: isActive, type: 'button', "aria-pressed": isActive, "aria-describedby": id, onClick: () => defaultMarkClick_1.defaultMarkClick({
                 item,
                 commands,
@@ -100,7 +101,7 @@ const ToolbarItem = ({ item, theme, commands, state, isDarkMode, index, }) => {
             react_1.default.createElement(Tooltip_1.default, { id: id, ref: ref, delayShowTime: TOOLTIP_DELAY, position: 'top' },
                 react_1.default.createElement("p", { className: 'item-name' }, item.tooltip),
                 item.shortcut ? (react_1.default.createElement("p", { className: 'shortcut' }, item.shortcut)) : '')),
-        ((_c = item.subItems) === null || _c === void 0 ? void 0 : _c.orientation) === 'right' ? (react_1.default.createElement(ToolbarSubItems, { id: `${item.name}-right${index}`, subItems: item.subItems, theme: theme, commands: commands, shouldLightIcon: shouldLightIcon })) : ''));
+        ((_c = item.subItems) === null || _c === void 0 ? void 0 : _c.orientation) === 'right' ? (react_1.default.createElement(ToolbarSubItems, { id: `${item.name}-right${index}${getRandomId_1.getRandomId()}`, subItems: item.subItems, theme: theme, commands: commands, shouldLightIcon: shouldLightIcon })) : ''));
 };
 class ToolbarMenu extends react_1.default.Component {
     render() {

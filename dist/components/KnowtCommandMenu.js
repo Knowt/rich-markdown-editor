@@ -537,7 +537,7 @@ class KnowtCommandMenu extends React.Component {
                         React.createElement(Empty, null, dictionary.noResults))))),
                 uploadImage && (React.createElement(VisuallyHidden_1.default, null,
                     React.createElement("input", { type: "file", ref: this.inputRef, onChange: this.handleImagePicked, accept: "image/*" })))),
-            React.createElement(exports.Wrapper, Object.assign({ ref: this.nestedMenuRef, id: "block-menu-container-2", active: this.state.nestedMenuOpen && !this.props.search }, this.state.menu2Position),
+            React.createElement(exports.Wrapper, Object.assign({ ref: this.nestedMenuRef, active: this.state.nestedMenuOpen && !this.props.search }, this.state.menu2Position),
                 React.createElement(List, null,
                     React.createElement(MenuTitle, { ref: this.menuTitleRef }, selectedGroup === null || selectedGroup === void 0 ? void 0 : selectedGroup.groupData.name), (_a = selectedGroup === null || selectedGroup === void 0 ? void 0 : selectedGroup.items) === null || _a === void 0 ? void 0 :
                     _a.map((item, index) => {

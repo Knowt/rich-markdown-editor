@@ -361,7 +361,7 @@ class CommandMenu extends React.Component {
         const items = this.filtered;
         const _a = this.state, { insertItem } = _a, positioning = __rest(_a, ["insertItem"]);
         return (React.createElement(react_portal_1.Portal, null,
-            React.createElement(exports.Wrapper, Object.assign({ id: this.props.id || "block-menu-container", active: isActive, ref: this.menuRef }, positioning),
+            React.createElement(exports.Wrapper, Object.assign({ active: isActive, ref: this.menuRef }, positioning),
                 insertItem ? (React.createElement(LinkInputWrapper, null,
                     React.createElement(LinkInput, { type: "text", placeholder: insertItem.title
                             ? dictionary.pasteLinkWithTitle(insertItem.title)

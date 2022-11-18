@@ -6,12 +6,12 @@ import { Schema, NodeSpec, MarkSpec, DOMParser } from "prosemirror-model";
 import { InputRule } from "prosemirror-inputrules";
 import baseDictionary from "./dictionary";
 import { SearchResult } from "./components/LinkEditor";
-import { EmbedDescriptor, ToastType, DefaultHighlight, DefaultBackground } from "./types";
-import Extension from "./lib/Extension";
 import ExtensionManager from "./lib/ExtensionManager";
 import ComponentView from "./lib/ComponentView";
+import Extension from "./lib/Extension";
 import { PluginSimple } from "markdown-it";
 export { default as Extension } from "./lib/Extension";
+import { EmbedDescriptor, ToastType, DefaultHighlight, DefaultBackground, ExtensionNames } from "./types";
 export declare const theme: {
     background: string;
     text: string;
@@ -114,8 +114,7 @@ export declare type Props = {
     id?: string;
     defaultValue: string;
     placeholder: string;
-    extensions?: Extension[];
-    disableExtensions?: ("strong" | "code_inline" | "highlight" | "em" | "link" | "placeholder" | "strikethrough" | "underline" | "blockquote" | "bullet_list" | "checkbox_item" | "checkbox_list" | "code_block" | "code_fence" | "embed" | "br" | "heading" | "hr" | "image" | "list_item" | "container_notice" | "ordered_list" | "paragraph" | "table" | "td" | "th" | "tr" | "emoji")[];
+    disableExtensions?: ExtensionNames[];
     fontScale?: number;
     readOnly?: boolean;
     readOnlyWriteCheckboxes?: boolean;
@@ -155,6 +154,8 @@ export declare type Props = {
     spellCheck?: boolean;
     defaultHighlightKey?: string;
     defaultBackgroundKey?: string;
+    customExtensions?: Extension[];
+    disableBlockMenu?: boolean;
 };
 declare type State = {
     isRTL: boolean;
@@ -216,7 +217,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     componentDidMount(): void;
     componentDidUpdate(prevProps: Props): void;
     init(): void;
-    createExtensions(): ExtensionManager;
+    createExtensions(customExtensions: Extension[] | undefined): ExtensionManager;
     createPlugins(): Plugin<any>[];
     createRulePlugins(): PluginSimple[];
     createKeymaps(): Plugin<any>[];

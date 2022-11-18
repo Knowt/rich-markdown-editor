@@ -229,7 +229,7 @@ class LinkEditor extends React.Component {
             React.createElement(ToolbarButton_1.default, { onClick: this.handleRemoveLink }, this.initialValue ? (React.createElement("span", { title: dictionary.removeLink, "aria-label": dictionary.removeLink },
                 React.createElement(outline_icons_1.TrashIcon, { color: theme.toolbarItem }))) : (React.createElement("span", { title: dictionary.removeLink, "aria-label": dictionary.removeLink },
                 React.createElement(outline_icons_1.CloseIcon, { color: theme.toolbarItem })))),
-            showResults && (React.createElement(SearchResults, { id: "link-search-results" },
+            showResults && (React.createElement(SearchResults, { className: "link-search-results" },
                 results.map((result, index) => (React.createElement(LinkSearchResult_1.default, { key: result.url, title: result.title, subtitle: result.subtitle, icon: React.createElement(outline_icons_1.DocumentIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(index), onClick: this.handleSelectLink(result.url, result.title), selected: index === selectedIndex }))),
                 showCreateLink && (React.createElement(LinkSearchResult_1.default, { key: "create", title: suggestedLinkTitle, subtitle: dictionary.createNewDoc, icon: React.createElement(outline_icons_1.PlusIcon, { color: theme.toolbarItem }), onMouseOver: () => this.handleFocusLink(results.length), onClick: () => {
                         this.handleCreateLink(suggestedLinkTitle);

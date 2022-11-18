@@ -23,7 +23,6 @@ export declare type Props<T extends MenuItem = MenuItem> = {
     }) => React.ReactNode;
     filterable?: boolean;
     items: T[];
-    id?: string;
 };
 declare type State = {
     insertItem?: EmbedDescriptor;

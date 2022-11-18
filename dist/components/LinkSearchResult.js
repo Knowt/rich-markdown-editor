@@ -44,7 +44,7 @@ function LinkSearchResult(_a) {
                 scrollMode: "if-needed",
                 block: "center",
                 boundary: parent => {
-                    return parent.id !== "link-search-results";
+                    return parent.className !== "link-search-results";
                 },
             });
         }

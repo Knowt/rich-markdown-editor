@@ -131,7 +131,7 @@ function FloatingToolbar(props) {
             window.removeEventListener("mouseup", handleMouseUp);
         };
     }, [props.active]);
-    return (React.createElement(react_portal_1.Portal, { node: document.getElementById('knowt-editor-wrapper') },
+    return (React.createElement(react_portal_1.Portal, null,
         React.createElement(Wrapper, { active: props.active && position.visible, ref: menuRef, offset: position.offset, style: {
                 top: `${position.top}px`,
                 left: `${position.left}px`,
@@ -139,7 +139,6 @@ function FloatingToolbar(props) {
 }
 const Wrapper = styled_components_1.default.div `
   display: flex;
-  overflow: hidden;
   will-change: opacity, transform;
   position: absolute;
   z-index: ${props => props.theme.zIndex + 100};

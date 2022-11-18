@@ -1,5 +1,5 @@
-import * as React from "react";
-import { EditorState } from "prosemirror-state";
+import * as React from 'react';
+import { EditorState } from 'prosemirror-state';
 export declare enum ToastType {
     Error = "error",
     Info = "info"
@@ -13,6 +13,7 @@ export declare type DefaultHighlight = 'highlight_blue' | 'highlight_green' | 'h
 export declare type DefaultBackground = 'background_blue' | 'background_green' | 'background_orange' | 'background_red' | 'background_yellow';
 export declare type SetDefaultHighlight = (highlight: DefaultHighlight) => void;
 export declare type SetDefaultBackground = (background: DefaultBackground) => void;
+export declare type ExtensionNames = 'strong' | 'code_inline' | 'highlight' | 'background' | 'em' | 'link' | 'placeholder' | 'strikethrough' | 'underline' | 'blockquote' | 'bullet_list' | 'checkbox_item' | 'checkbox_list' | 'code_block' | 'code_fence' | 'embed' | 'br' | 'heading' | 'hr' | 'image' | 'list_item' | 'container_notice' | 'ordered_list' | 'paragraph' | 'table' | 'td' | 'th' | 'tr' | 'emoji' | 'blockmenu';
 export declare type MenuItem = {
     icon?: typeof React.Component | React.FC<any>;
     iconColor?: string;

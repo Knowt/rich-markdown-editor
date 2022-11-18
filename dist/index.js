@@ -47,7 +47,6 @@ const ComponentView_1 = __importDefault(require("./lib/ComponentView"));
 const headingToSlug_1 = __importDefault(require("./lib/headingToSlug"));
 const constants_1 = require("./lib/constants");
 const react_device_detect_1 = require("react-device-detect");
-const editor_1 = require("./styles/editor");
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
@@ -97,6 +96,7 @@ const domHelpers_1 = require("./domHelpers");
 const GoToPreviousInputTrigger_1 = __importDefault(require("./plugins/GoToPreviousInputTrigger"));
 var Extension_1 = require("./lib/Extension");
 Object.defineProperty(exports, "Extension", { enumerable: true, get: function () { return __importDefault(Extension_1).default; } });
+const editor_1 = require("./styles/editor");
 exports.theme = theme_1.light;
 class RichMarkdownEditor extends React.PureComponent {
     constructor() {
@@ -283,7 +283,7 @@ class RichMarkdownEditor extends React.PureComponent {
         }
     }
     init() {
-        this.extensions = this.createExtensions();
+        this.extensions = this.createExtensions(this.props.customExtensions);
         this.nodes = this.createNodes();
         this.marks = this.createMarks();
         this.schema = this.createSchema();
@@ -299,121 +299,143 @@ class RichMarkdownEditor extends React.PureComponent {
         this.view = this.createView();
         this.commands = this.createCommands();
     }
-    createExtensions() {
+    createExtensions(customExtensions) {
         const dictionary = this.dictionary(this.props.dictionary);
-        return new ExtensionManager_1.default([
-            ...[
-                new Doc_1.default(),
-                new HardBreak_1.default(),
-                new Paragraph_1.default(),
-                new Blockquote_1.default(),
-                new CodeBlock_1.default({
-                    dictionary,
-                    onShowToast: this.props.onShowToast,
-                }),
-                new CodeFence_1.default({
-                    dictionary,
-                    onShowToast: this.props.onShowToast,
-                }),
-                new Emoji_1.default(),
-                new Text_1.default(),
-                new CheckboxList_1.default(),
-                new CheckboxItem_1.default(),
-                new BulletList_1.default(),
-                new Embed_1.default({
-                    embeds: this.props.embeds,
-                }),
-                new ListItem_1.default(),
-                new Notice_1.default({
-                    dictionary,
-                }),
-                new Heading_1.default({
-                    dictionary,
-                    onShowToast: this.props.onShowToast,
-                    offset: this.props.headingsOffset,
-                }),
-                new HorizontalRule_1.default(),
-                new Image_1.default({
-                    dictionary,
-                    uploadImage: this.props.uploadImage,
-                    onImageUploadStart: this.props.onImageUploadStart,
-                    onImageUploadStop: this.props.onImageUploadStop,
-                    onShowToast: this.props.onShowToast,
-                }),
-                new Table_1.default(),
-                new TableCell_1.default({
-                    onSelectTable: this.handleSelectTable,
-                    onSelectRow: this.handleSelectRow,
-                }),
-                new TableHeadCell_1.default({
-                    onSelectColumn: this.handleSelectColumn,
-                }),
-                new TableRow_1.default(),
-                new backgrounds_1.BlueBackground(),
-                new backgrounds_1.RedBackground(),
-                new backgrounds_1.OrangeBackground(),
-                new backgrounds_1.YellowBackground(),
-                new backgrounds_1.GreenBackground(),
-                new Bold_1.default(),
-                new Code_1.default(),
-                new OrangeHighlight_1.default(),
-                new YellowHighlight_1.default(),
-                new BlueHighlight_1.default(),
-                new GreenHighlight_1.default(),
-                new RedHighlight_1.default(),
-                new Italic_1.default(),
-                new Placeholder_1.default(),
-                new Underline_1.default(),
-                new Link_1.default({
-                    onKeyboardShortcut: this.handleOpenLinkMenu,
-                    onClickLink: this.props.onClickLink,
-                    onClickHashtag: this.props.onClickHashtag,
-                    onHoverLink: this.props.onHoverLink,
-                }),
-                new Strikethrough_1.default(),
-                new OrderedList_1.default(),
-                new History_1.default(),
-                new Folding_1.default(),
-                new SmartText_1.default(),
-                new TrailingNode_1.default(),
-                new PasteHandler_1.default(),
-                new Keys_1.default({
-                    onBlur: this.handleEditorBlur,
-                    onFocus: this.handleEditorFocus,
-                    onSave: this.handleSave,
-                    onSaveAndExit: this.handleSaveAndExit,
-                    onCancel: this.props.onCancel,
-                }),
-                new BlockMenuTrigger_1.default({
-                    dictionary,
-                    onOpen: this.handleOpenBlockMenu,
-                    onClose: this.handleCloseBlockMenu,
-                }),
-                new EmojiTrigger_1.default({
-                    onOpen: (search) => {
-                        this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
-                    },
-                    onClose: () => {
-                        this.setState({ emojiMenuOpen: false });
-                    },
-                }),
-                new GoToPreviousInputTrigger_1.default({
-                    onGoToPreviousInput: this.handleGoToPreviousInput,
-                }),
-                new Placeholder_2.default({
-                    placeholder: this.props.placeholder,
-                }),
-                new MaxLength_1.default({
-                    maxLength: this.props.maxLength,
-                }),
-            ].filter((extension) => {
-                if (this.props.disableExtensions) {
-                    return !this.props.disableExtensions.includes(extension.name);
-                }
-                return true;
+        const extensions = customExtensions ? [
+            ...customExtensions,
+            new Link_1.default({
+                onKeyboardShortcut: this.handleOpenLinkMenu,
+                onClickLink: this.props.onClickLink,
+                onClickHashtag: this.props.onClickHashtag,
+                onHoverLink: this.props.onHoverLink,
             }),
-            ...(this.props.extensions || []),
-        ], this);
+            new Keys_1.default({
+                onBlur: this.handleEditorBlur,
+                onFocus: this.handleEditorFocus,
+                onSave: this.handleSave,
+                onSaveAndExit: this.handleSaveAndExit,
+                onCancel: this.props.onCancel,
+            }),
+            new EmojiTrigger_1.default({
+                onOpen: (search) => {
+                    this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
+                },
+                onClose: () => {
+                    this.setState({ emojiMenuOpen: false });
+                },
+            }),
+            new GoToPreviousInputTrigger_1.default({
+                onGoToPreviousInput: this.handleGoToPreviousInput,
+            }),
+        ] : [
+            new Doc_1.default(),
+            new HardBreak_1.default(),
+            new Paragraph_1.default(),
+            new Blockquote_1.default(),
+            new CodeBlock_1.default({
+                dictionary,
+                onShowToast: this.props.onShowToast,
+            }),
+            new CodeFence_1.default({
+                dictionary,
+                onShowToast: this.props.onShowToast,
+            }),
+            new Emoji_1.default(),
+            new Text_1.default(),
+            new CheckboxList_1.default(),
+            new CheckboxItem_1.default(),
+            new BulletList_1.default(),
+            new Embed_1.default({
+                embeds: this.props.embeds,
+            }),
+            new ListItem_1.default(),
+            new Notice_1.default({
+                dictionary,
+            }),
+            new Heading_1.default({
+                dictionary,
+                onShowToast: this.props.onShowToast,
+                offset: this.props.headingsOffset,
+            }),
+            new HorizontalRule_1.default(),
+            new Image_1.default({
+                dictionary,
+                uploadImage: this.props.uploadImage,
+                onImageUploadStart: this.props.onImageUploadStart,
+                onImageUploadStop: this.props.onImageUploadStop,
+                onShowToast: this.props.onShowToast,
+            }),
+            new Table_1.default(),
+            new TableCell_1.default({
+                onSelectTable: this.handleSelectTable,
+                onSelectRow: this.handleSelectRow,
+            }),
+            new TableHeadCell_1.default({
+                onSelectColumn: this.handleSelectColumn,
+            }),
+            new TableRow_1.default(),
+            new backgrounds_1.BlueBackground(),
+            new backgrounds_1.RedBackground(),
+            new backgrounds_1.OrangeBackground(),
+            new backgrounds_1.YellowBackground(),
+            new backgrounds_1.GreenBackground(),
+            new Bold_1.default(),
+            new Code_1.default(),
+            new OrangeHighlight_1.default(),
+            new YellowHighlight_1.default(),
+            new BlueHighlight_1.default(),
+            new GreenHighlight_1.default(),
+            new RedHighlight_1.default(),
+            new Italic_1.default(),
+            new Placeholder_1.default(),
+            new Underline_1.default(),
+            new Link_1.default({
+                onKeyboardShortcut: this.handleOpenLinkMenu,
+                onClickLink: this.props.onClickLink,
+                onClickHashtag: this.props.onClickHashtag,
+                onHoverLink: this.props.onHoverLink,
+            }),
+            new Strikethrough_1.default(),
+            new OrderedList_1.default(),
+            new History_1.default(),
+            new Folding_1.default(),
+            new SmartText_1.default(),
+            new TrailingNode_1.default(),
+            new PasteHandler_1.default(),
+            new Keys_1.default({
+                onBlur: this.handleEditorBlur,
+                onFocus: this.handleEditorFocus,
+                onSave: this.handleSave,
+                onSaveAndExit: this.handleSaveAndExit,
+                onCancel: this.props.onCancel,
+            }),
+            new BlockMenuTrigger_1.default({
+                dictionary,
+                onOpen: this.handleOpenBlockMenu,
+                onClose: this.handleCloseBlockMenu,
+            }),
+            new EmojiTrigger_1.default({
+                onOpen: (search) => {
+                    this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
+                },
+                onClose: () => {
+                    this.setState({ emojiMenuOpen: false });
+                },
+            }),
+            new GoToPreviousInputTrigger_1.default({
+                onGoToPreviousInput: this.handleGoToPreviousInput,
+            }),
+            new Placeholder_2.default({
+                placeholder: this.props.placeholder,
+            }),
+            new MaxLength_1.default({
+                maxLength: this.props.maxLength,
+            }),
+        ];
+        return new ExtensionManager_1.default(this.props.disableExtensions ?
+            extensions.filter((extension) => {
+                return !this.props.disableExtensions.includes(extension.name);
+            }) : extensions, this);
     }
     createPlugins() {
         return this.extensions.plugins;
@@ -569,7 +591,7 @@ class RichMarkdownEditor extends React.PureComponent {
         const { isRTL } = this.state;
         const dictionary = this.dictionary(this.props.dictionary);
         const deviceType = react_device_detect_1.isMacOs ? "mac" : react_device_detect_1.isWindows ? "windows" : undefined;
-        return (React.createElement(Flex_1.default, { id: 'knowt-editor-wrapper', onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
+        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, style: style, className: className, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
                 this.props.spellCheck : true },
             React.createElement(styled_components_1.ThemeProvider, { theme: this.theme() },
                 React.createElement(React.Fragment, null,
@@ -578,7 +600,7 @@ class RichMarkdownEditor extends React.PureComponent {
                         React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, isDarkMode: this.props.dark, deviceType: deviceType, defaultHighlight: this.state.defaultHighlight || constants_1.DEFAULT_HIGHLIGHT, defaultBackground: this.state.defaultBackground || constants_1.DEFAULT_BACKGROUND, setDefaultHighlight: this.setDefaultHighlight, setDefaultBackground: this.setDefaultBackground }),
                         React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu }),
                         React.createElement(EmojiMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.emojiMenuOpen, search: this.state.blockMenuSearch, onClose: () => this.setState({ emojiMenuOpen: false }) }),
-                        React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds, isDarkMode: this.props.dark, deviceType: deviceType })))))));
+                        !this.props.disableBlockMenu ? (React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds, isDarkMode: this.props.dark, deviceType: deviceType })) : ''))))));
     }
 }
 RichMarkdownEditor.defaultProps = {
