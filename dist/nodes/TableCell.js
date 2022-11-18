@@ -65,6 +65,10 @@ class TableCell extends Node_1.default {
                                             event.stopImmediatePropagation();
                                             this.options.onSelectTable(state);
                                         });
+                                        grip.addEventListener("mouseup", (event) => {
+                                            event.preventDefault();
+                                            event.stopImmediatePropagation();
+                                        });
                                         return grip;
                                     }));
                                 }

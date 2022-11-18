@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prosemirror_schema_list_1 = require("prosemirror-schema-list");
 const prosemirror_state_1 = require("prosemirror-state");
 const prosemirror_view_1 = require("prosemirror-view");
-const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 const Node_1 = __importDefault(require("./Node"));
 const isList_1 = __importDefault(require("../queries/isList"));
 const isInList_1 = __importDefault(require("../queries/isInList"));
 const getParentListItem_1 = __importDefault(require("../queries/getParentListItem"));
 const customSplitListItem_1 = require("../commands/customSplitListItem");
+const prosemirror_utils_1 = require("@knowt/prosemirror-utils");
 class ListItem extends Node_1.default {
     get name() {
         return "list_item";
@@ -191,16 +191,73 @@ class ListItem extends Node_1.default {
             },
             Backspace: (state, dispatch) => {
                 var _a, _b;
-                const parentList = prosemirror_utils_1.findParentNode((node) => isList_1.default(node, state.schema))(state.selection);
-                if (parentList &&
-                    parentList.node.content.childCount === 1 &&
-                    ((_b = (_a = parentList.node.content) === null || _a === void 0 ? void 0 : _a.firstChild) === null || _b === void 0 ? void 0 : _b.textContent) === '') {
-                    const p = state.schema.nodes.paragraph.create();
-                    dispatch(prosemirror_utils_1.replaceParentNodeOfType(parentList.node.type, p)(state.tr));
-                    return true;
+                const { tr, doc, selection, schema } = state;
+                const parentList = prosemirror_utils_1.findParentNode((node) => isList_1.default(node, schema))(selection);
+                const parentParagraph = prosemirror_utils_1.findParentNode((node) => node.type.name === 'paragraph')(selection);
+                if (parentList) {
+                    if (parentList.node.content.childCount === 1 &&
+                        ((_b = (_a = parentList.node.content) === null || _a === void 0 ? void 0 : _a.firstChild) === null || _b === void 0 ? void 0 : _b.textContent) === '') {
+                        const p = schema.nodes.paragraph.create();
+                        dispatch(prosemirror_utils_1.replaceParentNodeOfType(parentList.node.type, p)(tr));
+                        return true;
+                    }
+                    else if (parentParagraph &&
+                        parentParagraph.node.textContent &&
+                        selection.from === selection.to &&
+                        parentParagraph.start === selection.from) {
+                        const parentListItem = prosemirror_utils_1.findParentNode((node) => node.type.name === 'list_item' || node.type.name === 'checkbox_item')(selection);
+                        if (parentListItem) {
+                            return prosemirror_schema_list_1.liftListItem(parentListItem.node.type)(state, dispatch);
+                        }
+                    }
+                }
+                else {
+                    if (parentParagraph &&
+                        selection.from === selection.to &&
+                        parentParagraph.start === selection.from) {
+                        const newPos = doc.resolve(selection.from - 2);
+                        const prevList = prosemirror_utils_1.findParentNodeClosestToPos(newPos, (node) => isList_1.default(node, schema));
+                        if (prevList) {
+                            const steps = this.getLastListItemDepth(prevList.node);
+                            const lastListItemPos = selection.from - 4 - steps * 2;
+                            const paragraphText = parentParagraph.node.textContent;
+                            const handleDispatch = (rangeEnd = 0) => {
+                                dispatch(tr.deleteRange(selection.from, selection.from + paragraphText.length + rangeEnd)
+                                    .insertText(paragraphText, lastListItemPos)
+                                    .setSelection(prosemirror_state_1.TextSelection.near(tr.doc.resolve(lastListItemPos))));
+                            };
+                            try {
+                                handleDispatch(2);
+                            }
+                            catch (_c) {
+                                handleDispatch();
+                            }
+                            return true;
+                        }
+                    }
                 }
             }
         };
+    }
+    getLastListItemDepth(node) {
+        let depth = 0;
+        const traverseList = (node) => {
+            try {
+                const innerNodes = node.content.content;
+                const lastListItem = innerNodes[innerNodes.length - 1];
+                const lastListItemContent = lastListItem.content.content;
+                if (lastListItemContent.length === 2) {
+                    depth += 1;
+                    traverseList(lastListItemContent[lastListItemContent.length - 1]);
+                }
+            }
+            catch (error) {
+                console.warn(error);
+                return depth;
+            }
+        };
+        traverseList(node);
+        return depth;
     }
     toMarkdown(state, node) {
         state.renderContent(node);

@@ -1,1 +1,1 @@
-{"version":3,"file":"Folding.d.ts","sourceRoot":"","sources":["../../src/plugins/Folding.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,mBAAmB,CAAC;AAE3C,OAAO,SAAS,MAAM,kBAAkB,CAAC;AAKzC,MAAM,CAAC,OAAO,OAAO,OAAQ,SAAQ,SAAS;IAC5C,IAAI,IAAI,WAEP;IAED,IAAI,OAAO,kBA0DV;CACF"}
+{"version":3,"file":"Folding.d.ts","sourceRoot":"","sources":["../../src/plugins/Folding.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,mBAAmB,CAAC;AAE3C,OAAO,SAAS,MAAM,kBAAkB,CAAC;AAKzC,MAAM,CAAC,OAAO,OAAO,OAAQ,SAAQ,SAAS;IAC5C,IAAI,IAAI,WAEP;IAED,IAAI,OAAO,kBA0DV;CACF"}

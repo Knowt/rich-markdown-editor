@@ -1,6 +1,7 @@
 import { EditorState, Plugin } from "prosemirror-state";
 import { DecorationSet } from "prosemirror-view";
 import Node from "./Node";
+import type { Node as ProsemirrorNode } from 'prosemirror-model';
 export default class ListItem extends Node {
     get name(): string;
     get schema(): {
@@ -24,8 +25,9 @@ export default class ListItem extends Node {
         "Shift-Enter": (state: any, dispatch: any) => boolean;
         "Alt-ArrowUp": (state: any, dispatch: any) => boolean;
         "Alt-ArrowDown": (state: any, dispatch: any) => boolean;
-        Backspace: (state: EditorState, dispatch: any) => true | undefined;
+        Backspace: (state: EditorState, dispatch: any) => boolean | undefined;
     };
+    getLastListItemDepth(node: ProsemirrorNode): number;
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;
