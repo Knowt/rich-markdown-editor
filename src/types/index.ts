@@ -1,9 +1,9 @@
-import * as React from "react";
-import { EditorState } from "prosemirror-state";
+import * as React from 'react';
+import { EditorState } from 'prosemirror-state';
 
 export enum ToastType {
-  Error = "error",
-  Info = "info",
+  Error = 'error',
+  Info = 'info',
 }
 
 export interface SubMenuItems {
@@ -17,6 +17,41 @@ export type DefaultBackground = 'background_blue' | 'background_green' | 'backgr
 
 export type SetDefaultHighlight = ( highlight: DefaultHighlight ) => void;
 export type SetDefaultBackground = ( background: DefaultBackground ) => void;
+
+export type ExtensionNames = 'strong'
+  | 'code_inline'
+  // TODO - these don't disable anything
+  // If highlight and backgrounds want to be disabled,
+  // the specific color has to specified.
+  // Right now doing so breaks the code.
+  | 'highlight'
+  | 'background'
+  | 'em'
+  | 'link'
+  | 'placeholder'
+  | 'strikethrough'
+  | 'underline'
+  | 'blockquote'
+  | 'bullet_list'
+  | 'checkbox_item'
+  | 'checkbox_list'
+  | 'code_block'
+  | 'code_fence'
+  | 'embed'
+  | 'br'
+  | 'heading'
+  | 'hr'
+  | 'image'
+  | 'list_item'
+  | 'container_notice'
+  | 'ordered_list'
+  | 'paragraph'
+  | 'table'
+  | 'td'
+  | 'th'
+  | 'tr'
+  | 'emoji'
+  | 'blockmenu';
 
 export type MenuItem = {
   icon?: typeof React.Component | React.FC<any>;
