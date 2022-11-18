@@ -238,7 +238,7 @@ const ToolbarPopout = forwardRef<HTMLElement, Props> ( ( {
     }
 
     return (
-        <Portal node={document.getElementById('knowt-editor-wrapper')}>
+        <Portal>
             <List id={id} ref={popoutRef}
                 className={className}
                 style={popoutStyles}>

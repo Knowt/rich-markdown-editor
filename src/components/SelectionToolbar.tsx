@@ -345,7 +345,7 @@ export default class SelectionToolbar extends React.Component<Props> {
     }
 
     return (
-      <Portal node={document.getElementById('knowt-editor-wrapper')}>
+      <Portal>
         <FloatingToolbar
           view={view}
           active={isVisible(this.props)}

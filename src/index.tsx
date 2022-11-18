@@ -828,7 +828,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
     return (
       <Flex
-        id='knowt-editor-wrapper'
         onKeyDown={onKeyDown}
         style={style}
         className={className}
