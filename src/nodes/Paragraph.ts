@@ -42,7 +42,6 @@ export default class Paragraph extends Node {
             // makes checks to backspace content from a paragraph to previous nodes
             const prevNodePos = selection.from - 2;
             const newPos = doc.resolve( prevNodePos );
-            const paragraphText = parentParagraph.node.textContent;
     
             // brings backspaced content from a paragraph into the last cell of a table
             const prevTable = findParentNodeClosestToPos( 
@@ -53,6 +52,7 @@ export default class Paragraph extends Node {
             if ( prevTable ) {
               const handleDispatch = ( rangeEnd: number=0 ) => {
                 const lastCellPos = prevNodePos - 3;
+                const paragraphText = parentParagraph.node.textContent;
                 
                 dispatch(
                   tr.deleteRange(
@@ -98,6 +98,41 @@ export default class Paragraph extends Node {
                   .insertText( paragraphText, lastListItemPos )
                   .setSelection( TextSelection.near(
                     tr.doc.resolve( lastListItemPos )
+                  ) )
+                );
+              }
+
+              try {
+                // +2 handles deletion of line
+                handleDispatch( 2 );
+              }
+              catch {
+                // edge case for if writing on bottom of doc and there is no line to delete
+                handleDispatch();
+              }
+
+              return true;
+            }
+
+            // brings backspaced content to a blockquote
+            const prevBlockQuote = findParentNodeClosestToPos( 
+              newPos, 
+              ( node ) => node.type.name === 'blockquote'
+            );
+
+            if ( prevBlockQuote ) {
+              const blockQuotePos = selection.from - 3;
+              const paragraphText = parentParagraph.node.textContent;
+
+              const handleDispatch = ( rangeEnd: number=0 ) => {
+                dispatch(
+                  tr.deleteRange(
+                    selection.from,
+                    selection.from + paragraphText.length + rangeEnd,
+                  )
+                  .insertText( paragraphText, blockQuotePos )
+                  .setSelection( TextSelection.near(
+                    tr.doc.resolve( blockQuotePos )
                   ) )
                 );
               }
