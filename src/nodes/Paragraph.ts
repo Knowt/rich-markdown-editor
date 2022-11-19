@@ -5,6 +5,7 @@ import { findParentNodeClosestToPos, findParentNode } from '@knowt/prosemirror-u
 import { isParentParagraph } from '../queries/isParentParagraph';
 import { getLastListItemDepth } from '../queries/getLastListItemDepth';
 import isList from "../queries/isList";
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 // import { isInTable } from "@knowt/prosemirror-tables";
 // import isNodeActive from '../queries/isNodeActive';
 // import isInList from "../queries/isInList";
@@ -121,8 +122,26 @@ export default class Paragraph extends Node {
             );
 
             if ( prevBlockQuote ) {
-              const blockQuotePos = selection.from - 3;
+              let blockQuotePos = selection.from - 3;
               const paragraphText = parentParagraph.node.textContent;
+
+              // when a list is present inside a blockquote
+              try {
+                // @ts-ignore
+                const innerNode = prevBlockQuote.node.content?.content[0] as ProseMirrorNode;
+                const innerNodeType = innerNode.type.name;
+
+                if ( 
+                  innerNodeType === 'checkbox_list' ||
+                  innerNodeType === 'bullet_list' ||
+                  innerNodeType === 'ordered_list'
+                ) {
+                  blockQuotePos -= ( getLastListItemDepth( innerNode ) + 1 ) * 2;
+                }
+              }
+              catch {
+                console.warn( `Could not backspace into a list within a blockquote`)
+              }
 
               const handleDispatch = ( rangeEnd: number=0 ) => {
                 dispatch(
