@@ -45,10 +45,6 @@ type Props = {
   setDefaultBackground?: SetDefaultBackground;
 };
 
-type State = {
-  isClient: boolean;
-}
-
 type HandleTableDeleteInput = {
   isTableRowSelected: boolean;
   isTableColSelected: boolean;
@@ -76,17 +72,13 @@ function isVisible(props) {
   return some(nodes, (n) => n.content.size);
 }
 
-export default class SelectionToolbar extends React.Component<Props, State> {
+export default class SelectionToolbar extends React.Component<Props> {
   isActive = false;
   menuRef = React.createRef<HTMLDivElement>();
   isCutInProgress = false;
   isTableRowSelected = false;
   isTableColSelected = false;
   isTableSelected = false;
-
-  state = {
-    isClient: false,
-  }
 
   componentDidUpdate(): void {
     const visible = isVisible(this.props);
@@ -111,11 +103,6 @@ export default class SelectionToolbar extends React.Component<Props, State> {
     document.addEventListener( 'keydown', (event) => this.handleKeydown(event) );
     document.addEventListener( 'beforecut', () => this.handleBeforeCut() );
     document.addEventListener( 'cut', () => this.handleCut() );
-
-    this.setState( ( state ) => ( {
-      ...state,
-      isClient: true,
-    } ) )
   }
 
   componentWillUnmount(): void {
@@ -358,33 +345,27 @@ export default class SelectionToolbar extends React.Component<Props, State> {
     }
 
     return (
-      <>
-      {
-        this.state.isClient ? (
-          <Portal>
-            <FloatingToolbar
-              view={view}
-              active={isVisible(this.props)}
-              ref={this.menuRef}
-            >
-              {link && range ? (
-                <LinkEditor
-                  dictionary={dictionary}
-                  mark={range.mark}
-                  from={range.from}
-                  to={range.to}
-                  onCreateLink={onCreateLink ? this.handleOnCreateLink : undefined}
-                  onSelectLink={this.handleOnSelectLink}
-                  {...rest}
-                />
-              ) : (
-                <ToolbarMenu items={items} {...rest} />
-              )}
-            </FloatingToolbar>
-          </Portal>
-        ) : ''
-      }
-      </>
+      <Portal>
+        <FloatingToolbar
+          view={view}
+          active={isVisible(this.props)}
+          ref={this.menuRef}
+        >
+          {link && range ? (
+            <LinkEditor
+              dictionary={dictionary}
+              mark={range.mark}
+              from={range.from}
+              to={range.to}
+              onCreateLink={onCreateLink ? this.handleOnCreateLink : undefined}
+              onSelectLink={this.handleOnSelectLink}
+              {...rest}
+            />
+          ) : (
+            <ToolbarMenu items={items} {...rest} />
+          )}
+        </FloatingToolbar>
+      </Portal>
     );
   }
 }
