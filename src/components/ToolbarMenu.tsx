@@ -12,7 +12,6 @@ import { ChevronIcon } from '../icons';
 import ToolbarPopout from './ToolbarPopout';
 import { getIconClasses } from '../lib/getIconClasses';
 import { CUSTOM_ICON_YELLOW } from '../lib/constants';
-import { getRandomId } from '../lib/getRandomId';
 
 const FlexibleWrapper = styled.div`
   display: flex;
@@ -73,7 +72,7 @@ const ToolbarSubItems = ( {
     setIsActive( false );
   }
 
-  const ariaControls = `${id}-popout${getRandomId()}`;
+  const ariaControls = `${id}-popout`;
 
   return (
     <>
@@ -139,7 +138,7 @@ const ToolbarItem = ( {
 
   const Icon = item.icon as typeof Component;
   const isActive = item.active ? item.active(state) : false;
-  const id = `${item.name}${index}${getRandomId()}`;
+  const id = `${item.name}${index}`;
   const shouldLightIcon = !!( !isDarkMode && 
     ( item.iconColor || item?.iconSVGProps?.fill ) );
 
@@ -147,7 +146,7 @@ const ToolbarItem = ( {
     <MainIconWrapper>
       {
           item.subItems?.orientation === 'left' ? (
-            <ToolbarSubItems id={`${item.name}-left${index}${getRandomId()}`}
+            <ToolbarSubItems id={`${item.name}-left${index}`}
               subItems={item.subItems}
               theme={theme}
               commands={commands}
@@ -185,7 +184,7 @@ const ToolbarItem = ( {
       </ToolbarButton>
       {
         item.subItems?.orientation === 'right' ? (
-          <ToolbarSubItems id={`${item.name}-right${index}${getRandomId()}`}
+          <ToolbarSubItems id={`${item.name}-right${index}`}
             subItems={item.subItems}
             theme={theme}
             commands={commands}
