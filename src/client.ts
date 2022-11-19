@@ -1,5 +1,3 @@
-import baseDictionary from "./dictionary";
-import { ToastType } from './types';
 // marks
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
@@ -18,13 +16,10 @@ import Underline from "./marks/Underline";
 // nodes
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
-import Blockquote from "./nodes/Blockquote";
 import BulletList from "./nodes/BulletList";
 import CheckboxList from "./nodes/CheckboxList";
-import Emoji from "./nodes/Emoji";
 import CheckboxItem from "./nodes/CheckboxItem";
 import HardBreak from "./nodes/HardBreak";
-import Heading from "./nodes/Heading";
 import ListItem from "./nodes/ListItem";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -38,44 +33,25 @@ import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
 
 type Input = {
-    dictionary?: Partial<typeof baseDictionary>;
-    headingOffset?: number;
     maxLength?: number;
     placeholder?: string;
-    onShowToast?: (message: string, code: ToastType) => void;
 }
 
 export const getFlashcardEditorExtensions = (
     input: Input,
 ) => {
-    const { dictionary={},
-        headingOffset,
-        maxLength,
-        placeholder,
-        onShowToast } = input;
-
-    const actualDictionary = {
-        ...dictionary,
-        ...baseDictionary,
-    };
+    const { maxLength, placeholder } = input;
 
     return [
         new Doc(),
         new HardBreak(),
         new Paragraph(),
-        new Blockquote(),
-        new Emoji(),
         new Text(),
         new OrderedList(),
         new CheckboxList(),
         new CheckboxItem(),
         new BulletList(),
         new ListItem(),
-        new Heading({
-          dictionary: actualDictionary,
-          onShowToast: onShowToast,
-          offset: headingOffset,
-        }),
         // backgrounds take precedence over other marks
         // this makes all below marks wrapped inside the background mark
         // do not change order of these marks unless you know what you are doing

@@ -139,6 +139,7 @@ export type Props = {
   defaultBackgroundKey?: string;
   // When provided, the following extensions will be used INSTEAD of the default ones.
   customExtensions?: Extension[];
+  disableEmojiMenu?: boolean;
   disableBlockMenu?: boolean;
 };
 
@@ -877,15 +878,19 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onShowToast={this.props.onShowToast}
                   onClose={this.handleCloseLinkMenu}
                 />
-                <EmojiMenu
-                  view={this.view}
-                  commands={this.commands}
-                  dictionary={dictionary}
-                  rtl={isRTL}
-                  isActive={this.state.emojiMenuOpen}
-                  search={this.state.blockMenuSearch}
-                  onClose={() => this.setState({ emojiMenuOpen: false })}
-                />
+                {
+                  !this.props.disableEmojiMenu ? (
+                    <EmojiMenu
+                      view={this.view}
+                      commands={this.commands}
+                      dictionary={dictionary}
+                      rtl={isRTL}
+                      isActive={this.state.emojiMenuOpen}
+                      search={this.state.blockMenuSearch}
+                      onClose={() => this.setState({ emojiMenuOpen: false })}
+                    />
+                  ) : ''
+                }
                 {
                   !this.props.disableBlockMenu ? (
                     <BlockMenu
