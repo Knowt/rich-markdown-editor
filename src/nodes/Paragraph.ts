@@ -43,7 +43,8 @@ export default class Paragraph extends Node {
             // makes checks to backspace content from a paragraph to previous nodes
             const prevNodePos = selection.from - 2;
             const newPos = doc.resolve( prevNodePos );
-    
+            let backspacePos: number | undefined = undefined;
+            
             // brings backspaced content from a paragraph into the last cell of a table
             const prevTable = findParentNodeClosestToPos( 
               newPos, 
@@ -51,32 +52,7 @@ export default class Paragraph extends Node {
             );
   
             if ( prevTable ) {
-              const handleDispatch = ( rangeEnd: number=0 ) => {
-                const lastCellPos = prevNodePos - 3;
-                const paragraphText = parentParagraph.node.textContent;
-                
-                dispatch(
-                  tr.deleteRange(
-                    selection.from,
-                    selection.from + paragraphText.length + rangeEnd,
-                  )
-                  .insertText( paragraphText, lastCellPos )
-                  .setSelection( TextSelection.near(
-                    tr.doc.resolve( lastCellPos )
-                  ) )
-                );
-              }
-
-              try {
-                // +2 handles deletion of line
-                handleDispatch( 2 );
-              }
-              catch {
-                // edge case for if writing on bottom of doc and there is no line to delete
-                handleDispatch();
-              }
-
-              return true;
+              backspacePos = prevNodePos - 3;
             }
 
             // brings backspaced content to the LAST list item of a list
@@ -87,32 +63,7 @@ export default class Paragraph extends Node {
 
             if ( prevList ) {
               const steps = getLastListItemDepth( prevList.node );
-              const lastListItemPos = selection.from - 4 - steps * 2;
-              const paragraphText = parentParagraph.node.textContent;
-
-              const handleDispatch = ( rangeEnd: number=0 ) => {
-                dispatch(
-                  tr.deleteRange(
-                    selection.from,
-                    selection.from + paragraphText.length + rangeEnd,
-                  )
-                  .insertText( paragraphText, lastListItemPos )
-                  .setSelection( TextSelection.near(
-                    tr.doc.resolve( lastListItemPos )
-                  ) )
-                );
-              }
-
-              try {
-                // +2 handles deletion of line
-                handleDispatch( 2 );
-              }
-              catch {
-                // edge case for if writing on bottom of doc and there is no line to delete
-                handleDispatch();
-              }
-
-              return true;
+              backspacePos = selection.from - 4 - steps * 2;
             }
 
             // brings backspaced content to a blockquote
@@ -122,26 +73,29 @@ export default class Paragraph extends Node {
             );
 
             if ( prevBlockQuote ) {
-              let blockQuotePos = selection.from - 3;
+              backspacePos = selection.from - 3;
+
+              // check to see if a node is within the blockquote as the last child
+              // @ts-ignore
+              const innerNodes = prevBlockQuote.node.content?.content as ProseMirrorNode[];
+              // @ts-ignore
+              const lastNode = innerNodes[innerNodes.length - 1] as ProseMirrorNode;
+              const lastNodeType = lastNode.type.name;
+
+              if ( 
+                lastNodeType === 'checkbox_list' ||
+                lastNodeType === 'bullet_list' ||
+                lastNodeType === 'ordered_list'
+              ) {
+                backspacePos -= ( getLastListItemDepth( lastNode ) + 1 ) * 2;
+              }
+              else if ( lastNodeType === 'table' ) {
+                backspacePos -= 3;
+              }
+            }
+
+            if ( typeof backspacePos === 'number' ) {
               const paragraphText = parentParagraph.node.textContent;
-
-              // when a list is present inside a blockquote
-              try {
-                // @ts-ignore
-                const innerNode = prevBlockQuote.node.content?.content[0] as ProseMirrorNode;
-                const innerNodeType = innerNode.type.name;
-
-                if ( 
-                  innerNodeType === 'checkbox_list' ||
-                  innerNodeType === 'bullet_list' ||
-                  innerNodeType === 'ordered_list'
-                ) {
-                  blockQuotePos -= ( getLastListItemDepth( innerNode ) + 1 ) * 2;
-                }
-              }
-              catch {
-                console.warn( `Could not backspace into a list within a blockquote`)
-              }
 
               const handleDispatch = ( rangeEnd: number=0 ) => {
                 dispatch(
@@ -149,9 +103,9 @@ export default class Paragraph extends Node {
                     selection.from,
                     selection.from + paragraphText.length + rangeEnd,
                   )
-                  .insertText( paragraphText, blockQuotePos )
+                  .insertText( paragraphText, backspacePos )
                   .setSelection( TextSelection.near(
-                    tr.doc.resolve( blockQuotePos )
+                    tr.doc.resolve( backspacePos )
                   ) )
                 );
               }
