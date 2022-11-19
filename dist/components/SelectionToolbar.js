@@ -83,9 +83,6 @@ class SelectionToolbar extends React.Component {
         this.isTableRowSelected = false;
         this.isTableColSelected = false;
         this.isTableSelected = false;
-        this.state = {
-            isClient: false,
-        };
         this.handleClickOutside = (ev) => {
             if (ev.target instanceof Node &&
                 this.menuRef.current &&
@@ -151,7 +148,6 @@ class SelectionToolbar extends React.Component {
         document.addEventListener('keydown', (event) => this.handleKeydown(event));
         document.addEventListener('beforecut', () => this.handleBeforeCut());
         document.addEventListener('cut', () => this.handleCut());
-        this.setState((state) => (Object.assign(Object.assign({}, state), { isClient: true })));
     }
     componentWillUnmount() {
         window.removeEventListener("mouseup", this.handleClickOutside);
@@ -280,8 +276,8 @@ class SelectionToolbar extends React.Component {
         if (isTextSelection && !selectionText) {
             return null;
         }
-        return (React.createElement(React.Fragment, null, this.state.isClient ? (React.createElement(react_portal_1.Portal, null,
-            React.createElement(FloatingToolbar_1.default, { view: view, active: isVisible(this.props), ref: this.menuRef }, link && range ? (React.createElement(LinkEditor_1.default, Object.assign({ dictionary: dictionary, mark: range.mark, from: range.from, to: range.to, onCreateLink: onCreateLink ? this.handleOnCreateLink : undefined, onSelectLink: this.handleOnSelectLink }, rest))) : (React.createElement(ToolbarMenu_1.default, Object.assign({ items: items }, rest)))))) : ''));
+        return (React.createElement(react_portal_1.Portal, null,
+            React.createElement(FloatingToolbar_1.default, { view: view, active: isVisible(this.props), ref: this.menuRef }, link && range ? (React.createElement(LinkEditor_1.default, Object.assign({ dictionary: dictionary, mark: range.mark, from: range.from, to: range.to, onCreateLink: onCreateLink ? this.handleOnCreateLink : undefined, onSelectLink: this.handleOnSelectLink }, rest))) : (React.createElement(ToolbarMenu_1.default, Object.assign({ items: items }, rest))))));
     }
 }
 exports.default = SelectionToolbar;
