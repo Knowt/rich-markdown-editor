@@ -20,13 +20,25 @@ export default class ListItem extends Node {
     return "list_item";
   }
 
+  get defaultOptions() {
+    return {
+      includeDrag: true,
+    };
+  }
+
   get schema() {
     return {
       content: "paragraph block*",
       defining: true,
-      draggable: true,
+      draggable: this.options.includeDrag,
       parseDOM: [{ tag: "li" }],
-      toDOM: () => ["li", 0],
+      toDOM: () => [
+        "li",
+        this.options.includeDrag ? { 
+          class: this.options.includeDrag ? 'drag' : '' 
+        } : {},
+        0
+      ],
     };
   }
 
@@ -43,91 +55,93 @@ export default class ListItem extends Node {
             oldState: EditorState,
             newState: EditorState
           ) => {
-            const action = tr.getMeta("li");
-            if (!action && !tr.docChanged) {
+            if ( this.options.includeDrag ) {
+              const action = tr.getMeta("li");
+              if (!action && !tr.docChanged) {
+                return set;
+              }
+  
+              // Adjust decoration positions to changes made by the transaction
+              set = set.map(tr.mapping, tr.doc);
+  
+              switch (action?.event) {
+                case "mouseover": {
+                  const result = findParentNodeClosestToPos(
+                    newState.doc.resolve(action.pos),
+                    (node) =>
+                      node.type.name === this.name ||
+                      node.type.name === "checkbox_item"
+                  );
+  
+                  if (!result) {
+                    return set;
+                  }
+  
+                  const list = findParentNodeClosestToPos(
+                    newState.doc.resolve(action.pos),
+                    (node) => isList(node, this.editor.schema)
+                  );
+  
+                  if (!list) {
+                    return set;
+                  }
+  
+                  const start = list.node.attrs.order || 1;
+  
+                  let listItemNumber = 0;
+                  list.node.content.forEach((li, _, index) => {
+                    if (li === result.node) {
+                      listItemNumber = index;
+                    }
+                  });
+  
+                  const counterLength = String(start + listItemNumber).length;
+  
+                  return set.add(tr.doc, [
+                    Decoration.node(
+                      result.pos,
+                      result.pos + result.node.nodeSize,
+                      {
+                        class: `hovering`,
+                      },
+                      {
+                        hover: true,
+                      }
+                    ),
+                    Decoration.node(
+                      result.pos,
+                      result.pos + result.node.nodeSize,
+                      {
+                        class: `counter-${counterLength}`,
+                      }
+                    ),
+                  ]);
+                }
+                case "mouseout": {
+                  const result = findParentNodeClosestToPos(
+                    newState.doc.resolve(action.pos),
+                    (node) =>
+                      node.type.name === this.name ||
+                      node.type.name === "checkbox_item"
+                  );
+  
+                  if (!result) {
+                    return set;
+                  }
+  
+                  return set.remove(
+                    set.find(
+                      result.pos,
+                      result.pos + result.node.nodeSize,
+                      (spec) => spec.hover
+                    )
+                  );
+                }
+                default:
+              }
+  
               return set;
             }
-
-            // Adjust decoration positions to changes made by the transaction
-            set = set.map(tr.mapping, tr.doc);
-
-            switch (action?.event) {
-              case "mouseover": {
-                const result = findParentNodeClosestToPos(
-                  newState.doc.resolve(action.pos),
-                  (node) =>
-                    node.type.name === this.name ||
-                    node.type.name === "checkbox_item"
-                );
-
-                if (!result) {
-                  return set;
-                }
-
-                const list = findParentNodeClosestToPos(
-                  newState.doc.resolve(action.pos),
-                  (node) => isList(node, this.editor.schema)
-                );
-
-                if (!list) {
-                  return set;
-                }
-
-                const start = list.node.attrs.order || 1;
-
-                let listItemNumber = 0;
-                list.node.content.forEach((li, _, index) => {
-                  if (li === result.node) {
-                    listItemNumber = index;
-                  }
-                });
-
-                const counterLength = String(start + listItemNumber).length;
-
-                return set.add(tr.doc, [
-                  Decoration.node(
-                    result.pos,
-                    result.pos + result.node.nodeSize,
-                    {
-                      class: `hovering`,
-                    },
-                    {
-                      hover: true,
-                    }
-                  ),
-                  Decoration.node(
-                    result.pos,
-                    result.pos + result.node.nodeSize,
-                    {
-                      class: `counter-${counterLength}`,
-                    }
-                  ),
-                ]);
-              }
-              case "mouseout": {
-                const result = findParentNodeClosestToPos(
-                  newState.doc.resolve(action.pos),
-                  (node) =>
-                    node.type.name === this.name ||
-                    node.type.name === "checkbox_item"
-                );
-
-                if (!result) {
-                  return set;
-                }
-
-                return set.remove(
-                  set.find(
-                    result.pos,
-                    result.pos + result.node.nodeSize,
-                    (spec) => spec.hover
-                  )
-                );
-              }
-              default:
-            }
-
-            return set;
           },
         },
         props: {
@@ -136,52 +150,56 @@ export default class ListItem extends Node {
           },
           handleDOMEvents: {
             mouseover: (view, event) => {
-              const { state, dispatch } = view;
-              const target = event.target as HTMLElement;
-              const li = target?.closest("li");
-
-              if (!li) {
+              if ( this.options.includeDrag ) {
+                const { state, dispatch } = view;
+                const target = event.target as HTMLElement;
+                const li = target?.closest("li");
+  
+                if (!li) {
+                  return false;
+                }
+                if (!view.dom.contains(li)) {
+                  return false;
+                }
+                const pos = view.posAtDOM(li, 0);
+                if (!pos) {
+                  return false;
+                }
+  
+                dispatch(
+                  state.tr.setMeta("li", {
+                    event: "mouseover",
+                    pos,
+                  })
+                );
                 return false;
               }
-              if (!view.dom.contains(li)) {
-                return false;
-              }
-              const pos = view.posAtDOM(li, 0);
-              if (!pos) {
-                return false;
-              }
-
-              dispatch(
-                state.tr.setMeta("li", {
-                  event: "mouseover",
-                  pos,
-                })
-              );
-              return false;
             },
             mouseout: (view, event) => {
-              const { state, dispatch } = view;
-              const target = event.target as HTMLElement;
-              const li = target?.closest("li");
-
-              if (!li) {
+              if ( this.options.includeDrag ) {
+                const { state, dispatch } = view;
+                const target = event.target as HTMLElement;
+                const li = target?.closest("li");
+  
+                if (!li) {
+                  return false;
+                }
+                if (!view.dom.contains(li)) {
+                  return false;
+                }
+                const pos = view.posAtDOM(li, 0);
+                if (!pos) {
+                  return false;
+                }
+  
+                dispatch(
+                  state.tr.setMeta("li", {
+                    event: "mouseout",
+                    pos,
+                  })
+                );
                 return false;
               }
-              if (!view.dom.contains(li)) {
-                return false;
-              }
-              const pos = view.posAtDOM(li, 0);
-              if (!pos) {
-                return false;
-              }
-
-              dispatch(
-                state.tr.setMeta("li", {
-                  event: "mouseout",
-                  pos,
-                })
-              );
-              return false;
             },
           },
         },

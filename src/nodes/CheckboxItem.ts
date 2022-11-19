@@ -8,6 +8,12 @@ export default class CheckboxItem extends Node {
     return "checkbox_item";
   }
 
+  get defaultOptions() {
+    return {
+      includeDrag: true,
+    }
+  }
+
   get schema() {
     return {
       attrs: {
@@ -17,7 +23,7 @@ export default class CheckboxItem extends Node {
       },
       content: "paragraph block*",
       defining: true,
-      draggable: true,
+      draggable: this.options.includeDrag,
       parseDOM: [
         {
           tag: `li[data-type="${this.name}"]`,
@@ -48,12 +54,27 @@ export default class CheckboxItem extends Node {
           }
         }
 
+        let className: string = '';
+
+        if ( node.attrs.checked ) {
+          className += 'checked';
+        }
+
+        if ( this.options.includeDrag ) {
+          className += 'drag';
+        }
+
+        const attrs: { [ key: string ]: any } = {
+          "data-type": this.name,
+        }
+
+        if ( className ) {
+          attrs.class = className;
+        }
+
         return [
           "li",
-          {
-            "data-type": this.name,
-            class: node.attrs.checked ? "checked" : undefined
-          },
+          attrs,
           [
             "span",
             {

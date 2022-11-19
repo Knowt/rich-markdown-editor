@@ -49,9 +49,13 @@ export const getFlashcardEditorExtensions = (
         new Text(),
         new OrderedList(),
         new CheckboxList(),
-        new CheckboxItem(),
         new BulletList(),
-        new ListItem(),
+        new CheckboxItem({
+          includeDrag: false,
+        }),
+        new ListItem({
+          includeDrag: false,
+        }),
         // backgrounds take precedence over other marks
         // this makes all below marks wrapped inside the background mark
         // do not change order of these marks unless you know what you are doing
