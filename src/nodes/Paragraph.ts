@@ -3,6 +3,8 @@ import Node from "./Node";
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { findParentNodeClosestToPos, findParentNode } from '@knowt/prosemirror-utils';
 import { isParentParagraph } from '../queries/isParentParagraph';
+import { getLastListItemDepth } from '../queries/getLastListItemDepth';
+import isList from "../queries/isList";
 // import { isInTable } from "@knowt/prosemirror-tables";
 // import isNodeActive from '../queries/isNodeActive';
 // import isInList from "../queries/isInList";
@@ -26,7 +28,7 @@ export default class Paragraph extends Node {
       "Shift-Ctrl-0": setBlockType(type),
       Backspace: (state: EditorState, dispatch) => {
         if ( isParentParagraph( state ) ) {
-          const { selection, tr, doc } = state;
+          const { selection, tr, doc, schema } = state;
   
           const parentParagraph = findParentNode( ( node ) => node.type.name === 'paragraph' )(
             selection
@@ -37,18 +39,20 @@ export default class Paragraph extends Node {
             selection.from === selection.to &&
             parentParagraph.start === selection.from
           ) {
-            // brings backspaced content from a paragraph into the last cell of a table
-            const tablePos = selection.from - 2;
+            // makes checks to backspace content from a paragraph to previous nodes
+            const prevNodePos = selection.from - 2;
+            const newPos = doc.resolve( prevNodePos );
             const paragraphText = parentParagraph.node.textContent;
     
+            // brings backspaced content from a paragraph into the last cell of a table
             const prevTable = findParentNodeClosestToPos( 
-              doc.resolve( tablePos ), 
+              newPos, 
               ( node ) => node.type.name === 'table',
             );
   
             if ( prevTable ) {
               const handleDispatch = ( rangeEnd: number=0 ) => {
-                const lastCellPos = tablePos - 3;
+                const lastCellPos = prevNodePos - 3;
                 
                 dispatch(
                   tr.deleteRange(
@@ -58,6 +62,42 @@ export default class Paragraph extends Node {
                   .insertText( paragraphText, lastCellPos )
                   .setSelection( TextSelection.near(
                     tr.doc.resolve( lastCellPos )
+                  ) )
+                );
+              }
+
+              try {
+                // +2 handles deletion of line
+                handleDispatch( 2 );
+              }
+              catch {
+                // edge case for if writing on bottom of doc and there is no line to delete
+                handleDispatch();
+              }
+
+              return true;
+            }
+
+            // brings backspaced content to the LAST list item of a list
+            const prevList = findParentNodeClosestToPos( 
+              newPos, 
+              ( node ) => isList( node, schema ) 
+            );
+
+            if ( prevList ) {
+              const steps = getLastListItemDepth( prevList.node );
+              const lastListItemPos = selection.from - 4 - steps * 2;
+              const paragraphText = parentParagraph.node.textContent;
+
+              const handleDispatch = ( rangeEnd: number=0 ) => {
+                dispatch(
+                  tr.deleteRange(
+                    selection.from,
+                    selection.from + paragraphText.length + rangeEnd,
+                  )
+                  .insertText( paragraphText, lastListItemPos )
+                  .setSelection( TextSelection.near(
+                    tr.doc.resolve( lastListItemPos )
                   ) )
                 );
               }

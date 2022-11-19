@@ -13,7 +13,6 @@ import getParentListItem from "../queries/getParentListItem";
 import { customSplitListItem } from "../commands/customSplitListItem";
 import { findParentNodeClosestToPos, replaceParentNodeOfType,
   findParentNode } from "@knowt/prosemirror-utils";
-import type { Node as ProsemirrorNode } from 'prosemirror-model';
 
 export default class ListItem extends Node {
   get name() {
@@ -277,7 +276,7 @@ export default class ListItem extends Node {
         return true;
       },
       Backspace: (state: EditorState, dispatch) => {
-        const { tr, doc, selection, schema }  = state;
+        const { tr, selection, schema }  = state;
 
         const parentList = findParentNode((node) => isList(node, schema))(
           selection
@@ -321,83 +320,8 @@ export default class ListItem extends Node {
             }
           }
         }
-        else {
-          // handles backspaces going to last list item 
-          // when current selection is a paragraph
-          if ( 
-            parentParagraph &&
-            selection.from === selection.to &&
-            parentParagraph.start === selection.from
-          ) {
-            const newPos = doc.resolve( selection.from - 2 );
-            const prevList = findParentNodeClosestToPos( 
-              newPos, 
-              ( node ) => isList( node, schema ) 
-            );
-
-            if ( prevList ) {
-              const steps = this.getLastListItemDepth( prevList.node );
-              const lastListItemPos = selection.from - 4 - steps * 2;
-              const paragraphText = parentParagraph.node.textContent;
-
-              const handleDispatch = ( rangeEnd: number=0 ) => {
-                dispatch(
-                  tr.deleteRange(
-                    selection.from,
-                    selection.from + paragraphText.length + rangeEnd,
-                  )
-                  .insertText( paragraphText, lastListItemPos )
-                  .setSelection( TextSelection.near(
-                    tr.doc.resolve( lastListItemPos )
-                  ) )
-                );
-              }
-
-              try {
-                // +2 handles deletion of line
-                handleDispatch( 2 );
-              }
-              catch {
-                // edge case for if writing on bottom of doc and there is no line to delete
-                handleDispatch();
-              }
-
-              return true;
-            }
-          }
-        }
       }
     };
-  }
-
-  getLastListItemDepth( node: ProsemirrorNode ) {
-    let depth = 0;
-
-    const traverseList = ( node: ProsemirrorNode ) => {
-      try {
-        // @ts-ignore
-        const innerNodes = node.content.content as ProsemirrorNode[];
-        const lastListItem = innerNodes[ innerNodes.length - 1 ];
-        // @ts-ignore
-        const lastListItemContent = lastListItem.content.content as ProsemirrorNode[];
-
-        // when the last list item has another list inside of it as the second element
-        if ( lastListItemContent.length === 2 ) {
-          depth += 1;
-
-          traverseList( lastListItemContent[ lastListItemContent.length - 1 ] );
-        }
-      }
-      catch ( error ) {
-        console.warn( error );
-
-        return depth;
-      }
-    }
-
-    traverseList( node );
-
-    return depth;
   }
 
   toMarkdown(state, node) {
