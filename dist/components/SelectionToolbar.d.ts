@@ -22,18 +22,24 @@ declare type Props = {
     setDefaultHighlight?: SetDefaultHighlight;
     setDefaultBackground?: SetDefaultBackground;
 };
+declare type State = {
+    isClient: boolean;
+};
 declare type HandleTableDeleteInput = {
     isTableRowSelected: boolean;
     isTableColSelected: boolean;
     isTableSelected: boolean;
 };
-export default class SelectionToolbar extends React.Component<Props> {
+export default class SelectionToolbar extends React.Component<Props, State> {
     isActive: boolean;
     menuRef: React.RefObject<HTMLDivElement>;
     isCutInProgress: boolean;
     isTableRowSelected: boolean;
     isTableColSelected: boolean;
     isTableSelected: boolean;
+    state: {
+        isClient: boolean;
+    };
     componentDidUpdate(): void;
     componentDidMount(): void;
     componentWillUnmount(): void;
