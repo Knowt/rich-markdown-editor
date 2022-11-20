@@ -379,13 +379,13 @@ class RichMarkdownEditor extends React.PureComponent {
             new backgrounds_1.OrangeBackground(),
             new backgrounds_1.YellowBackground(),
             new backgrounds_1.GreenBackground(),
-            new Bold_1.default(),
-            new Code_1.default(),
             new OrangeHighlight_1.default(),
             new YellowHighlight_1.default(),
             new BlueHighlight_1.default(),
             new GreenHighlight_1.default(),
             new RedHighlight_1.default(),
+            new Bold_1.default(),
+            new Code_1.default(),
             new Italic_1.default(),
             new Placeholder_1.default(),
             new Underline_1.default(),
@@ -599,7 +599,7 @@ class RichMarkdownEditor extends React.PureComponent {
                     !readOnly && this.view && (React.createElement(React.Fragment, null,
                         React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, isDarkMode: this.props.dark, deviceType: deviceType, defaultHighlight: this.state.defaultHighlight || constants_1.DEFAULT_HIGHLIGHT, defaultBackground: this.state.defaultBackground || constants_1.DEFAULT_BACKGROUND, setDefaultHighlight: this.setDefaultHighlight, setDefaultBackground: this.setDefaultBackground }),
                         React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu }),
-                        React.createElement(EmojiMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.emojiMenuOpen, search: this.state.blockMenuSearch, onClose: () => this.setState({ emojiMenuOpen: false }) }),
+                        !this.props.disableEmojiMenu ? (React.createElement(EmojiMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.emojiMenuOpen, search: this.state.blockMenuSearch, onClose: () => this.setState({ emojiMenuOpen: false }) })) : '',
                         !this.props.disableBlockMenu ? (React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds, isDarkMode: this.props.dark, deviceType: deviceType })) : ''))))));
     }
 }

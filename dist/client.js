@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFlashcardEditorExtensions = exports.Extension = void 0;
-const dictionary_1 = __importDefault(require("./dictionary"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
 const Code_1 = __importDefault(require("./marks/Code"));
 const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
@@ -19,13 +18,10 @@ const Placeholder_1 = __importDefault(require("./marks/Placeholder"));
 const Underline_1 = __importDefault(require("./marks/Underline"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
-const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
 const BulletList_1 = __importDefault(require("./nodes/BulletList"));
 const CheckboxList_1 = __importDefault(require("./nodes/CheckboxList"));
-const Emoji_1 = __importDefault(require("./nodes/Emoji"));
 const CheckboxItem_1 = __importDefault(require("./nodes/CheckboxItem"));
 const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
-const Heading_1 = __importDefault(require("./nodes/Heading"));
 const ListItem_1 = __importDefault(require("./nodes/ListItem"));
 const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
@@ -38,24 +34,20 @@ const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
 var Extension_1 = require("./lib/Extension");
 Object.defineProperty(exports, "Extension", { enumerable: true, get: function () { return __importDefault(Extension_1).default; } });
 const getFlashcardEditorExtensions = (input) => {
-    const { dictionary = {}, headingOffset, maxLength, placeholder, onShowToast } = input;
-    const actualDictionary = Object.assign(Object.assign({}, dictionary), dictionary_1.default);
+    const { maxLength, placeholder } = input;
     return [
         new Doc_1.default(),
         new HardBreak_1.default(),
         new Paragraph_1.default(),
-        new Blockquote_1.default(),
-        new Emoji_1.default(),
         new Text_1.default(),
         new OrderedList_1.default(),
         new CheckboxList_1.default(),
-        new CheckboxItem_1.default(),
         new BulletList_1.default(),
-        new ListItem_1.default(),
-        new Heading_1.default({
-            dictionary: actualDictionary,
-            onShowToast: onShowToast,
-            offset: headingOffset,
+        new CheckboxItem_1.default({
+            includeDrag: false,
+        }),
+        new ListItem_1.default({
+            includeDrag: false,
         }),
         new backgrounds_1.BlueBackground(),
         new backgrounds_1.RedBackground(),

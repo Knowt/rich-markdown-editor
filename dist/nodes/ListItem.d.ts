@@ -1,19 +1,25 @@
 import { EditorState, Plugin } from "prosemirror-state";
 import { DecorationSet } from "prosemirror-view";
 import Node from "./Node";
-import type { Node as ProsemirrorNode } from 'prosemirror-model';
 export default class ListItem extends Node {
     get name(): string;
+    get defaultOptions(): {
+        includeDrag: boolean;
+    };
     get schema(): {
         content: string;
         defining: boolean;
-        draggable: boolean;
+        draggable: any;
         parseDOM: {
             tag: string;
         }[];
-        toDOM: () => (string | number)[];
+        toDOM: () => (string | number | {
+            class: string;
+        } | {
+            class?: undefined;
+        })[];
     };
-    get plugins(): Plugin<DecorationSet>[];
+    get plugins(): Plugin<DecorationSet | undefined>[];
     keys({ type }: {
         type: any;
     }): {
@@ -27,7 +33,6 @@ export default class ListItem extends Node {
         "Alt-ArrowDown": (state: any, dispatch: any) => boolean;
         Backspace: (state: EditorState, dispatch: any) => boolean | undefined;
     };
-    getLastListItemDepth(node: ProsemirrorNode): number;
     toMarkdown(state: any, node: any): void;
     parseMarkdown(): {
         block: string;

@@ -155,6 +155,7 @@ export declare type Props = {
     defaultHighlightKey?: string;
     defaultBackgroundKey?: string;
     customExtensions?: Extension[];
+    disableEmojiMenu?: boolean;
     disableBlockMenu?: boolean;
 };
 declare type State = {

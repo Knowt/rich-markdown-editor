@@ -40,7 +40,6 @@ export default class RedHighlight extends Mark {
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
-        escape: boolean;
     };
     parseMarkdown(): {
         mark: string;

@@ -16,13 +16,24 @@ class ListItem extends Node_1.default {
     get name() {
         return "list_item";
     }
+    get defaultOptions() {
+        return {
+            includeDrag: true,
+        };
+    }
     get schema() {
         return {
             content: "paragraph block*",
             defining: true,
-            draggable: true,
+            draggable: this.options.includeDrag,
             parseDOM: [{ tag: "li" }],
-            toDOM: () => ["li", 0],
+            toDOM: () => [
+                "li",
+                this.options.includeDrag ? {
+                    class: this.options.includeDrag ? 'drag' : ''
+                } : {},
+                0
+            ],
         };
     }
     get plugins() {
@@ -33,52 +44,54 @@ class ListItem extends Node_1.default {
                         return prosemirror_view_1.DecorationSet.empty;
                     },
                     apply: (tr, set, oldState, newState) => {
-                        const action = tr.getMeta("li");
-                        if (!action && !tr.docChanged) {
+                        if (this.options.includeDrag) {
+                            const action = tr.getMeta("li");
+                            if (!action && !tr.docChanged) {
+                                return set;
+                            }
+                            set = set.map(tr.mapping, tr.doc);
+                            switch (action === null || action === void 0 ? void 0 : action.event) {
+                                case "mouseover": {
+                                    const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
+                                        node.type.name === "checkbox_item");
+                                    if (!result) {
+                                        return set;
+                                    }
+                                    const list = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => isList_1.default(node, this.editor.schema));
+                                    if (!list) {
+                                        return set;
+                                    }
+                                    const start = list.node.attrs.order || 1;
+                                    let listItemNumber = 0;
+                                    list.node.content.forEach((li, _, index) => {
+                                        if (li === result.node) {
+                                            listItemNumber = index;
+                                        }
+                                    });
+                                    const counterLength = String(start + listItemNumber).length;
+                                    return set.add(tr.doc, [
+                                        prosemirror_view_1.Decoration.node(result.pos, result.pos + result.node.nodeSize, {
+                                            class: `hovering`,
+                                        }, {
+                                            hover: true,
+                                        }),
+                                        prosemirror_view_1.Decoration.node(result.pos, result.pos + result.node.nodeSize, {
+                                            class: `counter-${counterLength}`,
+                                        }),
+                                    ]);
+                                }
+                                case "mouseout": {
+                                    const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
+                                        node.type.name === "checkbox_item");
+                                    if (!result) {
+                                        return set;
+                                    }
+                                    return set.remove(set.find(result.pos, result.pos + result.node.nodeSize, (spec) => spec.hover));
+                                }
+                                default:
+                            }
                             return set;
                         }
-                        set = set.map(tr.mapping, tr.doc);
-                        switch (action === null || action === void 0 ? void 0 : action.event) {
-                            case "mouseover": {
-                                const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
-                                    node.type.name === "checkbox_item");
-                                if (!result) {
-                                    return set;
-                                }
-                                const list = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => isList_1.default(node, this.editor.schema));
-                                if (!list) {
-                                    return set;
-                                }
-                                const start = list.node.attrs.order || 1;
-                                let listItemNumber = 0;
-                                list.node.content.forEach((li, _, index) => {
-                                    if (li === result.node) {
-                                        listItemNumber = index;
-                                    }
-                                });
-                                const counterLength = String(start + listItemNumber).length;
-                                return set.add(tr.doc, [
-                                    prosemirror_view_1.Decoration.node(result.pos, result.pos + result.node.nodeSize, {
-                                        class: `hovering`,
-                                    }, {
-                                        hover: true,
-                                    }),
-                                    prosemirror_view_1.Decoration.node(result.pos, result.pos + result.node.nodeSize, {
-                                        class: `counter-${counterLength}`,
-                                    }),
-                                ]);
-                            }
-                            case "mouseout": {
-                                const result = prosemirror_utils_1.findParentNodeClosestToPos(newState.doc.resolve(action.pos), (node) => node.type.name === this.name ||
-                                    node.type.name === "checkbox_item");
-                                if (!result) {
-                                    return set;
-                                }
-                                return set.remove(set.find(result.pos, result.pos + result.node.nodeSize, (spec) => spec.hover));
-                            }
-                            default:
-                        }
-                        return set;
                     },
                 },
                 props: {
@@ -87,44 +100,48 @@ class ListItem extends Node_1.default {
                     },
                     handleDOMEvents: {
                         mouseover: (view, event) => {
-                            const { state, dispatch } = view;
-                            const target = event.target;
-                            const li = target === null || target === void 0 ? void 0 : target.closest("li");
-                            if (!li) {
+                            if (this.options.includeDrag) {
+                                const { state, dispatch } = view;
+                                const target = event.target;
+                                const li = target === null || target === void 0 ? void 0 : target.closest("li");
+                                if (!li) {
+                                    return false;
+                                }
+                                if (!view.dom.contains(li)) {
+                                    return false;
+                                }
+                                const pos = view.posAtDOM(li, 0);
+                                if (!pos) {
+                                    return false;
+                                }
+                                dispatch(state.tr.setMeta("li", {
+                                    event: "mouseover",
+                                    pos,
+                                }));
                                 return false;
                             }
-                            if (!view.dom.contains(li)) {
-                                return false;
-                            }
-                            const pos = view.posAtDOM(li, 0);
-                            if (!pos) {
-                                return false;
-                            }
-                            dispatch(state.tr.setMeta("li", {
-                                event: "mouseover",
-                                pos,
-                            }));
-                            return false;
                         },
                         mouseout: (view, event) => {
-                            const { state, dispatch } = view;
-                            const target = event.target;
-                            const li = target === null || target === void 0 ? void 0 : target.closest("li");
-                            if (!li) {
+                            if (this.options.includeDrag) {
+                                const { state, dispatch } = view;
+                                const target = event.target;
+                                const li = target === null || target === void 0 ? void 0 : target.closest("li");
+                                if (!li) {
+                                    return false;
+                                }
+                                if (!view.dom.contains(li)) {
+                                    return false;
+                                }
+                                const pos = view.posAtDOM(li, 0);
+                                if (!pos) {
+                                    return false;
+                                }
+                                dispatch(state.tr.setMeta("li", {
+                                    event: "mouseout",
+                                    pos,
+                                }));
                                 return false;
                             }
-                            if (!view.dom.contains(li)) {
-                                return false;
-                            }
-                            const pos = view.posAtDOM(li, 0);
-                            if (!pos) {
-                                return false;
-                            }
-                            dispatch(state.tr.setMeta("li", {
-                                event: "mouseout",
-                                pos,
-                            }));
-                            return false;
                         },
                     },
                 },
@@ -191,7 +208,7 @@ class ListItem extends Node_1.default {
             },
             Backspace: (state, dispatch) => {
                 var _a, _b;
-                const { tr, doc, selection, schema } = state;
+                const { tr, selection, schema } = state;
                 const parentList = prosemirror_utils_1.findParentNode((node) => isList_1.default(node, schema))(selection);
                 const parentParagraph = prosemirror_utils_1.findParentNode((node) => node.type.name === 'paragraph')(selection);
                 if (parentList) {
@@ -211,53 +228,8 @@ class ListItem extends Node_1.default {
                         }
                     }
                 }
-                else {
-                    if (parentParagraph &&
-                        selection.from === selection.to &&
-                        parentParagraph.start === selection.from) {
-                        const newPos = doc.resolve(selection.from - 2);
-                        const prevList = prosemirror_utils_1.findParentNodeClosestToPos(newPos, (node) => isList_1.default(node, schema));
-                        if (prevList) {
-                            const steps = this.getLastListItemDepth(prevList.node);
-                            const lastListItemPos = selection.from - 4 - steps * 2;
-                            const paragraphText = parentParagraph.node.textContent;
-                            const handleDispatch = (rangeEnd = 0) => {
-                                dispatch(tr.deleteRange(selection.from, selection.from + paragraphText.length + rangeEnd)
-                                    .insertText(paragraphText, lastListItemPos)
-                                    .setSelection(prosemirror_state_1.TextSelection.near(tr.doc.resolve(lastListItemPos))));
-                            };
-                            try {
-                                handleDispatch(2);
-                            }
-                            catch (_c) {
-                                handleDispatch();
-                            }
-                            return true;
-                        }
-                    }
-                }
             }
         };
-    }
-    getLastListItemDepth(node) {
-        let depth = 0;
-        const traverseList = (node) => {
-            try {
-                const innerNodes = node.content.content;
-                const lastListItem = innerNodes[innerNodes.length - 1];
-                const lastListItemContent = lastListItem.content.content;
-                if (lastListItemContent.length === 2) {
-                    depth += 1;
-                    traverseList(lastListItemContent[lastListItemContent.length - 1]);
-                }
-            }
-            catch (error) {
-                console.warn(error);
-                return depth;
-            }
-        };
-        traverseList(node);
-        return depth;
     }
     toMarkdown(state, node) {
         state.renderContent(node);

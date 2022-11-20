@@ -1,5 +1,3 @@
-import baseDictionary from "./dictionary";
-import { ToastType } from './types';
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
 import RedHighlight from "./marks/highlights/RedHighlight";
@@ -14,13 +12,10 @@ import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
-import Blockquote from "./nodes/Blockquote";
 import BulletList from "./nodes/BulletList";
 import CheckboxList from "./nodes/CheckboxList";
-import Emoji from "./nodes/Emoji";
 import CheckboxItem from "./nodes/CheckboxItem";
 import HardBreak from "./nodes/HardBreak";
-import Heading from "./nodes/Heading";
 import ListItem from "./nodes/ListItem";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -32,11 +27,8 @@ import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
 declare type Input = {
-    dictionary?: Partial<typeof baseDictionary>;
-    headingOffset?: number;
     maxLength?: number;
     placeholder?: string;
-    onShowToast?: (message: string, code: ToastType) => void;
 };
-export declare const getFlashcardEditorExtensions: (input: Input) => (Doc | Text | Blockquote | BulletList | CheckboxList | Emoji | CheckboxItem | HardBreak | Heading | ListItem | OrderedList | Paragraph | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | Placeholder | SmartText | TrailingNode | PasteHandler | Bold)[];
+export declare const getFlashcardEditorExtensions: (input: Input) => (Doc | Text | BulletList | CheckboxList | CheckboxItem | HardBreak | ListItem | OrderedList | Paragraph | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | Placeholder | SmartText | TrailingNode | PasteHandler | Bold)[];
 //# sourceMappingURL=client.d.ts.map

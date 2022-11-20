@@ -40,7 +40,6 @@ export default class OrangeHighlight extends Mark {
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
-        escape: boolean;
     };
     parseMarkdown(): {
         mark: string;

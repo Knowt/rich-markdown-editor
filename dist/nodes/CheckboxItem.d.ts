@@ -2,6 +2,9 @@ import Node from "./Node";
 import checkboxRule from "../rules/checkboxes";
 export default class CheckboxItem extends Node {
     get name(): string;
+    get defaultOptions(): {
+        includeDrag: boolean;
+    };
     get schema(): {
         attrs: {
             checked: {
@@ -10,16 +13,15 @@ export default class CheckboxItem extends Node {
         };
         content: string;
         defining: boolean;
-        draggable: boolean;
+        draggable: any;
         parseDOM: {
             tag: string;
             getAttrs: (dom: HTMLLIElement) => {
                 checked: boolean;
             };
         }[];
-        toDOM: (node: any) => (string | any[] | {
-            "data-type": string;
-            class: string | undefined;
+        toDOM: (node: any) => (string | {
+            [key: string]: any;
         })[];
     };
     get rulePlugins(): (typeof checkboxRule)[];
