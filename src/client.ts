@@ -34,56 +34,59 @@ export { default as Extension } from "./lib/Extension";
 
 type Input = {
     maxLength?: number;
-    placeholder?: string;
 }
 
 export const getFlashcardEditorExtensions = (
     input: Input,
 ) => {
-    const { maxLength, placeholder } = input;
+    const { maxLength } = input;
 
-    return [
-        new Doc(),
-        new HardBreak(),
-        new Paragraph(),
-        new Text(),
-        new OrderedList(),
-        new CheckboxList(),
-        new BulletList(),
-        new CheckboxItem({
-          includeDrag: false,
-        }),
-        new ListItem({
-          includeDrag: false,
-        }),
-        // backgrounds take precedence over other marks
-        // this makes all below marks wrapped inside the background mark
-        // do not change order of these marks unless you know what you are doing
-        new BlueBackground(),
-        new RedBackground(),
-        new OrangeBackground(),
-        new YellowBackground(),
-        new GreenBackground(),
-        new Bold(),
-        new Code(),
-        new OrangeHighlight(),
-        new YellowHighlight(),
-        new BlueHighlight(),
-        new GreenHighlight(),
-        new RedHighlight(), // the order matters here!! since it's the default marker
-        new Italic(),
-        new TemplatePlaceholder(),
-        new Underline(),
-        new Strikethrough(),
-        new History(),
-        new SmartText(),
-        new TrailingNode(),
-        new PasteHandler(),
+    return {
+        baseExtensions: [
+          new Doc(),
+          new HardBreak(),
+          new Paragraph(),
+          new Text(),
+          new OrderedList(),
+          new CheckboxList(),
+          new BulletList(),
+          new CheckboxItem({
+            includeDrag: false,
+          }),
+          new ListItem({
+            includeDrag: false,
+          }),
+          // backgrounds take precedence over other marks
+          // this makes all below marks wrapped inside the background mark
+          // do not change order of these marks unless you know what you are doing
+          new BlueBackground(),
+          new RedBackground(),
+          new OrangeBackground(),
+          new YellowBackground(),
+          new GreenBackground(),
+          new Bold(),
+          new Code(),
+          new OrangeHighlight(),
+          new YellowHighlight(),
+          new BlueHighlight(),
+          new GreenHighlight(),
+          new RedHighlight(), // the order matters here!! since it's the default marker
+          new Italic(),
+          new TemplatePlaceholder(),
+          new Underline(),
+          new Strikethrough(),
+          new History(),
+          new SmartText(),
+          new TrailingNode(),
+          new PasteHandler(),
+          new MaxLength({
+            maxLength,
+          }),
+      ],
+      getPlaceholderExtension: ( placeholder: string ) => (
         new Placeholder({
           placeholder,
-        }),
-        new MaxLength({
-          maxLength,
-        }),
-    ];
+        })
+      ),
+    }
 }
