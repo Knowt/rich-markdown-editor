@@ -57,7 +57,6 @@ export default class BlueHighlight extends Mark {
       close: "^^",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

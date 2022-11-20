@@ -67,8 +67,22 @@ export class MarkdownSerializerState {
     this.closed = false;
     this.inTightList = false;
 
-    // These symbols correspond to the background marks
-    this.ESACPED_MARKS = [ ']]', '<<', '}}', '[[', '{{' ];
+    this.ESACPED_MARKS = [ 
+      ']]', 
+      '<<', 
+      '}}', 
+      '[[', 
+      '{{', 
+      '**', 
+      '@@',
+      '^^',
+      '%%',
+      '==',
+      '$$',
+      '*',
+      '~~',
+      '__'
+    ];
     this.escapedMarksCount = {};
     this.lastEscapedMark = '';
     this.textInEscapedMark = '';

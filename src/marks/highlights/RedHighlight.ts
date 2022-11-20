@@ -56,7 +56,6 @@ export default class RedHighlight extends Mark {
       close: "==",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

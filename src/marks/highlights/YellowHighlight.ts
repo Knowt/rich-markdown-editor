@@ -56,7 +56,6 @@ export default class YellowHighlight extends Mark {
       close: "$$",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 

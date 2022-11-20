@@ -42,7 +42,6 @@ export default class Bold extends Mark {
       close: "**",
       mixable: true,
       expelEnclosingWhitespace: true,
-      escape: false,
     };
   }
 
