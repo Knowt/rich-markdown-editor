@@ -139,7 +139,7 @@ export const mdToHtml =
   (markdown: string): string => {
     const doc = parseMarkdown(markdown) as ProsemirrorNode;
     return serializeToHTML(document)(doc);
-  };
+};
 
 /**
  * @param isHTML_
@@ -153,4 +153,4 @@ export const externalHtmlOrMdToHtml =
     } else {
       return mdToHtml(document_)(content);
     }
-  };
+};
