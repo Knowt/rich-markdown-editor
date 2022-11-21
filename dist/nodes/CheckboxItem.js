@@ -55,13 +55,14 @@ class CheckboxItem extends Node_1.default {
                 if (isServer) {
                     input = [
                         "input",
-                        Object.assign({ type: "checkbox", tabindex: -1 }, (node.attrs.checked && { checked: true }))
+                        Object.assign({ type: "checkbox", tabindex: -1, contentEditable: false }, (node.attrs.checked && { checked: true }))
                     ];
                 }
                 else {
                     input = document.createElement("input");
                     input.type = "checkbox";
                     input.tabIndex = -1;
+                    input.contentEditable = false;
                     input.addEventListener("change", this.handleChange);
                     if (node.attrs.checked) {
                         input.checked = true;
@@ -83,13 +84,7 @@ class CheckboxItem extends Node_1.default {
                 return [
                     "li",
                     attrs,
-                    [
-                        "span",
-                        {
-                            contentEditable: false
-                        },
-                        input
-                    ],
+                    input,
                     ["div", 0]
                 ];
             }

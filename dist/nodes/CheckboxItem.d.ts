@@ -20,9 +20,7 @@ export default class CheckboxItem extends Node {
                 checked: boolean;
             };
         }[];
-        toDOM: (node: any) => (string | {
-            [key: string]: any;
-        })[];
+        toDOM: (node: any) => any[];
     };
     get rulePlugins(): (typeof checkboxRule)[];
     handleChange: (event: any) => void;
