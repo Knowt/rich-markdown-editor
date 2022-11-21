@@ -831,7 +831,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       <Flex
         onKeyDown={onKeyDown}
         style={style}
-        className={className}
         align="flex-start"
         justify="center"
         dir={dir}
@@ -842,6 +841,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         <ThemeProvider theme={this.theme()}>
           <React.Fragment>
             <StyledEditor
+              className={className}
               ref={(ref) => (this.element = ref)}
               fontScale={fontScale ?? 1}
               rtl={isRTL}
