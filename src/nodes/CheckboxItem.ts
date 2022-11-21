@@ -59,7 +59,7 @@ export default class CheckboxItem extends Node {
         let className: string = '';
 
         if ( node.attrs.checked ) {
-          className += 'checked';
+          className += 'checked ';
         }
 
         if ( this.options.includeDrag ) {
