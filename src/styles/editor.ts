@@ -507,10 +507,6 @@ export const StyledEditor = styled("div")<{
   ul.checkbox_list li {
     display: flex;
     padding-${(props) => (props.rtl ? "right" : "left")}: 24px;
-
-    input {
-      margin-top: 1px;
-    }
   }
 
   ul.checkbox_list li.checked > div > p {
@@ -567,7 +563,6 @@ export const StyledEditor = styled("div")<{
 
   ul.checkbox_list li input {
     cursor: pointer;
-    display: flex;
     pointer-events: ${(props) =>
       props.readOnly && !props.readOnlyWriteCheckboxes ? "none" : "initial"};
     opacity: ${(props) =>

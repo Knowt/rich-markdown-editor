@@ -41,6 +41,7 @@ export default class CheckboxItem extends Node {
             {
               type: "checkbox",
               tabindex: -1,
+              contentEditable: false,
               ...(node.attrs.checked  && { checked: true } ),
             }
           ]
@@ -48,6 +49,7 @@ export default class CheckboxItem extends Node {
           input = document.createElement("input");
           input.type = "checkbox";
           input.tabIndex = -1;
+          input.contentEditable = false;
           input.addEventListener("change", this.handleChange);
           if (node.attrs.checked) {
             input.checked = true;
@@ -75,13 +77,7 @@ export default class CheckboxItem extends Node {
         return [
           "li",
           attrs,
-          [
-            "span",
-            {
-              contentEditable: false
-            },
-            input
-          ],
+          input,
           ["div", 0]
         ];
       }
