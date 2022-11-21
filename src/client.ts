@@ -28,7 +28,6 @@ import History from "./plugins/History";
 import MaxLength from "./plugins/MaxLength";
 import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
-import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
 
@@ -77,7 +76,6 @@ export const getFlashcardEditorExtensions = (
           new Strikethrough(),
           new History(),
           new SmartText(),
-          new TrailingNode(),
           new PasteHandler(),
           new MaxLength({
             maxLength,
