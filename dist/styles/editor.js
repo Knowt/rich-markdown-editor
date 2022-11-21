@@ -564,7 +564,7 @@ exports.StyledEditor = styled_components_1.default("div") `
     cursor: pointer;
     pointer-events: ${(props) => props.readOnly && !props.readOnlyWriteCheckboxes ? "none" : "initial"};
     opacity: ${(props) => props.readOnly && !props.readOnlyWriteCheckboxes ? 0.75 : 1};
-    margin: ${({ rtl, fontScale }) => rtl ? `${fontScale < 1 ? 0.65 : 0.6}rem 0 0 0.5em` : `${fontScale < 1 ? 0.65 : 0.6}rem 0.5em 0 0`};
+    margin: ${({ rtl, fontScale }) => rtl ? `${fontScale < 1 ? 0.65 : 0.62}rem 0 0 0.5em` : `${fontScale < 1 ? 0.65 : 0.62}rem 0.5em 0 0`};
     width: ${({ fontScale }) => fontScale * 14}px;
     height: ${({ fontScale }) => fontScale * 14}px;
   }
