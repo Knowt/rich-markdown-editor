@@ -23,12 +23,13 @@ import History from "./plugins/History";
 import MaxLength from "./plugins/MaxLength";
 import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
-import TrailingNode from "./plugins/TrailingNode";
 import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
 declare type Input = {
     maxLength?: number;
-    placeholder?: string;
 };
-export declare const getFlashcardEditorExtensions: (input: Input) => (Doc | Text | BulletList | CheckboxList | CheckboxItem | HardBreak | ListItem | OrderedList | Paragraph | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | Placeholder | SmartText | TrailingNode | PasteHandler | Bold)[];
+export declare const getFlashcardEditorExtensions: (input: Input) => {
+    baseExtensions: (Doc | Text | BulletList | CheckboxList | CheckboxItem | HardBreak | ListItem | OrderedList | Paragraph | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler | Bold)[];
+    getPlaceholderExtension: (placeholder: string) => Placeholder;
+};
 //# sourceMappingURL=client.d.ts.map
