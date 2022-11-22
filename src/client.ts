@@ -1,3 +1,5 @@
+import { Schema, Node as ProsemirrorNode, DOMSerializer } from 'prosemirror-model';
+import ExtensionManager from "./lib/ExtensionManager";
 // marks
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
@@ -19,7 +21,6 @@ import Text from "./nodes/Text";
 import BulletList from "./nodes/BulletList";
 import CheckboxList from "./nodes/CheckboxList";
 import CheckboxItem from "./nodes/CheckboxItem";
-import HardBreak from "./nodes/HardBreak";
 import ListItem from "./nodes/ListItem";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -31,60 +32,121 @@ import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
 
-type Input = {
-    maxLength?: number;
+export const getFlashcardSerializerExtensions = () => {
+  return [
+    new Doc(),
+    new Paragraph(),
+    new Text(),
+    new OrderedList(),
+    new CheckboxList(),
+    new BulletList(),
+    new CheckboxItem({
+      includeDrag: false,
+    }),
+    new ListItem({
+      includeDrag: false,
+    }),
+    new BlueBackground(),
+    new RedBackground(),
+    new OrangeBackground(),
+    new YellowBackground(),
+    new GreenBackground(),
+    new Bold(),
+    new Code(),
+    new OrangeHighlight(),
+    new YellowHighlight(),
+    new BlueHighlight(),
+    new GreenHighlight(),
+    new RedHighlight(),
+    new Italic(),
+    new Underline(),
+    new Strikethrough(),
+  ]
+}
+
+type FlashcardMdToHtmlInput = {
+  extensions: ExtensionManager;
+  markdown: string;
+}
+
+export const flashcardMdToHtml = (
+  input: FlashcardMdToHtmlInput,
+) => {
+  const { extensions, markdown } = input;
+  const schema = new Schema({
+    nodes: extensions.nodes,
+    marks: extensions.marks,
+  });
+  const domSerializer = DOMSerializer.fromSchema(schema);
+  const markdownParser = extensions.parser({
+    schema,
+    plugins: extensions.rulePlugins,
+  });
+
+  const doc = markdownParser.parse(markdown) as ProsemirrorNode;
+
+  const serializedFragment = domSerializer.serializeFragment(doc.content, {
+    document,
+  });
+  const throwAwayDiv = document.createElement("div");
+  throwAwayDiv.appendChild(serializedFragment);
+
+  return throwAwayDiv.innerHTML;
+}
+
+type GetFlashcardEditorExtensionsInput = {
+  maxLength?: number;
 }
 
 export const getFlashcardEditorExtensions = (
-    input: Input,
+  input: GetFlashcardEditorExtensionsInput,
 ) => {
-    const { maxLength } = input;
+  const { maxLength } = input;
 
-    return {
-        baseExtensions: [
-          new Doc(),
-          new HardBreak(),
-          new Paragraph(),
-          new Text(),
-          new OrderedList(),
-          new CheckboxList(),
-          new BulletList(),
-          new CheckboxItem({
-            includeDrag: false,
-          }),
-          new ListItem({
-            includeDrag: false,
-          }),
-          // backgrounds take precedence over other marks
-          // this makes all below marks wrapped inside the background mark
-          // do not change order of these marks unless you know what you are doing
-          new BlueBackground(),
-          new RedBackground(),
-          new OrangeBackground(),
-          new YellowBackground(),
-          new GreenBackground(),
-          new Bold(),
-          new Code(),
-          new OrangeHighlight(),
-          new YellowHighlight(),
-          new BlueHighlight(),
-          new GreenHighlight(),
-          new RedHighlight(), // the order matters here!! since it's the default marker
-          new Italic(),
-          new TemplatePlaceholder(),
-          new Underline(),
-          new Strikethrough(),
-          new History(),
-          new SmartText(),
-          new PasteHandler(),
-          new MaxLength({
-            maxLength,
-          }),
-      ],
-      getPlaceholderExtension: ( placeholder: string ) => (
-        new Placeholder({
-          placeholder,
-        })
-      ),
-    }
+  return {
+      baseExtensions: [
+      new Doc(),
+      new Paragraph(),
+      new Text(),
+      new OrderedList(),
+      new CheckboxList(),
+      new BulletList(),
+      new CheckboxItem({
+        includeDrag: false,
+      }),
+      new ListItem({
+        includeDrag: false,
+      }),
+      // backgrounds take precedence over other marks
+      // this makes all below marks wrapped inside the background mark
+      // do not change order of these marks unless you know what you are doing
+      new BlueBackground(),
+      new RedBackground(),
+      new OrangeBackground(),
+      new YellowBackground(),
+      new GreenBackground(),
+      new Bold(),
+      new Code(),
+      new OrangeHighlight(),
+      new YellowHighlight(),
+      new BlueHighlight(),
+      new GreenHighlight(),
+      new RedHighlight(), // the order matters here!! since it's the default marker
+      new Italic(),
+      new TemplatePlaceholder(),
+      new Underline(),
+      new Strikethrough(),
+      new History(),
+      new SmartText(),
+      new PasteHandler(),
+      new MaxLength({
+        maxLength,
+      }),
+    ],
+    getPlaceholderExtension: ( placeholder: string ) => (
+      new Placeholder({
+        placeholder,
+      })
+    ),
+  }
 }
