@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFlashcardSerializerExtensions = exports.Extension = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFlashcardSerializerExtensions = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
+const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
 const Code_1 = __importDefault(require("./marks/Code"));
 const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
@@ -28,10 +29,8 @@ const MaxLength_1 = __importDefault(require("./plugins/MaxLength"));
 const Placeholder_2 = __importDefault(require("./plugins/Placeholder"));
 const SmartText_1 = __importDefault(require("./plugins/SmartText"));
 const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
-var Extension_1 = require("./lib/Extension");
-Object.defineProperty(exports, "Extension", { enumerable: true, get: function () { return __importDefault(Extension_1).default; } });
 const getFlashcardSerializerExtensions = () => {
-    return [
+    return new ExtensionManager_1.default([
         new Doc_1.default(),
         new Paragraph_1.default(),
         new Text_1.default(),
@@ -55,7 +54,7 @@ const getFlashcardSerializerExtensions = () => {
         new Italic_1.default(),
         new Underline_1.default(),
         new Strikethrough_1.default(),
-    ];
+    ]);
 };
 exports.getFlashcardSerializerExtensions = getFlashcardSerializerExtensions;
 const flashcardMdToHtml = (input) => {

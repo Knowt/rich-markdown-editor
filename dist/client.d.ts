@@ -22,8 +22,7 @@ import MaxLength from "./plugins/MaxLength";
 import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
-export { default as Extension } from "./lib/Extension";
-export declare const getFlashcardSerializerExtensions: () => (Doc | Text | BulletList | ListItem | OrderedList | Paragraph | Bold | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | Underline)[];
+export declare const getFlashcardSerializerExtensions: () => ExtensionManager;
 declare type FlashcardMdToHtmlInput = {
     extensions: ExtensionManager;
     markdown: string;
@@ -36,4 +35,5 @@ export declare const getFlashcardEditorExtensions: (input: GetFlashcardEditorExt
     baseExtensions: (Doc | Text | BulletList | ListItem | OrderedList | Paragraph | Bold | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
+export {};
 //# sourceMappingURL=client.d.ts.map
