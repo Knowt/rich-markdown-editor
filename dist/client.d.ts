@@ -1,3 +1,4 @@
+import ExtensionManager from "./lib/ExtensionManager";
 import Bold from "./marks/Bold";
 import Code from "./marks/Code";
 import RedHighlight from "./marks/highlights/RedHighlight";
@@ -13,9 +14,6 @@ import Underline from "./marks/Underline";
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
 import BulletList from "./nodes/BulletList";
-import CheckboxList from "./nodes/CheckboxList";
-import CheckboxItem from "./nodes/CheckboxItem";
-import HardBreak from "./nodes/HardBreak";
 import ListItem from "./nodes/ListItem";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -25,11 +23,17 @@ import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 export { default as Extension } from "./lib/Extension";
-declare type Input = {
+export declare const getFlashcardSerializerExtensions: () => (Doc | Text | BulletList | ListItem | OrderedList | Paragraph | Bold | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | Underline)[];
+declare type FlashcardMdToHtmlInput = {
+    extensions: ExtensionManager;
+    markdown: string;
+};
+export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => string;
+declare type GetFlashcardEditorExtensionsInput = {
     maxLength?: number;
 };
-export declare const getFlashcardEditorExtensions: (input: Input) => {
-    baseExtensions: (Doc | Text | BulletList | CheckboxList | CheckboxItem | HardBreak | ListItem | OrderedList | Paragraph | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler | Bold)[];
+export declare const getFlashcardEditorExtensions: (input: GetFlashcardEditorExtensionsInput) => {
+    baseExtensions: (Doc | Text | BulletList | ListItem | OrderedList | Paragraph | Bold | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
 //# sourceMappingURL=client.d.ts.map

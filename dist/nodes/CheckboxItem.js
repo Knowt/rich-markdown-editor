@@ -55,7 +55,7 @@ class CheckboxItem extends Node_1.default {
                 if (isServer) {
                     input = [
                         "input",
-                        Object.assign({ type: "checkbox", tabindex: -1, contentEditable: false }, (node.attrs.checked && { checked: true }))
+                        Object.assign({ type: "checkbox", tabIndex: -1, contentEditable: false }, (node.attrs.checked && { checked: true }))
                     ];
                 }
                 else {
