@@ -28,10 +28,9 @@ import MaxLength from "./plugins/MaxLength";
 import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
-export { default as Extension } from "./lib/Extension";
 
 export const getFlashcardSerializerExtensions = () => {
-  return [
+  return new ExtensionManager([
     new Doc(),
     new Paragraph(),
     new Text(),
@@ -55,7 +54,7 @@ export const getFlashcardSerializerExtensions = () => {
     new Italic(),
     new Underline(),
     new Strikethrough(),
-  ]
+  ]);
 }
 
 type FlashcardMdToHtmlInput = {
@@ -99,39 +98,39 @@ export const getFlashcardEditorExtensions = (
 
   return {
       baseExtensions: [
-      new Doc(),
-      new Paragraph(),
-      new Text(),
-      new OrderedList(),
-      new BulletList(),
-      new ListItem({
-        includeDrag: false,
-      }),
-      // backgrounds take precedence over other marks
-      // this makes all below marks wrapped inside the background mark
-      // do not change order of these marks unless you know what you are doing
-      new BlueBackground(),
-      new RedBackground(),
-      new OrangeBackground(),
-      new YellowBackground(),
-      new GreenBackground(),
-      new Bold(),
-      new Code(),
-      new OrangeHighlight(),
-      new YellowHighlight(),
-      new BlueHighlight(),
-      new GreenHighlight(),
-      new RedHighlight(), // the order matters here!! since it's the default marker
-      new Italic(),
-      new TemplatePlaceholder(),
-      new Underline(),
-      new Strikethrough(),
-      new History(),
-      new SmartText(),
-      new PasteHandler(),
-      new MaxLength({
-        maxLength,
-      }),
+        new Doc(),
+        new Paragraph(),
+        new Text(),
+        new OrderedList(),
+        new BulletList(),
+        new ListItem({
+          includeDrag: false,
+        }),
+        // backgrounds take precedence over other marks
+        // this makes all below marks wrapped inside the background mark
+        // do not change order of these marks unless you know what you are doing
+        new BlueBackground(),
+        new RedBackground(),
+        new OrangeBackground(),
+        new YellowBackground(),
+        new GreenBackground(),
+        new Bold(),
+        new Code(),
+        new OrangeHighlight(),
+        new YellowHighlight(),
+        new BlueHighlight(),
+        new GreenHighlight(),
+        new RedHighlight(), // the order matters here!! since it's the default marker
+        new Italic(),
+        new TemplatePlaceholder(),
+        new Underline(),
+        new Strikethrough(),
+        new History(),
+        new SmartText(),
+        new PasteHandler(),
+        new MaxLength({
+          maxLength,
+        }),
     ],
     getPlaceholderExtension: ( placeholder: string ) => (
       new Placeholder({
