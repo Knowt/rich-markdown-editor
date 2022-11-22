@@ -19,8 +19,6 @@ import Underline from "./marks/Underline";
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
 import BulletList from "./nodes/BulletList";
-import CheckboxList from "./nodes/CheckboxList";
-import CheckboxItem from "./nodes/CheckboxItem";
 import ListItem from "./nodes/ListItem";
 import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
@@ -38,11 +36,7 @@ export const getFlashcardSerializerExtensions = () => {
     new Paragraph(),
     new Text(),
     new OrderedList(),
-    new CheckboxList(),
     new BulletList(),
-    new CheckboxItem({
-      includeDrag: false,
-    }),
     new ListItem({
       includeDrag: false,
     }),
@@ -109,11 +103,7 @@ export const getFlashcardEditorExtensions = (
       new Paragraph(),
       new Text(),
       new OrderedList(),
-      new CheckboxList(),
       new BulletList(),
-      new CheckboxItem({
-        includeDrag: false,
-      }),
       new ListItem({
         includeDrag: false,
       }),

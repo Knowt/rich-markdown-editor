@@ -40,7 +40,7 @@ export default class CheckboxItem extends Node {
             "input",
             {
               type: "checkbox",
-              tabindex: -1,
+              tabIndex: -1,
               contentEditable: false,
               ...(node.attrs.checked  && { checked: true } ),
             }
