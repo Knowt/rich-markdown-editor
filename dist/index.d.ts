@@ -215,6 +215,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
     };
     commands: Record<string, any>;
     rulePlugins: PluginSimple[];
+    isReady: boolean;
     componentDidMount(): void;
     componentDidUpdate(prevProps: Props): void;
     init(): void;

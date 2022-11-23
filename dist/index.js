@@ -250,6 +250,7 @@ class RichMarkdownEditor extends React.PureComponent {
         const { defaultHighlight, defaultBackground } = this.getLocalStorageDefaults();
         this.setState((state) => (Object.assign(Object.assign({}, state), { defaultHighlight,
             defaultBackground })));
+        this.isReady = true;
     }
     componentDidUpdate(prevProps) {
         if (prevProps.readOnly !== this.props.readOnly) {
