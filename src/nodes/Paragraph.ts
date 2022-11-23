@@ -100,7 +100,7 @@ export default class Paragraph extends Node {
               const handleDispatch = ( rangeEnd: number=0 ) => {
                 dispatch(
                   tr.deleteRange(
-                    selection.from,
+                    selection.from - 1,
                     selection.from + paragraphText.length + rangeEnd,
                   )
                   .insertText( paragraphText, backspacePos )
@@ -116,7 +116,7 @@ export default class Paragraph extends Node {
               }
               catch {
                 // edge case for if writing on bottom of doc and there is no line to delete
-                handleDispatch();
+                handleDispatch( 1 );
               }
 
               return true;

@@ -15,6 +15,8 @@ import Italic from "./marks/Italic";
 import Strikethrough from "./marks/Strikethrough";
 import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
+import Link from "./marks/Link";
+import HardBreak from "./nodes/HardBreak";
 // nodes
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
@@ -54,6 +56,8 @@ export const getFlashcardSerializerExtensions = () => {
     new Italic(),
     new Underline(),
     new Strikethrough(),
+    new Link(),
+    new HardBreak(),
   ]);
 }
 
@@ -128,6 +132,7 @@ export const getFlashcardEditorExtensions = (
         new History(),
         new SmartText(),
         new PasteHandler(),
+        new HardBreak(),
         new MaxLength({
           maxLength,
         }),

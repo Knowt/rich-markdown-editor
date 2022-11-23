@@ -147,7 +147,7 @@ export const dark = {
 
   quote: colors.greyDark,
   codeBackground: colors.black,
-  codeBorder: colors.lightBlack,
+  codeBorder: colors.lighterBlack,
   codeString: "#3d8fd1",
   horizontalRule: colors.lightBlack,
   imageErrorBackground: "rgba(0, 0, 0, 0.5)",
