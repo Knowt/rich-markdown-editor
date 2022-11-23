@@ -413,6 +413,7 @@ exports.StyledEditor = styled_components_1.default("div") `
   p {
     margin: 0;
     line-height: 32px;
+    text-align: ${(props) => (props.rtl ? 'right' : 'left')};
 
     span:first-child + br:last-child {
       display: none;
@@ -471,6 +472,22 @@ exports.StyledEditor = styled_components_1.default("div") `
     margin: ${(props) => (props.rtl ? "0 0 0 0.1em" : "0 0.1em 0 0")};
     padding: ${(props) => (props.rtl ? "0 18px 0 0" : "0 0 0 18px")};
     margin-left: 14px;
+  }
+
+  ul {
+      list-style: disc;
+  }
+
+  ul ul {
+      list-style: circle;
+  }
+
+  ul ul ul {
+      list-style: square;
+  }
+
+  ol {
+    list-style: decimal;
   }
 
   ol ol {

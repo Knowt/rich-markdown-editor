@@ -63,7 +63,7 @@ class Paragraph extends Node_1.default {
                         if (typeof backspacePos === 'number') {
                             const paragraphText = parentParagraph.node.textContent;
                             const handleDispatch = (rangeEnd = 0) => {
-                                dispatch(tr.deleteRange(selection.from, selection.from + paragraphText.length + rangeEnd)
+                                dispatch(tr.deleteRange(selection.from - 1, selection.from + paragraphText.length + rangeEnd)
                                     .insertText(paragraphText, backspacePos)
                                     .setSelection(prosemirror_state_1.TextSelection.near(tr.doc.resolve(backspacePos))));
                             };
@@ -71,7 +71,7 @@ class Paragraph extends Node_1.default {
                                 handleDispatch(2);
                             }
                             catch (_b) {
-                                handleDispatch();
+                                handleDispatch(1);
                             }
                             return true;
                         }

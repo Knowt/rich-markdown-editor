@@ -18,6 +18,8 @@ const Italic_1 = __importDefault(require("./marks/Italic"));
 const Strikethrough_1 = __importDefault(require("./marks/Strikethrough"));
 const Placeholder_1 = __importDefault(require("./marks/Placeholder"));
 const Underline_1 = __importDefault(require("./marks/Underline"));
+const Link_1 = __importDefault(require("./marks/Link"));
+const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const BulletList_1 = __importDefault(require("./nodes/BulletList"));
@@ -54,6 +56,8 @@ const getFlashcardSerializerExtensions = () => {
         new Italic_1.default(),
         new Underline_1.default(),
         new Strikethrough_1.default(),
+        new Link_1.default(),
+        new HardBreak_1.default(),
     ]);
 };
 exports.getFlashcardSerializerExtensions = getFlashcardSerializerExtensions;
@@ -108,6 +112,7 @@ const getFlashcardEditorExtensions = (input) => {
             new History_1.default(),
             new SmartText_1.default(),
             new PasteHandler_1.default(),
+            new HardBreak_1.default(),
             new MaxLength_1.default({
                 maxLength,
             }),
