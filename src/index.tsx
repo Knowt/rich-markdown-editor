@@ -209,6 +209,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   marks: { [name: string]: MarkSpec };
   commands: Record<string, any>;
   rulePlugins: PluginSimple[];
+  isReady: boolean;
 
   componentDidMount() {
     this.init();
@@ -226,6 +227,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       defaultHighlight,
       defaultBackground,
     } ) );
+
+    this.isReady = true;
   }
 
   componentDidUpdate(prevProps: Props) {
