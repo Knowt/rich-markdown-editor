@@ -67,6 +67,10 @@ export const StyledEditor = styled("div")<{
     .ProseMirror-selectednode img {
       pointer-events: initial;
     }
+
+    p {
+      text-align: center;
+    }
   }
 
   .image.placeholder {
