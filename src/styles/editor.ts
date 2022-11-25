@@ -167,6 +167,9 @@ export const StyledEditor = styled("div")<{
   }
 
   .link-popout {
+    position: absolute;
+    top: 100%;
+    z-index: 5;
     display: flex;
     align-items: center;
     border: 2px solid red;

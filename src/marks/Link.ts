@@ -4,8 +4,19 @@ import { Decoration, DecorationSet } from "prosemirror-view";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
 import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
+import { findParentNodeClosestToPos } from '@knowt/prosemirror-utils';
 
-/* CONSTANTS */
+type LinkMouseoutMeta = {
+  event: 'mouseout';
+}
+
+type LinkMouseoverMeta = {
+  event: 'mouseover';
+  pos: number;
+}
+
+type LinkPopoutMeta = LinkMouseoutMeta | LinkMouseoverMeta;
+
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
 const LINK_META_KEY = 'link-popout';
 
@@ -96,72 +107,59 @@ export default class Link extends Mark {
           init: () => {
             return DecorationSet.empty;
           },
-          apply: (tr, value) => {
-            const { doc, getMeta } = tr;
-            const hover = getMeta( LINK_META_KEY );
+          apply: (tr, value, newState) => {
+            const hover = tr.getMeta( LINK_META_KEY ) as LinkPopoutMeta | undefined;
+
             if ( !hover ) {
               return value;
             }
 
-            const decorations: Decoration[] = [];
+            value = value.map( tr.mapping, tr.doc );
+            const { event } = hover;
 
-            doc.descendants( ( node, pos ) => {
-              if ( node.type.name !== 'text' ) {
-                return;
+            if ( event === 'mouseover' ) {
+              const { pos } = hover;
+
+              const pResult = findParentNodeClosestToPos(
+                newState.doc.resolve(pos),
+                (node) => node.type.name === 'paragraph',
+              );
+
+              if ( !pResult ) {
+                return value;
               }
-      
-              node.marks.forEach( ( { attrs, type } ) => {
+
+              // @ts-ignore
+              const marks = pResult.node.content?.content[0]?.marks || [] as any[];
+
+              for ( const { attrs, type } of marks ) {
                 if ( type.name !== this.name ) {
-                  return;
+                  continue;
                 }
-      
-                decorations.push(
+
+                return value.add( tr.doc, [
                   Decoration.widget(
                     pos,
-                    (view, d)=> {
-                      const wrapper = document.createElement( 'div' );
-                      wrapper.className = 'link-popout';
-      
-                      // TODO - test to see if the image is valid
-                      // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
-                      const img = document.createElement( 'img' );
-                      img.src = `${attrs.href}/favicon.ico`;
-                      img.width = 15;
-                      img.height = 15;
-      
-                      wrapper.appendChild( img );
-      
-                      // TODO - strip https:// to just show base url
-                      const linkText = document.createElement( 'span' );
-                      linkText.className = 'link-popout-text';
-                      linkText.innerText = attrs.href;
-      
-                      wrapper.appendChild( linkText );
-      
-                      const copyButton = document.createElement( 'button' );
-                      copyButton.className = 'copy-link-button';
-                      copyButton.type = 'button';
-                      copyButton.onclick = () => {}
-      
-                      wrapper.appendChild( copyButton );
-                      
-                      if ( !this.options.readOnly ) {
-                        const editButton = document.createElement( 'button' );
-                        editButton.className = 'edit-link-button';
-                        editButton.type = 'button';
-                        editButton.onclick = () => {}
-      
-                        wrapper.appendChild( editButton );
-                      }
-      
-                      return wrapper;
-                    }
+                    (view, d) => {
+                      return this.createLinkPopout( attrs );
+                    },
+                    { linkHover: true },
                   )
-                )
-              } );
-            } );
-      
-            return DecorationSet.create(doc, decorations);
+                ] );
+              }
+            }
+            // mouseout
+            else {
+              return value.remove(
+                value.find(
+                  undefined,
+                  undefined,
+                  ( spec ) => spec.linkHover,
+                 )
+              )
+            }
+
+            return value;
           },
         },
         props: {
@@ -170,35 +168,50 @@ export default class Link extends Mark {
           },
           handleDOMEvents: {
             mouseover: (view, event: MouseEvent) => {
+              const target = event.target as HTMLAreaElement;
+
               if (
-                event.target instanceof HTMLAnchorElement &&
-                !event.target.className.includes("ProseMirror-widget")
+                target instanceof HTMLAnchorElement &&
+                !target.className.includes("ProseMirror-widget")
               ) {
                 const { dispatch, state } = view;
-                dispatch( state.tr.setMeta( LINK_META_KEY, {
-                  event: 'mouseover',
-                  rect: event.target.getBoundingClientRect(),
-                } ) );
+                const pos = view.posAtDOM(target, 0);
+
+                if (!pos) {
+                  return false;
+                }
 
                 this.isPopoutDisplayed = true;
 
-                if (this.options.onHoverLink) {
-                  return this.options.onHoverLink(event);
-                }
+                dispatch( state.tr.setMeta( LINK_META_KEY, {
+                  event: 'mouseover',
+                  rect: target.getBoundingClientRect(),
+                  pos,
+                } ) );
               }
+
+              if (this.options.onHoverLink) {
+                return this.options.onHoverLink(event);
+              }
+
               return false;
             },
             mouseout: (view, event) => {
               const target = event.target as HTMLAreaElement;
 
-              if ( this.isPopoutDisplayed && target?.closest("a") ) {
+              if ( 
+                this.isPopoutDisplayed && 
+                target?.closest("a")
+              ) {
                 const { dispatch, state } = view;
+                this.isPopoutDisplayed = false;
+
                 dispatch( state.tr.setMeta( LINK_META_KEY, {
                   event: 'mouseout',
                 } ) );
-
-                this.isPopoutDisplayed = false;
               }
+
+              return false;
             },
             click: (_, event: MouseEvent) => {
               if (event.target instanceof HTMLAnchorElement) {
@@ -256,5 +269,45 @@ export default class Link extends Mark {
         title: tok.attrGet("title") || null,
       }),
     };
+  }
+
+  createLinkPopout( attrs: any ) {
+    const wrapper = document.createElement( 'div' );
+    wrapper.id = 'link-popout';
+    wrapper.className = 'link-popout';
+
+    // TODO - test to see if the image is valid
+    // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
+    const img = document.createElement( 'img' );
+    img.src = `${attrs.href}/favicon.ico`;
+    img.width = 15;
+    img.height = 15;
+
+    wrapper.appendChild( img );
+
+    // TODO - strip https:// to just show base url
+    const linkText = document.createElement( 'span' );
+    linkText.className = 'link-popout-text';
+    linkText.innerText = attrs.href;
+
+    wrapper.appendChild( linkText );
+
+    const copyButton = document.createElement( 'button' );
+    copyButton.className = 'copy-link-button';
+    copyButton.type = 'button';
+    copyButton.onclick = () => {}
+
+    wrapper.appendChild( copyButton );
+    
+    if ( !this.options.readOnly ) {
+      const editButton = document.createElement( 'button' );
+      editButton.className = 'edit-link-button';
+      editButton.type = 'button';
+      editButton.onclick = () => {}
+
+      wrapper.appendChild( editButton );
+    }
+
+    return wrapper;
   }
 }
