@@ -19,6 +19,11 @@ type LinkPopoutMeta = LinkMouseoutMeta | LinkMouseoverMeta;
 
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
 const LINK_META_KEY = 'link-popout';
+const OTHER_ANCHOR_CLASSNAMES = [
+  'grip-column',
+  'grip-row',
+  'grip-table',
+];
 
 export default class Link extends Mark {
   isPopoutDisplayed = false;
@@ -100,7 +105,6 @@ export default class Link extends Mark {
   }
 
   get plugins() {
-
     return [
       new Plugin({
         state: {
@@ -172,21 +176,31 @@ export default class Link extends Mark {
 
               if (
                 target instanceof HTMLAnchorElement &&
-                !target.className.includes("ProseMirror-widget")
+                this.isLinkMark( target.className ) 
               ) {
-                const { dispatch, state } = view;
-                const pos = view.posAtDOM(target, 0);
+                const pos = view.posAtDOM( target, 0 );
 
                 if (!pos) {
                   return false;
                 }
 
                 this.isPopoutDisplayed = true;
+                const { dispatch, state } = view;
 
                 dispatch( state.tr.setMeta( LINK_META_KEY, {
                   event: 'mouseover',
-                  rect: target.getBoundingClientRect(),
                   pos,
+                } ) );
+              }
+              else if (
+                this.isPopoutDisplayed &&
+                !target.id.startsWith( 'link-popout' ) 
+              ) {
+                this.isPopoutDisplayed = false;
+                const { dispatch, state } = view;
+
+                dispatch( state.tr.setMeta( LINK_META_KEY, {
+                  event: 'mouseout',
                 } ) );
               }
 
@@ -196,20 +210,13 @@ export default class Link extends Mark {
 
               return false;
             },
-            mouseout: (view, event) => {
-              const target = event.target as HTMLAreaElement;
+            mouseleave: (view) => {
+              this.isPopoutDisplayed = false;
+              const { dispatch, state } = view;
 
-              if ( 
-                this.isPopoutDisplayed && 
-                target?.closest("a")
-              ) {
-                const { dispatch, state } = view;
-                this.isPopoutDisplayed = false;
-
-                dispatch( state.tr.setMeta( LINK_META_KEY, {
-                  event: 'mouseout',
-                } ) );
-              }
+              dispatch( state.tr.setMeta( LINK_META_KEY, {
+                event: 'mouseout',
+              } ) );
 
               return false;
             },
@@ -271,14 +278,20 @@ export default class Link extends Mark {
     };
   }
 
+  isLinkMark( className: string ) {
+    return OTHER_ANCHOR_CLASSNAMES.some( 
+      ( otherAnchorClassName ) => !className.includes( otherAnchorClassName )
+    );
+  }
+
   createLinkPopout( attrs: any ) {
     const wrapper = document.createElement( 'div' );
     wrapper.id = 'link-popout';
-    wrapper.className = 'link-popout';
 
     // TODO - test to see if the image is valid
     // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
     const img = document.createElement( 'img' );
+    img.id ='link-popout-favicon-img';
     img.src = `${attrs.href}/favicon.ico`;
     img.width = 15;
     img.height = 15;
@@ -287,13 +300,13 @@ export default class Link extends Mark {
 
     // TODO - strip https:// to just show base url
     const linkText = document.createElement( 'span' );
-    linkText.className = 'link-popout-text';
+    linkText.id = 'link-popout-text';
     linkText.innerText = attrs.href;
 
     wrapper.appendChild( linkText );
 
     const copyButton = document.createElement( 'button' );
-    copyButton.className = 'copy-link-button';
+    copyButton.id = 'link-popout-copy-button';
     copyButton.type = 'button';
     copyButton.onclick = () => {}
 
@@ -301,7 +314,7 @@ export default class Link extends Mark {
     
     if ( !this.options.readOnly ) {
       const editButton = document.createElement( 'button' );
-      editButton.className = 'edit-link-button';
+      editButton.id = 'link-popout-edit-link-button';
       editButton.type = 'button';
       editButton.onclick = () => {}
 

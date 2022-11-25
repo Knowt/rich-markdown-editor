@@ -166,7 +166,7 @@ export const StyledEditor = styled("div")<{
     }
   }
 
-  .link-popout {
+  #link-popout {
     position: absolute;
     top: 100%;
     z-index: 5;
@@ -174,15 +174,15 @@ export const StyledEditor = styled("div")<{
     align-items: center;
     border: 2px solid red;
 
-    .link-popout-text {
+    #link-popout-text {
       font-size: 80%;
     }
 
-    .copy-link-button {
+    #link-popout-copy-button {
 
     }
 
-    .edit-link-button {
+    #link-popout-edit-link-button {
 
     }
   }
