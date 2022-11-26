@@ -185,10 +185,12 @@ export const StyledEditor = styled("div")<{
     }
 
     #link-popout-text {
-      font-size: 77%;
-      line-height: calc( 100% + 12px );
+      font-size: 10px;
+      line-height: 12px;
+      width: max-content;
       color: ${props => props.theme.text};
       opacity: 0.9;
+      font-weight: normal;
     }
 
     .link-popout-button {

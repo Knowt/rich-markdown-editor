@@ -127,17 +127,17 @@ export default class Link extends Mark {
             if ( event === 'mouseover' ) {
               const { pos } = hover;
 
-              const pResult = findParentNodeClosestToPos(
+              const result = findParentNodeClosestToPos(
                 newState.doc.resolve(pos),
-                (node) => node.type.name === 'paragraph',
+                (node) => node.type.name === 'paragraph' || node.type.name === 'heading',
               );
 
-              if ( !pResult ) {
+              if ( !result ) {
                 return value;
               }
 
               // @ts-ignore
-              const marks = pResult.node.content?.content[0]?.marks || [] as any[];
+              const marks = result.node.content?.content[0]?.marks || [] as any[];
 
               for ( const { attrs, type } of marks ) {
                 if ( type.name !== this.name ) {
