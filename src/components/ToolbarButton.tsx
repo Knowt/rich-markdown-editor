@@ -30,10 +30,6 @@ export default styled.button<Props>`
   .icon {
     &.light {
       filter: saturate( 300% ) brightness( 93% );
-
-      // &.yellow {
-      //   filter: saturate( 1500% ) brightness( 90% );
-      // }
     }
   }
 
