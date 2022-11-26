@@ -1,1 +1,1 @@
-{"version":3,"file":"ToolbarButton.d.ts","sourceRoot":"","sources":["../../src/components/ToolbarButton.tsx"],"names":[],"mappings":"AAEA,UAAU,KAAK;IACb,MAAM,CAAC,EAAE,OAAO,CAAC;IACjB,QAAQ,CAAC,EAAE,OAAO,CAAC;IACnB,sBAAsB,CAAC,EAAE,OAAO,CAAC;CAClC;;AAED,wBAuDE"}
+{"version":3,"file":"ToolbarButton.d.ts","sourceRoot":"","sources":["../../src/components/ToolbarButton.tsx"],"names":[],"mappings":"AAEA,UAAU,KAAK;IACb,MAAM,CAAC,EAAE,OAAO,CAAC;IACjB,QAAQ,CAAC,EAAE,OAAO,CAAC;IACnB,sBAAsB,CAAC,EAAE,OAAO,CAAC;CAClC;;AAED,wBAmDE"}

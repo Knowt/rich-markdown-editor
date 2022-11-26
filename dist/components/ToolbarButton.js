@@ -29,10 +29,6 @@ exports.default = styled_components_1.default.button `
   .icon {
     &.light {
       filter: saturate( 300% ) brightness( 93% );
-
-      // &.yellow {
-      //   filter: saturate( 1500% ) brightness( 90% );
-      // }
     }
   }
 
