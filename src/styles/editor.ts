@@ -167,6 +167,17 @@ export const StyledEditor = styled("div")<{
   }
 
   #link-popout {
+    @keyframes link-popout-animation-in {
+      from {
+        transform: scaleY( 0.8 );
+        opacity: 0.6;
+      }
+      to {
+        transform: scaleY( 1 );
+        opacity: 1;
+      }
+    }
+
     position: absolute;
     z-index: 5;
     display: flex;
@@ -179,12 +190,16 @@ export const StyledEditor = styled("div")<{
               0px 0px 3.7px ${props => props.theme.toolbarShadow},
               0px 0px 10px ${props => props.theme.toolbarShadow};
 
+    animation: link-popout-animation-in 0.21s ease;
+
     &.top {
       bottom: 100%;
+      transform-origin: bottom;
     }
 
     &.bottom {
       top: 100%;
+      transform-origin: top;
     }
 
     &.left {

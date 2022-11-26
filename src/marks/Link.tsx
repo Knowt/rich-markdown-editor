@@ -30,6 +30,7 @@ const OTHER_ANCHOR_CLASSNAMES = [
 
 export default class Link extends Mark {
   isPopoutDisplayed = false;
+  timeoutId: number | undefined = undefined;
 
   get name() {
     return "link";
@@ -69,6 +70,11 @@ export default class Link extends Mark {
     }
   
     return toggleMark(type, { href: "" })(state, dispatch);
+  }
+
+  private resetTimeout() {
+    clearTimeout( this.timeoutId );
+    this.timeoutId = undefined;
   }
 
   inputRules({ type }) {
@@ -115,6 +121,8 @@ export default class Link extends Mark {
             return DecorationSet.empty;
           },
           apply: (tr, value, newState) => {
+            this.timeoutId = undefined;
+
             const hover = tr.getMeta( LINK_META_KEY ) as LinkPopoutMeta | undefined;
 
             if ( !hover ) {
@@ -165,7 +173,7 @@ export default class Link extends Mark {
                  )
               )
             }
-
+            
             return value;
           },
         },
@@ -179,7 +187,7 @@ export default class Link extends Mark {
 
               if (
                 target instanceof HTMLAnchorElement &&
-                this.isLinkMark( target.className ) 
+                this.isLinkMark( target.className )
               ) {
                 if ( !this.isPopoutDisplayed ) {
                   const pos = view.posAtDOM( target, 0 );
@@ -188,14 +196,19 @@ export default class Link extends Mark {
                     return false;
                   }
   
-                  this.isPopoutDisplayed = true;
-                  const { dispatch, state } = view;
-  
-                  dispatch( state.tr.setMeta( LINK_META_KEY, {
-                    event: 'mouseover',
-                    pos,
-                  } ) );
+                  this.timeoutId = setTimeout( () => {
+                    const { dispatch, state } = view;
+                    this.isPopoutDisplayed = true;
+
+                    dispatch( state.tr.setMeta( LINK_META_KEY, {
+                      event: 'mouseover',
+                      pos,
+                    } ) );
+                  }, this.options.readOnly ? 500 : 0 );
                 }
+              }
+              else if ( this.timeoutId ) {
+                this.resetTimeout();
               }
               else if (
                 this.isPopoutDisplayed &&
@@ -217,12 +230,17 @@ export default class Link extends Mark {
               return false;
             },
             mouseleave: (view) => {
-              this.isPopoutDisplayed = false;
-              const { dispatch, state } = view;
-
-              dispatch( state.tr.setMeta( LINK_META_KEY, {
-                event: 'mouseout',
-              } ) );
+              if ( this.timeoutId ) {
+                this.resetTimeout();
+              }
+              else {
+                this.isPopoutDisplayed = false;
+                const { dispatch, state } = view;
+  
+                dispatch( state.tr.setMeta( LINK_META_KEY, {
+                  event: 'mouseout',
+                } ) );
+              }
 
               return false;
             },
