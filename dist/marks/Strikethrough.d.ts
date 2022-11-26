@@ -22,6 +22,7 @@ export default class Strikethrough extends Mark {
         close: string;
         mixable: boolean;
         expelEnclosingWhitespace: boolean;
+        escape: boolean;
     };
     get markdownToken(): string;
     parseMarkdown(): {
