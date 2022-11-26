@@ -15,7 +15,7 @@ const List = styled.ul`
     font-size: 90%;
     list-style-type: none;
     background: ${props => props.theme.toolbarBackground};
-    z-index: 1000;
+    z-index: 9999;
     border-radius: 4px;
     padding: 0;
     box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
