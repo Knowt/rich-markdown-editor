@@ -191,6 +191,11 @@ export const StyledEditor = styled("div")<{
               0px 0px 10px ${props => props.theme.toolbarShadow};
 
     animation: link-popout-animation-in 0.21s ease;
+    transition: opacity 0.21s ease;
+
+    &.not-active {
+      opacity: 0;
+    }
 
     &.top {
       bottom: 100%;

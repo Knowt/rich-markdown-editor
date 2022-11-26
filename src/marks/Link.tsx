@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { toggleMark } from "prosemirror-commands";
 import { Plugin } from "prosemirror-state";
-import { Decoration, DecorationSet } from "prosemirror-view";
+import { Decoration, DecorationSet, EditorView } from "prosemirror-view";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
 import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
@@ -30,7 +30,8 @@ const OTHER_ANCHOR_CLASSNAMES = [
 
 export default class Link extends Mark {
   isPopoutDisplayed = false;
-  timeoutId: number | undefined = undefined;
+  mountTimeoutId: number | undefined = undefined;
+  removeTimeoutId: number | undefined = undefined;
 
   get name() {
     return "link";
@@ -63,7 +64,7 @@ export default class Link extends Mark {
     };
   }
 
-  private handleLinkShortcut( type, state, dispatch ) {
+  private handleLinkShortcut(type, state, dispatch) {
     if (state.selection.empty) {
       this.options.onKeyboardShortcut();
       return true;
@@ -73,8 +74,26 @@ export default class Link extends Mark {
   }
 
   private resetTimeout() {
-    clearTimeout( this.timeoutId );
-    this.timeoutId = undefined;
+    clearTimeout( this.mountTimeoutId );
+    this.mountTimeoutId = undefined;
+  }
+
+  private unmount(view: EditorView) {
+    const linkPopout = document.getElementById( 'link-popout' );
+
+    if ( linkPopout ) {
+      linkPopout.classList.add( 'not-active' );
+    }
+
+    const { dispatch, state } = view;
+
+    this.removeTimeoutId = setTimeout( () => {
+      dispatch( state.tr.setMeta( LINK_META_KEY, {
+        event: 'mouseout',
+      } ) );
+    }, 210 );
+
+    this.isPopoutDisplayed = false;
   }
 
   inputRules({ type }) {
@@ -121,7 +140,7 @@ export default class Link extends Mark {
             return DecorationSet.empty;
           },
           apply: (tr, value, newState) => {
-            this.timeoutId = undefined;
+            this.mountTimeoutId = undefined;
 
             const hover = tr.getMeta( LINK_META_KEY ) as LinkPopoutMeta | undefined;
 
@@ -171,7 +190,7 @@ export default class Link extends Mark {
                   undefined,
                   ( spec ) => spec.linkHover,
                  )
-              )
+              );
             }
             
             return value;
@@ -185,6 +204,17 @@ export default class Link extends Mark {
             mouseover: (view, event: MouseEvent) => {
               const target = event.target as HTMLAreaElement;
 
+              // hover back in too quickly -> removeTimeoutId
+
+              if ( this.mountTimeoutId ) {
+                this.resetTimeout();
+              }
+              
+              if ( this.removeTimeoutId ) {
+                clearTimeout( this.removeTimeoutId );
+                this.removeTimeoutId = undefined;
+              }
+              
               if (
                 target instanceof HTMLAnchorElement &&
                 this.isLinkMark( target.className )
@@ -196,7 +226,7 @@ export default class Link extends Mark {
                     return false;
                   }
   
-                  this.timeoutId = setTimeout( () => {
+                  this.mountTimeoutId = setTimeout( () => {
                     const { dispatch, state } = view;
                     this.isPopoutDisplayed = true;
 
@@ -207,20 +237,15 @@ export default class Link extends Mark {
                   }, this.options.readOnly ? 500 : 0 );
                 }
               }
-              else if ( this.timeoutId ) {
-                this.resetTimeout();
-              }
               else if (
+                // hover out too quickly
+
                 this.isPopoutDisplayed &&
                 !target.id.startsWith( 'link-popout' ) &&
                 typeof target.className === 'string'
               ) {
-                this.isPopoutDisplayed = false;
-                const { dispatch, state } = view;
 
-                dispatch( state.tr.setMeta( LINK_META_KEY, {
-                  event: 'mouseout',
-                } ) );
+                this.unmount( view );
               }
 
               if (this.options.onHoverLink) {
@@ -230,16 +255,16 @@ export default class Link extends Mark {
               return false;
             },
             mouseleave: (view) => {
-              if ( this.timeoutId ) {
+              if ( this.mountTimeoutId ) {
                 this.resetTimeout();
               }
               else {
-                this.isPopoutDisplayed = false;
-                const { dispatch, state } = view;
-  
-                dispatch( state.tr.setMeta( LINK_META_KEY, {
-                  event: 'mouseout',
-                } ) );
+                if ( this.removeTimeoutId ) {
+                  clearTimeout( this.removeTimeoutId );
+                  this.removeTimeoutId = undefined;
+                }
+
+                this.unmount( view );
               }
 
               return false;
