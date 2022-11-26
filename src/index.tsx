@@ -358,6 +358,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       new Emoji(),
       new Text(),
       new CheckboxList(),
+      new OrderedList(),
       new CheckboxItem(),
       new BulletList(),
       new Embed({
@@ -402,11 +403,11 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       new BlueHighlight(),
       new GreenHighlight(),
       new RedHighlight(), // the order matters here!! since it's the default marker
-      new Bold(),
-      new Code(),
-      new Italic(),
-      new TemplatePlaceholder(),
       new Underline(),
+      new Strikethrough(),
+      new Code(),
+      new Bold(),
+      new Italic(),
       new Link({
         onKeyboardShortcut: this.handleOpenLinkMenu,
         onClickLink: this.props.onClickLink,
@@ -414,8 +415,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         onHoverLink: this.props.onHoverLink,
         theme: this.theme(),
       }),
-      new Strikethrough(),
-      new OrderedList(),
+      new TemplatePlaceholder(),
       new History(),
       new Folding(),
       new SmartText(),
