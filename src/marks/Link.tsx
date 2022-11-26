@@ -296,6 +296,7 @@ export default class Link extends Mark {
 
     // TODO - test to see if the image is valid
     // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
+    // I also need to get the base url
     const img = document.createElement( 'img' );
     img.id ='link-popout-favicon-img';
     img.src = `${attrs.href}/favicon.ico`;
@@ -315,6 +316,7 @@ export default class Link extends Mark {
     copyButton.id = 'link-popout-copy-button';
     copyButton.className = 'link-popout-button'
     copyButton.type = 'button';
+    copyButton.title = 'Copy Link';
     copyButton.onclick = () => {}
     render( 
       <CopyIcon
@@ -331,6 +333,7 @@ export default class Link extends Mark {
       editButton.id = 'link-popout-edit-link-button';
       editButton.className = 'link-popout-button';
       editButton.type = 'button';
+      editButton.title = 'Edit Link';
       editButton.onclick = () => {}
       render( 
         <EditIcon

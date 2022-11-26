@@ -168,7 +168,6 @@ export const StyledEditor = styled("div")<{
 
   #link-popout {
     position: absolute;
-    top: 100%;
     z-index: 5;
     display: flex;
     align-items: center;
@@ -179,6 +178,22 @@ export const StyledEditor = styled("div")<{
               0px 0px 1.8px ${props => props.theme.toolbarShadow},
               0px 0px 3.7px ${props => props.theme.toolbarShadow},
               0px 0px 10px ${props => props.theme.toolbarShadow};
+
+    &.top {
+      bottom: 100%;
+    }
+
+    &.bottom {
+      top: 100%;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
 
     #link-popout-favicon-img {
       margin-inline: 4px;

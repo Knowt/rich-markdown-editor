@@ -270,6 +270,27 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         this.props.onFocus();
       }
     }
+
+    const linkPopout = document.getElementById( 'link-popout' );
+
+    if ( linkPopout && linkPopout.parentElement && this.element ) {
+      const { height, bottom, right, width } = linkPopout.parentElement.getBoundingClientRect();
+      const { width: editorWidth } = this.element.getBoundingClientRect();
+
+      if ( bottom + height > window.innerHeight ) {
+        linkPopout.classList.add( 'top' );
+      }
+      else {
+        linkPopout.classList.add( 'bottom' );
+      }
+
+      if ( right + width > editorWidth + window.scrollX ) {
+        linkPopout.classList.add( 'right' );
+      }
+      else {
+        linkPopout.classList.add( 'left' );
+      }
+    }
   }
 
   init() {
