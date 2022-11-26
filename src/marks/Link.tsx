@@ -73,9 +73,11 @@ export default class Link extends Mark {
     return toggleMark(type, { href: "" })(state, dispatch);
   }
 
-  private resetTimeout() {
-    clearTimeout( this.mountTimeoutId );
-    this.mountTimeoutId = undefined;
+  private resetTimeout(timeout: number | undefined) {
+    if ( timeout ) {
+      clearTimeout( timeout );
+      timeout = undefined;
+    }
   }
 
   private unmount(view: EditorView) {
@@ -83,17 +85,18 @@ export default class Link extends Mark {
 
     if ( linkPopout ) {
       linkPopout.classList.add( 'not-active' );
+  
+      this.removeTimeoutId = setTimeout( () => {
+        this.resetTimeout( this.mountTimeoutId );
+
+        const { dispatch, state } = view;
+        dispatch( state.tr.setMeta( LINK_META_KEY, {
+          event: 'mouseout',
+        } ) );
+
+        this.isPopoutDisplayed = false;
+      }, 190 );
     }
-
-    const { dispatch, state } = view;
-
-    this.removeTimeoutId = setTimeout( () => {
-      dispatch( state.tr.setMeta( LINK_META_KEY, {
-        event: 'mouseout',
-      } ) );
-    }, 210 );
-
-    this.isPopoutDisplayed = false;
   }
 
   inputRules({ type }) {
@@ -184,6 +187,8 @@ export default class Link extends Mark {
             }
             // mouseout
             else {
+              this.removeTimeoutId = undefined;
+
               return value.remove(
                 value.find(
                   undefined,
@@ -203,49 +208,42 @@ export default class Link extends Mark {
           handleDOMEvents: {
             mouseover: (view, event: MouseEvent) => {
               const target = event.target as HTMLAreaElement;
-
-              // hover back in too quickly -> removeTimeoutId
-
-              if ( this.mountTimeoutId ) {
-                this.resetTimeout();
-              }
-              
-              if ( this.removeTimeoutId ) {
-                clearTimeout( this.removeTimeoutId );
-                this.removeTimeoutId = undefined;
-              }
               
               if (
                 target instanceof HTMLAnchorElement &&
                 this.isLinkMark( target.className )
               ) {
+                this.resetTimeout( this.removeTimeoutId );
+
                 if ( !this.isPopoutDisplayed ) {
                   const pos = view.posAtDOM( target, 0 );
   
                   if (!pos) {
                     return false;
                   }
-  
+               
                   this.mountTimeoutId = setTimeout( () => {
+                    this.resetTimeout( this.removeTimeoutId );
+  
                     const { dispatch, state } = view;
-                    this.isPopoutDisplayed = true;
-
                     dispatch( state.tr.setMeta( LINK_META_KEY, {
                       event: 'mouseover',
                       pos,
                     } ) );
+                    
+                    this.isPopoutDisplayed = true;
                   }, this.options.readOnly ? 500 : 0 );
                 }
               }
               else if (
-                // hover out too quickly
-
-                this.isPopoutDisplayed &&
                 !target.id.startsWith( 'link-popout' ) &&
                 typeof target.className === 'string'
               ) {
+                this.resetTimeout( this.mountTimeoutId );
 
-                this.unmount( view );
+                if ( this.isPopoutDisplayed ) {
+                  this.unmount( view );
+                }
               }
 
               if (this.options.onHoverLink) {
@@ -255,15 +253,9 @@ export default class Link extends Mark {
               return false;
             },
             mouseleave: (view) => {
-              if ( this.mountTimeoutId ) {
-                this.resetTimeout();
-              }
-              else {
-                if ( this.removeTimeoutId ) {
-                  clearTimeout( this.removeTimeoutId );
-                  this.removeTimeoutId = undefined;
-                }
+              this.resetTimeout( this.mountTimeoutId );
 
+              if ( this.isPopoutDisplayed ) {
                 this.unmount( view );
               }
 
