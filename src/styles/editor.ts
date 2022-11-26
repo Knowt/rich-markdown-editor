@@ -172,18 +172,47 @@ export const StyledEditor = styled("div")<{
     z-index: 5;
     display: flex;
     align-items: center;
-    border: 2px solid red;
+    background: ${props => props.theme.toolbarBackground};
+    border-radius: 4px;
+    box-shadow: 0px 0px 0.3px ${props => props.theme.toolbarShadow},
+              0px 0px 0.9px ${props => props.theme.toolbarShadow},
+              0px 0px 1.8px ${props => props.theme.toolbarShadow},
+              0px 0px 3.7px ${props => props.theme.toolbarShadow},
+              0px 0px 10px ${props => props.theme.toolbarShadow};
+
+    #link-popout-favicon-img {
+      margin-inline: 4px;
+    }
 
     #link-popout-text {
-      font-size: 80%;
+      font-size: 77%;
+      line-height: calc( 100% + 12px );
+      color: ${props => props.theme.text};
+      opacity: 0.9;
+    }
+
+    .link-popout-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+      border: none;
+      outline: none;
+      background: none;
+      border-radius: 4px;
+      opacity: 0.7;
+      transition: opacity 85ms ease-in-out,
+              background-color 85ms ease-in-out;
+
+      &:hover {
+        opacity: 1;
+        background: ${(props) => props.theme.toolbarHoverBackground};
+      }
     }
 
     #link-popout-copy-button {
-
-    }
-
-    #link-popout-edit-link-button {
-
+      margin-left: 2px;
     }
   }
 

@@ -1,3 +1,5 @@
+import React from 'react';
+import { render } from 'react-dom';
 import { toggleMark } from "prosemirror-commands";
 import { Plugin } from "prosemirror-state";
 import { Decoration, DecorationSet } from "prosemirror-view";
@@ -5,6 +7,7 @@ import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
 import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
 import { findParentNodeClosestToPos } from '@knowt/prosemirror-utils';
+import { CopyIcon, EditIcon } from 'outline-icons';
 
 type LinkMouseoutMeta = {
   event: 'mouseout';
@@ -178,23 +181,26 @@ export default class Link extends Mark {
                 target instanceof HTMLAnchorElement &&
                 this.isLinkMark( target.className ) 
               ) {
-                const pos = view.posAtDOM( target, 0 );
-
-                if (!pos) {
-                  return false;
+                if ( !this.isPopoutDisplayed ) {
+                  const pos = view.posAtDOM( target, 0 );
+  
+                  if (!pos) {
+                    return false;
+                  }
+  
+                  this.isPopoutDisplayed = true;
+                  const { dispatch, state } = view;
+  
+                  dispatch( state.tr.setMeta( LINK_META_KEY, {
+                    event: 'mouseover',
+                    pos,
+                  } ) );
                 }
-
-                this.isPopoutDisplayed = true;
-                const { dispatch, state } = view;
-
-                dispatch( state.tr.setMeta( LINK_META_KEY, {
-                  event: 'mouseover',
-                  pos,
-                } ) );
               }
               else if (
                 this.isPopoutDisplayed &&
-                !target.id.startsWith( 'link-popout' ) 
+                !target.id.startsWith( 'link-popout' ) &&
+                typeof target.className === 'string'
               ) {
                 this.isPopoutDisplayed = false;
                 const { dispatch, state } = view;
@@ -293,8 +299,8 @@ export default class Link extends Mark {
     const img = document.createElement( 'img' );
     img.id ='link-popout-favicon-img';
     img.src = `${attrs.href}/favicon.ico`;
-    img.width = 15;
-    img.height = 15;
+    img.width = 12;
+    img.height = 12;
 
     wrapper.appendChild( img );
 
@@ -307,16 +313,32 @@ export default class Link extends Mark {
 
     const copyButton = document.createElement( 'button' );
     copyButton.id = 'link-popout-copy-button';
+    copyButton.className = 'link-popout-button'
     copyButton.type = 'button';
     copyButton.onclick = () => {}
+    render( 
+      <CopyIcon
+        className='link-popout-icon'
+        color={this.options.theme?.toolbarItem}
+        size={15} />, 
+      copyButton,
+    );
 
     wrapper.appendChild( copyButton );
     
     if ( !this.options.readOnly ) {
       const editButton = document.createElement( 'button' );
       editButton.id = 'link-popout-edit-link-button';
+      editButton.className = 'link-popout-button';
       editButton.type = 'button';
       editButton.onclick = () => {}
+      render( 
+        <EditIcon
+          className='link-popout-icon'
+          color={this.options.theme?.toolbarItem}
+          size={15} />, 
+        editButton,
+      );
 
       wrapper.appendChild( editButton );
     }

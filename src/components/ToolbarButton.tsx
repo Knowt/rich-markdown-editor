@@ -9,8 +9,8 @@ interface Props {
 export default styled.button<Props>`
   display: flex;
   justify-content: center;
-  border-radius: 4px;
   align-items: center;
+  border-radius: 4px;
   cursor: pointer;
   padding: 10px 3px;
   border: none;
