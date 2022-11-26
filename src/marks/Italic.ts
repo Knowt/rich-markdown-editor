@@ -39,6 +39,7 @@ export default class Italic extends Mark {
       close: "*",
       mixable: true,
       expelEnclosingWhitespace: true,
+      escape: false,
     };
   }
 
