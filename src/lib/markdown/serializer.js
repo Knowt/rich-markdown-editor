@@ -84,7 +84,7 @@ export class MarkdownSerializerState {
       '__'
     ];
     this.escapedMarksCount = {};
-    this.lastEscapedMark = '';
+    this.lastEscapedMarks = [];
     this.textInEscapedMark = '';
 
     // :: Object
@@ -189,17 +189,17 @@ export class MarkdownSerializerState {
           );
 
           this.escapedMarksCount[subText] = 0;
-          this.lastEscapedMark = '';
+          this.lastEscapedMarks.pop();
           this.textInEscapedMark = '';
 
           continue;
         }
         else {
-          this.lastEscapedMark = subText;
+          this.lastEscapedMarks.push( subText );
         }
       }
       
-      if ( this.escapedMarksCount[this.lastEscapedMark] ) {
+      if ( this.escapedMarksCount[this.lastEscapedMarks[this.lastEscapedMarks.length - 1]] ) {
         this.textInEscapedMark += subText;
       }
       else {
