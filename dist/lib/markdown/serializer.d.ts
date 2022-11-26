@@ -14,7 +14,7 @@ export class MarkdownSerializerState {
     inTightList: boolean;
     ESACPED_MARKS: string[];
     escapedMarksCount: {};
-    lastEscapedMark: string;
+    lastEscapedMarks: any[];
     textInEscapedMark: string;
     options: any;
     flushClose(size: any): void;
