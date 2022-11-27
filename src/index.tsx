@@ -322,6 +322,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         onClickLink: this.props.onClickLink,
         onClickHashtag: this.props.onClickHashtag,
         onHoverLink: this.props.onHoverLink,
+        dictionary,
+        onShowToast: this.props.onShowToast,
         theme: this.theme(),
       }),
       new Keys({
@@ -413,6 +415,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         onClickLink: this.props.onClickLink,
         onClickHashtag: this.props.onClickHashtag,
         onHoverLink: this.props.onHoverLink,
+        dictionary,
+        onShowToast: this.props.onShowToast,
         theme: this.theme(),
       }),
       new TemplatePlaceholder(),

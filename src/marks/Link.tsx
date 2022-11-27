@@ -6,8 +6,10 @@ import { Decoration, DecorationSet, EditorView } from "prosemirror-view";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
 import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
-import { findParentNodeClosestToPos } from '@knowt/prosemirror-utils';
-import { CopyIcon, EditIcon } from 'outline-icons';
+import { findParentNodeClosestToPos, setTextSelection } from '@knowt/prosemirror-utils';
+import { CopyIcon, EditIcon, GlobeIcon } from 'outline-icons';
+import copy from "copy-to-clipboard";
+import { ToastType } from "../types";
 
 type LinkMouseoutMeta = {
   event: 'mouseout';
@@ -177,8 +179,8 @@ export default class Link extends Mark {
                 return value.add( tr.doc, [
                   Decoration.widget(
                     pos,
-                    (view, d) => {
-                      return this.createLinkPopout( attrs );
+                    (view) => {
+                      return this.createLinkPopout( view, attrs );
                     },
                     { linkHover: true },
                   )
@@ -325,7 +327,7 @@ export default class Link extends Mark {
     );
   }
 
-  createLinkPopout( attrs: any ) {
+  createLinkPopout( view: EditorView, attrs: any ) {
     const wrapper = document.createElement( 'div' );
     wrapper.id = 'link-popout';
 
@@ -352,7 +354,17 @@ export default class Link extends Mark {
     copyButton.className = 'link-popout-button'
     copyButton.type = 'button';
     copyButton.title = 'Copy Link';
-    copyButton.onclick = () => {}
+    copyButton.onclick = () => {
+      copy(attrs.href);
+
+      if ( this.options.onShowToast ) {
+        this.options.onShowToast(
+          this.options.dictionary.linkCopied,
+          ToastType.Info
+        );
+      }
+    }
+
     render( 
       <CopyIcon
         className='link-popout-icon'
@@ -369,7 +381,25 @@ export default class Link extends Mark {
       editButton.className = 'link-popout-button';
       editButton.type = 'button';
       editButton.title = 'Edit Link';
-      editButton.onclick = () => {}
+      // NOT WORKING
+      editButton.onclick = (event) => {
+        const elem = event.target;
+
+        if ( elem ) {
+          const { top, left } = elem.getBoundingClientRect();
+
+          const result = view.posAtCoords({ top, left });
+
+          if ( result ) {
+            const { dispatch, state } = view;
+
+            dispatch(
+              setTextSelection(result.pos)(state.tr)
+            );
+          }
+        }
+      }
+
       render( 
         <EditIcon
           className='link-popout-icon'
