@@ -331,50 +331,6 @@ export default class Link extends Mark {
     const wrapper = document.createElement( 'div' );
     wrapper.id = 'link-popout';
 
-    // TODO - test to see if the image is valid
-    // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
-    // I also need to get the base url
-    const img = document.createElement( 'img' );
-    img.id ='link-popout-favicon-img';
-    img.src = `${attrs.href}/favicon.ico`;
-    img.width = 12;
-    img.height = 12;
-
-    wrapper.appendChild( img );
-
-    // TODO - strip https:// to just show base url
-    const linkText = document.createElement( 'span' );
-    linkText.id = 'link-popout-text';
-    linkText.innerText = attrs.href;
-
-    wrapper.appendChild( linkText );
-
-    const copyButton = document.createElement( 'button' );
-    copyButton.id = 'link-popout-copy-button';
-    copyButton.className = 'link-popout-button'
-    copyButton.type = 'button';
-    copyButton.title = 'Copy Link';
-    copyButton.onclick = () => {
-      copy(attrs.href);
-
-      if ( this.options.onShowToast ) {
-        this.options.onShowToast(
-          this.options.dictionary.linkCopied,
-          ToastType.Info
-        );
-      }
-    }
-
-    render( 
-      <CopyIcon
-        className='link-popout-icon'
-        color={this.options.theme?.toolbarItem}
-        size={15} />, 
-      copyButton,
-    );
-
-    wrapper.appendChild( copyButton );
-    
     if ( !this.options.readOnly ) {
       const editButton = document.createElement( 'button' );
       editButton.id = 'link-popout-edit-link-button';
@@ -410,6 +366,50 @@ export default class Link extends Mark {
 
       wrapper.appendChild( editButton );
     }
+
+    const copyButton = document.createElement( 'button' );
+    copyButton.id = 'link-popout-copy-button';
+    copyButton.className = 'link-popout-button'
+    copyButton.type = 'button';
+    copyButton.title = 'Copy Link';
+    copyButton.onclick = () => {
+      copy(attrs.href);
+
+      if ( this.options.onShowToast ) {
+        this.options.onShowToast(
+          this.options.dictionary.linkCopied,
+          ToastType.Info
+        );
+      }
+    }
+
+    render( 
+      <CopyIcon
+        className='link-popout-icon'
+        color={this.options.theme?.toolbarItem}
+        size={15} />, 
+      copyButton,
+    );
+
+    wrapper.appendChild( copyButton );
+
+    // TODO - strip https:// to just show base url
+    const linkText = document.createElement( 'span' );
+    linkText.id = 'link-popout-text';
+    linkText.innerText = attrs.href;
+
+    wrapper.appendChild( linkText );
+
+    // TODO - test to see if the image is valid
+    // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
+    // I also need to get the base url
+    const img = document.createElement( 'img' );
+    img.id ='link-popout-favicon-img';
+    img.src = `${attrs.href}/favicon.ico`;
+    img.width = 12;
+    img.height = 12;
+
+    wrapper.appendChild( img );
 
     return wrapper;
   }

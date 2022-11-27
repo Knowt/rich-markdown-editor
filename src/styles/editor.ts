@@ -226,6 +226,7 @@ export const StyledEditor = styled("div")<{
       color: ${props => props.theme.text};
       opacity: 0.9;
       font-weight: normal;
+      margin-left: 2px;
     }
 
     .link-popout-button {
@@ -233,7 +234,7 @@ export const StyledEditor = styled("div")<{
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      padding: 5px;
+      padding: 3px;
       border: none;
       outline: none;
       background: none;
@@ -246,10 +247,6 @@ export const StyledEditor = styled("div")<{
         opacity: 1;
         background: ${(props) => props.theme.toolbarHoverBackground};
       }
-    }
-
-    #link-popout-copy-button {
-      margin-left: 2px;
     }
   }
 
