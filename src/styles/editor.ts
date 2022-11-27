@@ -220,6 +220,11 @@ export const StyledEditor = styled("div")<{
     }
 
     #link-popout-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical; 
+      overflow: hidden;
+      max-width: 7rem;
       font-size: 10px;
       line-height: 12px;
       width: max-content;

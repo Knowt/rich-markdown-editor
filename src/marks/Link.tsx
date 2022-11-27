@@ -101,6 +101,16 @@ export default class Link extends Mark {
     }
   }
 
+  private getUrlDetails(url: string) {
+    const urlInterface = new URL(url);
+    const { protocol, host, pathname } = urlInterface;
+
+    return {
+      baseUrl: protocol + '//' + host,
+      hostname: ( host.startsWith('www.') ? host.substring(4) : host ) + pathname,
+    }
+  }
+
   inputRules({ type }) {
     return [
       new InputRule(LINK_INPUT_REGEX, (state, match, start, end) => {
@@ -393,19 +403,19 @@ export default class Link extends Mark {
 
     wrapper.appendChild( copyButton );
 
-    // TODO - strip https:// to just show base url
+    const { baseUrl, hostname } = this.getUrlDetails( attrs.href );
+
     const linkText = document.createElement( 'span' );
     linkText.id = 'link-popout-text';
-    linkText.innerText = attrs.href;
+    linkText.innerText = hostname;
 
     wrapper.appendChild( linkText );
 
     // TODO - test to see if the image is valid
     // https://stackoverflow.com/questions/55880196/is-there-a-way-to-easily-check-if-the-image-url-is-valid-or-not
-    // I also need to get the base url
     const img = document.createElement( 'img' );
     img.id ='link-popout-favicon-img';
-    img.src = `${attrs.href}/favicon.ico`;
+    img.src = `${baseUrl}/favicon.ico`;
     img.width = 12;
     img.height = 12;
 
