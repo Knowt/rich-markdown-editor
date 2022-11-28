@@ -2,7 +2,6 @@ import { Schema, Node as ProsemirrorNode, DOMSerializer } from 'prosemirror-mode
 import ExtensionManager from "./lib/ExtensionManager";
 // marks
 import Bold from "./marks/Bold";
-import Code from "./marks/Code";
 import RedHighlight from "./marks/highlights/RedHighlight";
 import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
@@ -20,9 +19,6 @@ import HardBreak from "./nodes/HardBreak";
 // nodes
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
-import BulletList from "./nodes/BulletList";
-import ListItem from "./nodes/ListItem";
-import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
 // plugins
 import History from "./plugins/History";
@@ -36,11 +32,6 @@ export const getFlashcardSerializerExtensions = () => {
     new Doc(),
     new Paragraph(),
     new Text(),
-    new OrderedList(),
-    new BulletList(),
-    new ListItem({
-      includeDrag: false,
-    }),
     new BlueBackground(),
     new RedBackground(),
     new OrangeBackground(),
@@ -53,7 +44,6 @@ export const getFlashcardSerializerExtensions = () => {
     new RedHighlight(),
     new Underline(),
     new Strikethrough(),
-    new Code(),
     new Bold(),
     new Italic(),
     new Link(),
@@ -96,7 +86,7 @@ type GetFlashcardEditorExtensionsInput = {
 }
 
 export const getFlashcardEditorExtensions = (
-  input: GetFlashcardEditorExtensionsInput,
+  input: GetFlashcardEditorExtensionsInput={},
 ) => {
   const { maxLength } = input;
 
@@ -105,11 +95,6 @@ export const getFlashcardEditorExtensions = (
         new Doc(),
         new Paragraph(),
         new Text(),
-        new OrderedList(),
-        new BulletList(),
-        new ListItem({
-          includeDrag: false,
-        }),
         // backgrounds take precedence over other marks
         // this makes all below marks wrapped inside the background mark
         // do not change order of these marks unless you know what you are doing
@@ -125,7 +110,6 @@ export const getFlashcardEditorExtensions = (
         new RedHighlight(), // the order matters here!! since it's the default marker
         new Underline(),
         new Strikethrough(),
-        new Code(),
         new Bold(),
         new Italic(),
         new TemplatePlaceholder(),

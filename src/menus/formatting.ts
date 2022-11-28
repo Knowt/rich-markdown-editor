@@ -12,8 +12,9 @@ import {
   TodoListIcon,
   InputIcon,
   HighlightIcon,
+  ItalicIcon,
 } from "outline-icons";
-import { CircleIcon } from '../icons';
+import { CircleIcon, UnderlineIcon } from '../icons';
 import { isInTable } from "@knowt/prosemirror-tables";
 import isInList from "../queries/isInList";
 import isMarkActive from "../queries/isMarkActive";
@@ -34,7 +35,8 @@ import { BOLD_SHORTCUT2, STRIKETHROUGH_SHORTCUT2,
   YELLOW_BACKGROUND_SHORTCUT, GREEN_BACKGROUND_SHORTCUT, 
   BLUE_BACKGROUND_SHORTCUT, BACKGROUND_RADIUS,
   BACKGROUND_ICON_SIZE, DEFAULT_HIGHLIGHT,
-  DEFAULT_BACKGROUND } from '../lib/constants';
+  DEFAULT_BACKGROUND, ITALIC_SHORTCUT2, 
+  UNDERLINE_SHORTCUT2 } from '../lib/constants';
 
 /* TYPES */
 interface FormattingMenuItemsInput {
@@ -321,6 +323,28 @@ export default function formattingMenuItems(
       visible: !isSelectionEmpty,
       shortcut: parseShortcut( { 
         shortcut: BOLD_SHORTCUT2,
+        deviceType,
+      } ),
+    },
+    {
+      name: "underline",
+      tooltip: dictionary.underline,
+      icon: UnderlineIcon,
+      active: isMarkActive(schema.marks.underline),
+      visible: !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: UNDERLINE_SHORTCUT2,
+        deviceType,
+      } ),
+    },
+    {
+      name: "em",
+      tooltip: dictionary.em,
+      icon: ItalicIcon,
+      active: isMarkActive(schema.marks.em),
+      visible: !isSelectionEmpty,
+      shortcut: parseShortcut( { 
+        shortcut: ITALIC_SHORTCUT2,
         deviceType,
       } ),
     },

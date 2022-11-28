@@ -141,6 +141,7 @@ export type Props = {
   customExtensions?: Extension[];
   disableEmojiMenu?: boolean;
   disableBlockMenu?: boolean;
+  disableLinkToolbar?: boolean;
 };
 
 type State = {
@@ -293,29 +294,14 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   createExtensions(customExtensions: Extension[] | undefined) {
     const dictionary = this.dictionary(this.props.dictionary);
 
-    // adding nodes here? Update schema.ts for serialization on the server
     const extensions = customExtensions ? [
       ...customExtensions,
-      new Link({
-        onKeyboardShortcut: this.handleOpenLinkMenu,
-        onClickLink: this.props.onClickLink,
-        onClickHashtag: this.props.onClickHashtag,
-        onHoverLink: this.props.onHoverLink,
-      }),
       new Keys({
           onBlur: this.handleEditorBlur,
           onFocus: this.handleEditorFocus,
           onSave: this.handleSave,
           onSaveAndExit: this.handleSaveAndExit,
           onCancel: this.props.onCancel,
-      }),
-      new EmojiTrigger({
-          onOpen: (search: string) => {
-              this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
-          },
-          onClose: () => {
-              this.setState({ emojiMenuOpen: false });
-          },
       }),
       new GoToPreviousInputTrigger({
           onGoToPreviousInput: this.handleGoToPreviousInput,
@@ -868,16 +854,20 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   setDefaultHighlight={this.setDefaultHighlight}
                   setDefaultBackground={this.setDefaultBackground}
                 />
-                <LinkToolbar
-                  view={this.view}
-                  dictionary={dictionary}
-                  isActive={this.state.linkMenuOpen}
-                  onCreateLink={this.props.onCreateLink}
-                  onSearchLink={this.props.onSearchLink}
-                  onClickLink={this.props.onClickLink}
-                  onShowToast={this.props.onShowToast}
-                  onClose={this.handleCloseLinkMenu}
-                />
+                {
+                  !this.props.disableLinkToolbar ? (
+                    <LinkToolbar
+                      view={this.view}
+                      dictionary={dictionary}
+                      isActive={this.state.linkMenuOpen}
+                      onCreateLink={this.props.onCreateLink}
+                      onSearchLink={this.props.onSearchLink}
+                      onClickLink={this.props.onClickLink}
+                      onShowToast={this.props.onShowToast}
+                      onClose={this.handleCloseLinkMenu}
+                    />
+                  ) : ''
+                }
                 {
                   !this.props.disableEmojiMenu ? (
                     <EmojiMenu
