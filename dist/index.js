@@ -303,26 +303,12 @@ class RichMarkdownEditor extends React.PureComponent {
         const dictionary = this.dictionary(this.props.dictionary);
         const extensions = customExtensions ? [
             ...customExtensions,
-            new Link_1.default({
-                onKeyboardShortcut: this.handleOpenLinkMenu,
-                onClickLink: this.props.onClickLink,
-                onClickHashtag: this.props.onClickHashtag,
-                onHoverLink: this.props.onHoverLink,
-            }),
             new Keys_1.default({
                 onBlur: this.handleEditorBlur,
                 onFocus: this.handleEditorFocus,
                 onSave: this.handleSave,
                 onSaveAndExit: this.handleSaveAndExit,
                 onCancel: this.props.onCancel,
-            }),
-            new EmojiTrigger_1.default({
-                onOpen: (search) => {
-                    this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
-                },
-                onClose: () => {
-                    this.setState({ emojiMenuOpen: false });
-                },
             }),
             new GoToPreviousInputTrigger_1.default({
                 onGoToPreviousInput: this.handleGoToPreviousInput,
@@ -598,7 +584,7 @@ class RichMarkdownEditor extends React.PureComponent {
                     React.createElement(editor_1.StyledEditor, { style: style, className: className, ref: (ref) => (this.element = ref), fontScale: fontScale !== null && fontScale !== void 0 ? fontScale : 1, rtl: isRTL, readOnly: readOnly, readOnlyWriteCheckboxes: readOnlyWriteCheckboxes }),
                     !readOnly && this.view && (React.createElement(React.Fragment, null,
                         React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, isDarkMode: this.props.dark, deviceType: deviceType, defaultHighlight: this.state.defaultHighlight || constants_1.DEFAULT_HIGHLIGHT, defaultBackground: this.state.defaultBackground || constants_1.DEFAULT_BACKGROUND, setDefaultHighlight: this.setDefaultHighlight, setDefaultBackground: this.setDefaultBackground }),
-                        React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu }),
+                        !this.props.disableLinkToolbar ? (React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu })) : '',
                         !this.props.disableEmojiMenu ? (React.createElement(EmojiMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.emojiMenuOpen, search: this.state.blockMenuSearch, onClose: () => this.setState({ emojiMenuOpen: false }) })) : '',
                         !this.props.disableBlockMenu ? (React.createElement(BlockMenu_1.default, { view: this.view, commands: this.commands, dictionary: dictionary, rtl: isRTL, isActive: this.state.blockMenuOpen, search: this.state.blockMenuSearch, onClose: this.handleCloseBlockMenu, uploadImage: this.props.uploadImage, onLinkToolbarOpen: this.handleOpenLinkMenu, onImageUploadStart: this.props.onImageUploadStart, onImageUploadStop: this.props.onImageUploadStop, onShowToast: this.props.onShowToast, embeds: this.props.embeds, isDarkMode: this.props.dark, deviceType: deviceType })) : ''))))));
     }

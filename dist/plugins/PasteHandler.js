@@ -22,6 +22,12 @@ class PasteHandler extends Extension_1.default {
     get name() {
         return "markdown-paste";
     }
+    get defaultOptions() {
+        return {
+            disableLinkPaste: false,
+            disableCodePaste: false,
+        };
+    }
     get plugins() {
         return [
             new prosemirror_state_1.Plugin({
@@ -36,7 +42,7 @@ class PasteHandler extends Extension_1.default {
                         const html = event.clipboardData.getData("text/html");
                         const vscode = event.clipboardData.getData("vscode-editor-data");
                         const { state, dispatch } = view;
-                        if (isUrl_1.default(text)) {
+                        if (!this.options.disableLinkPaste && isUrl_1.default(text)) {
                             if (!state.selection.empty) {
                                 prosemirror_commands_1.toggleMark(this.editor.schema.marks.link, { href: text })(state, dispatch);
                                 return true;
@@ -59,23 +65,25 @@ class PasteHandler extends Extension_1.default {
                             view.dispatch(transaction);
                             return true;
                         }
-                        if (isInCode_1.default(view.state)) {
-                            event.preventDefault();
-                            view.dispatch(view.state.tr.insertText(text));
-                            return true;
-                        }
                         const vscodeMeta = vscode ? JSON.parse(vscode) : undefined;
                         const pasteCodeLanguage = vscodeMeta === null || vscodeMeta === void 0 ? void 0 : vscodeMeta.mode;
-                        if (pasteCodeLanguage && pasteCodeLanguage !== "markdown") {
-                            event.preventDefault();
-                            view.dispatch(view.state.tr
-                                .replaceSelectionWith(view.state.schema.nodes.code_fence.create({
-                                language: Object.keys(Prism_1.LANGUAGES).includes(vscodeMeta.mode)
-                                    ? vscodeMeta.mode
-                                    : null,
-                            }))
-                                .insertText(text));
-                            return true;
+                        if (!this.options.disableCodePaste) {
+                            if (isInCode_1.default(view.state)) {
+                                event.preventDefault();
+                                view.dispatch(view.state.tr.insertText(text));
+                                return true;
+                            }
+                            if (pasteCodeLanguage && pasteCodeLanguage !== "markdown") {
+                                event.preventDefault();
+                                view.dispatch(view.state.tr
+                                    .replaceSelectionWith(view.state.schema.nodes.code_fence.create({
+                                    language: Object.keys(Prism_1.LANGUAGES).includes(vscodeMeta.mode)
+                                        ? vscodeMeta.mode
+                                        : null,
+                                }))
+                                    .insertText(text));
+                                return true;
+                            }
                         }
                         if (html === null || html === void 0 ? void 0 : html.includes("data-pm-slice")) {
                             return false;

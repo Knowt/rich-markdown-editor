@@ -16,5 +16,9 @@ interface ChevronIconProps {
     width?: number;
 }
 export declare const ChevronIcon: ({ fill, width, }: ChevronIconProps) => JSX.Element;
+export declare const UnderlineIcon: ({ color, width }: {
+    color: any;
+    width?: number | undefined;
+}) => JSX.Element;
 export {};
 //# sourceMappingURL=icons.d.ts.map

@@ -157,6 +157,7 @@ export declare type Props = {
     customExtensions?: Extension[];
     disableEmojiMenu?: boolean;
     disableBlockMenu?: boolean;
+    disableLinkToolbar?: boolean;
 };
 declare type State = {
     isRTL: boolean;
@@ -395,6 +396,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignImageRight: string;
         alignImageDefault: string;
         em: string;
+        underline: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
         h1: string;
@@ -456,6 +458,7 @@ declare class RichMarkdownEditor extends React.PureComponent<Props, State> {
         alignImageRight: string;
         alignImageDefault: string;
         em: string;
+        underline: string;
         embedInvalidLink: string;
         findOrCreateDoc: string;
         h1: string;

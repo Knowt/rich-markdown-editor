@@ -24,6 +24,7 @@ export declare const base: {
     alignImageRight: string;
     alignImageDefault: string;
     em: string;
+    underline: string;
     embedInvalidLink: string;
     findOrCreateDoc: string;
     h1: string;

@@ -237,6 +237,28 @@ function formattingMenuItems(input) {
             }),
         },
         {
+            name: "underline",
+            tooltip: dictionary.underline,
+            icon: icons_1.UnderlineIcon,
+            active: isMarkActive_1.default(schema.marks.underline),
+            visible: !isSelectionEmpty,
+            shortcut: parseShortcut_1.parseShortcut({
+                shortcut: constants_1.UNDERLINE_SHORTCUT2,
+                deviceType,
+            }),
+        },
+        {
+            name: "em",
+            tooltip: dictionary.em,
+            icon: outline_icons_1.ItalicIcon,
+            active: isMarkActive_1.default(schema.marks.em),
+            visible: !isSelectionEmpty,
+            shortcut: parseShortcut_1.parseShortcut({
+                shortcut: constants_1.ITALIC_SHORTCUT2,
+                deviceType,
+            }),
+        },
+        {
             name: "strikethrough",
             tooltip: dictionary.strikethrough,
             icon: outline_icons_1.StrikethroughIcon,

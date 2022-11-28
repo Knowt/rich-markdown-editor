@@ -27,6 +27,7 @@ exports.base = {
     alignImageRight: "Float right half width",
     alignImageDefault: "Center large",
     em: "Italic",
+    underline: "Underline",
     embedInvalidLink: "Sorry, that link won’t work for this embed type",
     findOrCreateDoc: "Find or create a doc…",
     h1: "Big heading",

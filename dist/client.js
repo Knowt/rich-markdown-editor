@@ -7,7 +7,6 @@ exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFl
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
-const Code_1 = __importDefault(require("./marks/Code"));
 const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
 const OrangeHighlight_1 = __importDefault(require("./marks/highlights/OrangeHighlight"));
 const YellowHighlight_1 = __importDefault(require("./marks/highlights/YellowHighlight"));
@@ -22,9 +21,6 @@ const Link_1 = __importDefault(require("./marks/Link"));
 const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
-const BulletList_1 = __importDefault(require("./nodes/BulletList"));
-const ListItem_1 = __importDefault(require("./nodes/ListItem"));
-const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
 const History_1 = __importDefault(require("./plugins/History"));
 const MaxLength_1 = __importDefault(require("./plugins/MaxLength"));
@@ -36,11 +32,6 @@ const getFlashcardSerializerExtensions = () => {
         new Doc_1.default(),
         new Paragraph_1.default(),
         new Text_1.default(),
-        new OrderedList_1.default(),
-        new BulletList_1.default(),
-        new ListItem_1.default({
-            includeDrag: false,
-        }),
         new backgrounds_1.BlueBackground(),
         new backgrounds_1.RedBackground(),
         new backgrounds_1.OrangeBackground(),
@@ -53,7 +44,6 @@ const getFlashcardSerializerExtensions = () => {
         new RedHighlight_1.default(),
         new Underline_1.default(),
         new Strikethrough_1.default(),
-        new Code_1.default(),
         new Bold_1.default(),
         new Italic_1.default(),
         new Link_1.default(),
@@ -81,18 +71,13 @@ const flashcardMdToHtml = (input) => {
     return throwAwayDiv.innerHTML;
 };
 exports.flashcardMdToHtml = flashcardMdToHtml;
-const getFlashcardEditorExtensions = (input) => {
-    const { maxLength } = input;
+const getFlashcardEditorExtensions = (input = {}) => {
+    const { maxLength, disableCodePaste = true, disableLinkPaste = true } = input;
     return {
         baseExtensions: [
             new Doc_1.default(),
             new Paragraph_1.default(),
             new Text_1.default(),
-            new OrderedList_1.default(),
-            new BulletList_1.default(),
-            new ListItem_1.default({
-                includeDrag: false,
-            }),
             new backgrounds_1.BlueBackground(),
             new backgrounds_1.RedBackground(),
             new backgrounds_1.OrangeBackground(),
@@ -105,13 +90,15 @@ const getFlashcardEditorExtensions = (input) => {
             new RedHighlight_1.default(),
             new Underline_1.default(),
             new Strikethrough_1.default(),
-            new Code_1.default(),
             new Bold_1.default(),
             new Italic_1.default(),
             new Placeholder_1.default(),
             new History_1.default(),
             new SmartText_1.default(),
-            new PasteHandler_1.default(),
+            new PasteHandler_1.default({
+                disableCodePaste,
+                disableLinkPaste,
+            }),
             new HardBreak_1.default(),
             new MaxLength_1.default({
                 maxLength,

@@ -1,6 +1,5 @@
 import ExtensionManager from "./lib/ExtensionManager";
 import Bold from "./marks/Bold";
-import Code from "./marks/Code";
 import RedHighlight from "./marks/highlights/RedHighlight";
 import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
@@ -14,9 +13,6 @@ import Underline from "./marks/Underline";
 import HardBreak from "./nodes/HardBreak";
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
-import BulletList from "./nodes/BulletList";
-import ListItem from "./nodes/ListItem";
-import OrderedList from "./nodes/OrderedList";
 import Paragraph from "./nodes/Paragraph";
 import History from "./plugins/History";
 import MaxLength from "./plugins/MaxLength";
@@ -31,9 +27,11 @@ declare type FlashcardMdToHtmlInput = {
 export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => string;
 declare type GetFlashcardEditorExtensionsInput = {
     maxLength?: number;
+    disableLinkPaste?: boolean;
+    disableCodePaste?: boolean;
 };
-export declare const getFlashcardEditorExtensions: (input: GetFlashcardEditorExtensionsInput) => {
-    baseExtensions: (Doc | Text | BulletList | HardBreak | ListItem | OrderedList | Paragraph | Bold | Code | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
+export declare const getFlashcardEditorExtensions: (input?: GetFlashcardEditorExtensionsInput) => {
+    baseExtensions: (Doc | Text | HardBreak | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
 export {};
