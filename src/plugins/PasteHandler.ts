@@ -7,7 +7,6 @@ import isMarkdown from "../lib/isMarkdown";
 import selectionIsInCode from "../queries/isInCode";
 import { LANGUAGES } from "./Prism";
 
-
 /**
  * Add support for additional syntax that users paste even though it isn't
  * supported by the markdown parser directly by massaging the text content.
@@ -30,6 +29,13 @@ export default class PasteHandler extends Extension {
     return "markdown-paste";
   }
 
+  get defaultOptions() {
+    return {
+      disableLinkPaste: false,
+      disableCodePaste: false,
+    };
+  }
+
   get plugins() {
     return [
       new Plugin({
@@ -47,7 +53,7 @@ export default class PasteHandler extends Extension {
 
             // first check if the clipboard contents can be parsed as a single
             // url, this is mainly for allowing pasted urls to become embeds
-            if (isUrl(text)) {
+            if (!this.options.disableLinkPaste && isUrl(text)) {
               // just paste the link mark directly onto the selected text
               if (!state.selection.empty) {
                 toggleMark(this.editor.schema.marks.link, { href: text })(
@@ -85,35 +91,37 @@ export default class PasteHandler extends Extension {
               return true;
             }
 
-            // If the users selection is currently in a code block then paste
-            // as plain text, ignore all formatting and HTML content.
-            if (selectionIsInCode(view.state)) {
-              event.preventDefault();
-
-              view.dispatch(view.state.tr.insertText(text));
-              return true;
-            }
-
             // Because VSCode is an especially popular editor that places metadata
             // on the clipboard, we can parse it to find out what kind of content
             // was pasted.
             const vscodeMeta = vscode ? JSON.parse(vscode) : undefined;
             const pasteCodeLanguage = vscodeMeta?.mode;
 
-            if (pasteCodeLanguage && pasteCodeLanguage !== "markdown") {
-              event.preventDefault();
-              view.dispatch(
-                view.state.tr
-                  .replaceSelectionWith(
-                    view.state.schema.nodes.code_fence.create({
-                      language: Object.keys(LANGUAGES).includes(vscodeMeta.mode)
-                        ? vscodeMeta.mode
-                        : null,
-                    })
-                  )
-                  .insertText(text)
-              );
-              return true;
+            if (!this.options.disableCodePaste) {
+              // If the users selection is currently in a code block then paste
+              // as plain text, ignore all formatting and HTML content.
+              if (selectionIsInCode(view.state)) {
+                event.preventDefault();
+  
+                view.dispatch(view.state.tr.insertText(text));
+                return true;
+              }
+        
+              if (pasteCodeLanguage && pasteCodeLanguage !== "markdown") {
+                event.preventDefault();
+                view.dispatch(
+                  view.state.tr
+                    .replaceSelectionWith(
+                      view.state.schema.nodes.code_fence.create({
+                        language: Object.keys(LANGUAGES).includes(vscodeMeta.mode)
+                          ? vscodeMeta.mode
+                          : null,
+                      })
+                    )
+                    .insertText(text)
+                );
+                return true;
+              }
             }
 
             // If the HTML on the clipboard is from Prosemirror then the best
