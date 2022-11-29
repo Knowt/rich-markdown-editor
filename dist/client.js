@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFlashcardSerializerExtensions = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -51,8 +51,8 @@ const getFlashcardSerializerExtensions = () => {
     ]);
 };
 exports.getFlashcardSerializerExtensions = getFlashcardSerializerExtensions;
-const flashcardMdToHtml = (input) => {
-    const { extensions, markdown } = input;
+const getFlashCardMdToHtmlInput = () => {
+    const extensions = exports.getFlashcardSerializerExtensions();
     const schema = new prosemirror_model_1.Schema({
         nodes: extensions.nodes,
         marks: extensions.marks,
@@ -62,13 +62,18 @@ const flashcardMdToHtml = (input) => {
         schema,
         plugins: extensions.rulePlugins,
     });
+    return {
+        domSerializer,
+        markdownParser,
+    };
+};
+exports.getFlashCardMdToHtmlInput = getFlashCardMdToHtmlInput;
+const flashcardMdToHtml = (input) => {
+    const { markdownParser, domSerializer, markdown } = input;
     const doc = markdownParser.parse(markdown);
-    const serializedFragment = domSerializer.serializeFragment(doc.content, {
+    return domSerializer.serializeFragment(doc.content, {
         document,
     });
-    const throwAwayDiv = document.createElement("div");
-    throwAwayDiv.appendChild(serializedFragment);
-    return throwAwayDiv.innerHTML;
 };
 exports.flashcardMdToHtml = flashcardMdToHtml;
 const getFlashcardEditorExtensions = (input = {}) => {

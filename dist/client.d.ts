@@ -1,3 +1,5 @@
+import { DOMSerializer } from 'prosemirror-model';
+import { MarkdownParser } from 'prosemirror-markdown';
 import ExtensionManager from "./lib/ExtensionManager";
 import Bold from "./marks/Bold";
 import RedHighlight from "./marks/highlights/RedHighlight";
@@ -20,11 +22,16 @@ import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 export declare const getFlashcardSerializerExtensions: () => ExtensionManager;
+export declare const getFlashCardMdToHtmlInput: () => {
+    domSerializer: DOMSerializer;
+    markdownParser: MarkdownParser;
+};
 declare type FlashcardMdToHtmlInput = {
-    extensions: ExtensionManager;
+    domSerializer: DOMSerializer;
+    markdownParser: MarkdownParser;
     markdown: string;
 };
-export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => string;
+export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => HTMLElement | DocumentFragment;
 declare type GetFlashcardEditorExtensionsInput = {
     maxLength?: number;
     disableLinkPaste?: boolean;
