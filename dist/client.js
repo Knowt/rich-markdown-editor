@@ -92,16 +92,16 @@ const flashcardMdToText = (input) => {
     let text = '';
     const traverseNodes = (nodes) => {
         Array.from(nodes).forEach((node) => {
-            text += node.textContent;
-            if (node.childNodes) {
+            if (node.childNodes.length) {
                 traverseNodes(node.childNodes);
+            }
+            else {
+                text += node.textContent;
             }
         });
         text += ' ';
     };
-    if (doc.childNodes) {
-        traverseNodes(doc.childNodes);
-    }
+    traverseNodes(doc.childNodes);
     return text;
 };
 exports.flashcardMdToText = flashcardMdToText;
