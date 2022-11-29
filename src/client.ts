@@ -120,7 +120,7 @@ export const flashcardMdToText = (input: FlashcardMdToHtmlInput) => {
 
   traverseNodes(doc.childNodes);
 
-  return text;
+  return text.trim();
 }
 
 type GetFlashcardEditorExtensionsInput = {
