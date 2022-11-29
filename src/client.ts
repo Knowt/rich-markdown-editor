@@ -1,4 +1,5 @@
 import { Schema, Node as ProsemirrorNode, DOMSerializer } from 'prosemirror-model';
+import { MarkdownParser } from 'prosemirror-markdown';
 import ExtensionManager from "./lib/ExtensionManager";
 // marks
 import Bold from "./marks/Bold";
@@ -51,15 +52,9 @@ export const getFlashcardSerializerExtensions = () => {
   ]);
 }
 
-type FlashcardMdToHtmlInput = {
-  extensions: ExtensionManager;
-  markdown: string;
-}
+export const getFlashCardMdToHtmlInput = () => {
+  const extensions = getFlashcardSerializerExtensions();
 
-export const flashcardMdToHtml = (
-  input: FlashcardMdToHtmlInput,
-) => {
-  const { extensions, markdown } = input;
   const schema = new Schema({
     nodes: extensions.nodes,
     marks: extensions.marks,
@@ -70,15 +65,27 @@ export const flashcardMdToHtml = (
     plugins: extensions.rulePlugins,
   });
 
+  return {
+    domSerializer,
+    markdownParser,
+  }
+}
+
+type FlashcardMdToHtmlInput = {
+  domSerializer: DOMSerializer;
+  markdownParser: MarkdownParser;
+  markdown: string;
+}
+
+export const flashcardMdToHtml = (
+  input: FlashcardMdToHtmlInput,
+) => {
+  const { markdownParser, domSerializer, markdown } = input;
   const doc = markdownParser.parse(markdown) as ProsemirrorNode;
 
-  const serializedFragment = domSerializer.serializeFragment(doc.content, {
+  return domSerializer.serializeFragment(doc.content, {
     document,
   });
-  const throwAwayDiv = document.createElement("div");
-  throwAwayDiv.appendChild(serializedFragment);
-
-  return throwAwayDiv.innerHTML;
 }
 
 type GetFlashcardEditorExtensionsInput = {
