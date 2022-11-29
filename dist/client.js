@@ -102,7 +102,7 @@ const flashcardMdToText = (input) => {
         text += ' ';
     };
     traverseNodes(doc.childNodes);
-    return text;
+    return text.trim();
 };
 exports.flashcardMdToText = flashcardMdToText;
 const getFlashcardEditorExtensions = (input = {}) => {
