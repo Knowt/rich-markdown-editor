@@ -100,25 +100,25 @@ export const flashcardMdToHtml = (
   return flashcardDocToHtmlString(doc);
 }
 
+// new lines are treated as spaces
 export const flashcardMdToText = (input: FlashcardMdToHtmlInput) => {
   const doc = flashcardMdToHTMLDoc(input);
 
   let text = '';
   const traverseNodes = (nodes: NodeListOf<ChildNode>) => {
     Array.from(nodes).forEach( ( node ) => {
-      text += node.textContent;
-      
-      if (node.childNodes) {
+      if (node.childNodes.length) {
         traverseNodes(node.childNodes);
+      }
+      else {
+        text += node.textContent;
       }
     } );
     
     text += ' ';
   }
 
-  if (doc.childNodes) {
-    traverseNodes(doc.childNodes);
-  }
+  traverseNodes(doc.childNodes);
 
   return text;
 }
