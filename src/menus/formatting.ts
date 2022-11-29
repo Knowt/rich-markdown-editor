@@ -12,9 +12,8 @@ import {
   TodoListIcon,
   InputIcon,
   HighlightIcon,
-  ItalicIcon,
 } from "outline-icons";
-import { CircleIcon, UnderlineIcon } from '../icons';
+import { CircleIcon, UnderlineIcon, ItalicIcon } from '../icons';
 import { isInTable } from "@knowt/prosemirror-tables";
 import isInList from "../queries/isInList";
 import isMarkActive from "../queries/isMarkActive";
