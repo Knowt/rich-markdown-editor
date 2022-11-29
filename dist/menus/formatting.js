@@ -250,7 +250,7 @@ function formattingMenuItems(input) {
         {
             name: "em",
             tooltip: dictionary.em,
-            icon: outline_icons_1.ItalicIcon,
+            icon: icons_1.ItalicIcon,
             active: isMarkActive_1.default(schema.marks.em),
             visible: !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({

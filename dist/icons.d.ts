@@ -20,5 +20,9 @@ export declare const UnderlineIcon: ({ color, width }: {
     color: any;
     width?: number | undefined;
 }) => JSX.Element;
+export declare const ItalicIcon: ({ color, width }: {
+    color: any;
+    width?: number | undefined;
+}) => JSX.Element;
 export {};
 //# sourceMappingURL=icons.d.ts.map
