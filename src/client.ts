@@ -83,9 +83,13 @@ export const flashcardMdToHtml = (
   const { markdownParser, domSerializer, markdown } = input;
   const doc = markdownParser.parse(markdown) as ProsemirrorNode;
 
-  return domSerializer.serializeFragment(doc.content, {
+  const serializedFragment = domSerializer.serializeFragment(doc.content, {
     document,
   });
+  const throwAwayDiv = document.createElement("div");
+  throwAwayDiv.appendChild(serializedFragment);
+
+  return throwAwayDiv.innerHTML;
 }
 
 type GetFlashcardEditorExtensionsInput = {
