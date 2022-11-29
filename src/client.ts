@@ -77,19 +77,50 @@ type FlashcardMdToHtmlInput = {
   markdown: string;
 }
 
-export const flashcardMdToHtml = (
-  input: FlashcardMdToHtmlInput,
-) => {
+export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
   const { markdownParser, domSerializer, markdown } = input;
   const doc = markdownParser.parse(markdown) as ProsemirrorNode;
 
-  const serializedFragment = domSerializer.serializeFragment(doc.content, {
+  return domSerializer.serializeFragment(doc.content, {
     document,
   });
+}
+
+export const flashcardDocToHtmlString = (doc: HTMLElement | DocumentFragment) => {
   const throwAwayDiv = document.createElement("div");
-  throwAwayDiv.appendChild(serializedFragment);
+  throwAwayDiv.appendChild(doc);
 
   return throwAwayDiv.innerHTML;
+}
+
+export const flashcardMdToHtml = (
+  input: FlashcardMdToHtmlInput,
+) => {
+  const doc = flashcardMdToHTMLDoc(input);
+  return flashcardDocToHtmlString(doc);
+}
+
+export const flashcardMdToText = (input: FlashcardMdToHtmlInput) => {
+  const doc = flashcardMdToHTMLDoc(input);
+
+  let text = '';
+  const traverseNodes = (nodes: NodeListOf<ChildNode>) => {
+    Array.from(nodes).forEach( ( node ) => {
+      text += node.textContent;
+      
+      if (node.childNodes) {
+        traverseNodes(node.childNodes);
+      }
+    } );
+    
+    text += ' ';
+  }
+
+  if (doc.childNodes) {
+    traverseNodes(doc.childNodes);
+  }
+
+  return text;
 }
 
 type GetFlashcardEditorExtensionsInput = {
