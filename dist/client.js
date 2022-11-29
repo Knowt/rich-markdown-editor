@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToHtml = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -68,17 +68,43 @@ const getFlashCardMdToHtmlInput = () => {
     };
 };
 exports.getFlashCardMdToHtmlInput = getFlashCardMdToHtmlInput;
-const flashcardMdToHtml = (input) => {
+const flashcardMdToHTMLDoc = (input) => {
     const { markdownParser, domSerializer, markdown } = input;
     const doc = markdownParser.parse(markdown);
-    const serializedFragment = domSerializer.serializeFragment(doc.content, {
+    return domSerializer.serializeFragment(doc.content, {
         document,
     });
+};
+exports.flashcardMdToHTMLDoc = flashcardMdToHTMLDoc;
+const flashcardDocToHtmlString = (doc) => {
     const throwAwayDiv = document.createElement("div");
-    throwAwayDiv.appendChild(serializedFragment);
+    throwAwayDiv.appendChild(doc);
     return throwAwayDiv.innerHTML;
 };
+exports.flashcardDocToHtmlString = flashcardDocToHtmlString;
+const flashcardMdToHtml = (input) => {
+    const doc = exports.flashcardMdToHTMLDoc(input);
+    return exports.flashcardDocToHtmlString(doc);
+};
 exports.flashcardMdToHtml = flashcardMdToHtml;
+const flashcardMdToText = (input) => {
+    const doc = exports.flashcardMdToHTMLDoc(input);
+    let text = '';
+    const traverseNodes = (nodes) => {
+        Array.from(nodes).forEach((node) => {
+            text += node.textContent;
+            if (node.childNodes) {
+                traverseNodes(node.childNodes);
+            }
+        });
+        text += ' ';
+    };
+    if (doc.childNodes) {
+        traverseNodes(doc.childNodes);
+    }
+    return text;
+};
+exports.flashcardMdToText = flashcardMdToText;
 const getFlashcardEditorExtensions = (input = {}) => {
     const { maxLength, disableCodePaste = true, disableLinkPaste = true } = input;
     return {
