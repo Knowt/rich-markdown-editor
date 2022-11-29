@@ -71,9 +71,12 @@ exports.getFlashCardMdToHtmlInput = getFlashCardMdToHtmlInput;
 const flashcardMdToHtml = (input) => {
     const { markdownParser, domSerializer, markdown } = input;
     const doc = markdownParser.parse(markdown);
-    return domSerializer.serializeFragment(doc.content, {
+    const serializedFragment = domSerializer.serializeFragment(doc.content, {
         document,
     });
+    const throwAwayDiv = document.createElement("div");
+    throwAwayDiv.appendChild(serializedFragment);
+    return throwAwayDiv.innerHTML;
 };
 exports.flashcardMdToHtml = flashcardMdToHtml;
 const getFlashcardEditorExtensions = (input = {}) => {

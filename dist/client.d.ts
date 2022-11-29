@@ -31,7 +31,7 @@ declare type FlashcardMdToHtmlInput = {
     markdownParser: MarkdownParser;
     markdown: string;
 };
-export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => HTMLElement | DocumentFragment;
+export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => string;
 declare type GetFlashcardEditorExtensionsInput = {
     maxLength?: number;
     disableLinkPaste?: boolean;
