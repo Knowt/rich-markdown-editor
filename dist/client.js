@@ -106,6 +106,8 @@ const getFlashcardEditorExtensions = (input = {}) => {
             new Doc_1.default(),
             new Paragraph_1.default(),
             new Text_1.default(),
+            new OrangeHighlight_1.default(),
+            new YellowHighlight_1.default(),
             new BlueHighlight_1.default(),
             new GreenHighlight_1.default(),
             new RedHighlight_1.default(),
