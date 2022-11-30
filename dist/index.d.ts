@@ -158,6 +158,7 @@ export declare type Props = {
     disableEmojiMenu?: boolean;
     disableBlockMenu?: boolean;
     disableLinkToolbar?: boolean;
+    disableBackgroundMarksInToolbar?: boolean;
 };
 declare type State = {
     isRTL: boolean;

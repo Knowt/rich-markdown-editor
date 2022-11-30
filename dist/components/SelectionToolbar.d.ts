@@ -21,6 +21,7 @@ declare type Props = {
     defaultBackground?: DefaultBackground;
     setDefaultHighlight?: SetDefaultHighlight;
     setDefaultBackground?: SetDefaultBackground;
+    disableBackgroundMarksInToolbar?: boolean;
 };
 declare type HandleTableDeleteInput = {
     isTableRowSelected: boolean;

@@ -258,6 +258,7 @@ class SelectionToolbar extends React.Component {
                 setDefaultBackground,
                 setDefaultHighlight,
                 commands: this.props.commands,
+                disableBackgroundMarksInToolbar: true,
             });
             isTextSelection = true;
         }

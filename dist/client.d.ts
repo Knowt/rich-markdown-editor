@@ -3,11 +3,8 @@ import { MarkdownParser } from 'prosemirror-markdown';
 import ExtensionManager from "./lib/ExtensionManager";
 import Bold from "./marks/Bold";
 import RedHighlight from "./marks/highlights/RedHighlight";
-import OrangeHighlight from "./marks/highlights/OrangeHighlight";
-import YellowHighlight from "./marks/highlights/YellowHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
-import { BlueBackground, RedBackground, OrangeBackground, YellowBackground, GreenBackground } from './marks/backgrounds';
 import Italic from "./marks/Italic";
 import Strikethrough from "./marks/Strikethrough";
 import TemplatePlaceholder from "./marks/Placeholder";
@@ -41,7 +38,7 @@ declare type GetFlashcardEditorExtensionsInput = {
     disableCodePaste?: boolean;
 };
 export declare const getFlashcardEditorExtensions: (input?: GetFlashcardEditorExtensionsInput) => {
-    baseExtensions: (Doc | Text | HardBreak | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | BlueBackground | RedBackground | OrangeBackground | YellowBackground | GreenBackground | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
+    baseExtensions: (Doc | Text | HardBreak | Paragraph | Bold | RedHighlight | GreenHighlight | BlueHighlight | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
 export {};

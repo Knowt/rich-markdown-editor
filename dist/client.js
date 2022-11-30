@@ -12,7 +12,6 @@ const OrangeHighlight_1 = __importDefault(require("./marks/highlights/OrangeHigh
 const YellowHighlight_1 = __importDefault(require("./marks/highlights/YellowHighlight"));
 const GreenHighlight_1 = __importDefault(require("./marks/highlights/GreenHighlight"));
 const BlueHighlight_1 = __importDefault(require("./marks/highlights/BlueHighlight"));
-const backgrounds_1 = require("./marks/backgrounds");
 const Italic_1 = __importDefault(require("./marks/Italic"));
 const Strikethrough_1 = __importDefault(require("./marks/Strikethrough"));
 const Placeholder_1 = __importDefault(require("./marks/Placeholder"));
@@ -32,11 +31,6 @@ const getFlashcardSerializerExtensions = () => {
         new Doc_1.default(),
         new Paragraph_1.default(),
         new Text_1.default(),
-        new backgrounds_1.BlueBackground(),
-        new backgrounds_1.RedBackground(),
-        new backgrounds_1.OrangeBackground(),
-        new backgrounds_1.YellowBackground(),
-        new backgrounds_1.GreenBackground(),
         new OrangeHighlight_1.default(),
         new YellowHighlight_1.default(),
         new BlueHighlight_1.default(),
@@ -112,13 +106,6 @@ const getFlashcardEditorExtensions = (input = {}) => {
             new Doc_1.default(),
             new Paragraph_1.default(),
             new Text_1.default(),
-            new backgrounds_1.BlueBackground(),
-            new backgrounds_1.RedBackground(),
-            new backgrounds_1.OrangeBackground(),
-            new backgrounds_1.YellowBackground(),
-            new backgrounds_1.GreenBackground(),
-            new OrangeHighlight_1.default(),
-            new YellowHighlight_1.default(),
             new BlueHighlight_1.default(),
             new GreenHighlight_1.default(),
             new RedHighlight_1.default(),

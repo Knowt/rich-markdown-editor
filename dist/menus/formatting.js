@@ -51,7 +51,7 @@ const organizeMenuItemByDefault = (input) => {
     return organizedItem;
 };
 function formattingMenuItems(input) {
-    const { view, isTemplate, dictionary, deviceType, commands, defaultHighlight = constants_1.DEFAULT_HIGHLIGHT, defaultBackground = constants_1.DEFAULT_BACKGROUND, setDefaultBackground, setDefaultHighlight, } = input;
+    const { view, isTemplate, dictionary, deviceType, commands, defaultHighlight = constants_1.DEFAULT_HIGHLIGHT, defaultBackground = constants_1.DEFAULT_BACKGROUND, setDefaultBackground, setDefaultHighlight, disableBackgroundMarksInToolbar, } = input;
     const { state } = view;
     const { schema, selection } = state;
     const isTable = prosemirror_tables_1.isInTable(state);
@@ -213,7 +213,7 @@ function formattingMenuItems(input) {
             }),
         },
     ];
-    return [
+    const items = [
         {
             name: "placeholder",
             tooltip: dictionary.placeholder,
@@ -286,19 +286,24 @@ function formattingMenuItems(input) {
         organizeMenuItemByDefault({
             items: ALL_HIGHLIGHTS,
             name: defaultHighlight,
-            orientation: 'left',
+            orientation: disableBackgroundMarksInToolbar ? 'right' : 'left',
             tooltip: 'More Highlights',
             commands,
             setFn: setDefaultHighlight,
         }),
-        organizeMenuItemByDefault({
+    ];
+    if (!disableBackgroundMarksInToolbar) {
+        items.push(organizeMenuItemByDefault({
             items: ALL_BACKGROUNDS,
             name: defaultBackground,
             orientation: 'right',
             tooltip: 'More Backgrounds',
             commands,
             setFn: setDefaultBackground,
-        }),
+        }));
+    }
+    return [
+        ...items,
         {
             name: "separator",
             visible: allowBlocks,

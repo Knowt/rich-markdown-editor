@@ -11,6 +11,7 @@ interface FormattingMenuItemsInput {
     defaultBackground?: DefaultBackground;
     setDefaultHighlight?: SetDefaultHighlight;
     setDefaultBackground?: SetDefaultBackground;
+    disableBackgroundMarksInToolbar?: boolean;
 }
 export default function formattingMenuItems(input: FormattingMenuItemsInput): MenuItem[];
 export {};
