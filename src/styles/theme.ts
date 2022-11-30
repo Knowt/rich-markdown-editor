@@ -85,7 +85,7 @@ export const base = {
 
 export const light = {
   ...base,
-  background: colors.white,
+  background: colors.knowtOffWhite2,
   text: colors.almostBlack,
   code: colors.lightBlack,
   cursor: colors.black,
