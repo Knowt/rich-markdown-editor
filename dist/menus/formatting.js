@@ -51,6 +51,7 @@ const organizeMenuItemByDefault = (input) => {
     return organizedItem;
 };
 function formattingMenuItems(input) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5;
     const { view, isTemplate, dictionary, deviceType, commands, defaultHighlight = constants_1.DEFAULT_HIGHLIGHT, defaultBackground = constants_1.DEFAULT_BACKGROUND, setDefaultBackground, setDefaultHighlight, disableBackgroundMarksInToolbar, } = input;
     const { state } = view;
     const { schema, selection } = state;
@@ -64,7 +65,7 @@ function formattingMenuItems(input) {
             name: "highlight_red",
             tooltip: "Red Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_red.attrs.color.default,
+            iconColor: (_c = (_b = (_a = schema.marks.highlight_red) === null || _a === void 0 ? void 0 : _a.attrs) === null || _b === void 0 ? void 0 : _b.color) === null || _c === void 0 ? void 0 : _c.default,
             active: isMarkActive_1.default(schema.marks.highlight_red),
             visible: !isTemplate && !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({
@@ -76,7 +77,7 @@ function formattingMenuItems(input) {
             name: "highlight_orange",
             tooltip: "Orange Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_orange.attrs.color.default,
+            iconColor: (_f = (_e = (_d = schema.marks.highlight_orange) === null || _d === void 0 ? void 0 : _d.attrs) === null || _e === void 0 ? void 0 : _e.color) === null || _f === void 0 ? void 0 : _f.default,
             active: isMarkActive_1.default(schema.marks.highlight_orange),
             visible: !isTemplate && !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({
@@ -88,7 +89,7 @@ function formattingMenuItems(input) {
             name: "highlight_yellow",
             tooltip: "Yellow Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_yellow.attrs.color.default,
+            iconColor: (_j = (_h = (_g = schema.marks.highlight_yellow) === null || _g === void 0 ? void 0 : _g.attrs) === null || _h === void 0 ? void 0 : _h.color) === null || _j === void 0 ? void 0 : _j.default,
             active: isMarkActive_1.default(schema.marks.highlight_yellow),
             visible: !isTemplate && !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({
@@ -100,7 +101,7 @@ function formattingMenuItems(input) {
             name: "highlight_green",
             tooltip: "Green Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_green.attrs.color.default,
+            iconColor: (_m = (_l = (_k = schema.marks.highlight_green) === null || _k === void 0 ? void 0 : _k.attrs) === null || _l === void 0 ? void 0 : _l.color) === null || _m === void 0 ? void 0 : _m.default,
             active: isMarkActive_1.default(schema.marks.highlight_green),
             visible: !isTemplate && !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({
@@ -112,7 +113,7 @@ function formattingMenuItems(input) {
             name: "highlight_blue",
             tooltip: "Blue Highlight",
             icon: outline_icons_1.HighlightIcon,
-            iconColor: schema.marks.highlight_blue.attrs.color.default,
+            iconColor: (_q = (_p = (_o = schema.marks.highlight_blue) === null || _o === void 0 ? void 0 : _o.attrs) === null || _p === void 0 ? void 0 : _p.color) === null || _q === void 0 ? void 0 : _q.default,
             active: isMarkActive_1.default(schema.marks.highlight_blue),
             visible: !isTemplate && !isSelectionEmpty,
             shortcut: parseShortcut_1.parseShortcut({
@@ -132,7 +133,7 @@ function formattingMenuItems(input) {
                     r: constants_1.BACKGROUND_RADIUS,
                     cx: constants_1.BACKGROUND_RADIUS,
                     cy: constants_1.BACKGROUND_RADIUS,
-                    fill: schema.marks.background_red.attrs.color.default,
+                    fill: (_t = (_s = (_r = schema.marks.background_red) === null || _r === void 0 ? void 0 : _r.attrs) === null || _s === void 0 ? void 0 : _s.color) === null || _t === void 0 ? void 0 : _t.default,
                     size: constants_1.BACKGROUND_ICON_SIZE,
                 },
                 active: isMarkActive_1.default(schema.marks.background_red),
@@ -150,7 +151,7 @@ function formattingMenuItems(input) {
                     r: constants_1.BACKGROUND_RADIUS,
                     cx: constants_1.BACKGROUND_RADIUS,
                     cy: constants_1.BACKGROUND_RADIUS,
-                    fill: schema.marks.background_orange.attrs.color.default,
+                    fill: (_w = (_v = (_u = schema.marks.background_orange) === null || _u === void 0 ? void 0 : _u.attrs) === null || _v === void 0 ? void 0 : _v.color) === null || _w === void 0 ? void 0 : _w.default,
                     size: constants_1.BACKGROUND_ICON_SIZE,
                 },
                 active: isMarkActive_1.default(schema.marks.background_orange),
@@ -168,7 +169,7 @@ function formattingMenuItems(input) {
                     r: constants_1.BACKGROUND_RADIUS,
                     cx: constants_1.BACKGROUND_RADIUS,
                     cy: constants_1.BACKGROUND_RADIUS,
-                    fill: schema.marks.background_yellow.attrs.color.default,
+                    fill: (_z = (_y = (_x = schema.marks.background_yellow) === null || _x === void 0 ? void 0 : _x.attrs) === null || _y === void 0 ? void 0 : _y.color) === null || _z === void 0 ? void 0 : _z.default,
                     size: constants_1.BACKGROUND_ICON_SIZE,
                 },
                 active: isMarkActive_1.default(schema.marks.background_yellow),
@@ -186,7 +187,7 @@ function formattingMenuItems(input) {
                     r: constants_1.BACKGROUND_RADIUS,
                     cx: constants_1.BACKGROUND_RADIUS,
                     cy: constants_1.BACKGROUND_RADIUS,
-                    fill: schema.marks.background_green.attrs.color.default,
+                    fill: (_2 = (_1 = (_0 = schema.marks.background_green) === null || _0 === void 0 ? void 0 : _0.attrs) === null || _1 === void 0 ? void 0 : _1.color) === null || _2 === void 0 ? void 0 : _2.default,
                     size: constants_1.BACKGROUND_ICON_SIZE,
                 },
                 active: isMarkActive_1.default(schema.marks.background_green),
@@ -204,7 +205,7 @@ function formattingMenuItems(input) {
                     r: constants_1.BACKGROUND_RADIUS,
                     cx: constants_1.BACKGROUND_RADIUS,
                     cy: constants_1.BACKGROUND_RADIUS,
-                    fill: schema.marks.background_blue.attrs.color.default,
+                    fill: (_5 = (_4 = (_3 = schema.marks.background_blue) === null || _3 === void 0 ? void 0 : _3.attrs) === null || _4 === void 0 ? void 0 : _4.color) === null || _5 === void 0 ? void 0 : _5.default,
                     size: constants_1.BACKGROUND_ICON_SIZE,
                 },
                 active: isMarkActive_1.default(schema.marks.background_blue),
