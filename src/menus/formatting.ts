@@ -48,6 +48,7 @@ interface FormattingMenuItemsInput {
   defaultBackground?: DefaultBackground;
   setDefaultHighlight?: SetDefaultHighlight;
   setDefaultBackground?: SetDefaultBackground;
+  disableBackgroundMarksInToolbar?: boolean;
 }
 
 interface OrganizeMenuItemsInput<T extends string> {
@@ -136,7 +137,8 @@ export default function formattingMenuItems(
     defaultHighlight=DEFAULT_HIGHLIGHT,
     defaultBackground=DEFAULT_BACKGROUND,
     setDefaultBackground,
-    setDefaultHighlight, } = input;
+    setDefaultHighlight,
+    disableBackgroundMarksInToolbar, } = input;
   const { state } = view;
   const { schema, selection } = state;
   const isTable = isInTable(state);
@@ -302,7 +304,7 @@ export default function formattingMenuItems(
     },
   ];
 
-  return [
+  const items = [
     {
       name: "placeholder",
       tooltip: dictionary.placeholder,
@@ -376,20 +378,28 @@ export default function formattingMenuItems(
     organizeMenuItemByDefault( {
       items: ALL_HIGHLIGHTS,
       name: defaultHighlight,
-      orientation: 'left',
+      orientation: disableBackgroundMarksInToolbar ? 'right' : 'left',
       tooltip: 'More Highlights',
       commands,
       setFn: setDefaultHighlight,
     } ),
-    // background
-    organizeMenuItemByDefault( {
-      items: ALL_BACKGROUNDS,
-      name: defaultBackground,
-      orientation: 'right',
-      tooltip: 'More Backgrounds',
-      commands,
-      setFn: setDefaultBackground,
-    } ),
+  ];
+
+  if ( !disableBackgroundMarksInToolbar ) {
+    items.push(
+      organizeMenuItemByDefault( {
+        items: ALL_BACKGROUNDS,
+        name: defaultBackground,
+        orientation: 'right',
+        tooltip: 'More Backgrounds',
+        commands,
+        setFn: setDefaultBackground,
+      } )
+    );
+  }
+
+  return [
+    ...items,
     {
       name: "separator",
       visible: allowBlocks,

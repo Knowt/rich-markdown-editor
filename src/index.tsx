@@ -142,6 +142,7 @@ export type Props = {
   disableEmojiMenu?: boolean;
   disableBlockMenu?: boolean;
   disableLinkToolbar?: boolean;
+  disableBackgroundMarksInToolbar?: boolean;
 };
 
 type State = {
@@ -853,6 +854,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   defaultBackground={this.state.defaultBackground || DEFAULT_BACKGROUND}
                   setDefaultHighlight={this.setDefaultHighlight}
                   setDefaultBackground={this.setDefaultBackground}
+                  disableBackgroundMarksInToolbar={this.props.disableBackgroundMarksInToolbar}
                 />
                 {
                   !this.props.disableLinkToolbar ? (

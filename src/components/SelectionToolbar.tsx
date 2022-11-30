@@ -43,6 +43,7 @@ type Props = {
   defaultBackground?: DefaultBackground;
   setDefaultHighlight?: SetDefaultHighlight;
   setDefaultBackground?: SetDefaultBackground;
+  disableBackgroundMarksInToolbar?: boolean;
 };
 
 type HandleTableDeleteInput = {
@@ -317,6 +318,7 @@ export default class SelectionToolbar extends React.Component<Props> {
         setDefaultBackground,
         setDefaultHighlight,
         commands: this.props.commands,
+        disableBackgroundMarksInToolbar: true,
       } );
 
       isTextSelection = true;
