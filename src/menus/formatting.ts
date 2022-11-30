@@ -211,98 +211,101 @@ export default function formattingMenuItems(
     },
   ];
 
-  const ALL_BACKGROUNDS: MenuItem[] = [
-    {
-      name: "background_red",
-      tooltip: "Red Background",
-      icon: CircleIcon,
-      iconSVGProps: {
-        r: BACKGROUND_RADIUS,
-        cx: BACKGROUND_RADIUS,
-        cy: BACKGROUND_RADIUS,
-        fill: schema.marks.background_red.attrs.color.default,
-        size: BACKGROUND_ICON_SIZE,
+  let ALL_BACKGROUNDS: MenuItem[] | undefined = undefined;
+  if ( !disableBackgroundMarksInToolbar ) {
+    ALL_BACKGROUNDS = [
+      {
+        name: "background_red",
+        tooltip: "Red Background",
+        icon: CircleIcon,
+        iconSVGProps: {
+          r: BACKGROUND_RADIUS,
+          cx: BACKGROUND_RADIUS,
+          cy: BACKGROUND_RADIUS,
+          fill: schema.marks.background_red.attrs.color.default,
+          size: BACKGROUND_ICON_SIZE,
+        },
+        active: isMarkActive(schema.marks.background_red),
+        visible: !isTemplate && !isSelectionEmpty,
+        shortcut: parseShortcut( { 
+          shortcut: RED_BACKGROUND_SHORTCUT,
+          deviceType,
+        } ),
       },
-      active: isMarkActive(schema.marks.background_red),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: RED_BACKGROUND_SHORTCUT,
-        deviceType,
-      } ),
-    },
-    {
-      name: "background_orange",
-      tooltip: "Orange Background",
-      icon: CircleIcon,
-      iconSVGProps: {
-        r: BACKGROUND_RADIUS,
-        cx: BACKGROUND_RADIUS,
-        cy: BACKGROUND_RADIUS,
-        fill: schema.marks.background_orange.attrs.color.default,
-        size: BACKGROUND_ICON_SIZE,
+      {
+        name: "background_orange",
+        tooltip: "Orange Background",
+        icon: CircleIcon,
+        iconSVGProps: {
+          r: BACKGROUND_RADIUS,
+          cx: BACKGROUND_RADIUS,
+          cy: BACKGROUND_RADIUS,
+          fill: schema.marks.background_orange.attrs.color.default,
+          size: BACKGROUND_ICON_SIZE,
+        },
+        active: isMarkActive(schema.marks.background_orange),
+        visible: !isTemplate && !isSelectionEmpty,
+        shortcut: parseShortcut( { 
+          shortcut: ORANGE_BACKGROUND_SHORTCUT,
+          deviceType,
+        } ),
       },
-      active: isMarkActive(schema.marks.background_orange),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: ORANGE_BACKGROUND_SHORTCUT,
-        deviceType,
-      } ),
-    },
-    {
-      name: "background_yellow",
-      tooltip: "Yellow Background",
-      icon: CircleIcon,
-      iconSVGProps: {
-        r: BACKGROUND_RADIUS,
-        cx: BACKGROUND_RADIUS,
-        cy: BACKGROUND_RADIUS,
-        fill: schema.marks.background_yellow.attrs.color.default,
-        size: BACKGROUND_ICON_SIZE,
+      {
+        name: "background_yellow",
+        tooltip: "Yellow Background",
+        icon: CircleIcon,
+        iconSVGProps: {
+          r: BACKGROUND_RADIUS,
+          cx: BACKGROUND_RADIUS,
+          cy: BACKGROUND_RADIUS,
+          fill: schema.marks.background_yellow.attrs.color.default,
+          size: BACKGROUND_ICON_SIZE,
+        },
+        active: isMarkActive(schema.marks.background_yellow),
+        visible: !isTemplate && !isSelectionEmpty,
+        shortcut: parseShortcut( { 
+          shortcut: YELLOW_BACKGROUND_SHORTCUT,
+          deviceType,
+        } ),
       },
-      active: isMarkActive(schema.marks.background_yellow),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: YELLOW_BACKGROUND_SHORTCUT,
-        deviceType,
-      } ),
-    },
-    {
-      name: "background_green",
-      tooltip: "Green Background",
-      icon: CircleIcon,
-      iconSVGProps: {
-        r: BACKGROUND_RADIUS,
-        cx: BACKGROUND_RADIUS,
-        cy: BACKGROUND_RADIUS,
-        fill: schema.marks.background_green.attrs.color.default,
-        size: BACKGROUND_ICON_SIZE,
+      {
+        name: "background_green",
+        tooltip: "Green Background",
+        icon: CircleIcon,
+        iconSVGProps: {
+          r: BACKGROUND_RADIUS,
+          cx: BACKGROUND_RADIUS,
+          cy: BACKGROUND_RADIUS,
+          fill: schema.marks.background_green.attrs.color.default,
+          size: BACKGROUND_ICON_SIZE,
+        },
+        active: isMarkActive(schema.marks.background_green),
+        visible: !isTemplate && !isSelectionEmpty,
+        shortcut: parseShortcut( { 
+          shortcut: GREEN_BACKGROUND_SHORTCUT,
+          deviceType,
+        } ),
       },
-      active: isMarkActive(schema.marks.background_green),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: GREEN_BACKGROUND_SHORTCUT,
-        deviceType,
-      } ),
-    },
-    {
-      name: "background_blue",
-      tooltip: "Blue Background",
-      icon: CircleIcon,
-      iconSVGProps: {
-        r: BACKGROUND_RADIUS,
-        cx: BACKGROUND_RADIUS,
-        cy: BACKGROUND_RADIUS,
-        fill: schema.marks.background_blue.attrs.color.default,
-        size: BACKGROUND_ICON_SIZE,
+      {
+        name: "background_blue",
+        tooltip: "Blue Background",
+        icon: CircleIcon,
+        iconSVGProps: {
+          r: BACKGROUND_RADIUS,
+          cx: BACKGROUND_RADIUS,
+          cy: BACKGROUND_RADIUS,
+          fill: schema.marks.background_blue.attrs.color.default,
+          size: BACKGROUND_ICON_SIZE,
+        },
+        active: isMarkActive(schema.marks.background_blue),
+        visible: !isTemplate && !isSelectionEmpty,
+        shortcut: parseShortcut( { 
+          shortcut: BLUE_BACKGROUND_SHORTCUT,
+          deviceType,
+        } ),
       },
-      active: isMarkActive(schema.marks.background_blue),
-      visible: !isTemplate && !isSelectionEmpty,
-      shortcut: parseShortcut( { 
-        shortcut: BLUE_BACKGROUND_SHORTCUT,
-        deviceType,
-      } ),
-    },
-  ];
+    ];
+  }
 
   const items = [
     {
@@ -385,7 +388,7 @@ export default function formattingMenuItems(
     } ),
   ];
 
-  if ( !disableBackgroundMarksInToolbar ) {
+  if ( !disableBackgroundMarksInToolbar && ALL_BACKGROUNDS ) {
     items.push(
       organizeMenuItemByDefault( {
         items: ALL_BACKGROUNDS,

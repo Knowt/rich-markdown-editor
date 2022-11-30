@@ -318,7 +318,7 @@ export default class SelectionToolbar extends React.Component<Props> {
         setDefaultBackground,
         setDefaultHighlight,
         commands: this.props.commands,
-        disableBackgroundMarksInToolbar: true,
+        disableBackgroundMarksInToolbar: this.props.disableBackgroundMarksInToolbar,
       } );
 
       isTextSelection = true;
