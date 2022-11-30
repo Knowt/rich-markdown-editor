@@ -133,6 +133,8 @@ export const getFlashcardEditorExtensions = (
         new Doc(),
         new Paragraph(),
         new Text(),
+        new OrangeHighlight(),
+        new YellowHighlight(),
         new BlueHighlight(),
         new GreenHighlight(),
         new RedHighlight(), // the order matters here!! since it's the default marker
