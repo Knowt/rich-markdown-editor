@@ -8,9 +8,6 @@ import OrangeHighlight from "./marks/highlights/OrangeHighlight";
 import YellowHighlight from "./marks/highlights/YellowHighlight";
 import GreenHighlight from "./marks/highlights/GreenHighlight";
 import BlueHighlight from "./marks/highlights/BlueHighlight";
-import { BlueBackground, RedBackground,
-  OrangeBackground, YellowBackground,
-  GreenBackground } from './marks/backgrounds';
 import Italic from "./marks/Italic";
 import Strikethrough from "./marks/Strikethrough";
 import TemplatePlaceholder from "./marks/Placeholder";
@@ -33,11 +30,6 @@ export const getFlashcardSerializerExtensions = () => {
     new Doc(),
     new Paragraph(),
     new Text(),
-    new BlueBackground(),
-    new RedBackground(),
-    new OrangeBackground(),
-    new YellowBackground(),
-    new GreenBackground(),
     new OrangeHighlight(),
     new YellowHighlight(),
     new BlueHighlight(),
@@ -141,16 +133,6 @@ export const getFlashcardEditorExtensions = (
         new Doc(),
         new Paragraph(),
         new Text(),
-        // backgrounds take precedence over other marks
-        // this makes all below marks wrapped inside the background mark
-        // do not change order of these marks unless you know what you are doing
-        new BlueBackground(),
-        new RedBackground(),
-        new OrangeBackground(),
-        new YellowBackground(),
-        new GreenBackground(),
-        new OrangeHighlight(),
-        new YellowHighlight(),
         new BlueHighlight(),
         new GreenHighlight(),
         new RedHighlight(), // the order matters here!! since it's the default marker
