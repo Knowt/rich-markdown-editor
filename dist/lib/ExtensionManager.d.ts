@@ -6,8 +6,7 @@ import Extension from "./Extension";
 import { PluginSimple } from "markdown-it";
 export default class ExtensionManager {
     extensions: Extension[];
-    isFlashcardEditor?: boolean;
-    constructor(extensions?: Extension[], editor?: Editor, isFlashcardEditor?: boolean);
+    constructor(extensions?: Extension[], editor?: Editor);
     get nodes(): {};
     serializer(): MarkdownSerializer;
     parser({ schema, rules, plugins, }: {

@@ -421,7 +421,7 @@ class RichMarkdownEditor extends React.PureComponent {
         return new ExtensionManager_1.default(this.props.disableExtensions ?
             extensions.filter((extension) => {
                 return !this.props.disableExtensions.includes(extension.name);
-            }) : extensions, this, this.props.isFlashcardEditor);
+            }) : extensions, this);
     }
     createPlugins() {
         return this.extensions.plugins;
@@ -495,17 +495,21 @@ class RichMarkdownEditor extends React.PureComponent {
     }
     createState(value) {
         const doc = this.createDocument(value || this.props.defaultValue);
+        const plugins = [
+            ...this.plugins,
+            ...this.keymaps,
+            prosemirror_dropcursor_1.dropCursor({ color: this.theme().cursor }),
+            prosemirror_gapcursor_1.gapCursor(),
+            prosemirror_inputrules_1.inputRules({ rules: this.inputRules }),
+            prosemirror_keymap_1.keymap(prosemirror_commands_1.baseKeymap),
+        ];
+        if (!this.props.disableFocusTrap) {
+            plugins.push(prosemirror_keymap_1.keymap({ Tab: () => true }));
+        }
         return prosemirror_state_1.EditorState.create({
             schema: this.schema,
             doc,
-            plugins: [
-                ...this.plugins,
-                ...this.keymaps,
-                prosemirror_dropcursor_1.dropCursor({ color: this.theme().cursor }),
-                prosemirror_gapcursor_1.gapCursor(),
-                prosemirror_inputrules_1.inputRules({ rules: this.inputRules }),
-                prosemirror_keymap_1.keymap(prosemirror_commands_1.baseKeymap),
-            ],
+            plugins,
         });
     }
     createDocument(content) {

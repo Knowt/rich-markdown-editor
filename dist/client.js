@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -26,6 +26,11 @@ const MaxLength_1 = __importDefault(require("./plugins/MaxLength"));
 const Placeholder_2 = __importDefault(require("./plugins/Placeholder"));
 const SmartText_1 = __importDefault(require("./plugins/SmartText"));
 const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
+exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
+    '*',
+    '[',
+    '#'
+];
 const getFlashcardSerializerExtensions = () => {
     return new ExtensionManager_1.default([
         new Doc_1.default(),

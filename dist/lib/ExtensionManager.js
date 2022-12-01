@@ -8,14 +8,13 @@ const prosemirror_markdown_1 = require("prosemirror-markdown");
 const serializer_1 = require("./markdown/serializer");
 const rules_1 = __importDefault(require("./markdown/rules"));
 class ExtensionManager {
-    constructor(extensions = [], editor, isFlashcardEditor) {
+    constructor(extensions = [], editor) {
         if (editor) {
             extensions.forEach((extension) => {
                 extension.bindEditor(editor);
             });
         }
         this.extensions = extensions;
-        this.isFlashcardEditor = isFlashcardEditor;
     }
     get nodes() {
         return this.extensions
@@ -40,11 +39,7 @@ class ExtensionManager {
                 return nodes;
             return Object.assign(Object.assign({}, nodes), { [extension.markdownToken || extension.name]: md });
         }, {});
-        return new prosemirror_markdown_1.MarkdownParser(schema, rules_1.default({
-            rules,
-            plugins,
-            isFlashcardEditor: this.isFlashcardEditor
-        }), tokens);
+        return new prosemirror_markdown_1.MarkdownParser(schema, rules_1.default({ rules, plugins }), tokens);
     }
     get marks() {
         return this.extensions
