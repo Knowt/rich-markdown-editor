@@ -45,6 +45,10 @@ export const cleanQuizletSpecialChars = (text: string) => {
     return text.replace( '.', '\\.')
   }
 
+  if ( text.startsWith( '![' ) ) {
+    return text.replace( '![', '!\\[' );
+  }
+
   return text;
 }
 
