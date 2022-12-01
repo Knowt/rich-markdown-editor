@@ -40,6 +40,9 @@ const cleanQuizletSpecialChars = (text) => {
     if (/^\d\./.test(text)) {
         return text.replace('.', '\\.');
     }
+    if (text.startsWith('![')) {
+        return text.replace('![', '!\\[');
+    }
     return text;
 };
 exports.cleanQuizletSpecialChars = cleanQuizletSpecialChars;
