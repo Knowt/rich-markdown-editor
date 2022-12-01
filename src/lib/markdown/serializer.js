@@ -342,6 +342,8 @@ export class MarkdownSerializerState {
   // `firstDelim` is a function going from an item index to a
   // delimiter for the first line of the item.
   renderList(node, delim, firstDelim) {
+    return;
+    
     if (this.closed && this.closed.type === node.type) this.flushClose(3);
     else if (this.inTightList) this.flushClose(1);
 
