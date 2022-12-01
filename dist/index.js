@@ -421,7 +421,7 @@ class RichMarkdownEditor extends React.PureComponent {
         return new ExtensionManager_1.default(this.props.disableExtensions ?
             extensions.filter((extension) => {
                 return !this.props.disableExtensions.includes(extension.name);
-            }) : extensions, this);
+            }) : extensions, this, this.props.isFlashcardEditor);
     }
     createPlugins() {
         return this.extensions.plugins;
@@ -504,7 +504,6 @@ class RichMarkdownEditor extends React.PureComponent {
                 prosemirror_dropcursor_1.dropCursor({ color: this.theme().cursor }),
                 prosemirror_gapcursor_1.gapCursor(),
                 prosemirror_inputrules_1.inputRules({ rules: this.inputRules }),
-                prosemirror_keymap_1.keymap({ Tab: () => true }),
                 prosemirror_keymap_1.keymap(prosemirror_commands_1.baseKeymap),
             ],
         });

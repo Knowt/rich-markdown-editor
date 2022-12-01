@@ -159,6 +159,7 @@ export declare type Props = {
     disableBlockMenu?: boolean;
     disableLinkToolbar?: boolean;
     disableBackgroundMarksInToolbar?: boolean;
+    isFlashcardEditor?: boolean;
 };
 declare type State = {
     isRTL: boolean;
