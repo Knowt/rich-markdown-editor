@@ -143,7 +143,7 @@ export type Props = {
   disableBlockMenu?: boolean;
   disableLinkToolbar?: boolean;
   disableBackgroundMarksInToolbar?: boolean;
-  isFlashcardEditor?: boolean;
+  disableFocusTrap?: boolean;
 };
 
 type State = {
@@ -425,7 +425,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
           );
         }) : extensions, 
       this,
-      this.props.isFlashcardEditor,
     );
   }
 
@@ -518,18 +517,24 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
   createState(value?: string) {
     const doc = this.createDocument(value || this.props.defaultValue);
+    const plugins = [
+      ...this.plugins,
+      ...this.keymaps,
+      dropCursor({ color: this.theme().cursor }),
+      gapCursor(),
+      inputRules({ rules: this.inputRules }),
+      keymap(baseKeymap),
+    ];
+
+    if ( !this.props.disableFocusTrap ) {
+      plugins.push(
+        keymap({ Tab: () => true }), // returns true, so we handle the Tab click, otherwise the default handler is to blur the editor.
+      )
+    }
     return EditorState.create({
       schema: this.schema,
       doc,
-      plugins: [
-        ...this.plugins,
-        ...this.keymaps,
-        dropCursor({ color: this.theme().cursor }),
-        gapCursor(),
-        inputRules({ rules: this.inputRules }),
-        // keymap({ Tab: () => true }), // returns true, so we handle the Tab click, otherwise the default handler is to blur the editor.
-        keymap(baseKeymap),
-      ],
+      plugins,
     });
   }
 

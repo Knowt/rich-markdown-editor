@@ -25,6 +25,14 @@ import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 
+// Because we disable certain markdown nodes within our editor,
+// we need to make sure those special characters are escaped prior to import.
+export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
+  '*',
+  '[',
+  '#'
+];
+
 export const getFlashcardSerializerExtensions = () => {
   return new ExtensionManager([
     new Doc(),
