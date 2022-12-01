@@ -28,7 +28,6 @@ import PasteHandler from "./plugins/PasteHandler";
 // Because we disable certain markdown nodes within our editor,
 // we need to make sure those special characters are escaped prior to import.
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
-  '*',
   '[',
   '#',
   '-',
@@ -43,6 +42,11 @@ export const cleanQuizletSpecialChars = (text: string) => {
   // ordered lists
   if ( /^\d\./.test(text) ) {
     return text.replace( '.', '\\.')
+  }
+
+  // bullet list edge case with stars
+  if ( text.startsWith( '* ' ) ) {
+    return '\\' + text;
   }
 
   if ( text.startsWith( '![' ) ) {
