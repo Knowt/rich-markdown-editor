@@ -207,7 +207,6 @@ class MarkdownSerializerState {
         progress(null, null, parent.childCount);
     }
     renderList(node, delim, firstDelim) {
-        return;
         if (this.closed && this.closed.type === node.type)
             this.flushClose(3);
         else if (this.inTightList)
