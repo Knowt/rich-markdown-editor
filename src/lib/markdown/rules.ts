@@ -4,13 +4,13 @@ import markdownit, { PluginSimple } from "markdown-it";
 const BLOCK_RULER_DISABLED = [ 'code' ];
 
 const FLASHCARD_BLOCK_RULER_DISABLED = [ 'code', 'list', 'heading', 'lheading', 'table', 'fence', 'blockquote', 'hr' ];
-const FLASHCARD_CORE_RULER_DISABLED = [ 'tables-pm', 'embeds', 'checkboxes', 'linkify', 'emoji', 'smartquotes' ];
+const FLASHCARD_CORE_RULER_DISABLED = [ 'embeds', 'checkboxes', 'linkify', 'emoji', 'smartquotes' ];
 const FLASHCARD_INLINE_RULER_DISABLED = [ 'autolink', 'image', 'link' ];
 
 export default function rules({
   rules = {},
   plugins = [],
-  isFlashcardEditor = true,
+  isFlashcardEditor=false,
 }: {
   rules?: Record<string, any>;
   plugins?: PluginSimple[];
