@@ -11,8 +11,9 @@ import { PluginSimple } from "markdown-it";
 
 export default class ExtensionManager {
   extensions: Extension[];
+  isFlashcardEditor?: boolean;
 
-  constructor(extensions: Extension[] = [], editor?: Editor) {
+  constructor(extensions: Extension[] = [], editor?: Editor, isFlashcardEditor?: boolean) {
     if (editor) {
       extensions.forEach((extension) => {
         extension.bindEditor(editor);
@@ -20,6 +21,7 @@ export default class ExtensionManager {
     }
 
     this.extensions = extensions;
+    this.isFlashcardEditor = isFlashcardEditor;
   }
 
   get nodes() {
@@ -81,7 +83,15 @@ export default class ExtensionManager {
         };
       }, {});
 
-    return new MarkdownParser(schema, makeRules({ rules, plugins }), tokens);
+    return new MarkdownParser(
+      schema, 
+      makeRules({ 
+        rules, 
+        plugins, 
+        isFlashcardEditor: this.isFlashcardEditor 
+      }), 
+      tokens
+    );
   }
 
   get marks() {

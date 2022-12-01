@@ -143,6 +143,7 @@ export type Props = {
   disableBlockMenu?: boolean;
   disableLinkToolbar?: boolean;
   disableBackgroundMarksInToolbar?: boolean;
+  isFlashcardEditor?: boolean;
 };
 
 type State = {
@@ -423,7 +424,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             extension.name
           );
         }) : extensions, 
-      this 
+      this,
+      this.props.isFlashcardEditor,
     );
   }
 
