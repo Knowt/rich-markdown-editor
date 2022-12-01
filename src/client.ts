@@ -30,8 +30,23 @@ import PasteHandler from "./plugins/PasteHandler";
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '*',
   '[',
-  '#'
+  '#',
+  '-',
+  '+',
 ];
+
+export const cleanQuizletSpecialChars = (text: string) => {
+  if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
+    return '\\' + text;
+  }
+
+  // ordered lists
+  if ( /^\d\./.test(text) ) {
+    return text.replace( '.', '\\.')
+  }
+
+  return text;
+}
 
 export const getFlashcardSerializerExtensions = () => {
   return new ExtensionManager([
