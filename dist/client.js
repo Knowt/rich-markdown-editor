@@ -27,7 +27,6 @@ const Placeholder_2 = __importDefault(require("./plugins/Placeholder"));
 const SmartText_1 = __importDefault(require("./plugins/SmartText"));
 const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
 exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
-    '*',
     '[',
     '#',
     '-',
@@ -39,6 +38,9 @@ const cleanQuizletSpecialChars = (text) => {
     }
     if (/^\d\./.test(text)) {
         return text.replace('.', '\\.');
+    }
+    if (text.startsWith('* ')) {
+        return '\\' + text;
     }
     if (text.startsWith('![')) {
         return text.replace('![', '!\\[');
