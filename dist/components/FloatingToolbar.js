@@ -152,7 +152,6 @@ const Wrapper = styled_components_1.default.div `
   line-height: 0;
   height: 35px;
   box-sizing: border-box;
-  pointer-events: none;
   white-space: nowrap;
   // DO NOT REMOVE THIS
   // idk why but you need this to calc position of toolbar
@@ -162,7 +161,6 @@ const Wrapper = styled_components_1.default.div `
               0px 0px 1.8px ${props => props.theme.toolbarShadow},
               0px 0px 3.7px ${props => props.theme.toolbarShadow},
               0px 0px 10px ${props => props.theme.toolbarShadow};
-
   * {
     box-sizing: border-box;
   }
@@ -172,6 +170,12 @@ const Wrapper = styled_components_1.default.div `
     transform: translateY(-6px) scale(1);
     opacity: 1;
   `};
+
+  @media screen and ( max-width: 800px ) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    line-height: 0;
+  }
 
   @media print {
     display: none;
