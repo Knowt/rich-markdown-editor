@@ -14,9 +14,6 @@ import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
 import Link from "./marks/Link";
 import HardBreak from "./nodes/HardBreak";
-import OrderedList from "./nodes/OrderedList";
-import BulletList from "./nodes/BulletList";
-import ListItem from "./nodes/ListItem";
 // nodes
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
@@ -64,11 +61,6 @@ export const getFlashcardSerializerExtensions = () => {
     new Doc(),
     new Paragraph(),
     new Text(),
-    new OrderedList(),
-    new BulletList(),
-    new ListItem({
-      includeDrag: false,
-    }),
     new OrangeHighlight(),
     new YellowHighlight(),
     new BlueHighlight(),
@@ -172,11 +164,6 @@ export const getFlashcardEditorExtensions = (
         new Doc(),
         new Paragraph(),
         new Text(),
-        new OrderedList(),
-        new BulletList(),
-        new ListItem({
-          includeDrag: false,
-        }),
         new OrangeHighlight(),
         new YellowHighlight(),
         new BlueHighlight(),
