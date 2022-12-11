@@ -29,6 +29,8 @@ const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
 exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
     '#',
+    '-',
+    '+',
 ];
 const cleanQuizletSpecialChars = (text) => {
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
@@ -38,6 +40,9 @@ const cleanQuizletSpecialChars = (text) => {
         return text.replace('.', '\\.');
     }
     if (/^\s*([-+*])\s$/.test(text)) {
+        return '\\' + text;
+    }
+    if (text.startsWith('* ')) {
         return '\\' + text;
     }
     if (text.startsWith('---')) {
