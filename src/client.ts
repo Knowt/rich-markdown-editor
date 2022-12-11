@@ -40,7 +40,7 @@ export const cleanQuizletSpecialChars = (text: string) => {
   }
 
   // ordered lists
-  if ( /^\d\./.test(text) ) {
+  if ( /^(\d+)\.\s$/.test(text) ) {
     return text.replace( '.', '\\.')
   }
 
