@@ -49,7 +49,7 @@ const cleanQuizletSpecialChars = (text) => {
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
         return '\\' + text;
     }
-    if (/^(\d+)\.\s$/.test(text)) {
+    if (/^\d\./.test(text)) {
         return text.replace('.', '\\.');
     }
     if (/^\s*([-+*])\s$/.test(text)) {

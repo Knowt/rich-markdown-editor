@@ -64,7 +64,6 @@ const HorizontalRule_1 = __importDefault(require("./nodes/HorizontalRule"));
 const Image_1 = __importDefault(require("./nodes/Image"));
 const ListItem_1 = __importDefault(require("./nodes/ListItem"));
 const Notice_1 = __importDefault(require("./nodes/Notice"));
-const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
 const Table_1 = __importDefault(require("./nodes/Table"));
 const TableCell_1 = __importDefault(require("./nodes/TableCell"));
@@ -330,7 +329,6 @@ class RichMarkdownEditor extends React.PureComponent {
             new Emoji_1.default(),
             new Text_1.default(),
             new CheckboxList_1.default(),
-            new OrderedList_1.default(),
             new CheckboxItem_1.default(),
             new BulletList_1.default(),
             new Embed_1.default({
