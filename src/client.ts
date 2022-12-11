@@ -30,6 +30,8 @@ import PasteHandler from "./plugins/PasteHandler";
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '[',
   '#',
+  '-',
+  '+',
 ];
 
 export const cleanQuizletSpecialChars = (text: string) => {
@@ -46,6 +48,9 @@ export const cleanQuizletSpecialChars = (text: string) => {
   if (/^\s*([-+*])\s$/.test(text)) {
     return '\\' + text;
   }
+  if ( text.startsWith( '* ' ) ) {
+    return '\\' + text;
+  }
 
   // horizontal
   if ( text.startsWith('---') ) {
@@ -54,11 +59,6 @@ export const cleanQuizletSpecialChars = (text: string) => {
   if ( text.startsWith('___' ) ) {
     return '\\\\' + text;
   }
-
-  // // bullet list edge case with stars
-  // if ( text.startsWith( '* ' ) ) {
-  //   return '\\' + text;
-  // }
 
   if ( text.startsWith( '![' ) ) {
     return text.replace( '![', '!\\[' );
