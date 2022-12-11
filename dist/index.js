@@ -47,9 +47,11 @@ const ComponentView_1 = __importDefault(require("./lib/ComponentView"));
 const headingToSlug_1 = __importDefault(require("./lib/headingToSlug"));
 const constants_1 = require("./lib/constants");
 const react_device_detect_1 = require("react-device-detect");
+const client_1 = require("./client");
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
+const BulletList_1 = __importDefault(require("./nodes/BulletList"));
 const CodeBlock_1 = __importDefault(require("./nodes/CodeBlock"));
 const CodeFence_1 = __importDefault(require("./nodes/CodeFence"));
 const CheckboxList_1 = __importDefault(require("./nodes/CheckboxList"));
@@ -60,7 +62,9 @@ const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
 const Heading_1 = __importDefault(require("./nodes/Heading"));
 const HorizontalRule_1 = __importDefault(require("./nodes/HorizontalRule"));
 const Image_1 = __importDefault(require("./nodes/Image"));
+const ListItem_1 = __importDefault(require("./nodes/ListItem"));
 const Notice_1 = __importDefault(require("./nodes/Notice"));
+const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
 const Table_1 = __importDefault(require("./nodes/Table"));
 const TableCell_1 = __importDefault(require("./nodes/TableCell"));
@@ -326,10 +330,13 @@ class RichMarkdownEditor extends React.PureComponent {
             new Emoji_1.default(),
             new Text_1.default(),
             new CheckboxList_1.default(),
+            new OrderedList_1.default(),
             new CheckboxItem_1.default(),
+            new BulletList_1.default(),
             new Embed_1.default({
                 embeds: this.props.embeds,
             }),
+            new ListItem_1.default(),
             new Notice_1.default({
                 dictionary,
             }),
@@ -507,11 +514,16 @@ class RichMarkdownEditor extends React.PureComponent {
         });
     }
     createDocument(content) {
-        var _a;
+        var _a, _b;
         if (this.props.parseAsHTML) {
             return this.parseHtmlContent(content);
         }
-        return (_a = this.mdParser.parse(content)) !== null && _a !== void 0 ? _a : undefined;
+        try {
+            return (_a = this.mdParser.parse(content)) !== null && _a !== void 0 ? _a : undefined;
+        }
+        catch (_c) {
+            return (_b = this.mdParser.parse(client_1.normalizeFlashcardText(content))) !== null && _b !== void 0 ? _b : undefined;
+        }
     }
     parseHtmlContent(content) {
         const domNode = document.createElement("div");

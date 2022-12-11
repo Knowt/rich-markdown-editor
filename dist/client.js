@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanQuizletSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanQuizletSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -26,6 +26,19 @@ const MaxLength_1 = __importDefault(require("./plugins/MaxLength"));
 const Placeholder_2 = __importDefault(require("./plugins/Placeholder"));
 const SmartText_1 = __importDefault(require("./plugins/SmartText"));
 const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
+const normalizeFlashcardText = (text) => {
+    let newText = '';
+    for (const line of text.split('\n')) {
+        if (line === "") {
+            newText += "\n";
+        }
+        else {
+            newText += exports.cleanQuizletSpecialChars(line);
+        }
+    }
+    return newText;
+};
+exports.normalizeFlashcardText = normalizeFlashcardText;
 exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
     '#',
@@ -50,6 +63,19 @@ const cleanQuizletSpecialChars = (text) => {
     }
     if (text.startsWith('___')) {
         return '\\\\' + text;
+    }
+    if (/\*+/.test(text)) {
+        let newText = '';
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (c === "*") {
+                newText += "\\*";
+            }
+            else {
+                newText += text.slice(i + 1);
+            }
+        }
+        return newText;
     }
     if (text.startsWith('![')) {
         return text.replace('![', '!\\[');
