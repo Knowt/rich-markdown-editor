@@ -55,7 +55,7 @@ export const cleanQuizletSpecialChars = (text: string) => {
   }
 
   // ordered lists
-  if ( /^(\d+)\.\s$/.test(text) ) {
+  if ( /^\d\./.test(text) ) {
     return text.replace( '.', '\\.')
   }
 
@@ -68,10 +68,10 @@ export const cleanQuizletSpecialChars = (text: string) => {
   }
 
   // horizontal
-  if ( text.startsWith('---') ) {
+  if ( text.startsWith( '---' ) ) {
     return '\\' + text;
   }
-  if ( text.startsWith('___' ) ) {
+  if ( text.startsWith( '___' ) ) {
     return '\\\\' + text;
   }
   if (/\*+/.test(text)) {
