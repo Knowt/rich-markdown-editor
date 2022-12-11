@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanQuizletSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
+exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanFlashcardSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -33,7 +33,7 @@ const normalizeFlashcardText = (text) => {
             newText += "\n";
         }
         else {
-            newText += exports.cleanQuizletSpecialChars(line);
+            newText += exports.cleanFlashcardSpecialChars(line);
         }
     }
     return newText;
@@ -45,12 +45,15 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '-',
     '+',
 ];
-const cleanQuizletSpecialChars = (text) => {
+const cleanFlashcardSpecialChars = (text) => {
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
         return '\\' + text;
     }
     if (/^\d\./.test(text)) {
         return text.replace('.', '\\.');
+    }
+    if (/^\d\)/.test(text)) {
+        return text.replace(')', '\\)');
     }
     if (/^\s*([-+*])\s$/.test(text)) {
         return '\\' + text;
@@ -82,7 +85,7 @@ const cleanQuizletSpecialChars = (text) => {
     }
     return text;
 };
-exports.cleanQuizletSpecialChars = cleanQuizletSpecialChars;
+exports.cleanFlashcardSpecialChars = cleanFlashcardSpecialChars;
 const getFlashcardSerializerExtensions = () => {
     return new ExtensionManager_1.default([
         new Doc_1.default(),
@@ -121,7 +124,13 @@ const getFlashCardMdToHtmlInput = () => {
 exports.getFlashCardMdToHtmlInput = getFlashCardMdToHtmlInput;
 const flashcardMdToHTMLDoc = (input) => {
     const { markdownParser, domSerializer, markdown } = input;
-    const doc = markdownParser.parse(markdown);
+    let doc;
+    try {
+        doc = markdownParser.parse(markdown);
+    }
+    catch (_a) {
+        doc = markdownParser.parse(exports.cleanFlashcardSpecialChars(markdown));
+    }
     return domSerializer.serializeFragment(doc.content, {
         document,
     });
