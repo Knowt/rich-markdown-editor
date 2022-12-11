@@ -44,6 +44,11 @@ export const cleanQuizletSpecialChars = (text: string) => {
     return text.replace( '.', '\\.')
   }
 
+  // horizontal
+  if (text.startsWith('---') || text.startsWith('___')) {
+    return '\\' + text;
+  }
+
   // bullet list edge case with stars
   if ( text.startsWith( '* ' ) ) {
     return '\\' + text;
