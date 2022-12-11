@@ -25,6 +25,21 @@ import Placeholder from "./plugins/Placeholder";
 import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 
+export const normalizeFlashcardText = (text: string) => {
+  let newText = '';
+
+  for (const line of text.split('\n')) {
+      if (line === "") {
+          newText += "\n";
+      }
+      else {
+          newText += cleanQuizletSpecialChars(line);
+      }
+  }
+
+  return newText;
+}
+
 // Because we disable certain markdown nodes within our editor,
 // we need to make sure those special characters are escaped prior to import.
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
@@ -58,6 +73,20 @@ export const cleanQuizletSpecialChars = (text: string) => {
   }
   if ( text.startsWith('___' ) ) {
     return '\\\\' + text;
+  }
+  if (/\*+/.test(text)) {
+    let newText = '';
+    for ( let i=0; i < text.length; i++ ) {
+      const c = text[i];
+      if ( c === "*" ) {
+        newText += "\\*";
+      }
+      else {
+        newText += text.slice(i+1);
+      }
+    }
+
+    return newText;
   }
 
   if ( text.startsWith( '![' ) ) {

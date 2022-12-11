@@ -32,6 +32,7 @@ import { DEFAULT_BACKGROUND_KEY, DEFAULT_HIGHLIGHT_KEY,
   DEFAULT_HIGHLIGHT, DEFAULT_BACKGROUND } from './lib/constants';
 import { isMacOs, isWindows } from "react-device-detect";
 import Extension from "./lib/Extension";
+import { normalizeFlashcardText } from './client';
 // nodes
 import ReactNode from "./nodes/ReactNode";
 import Doc from "./nodes/Doc";
@@ -542,7 +543,12 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     if (this.props.parseAsHTML) {
       return this.parseHtmlContent(content);
     }
-    return this.mdParser.parse(content) ?? undefined;
+    try {
+      return this.mdParser.parse(content) ?? undefined;
+    }
+    catch {
+      return this.mdParser.parse(normalizeFlashcardText(content)) ?? undefined;
+    }
   }
 
   parseHtmlContent(content: string) {
