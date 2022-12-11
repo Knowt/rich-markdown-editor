@@ -33,7 +33,7 @@ export const normalizeFlashcardText = (text: string) => {
           newText += "\n";
       }
       else {
-          newText += cleanQuizletSpecialChars(line);
+          newText += cleanFlashcardSpecialChars(line);
       }
   }
 
@@ -49,7 +49,7 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '+',
 ];
 
-export const cleanQuizletSpecialChars = (text: string) => {
+export const cleanFlashcardSpecialChars = (text: string) => {
   if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
     return '\\' + text;
   }
@@ -142,7 +142,13 @@ type FlashcardMdToHtmlInput = {
 
 export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
   const { markdownParser, domSerializer, markdown } = input;
-  const doc = markdownParser.parse(markdown) as ProsemirrorNode;
+  let doc: ProsemirrorNode;
+  try {
+    doc = markdownParser.parse(markdown) as ProsemirrorNode;
+  }
+  catch {
+    doc = markdownParser.parse(cleanFlashcardSpecialChars(markdown)) as ProsemirrorNode;
+  }
 
   return domSerializer.serializeFragment(doc.content, {
     document,
