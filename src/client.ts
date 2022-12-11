@@ -58,6 +58,9 @@ export const cleanFlashcardSpecialChars = (text: string) => {
   if ( /^\d\./.test(text) ) {
     return text.replace( '.', '\\.')
   }
+  if( /^\d\)/.test(text) ) {
+    return text.replace( ')','\\)' )
+  }
 
   // bullet list
   if (/^\s*([-+*])\s$/.test(text)) {
