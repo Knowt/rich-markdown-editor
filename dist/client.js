@@ -39,6 +39,9 @@ const cleanQuizletSpecialChars = (text) => {
     if (/^\d\./.test(text)) {
         return text.replace('.', '\\.');
     }
+    if (text.startsWith('---') || text.startsWith('___')) {
+        return '\\' + text;
+    }
     if (text.startsWith('* ')) {
         return '\\' + text;
     }
