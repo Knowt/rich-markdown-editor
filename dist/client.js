@@ -44,6 +44,7 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '#',
     '-',
     '+',
+    '>',
 ];
 const cleanFlashcardSpecialChars = (text) => {
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
