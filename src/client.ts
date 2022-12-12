@@ -141,7 +141,7 @@ export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
     doc = markdownParser.parse(markdown) as ProsemirrorNode;
   }
   catch {
-    doc = markdownParser.parse(cleanFlashcardSpecialChars(markdown)) as ProsemirrorNode;
+    doc = markdownParser.parse(normalizeFlashcardText(markdown)) as ProsemirrorNode;
   }
 
   return domSerializer.serializeFragment(doc.content, {
