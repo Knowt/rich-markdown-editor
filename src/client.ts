@@ -14,6 +14,9 @@ import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
 import Link from "./marks/Link";
 import HardBreak from "./nodes/HardBreak";
+import OrderedList from "./nodes/OrderedList";
+import BulletList from "./nodes/BulletList";
+import ListItem from "./nodes/ListItem";
 // nodes
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
@@ -45,31 +48,29 @@ export const normalizeFlashcardText = (text: string) => {
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '[',
   '#',
-  '-',
-  '+',
   '>',
 ];
 
 export const cleanFlashcardSpecialChars = (text: string) => {
-  // ordered lists
-  if ( /^\d+\./.test(text) ) {
-    return text.replace( '.', '\\.')
-  }
-  if( /^\d+\)/.test(text) ) {
-    return text.replace( ')','\\)' )
-  }
+  // // ordered lists
+  // if ( /^\d+\./.test(text) ) {
+  //   return text.replace( '.', '\\.')
+  // }
+  // if( /^\d+\)/.test(text) ) {
+  //   return text.replace( ')','\\)' )
+  // }
 
-  // bullet list
-  if ( /^\s*([-+*])\s$/.test(text) ) {
-    return '\\' + text;
-  }
+  // // bullet list
+  // if ( /^\s*([-+*])\s$/.test(text) ) {
+  //   return '\\' + text;
+  // }
 
   // horizontal
   if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
     return '\\' + text;
   }
 
-  // stars - bullets and horizontal
+  // horizontal stars
   if ( /\*+/.test(text) ) {
     let newText = '';
     for ( let i=0; i < text.length; i++ ) {
@@ -102,6 +103,11 @@ export const getFlashcardSerializerExtensions = () => {
     new Doc(),
     new Paragraph(),
     new Text(),
+    new BulletList(),
+    new OrderedList(),
+    new ListItem({
+      includeDrag: false,
+    }),
     new OrangeHighlight(),
     new YellowHighlight(),
     new BlueHighlight(),
@@ -211,6 +217,11 @@ export const getFlashcardEditorExtensions = (
         new Doc(),
         new Paragraph(),
         new Text(),
+        new BulletList(),
+        new OrderedList(),
+        new ListItem({
+          includeDrag: false,
+        }),
         new OrangeHighlight(),
         new YellowHighlight(),
         new BlueHighlight(),
