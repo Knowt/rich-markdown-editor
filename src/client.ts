@@ -64,21 +64,17 @@ export const cleanFlashcardSpecialChars = (text: string) => {
   }
 
   // bullet list
-  if (/^\s*([-+*])\s$/.test(text)) {
-    return '\\' + text;
-  }
-  if ( text.startsWith( '* ' ) ) {
+  if ( /^\s*([-+*])\s$/.test(text) ) {
     return '\\' + text;
   }
 
   // horizontal
-  if ( text.startsWith( '---' ) ) {
+  if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
     return '\\' + text;
   }
-  if ( text.startsWith( '___' ) ) {
-    return '\\\\' + text;
-  }
-  if (/\*+/.test(text)) {
+
+  // stars - bullets and horizontal
+  if ( /\*+/.test(text) ) {
     let newText = '';
     for ( let i=0; i < text.length; i++ ) {
       const c = text[i];
