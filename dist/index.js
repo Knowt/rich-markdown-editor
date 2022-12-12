@@ -521,8 +521,11 @@ class RichMarkdownEditor extends React.PureComponent {
         try {
             return (_a = this.mdParser.parse(content)) !== null && _a !== void 0 ? _a : undefined;
         }
-        catch (_c) {
-            return (_b = this.mdParser.parse(client_1.normalizeFlashcardText(content))) !== null && _b !== void 0 ? _b : undefined;
+        catch (error) {
+            if (this.props.isFlashcardEditor) {
+                return (_b = this.mdParser.parse(client_1.normalizeFlashcardText(content))) !== null && _b !== void 0 ? _b : undefined;
+            }
+            throw (error);
         }
     }
     parseHtmlContent(content) {
