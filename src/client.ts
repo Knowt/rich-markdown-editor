@@ -51,20 +51,16 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
 ];
 
 export const cleanFlashcardSpecialChars = (text: string) => {
-  if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
-    return '\\' + text;
-  }
-
   // ordered lists
-  if ( /^\d\./.test(text) ) {
+  if ( /^\d+\./.test(text) ) {
     return text.replace( '.', '\\.')
   }
-  if( /^\d\)/.test(text) ) {
+  if( /^\d+\)/.test(text) ) {
     return text.replace( ')','\\)' )
   }
 
   // bullet list
-  if ( /^\s*([-+*])\s$/.test(text) || text.startsWith( '* ' ) ) {
+  if ( /^\s*([-+*])\s$/.test(text) ) {
     return '\\' + text;
   }
 
@@ -92,6 +88,10 @@ export const cleanFlashcardSpecialChars = (text: string) => {
 
   if ( text.startsWith( '![' ) ) {
     return text.replace( '![', '!\\[' );
+  }
+
+  if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
+    return '\\' + text;
   }
 
   return text;
