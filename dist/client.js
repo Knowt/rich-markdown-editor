@@ -51,7 +51,7 @@ const cleanFlashcardSpecialChars = (text) => {
     if (text.startsWith('---') || text.startsWith('___')) {
         return '\\' + text;
     }
-    if (/\*+/.test(text)) {
+    if (text.startsWith('***')) {
         let newText = '';
         for (let i = 0; i < text.length; i++) {
             const c = text[i];
