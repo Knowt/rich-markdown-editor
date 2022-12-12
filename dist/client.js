@@ -47,7 +47,8 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '#',
     '>',
 ];
-const cleanFlashcardSpecialChars = (text) => {
+const cleanFlashcardSpecialChars = (rawText) => {
+    const text = rawText.replace(/\#+/, '\\#');
     if (text.startsWith('---') || text.startsWith('___')) {
         return '\\' + text;
     }
