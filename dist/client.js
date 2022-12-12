@@ -71,6 +71,7 @@ const cleanFlashcardSpecialChars = (text) => {
             }
             else {
                 newText += text.slice(i + 1);
+                break;
             }
         }
         return newText;
