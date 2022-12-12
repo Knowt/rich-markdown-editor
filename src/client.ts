@@ -64,7 +64,7 @@ export const cleanFlashcardSpecialChars = (text: string) => {
   }
 
   // bullet list
-  if ( /^\s*([-+*])\s$/.test(text) ) {
+  if ( /^\s*([-+*])\s$/.test(text) || text.startsWith( '* ' ) ) {
     return '\\' + text;
   }
 
