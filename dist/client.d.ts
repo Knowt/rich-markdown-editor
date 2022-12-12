@@ -12,6 +12,9 @@ import Strikethrough from "./marks/Strikethrough";
 import TemplatePlaceholder from "./marks/Placeholder";
 import Underline from "./marks/Underline";
 import HardBreak from "./nodes/HardBreak";
+import OrderedList from "./nodes/OrderedList";
+import BulletList from "./nodes/BulletList";
+import ListItem from "./nodes/ListItem";
 import Doc from "./nodes/Doc";
 import Text from "./nodes/Text";
 import Paragraph from "./nodes/Paragraph";
@@ -43,7 +46,7 @@ declare type GetFlashcardEditorExtensionsInput = {
     disableCodePaste?: boolean;
 };
 export declare const getFlashcardEditorExtensions: (input?: GetFlashcardEditorExtensionsInput) => {
-    baseExtensions: (Doc | Text | HardBreak | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
+    baseExtensions: (Doc | Text | BulletList | HardBreak | ListItem | OrderedList | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
 export {};

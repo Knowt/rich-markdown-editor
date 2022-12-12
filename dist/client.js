@@ -18,6 +18,9 @@ const Placeholder_1 = __importDefault(require("./marks/Placeholder"));
 const Underline_1 = __importDefault(require("./marks/Underline"));
 const Link_1 = __importDefault(require("./marks/Link"));
 const HardBreak_1 = __importDefault(require("./nodes/HardBreak"));
+const OrderedList_1 = __importDefault(require("./nodes/OrderedList"));
+const BulletList_1 = __importDefault(require("./nodes/BulletList"));
+const ListItem_1 = __importDefault(require("./nodes/ListItem"));
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Paragraph_1 = __importDefault(require("./nodes/Paragraph"));
@@ -42,20 +45,9 @@ exports.normalizeFlashcardText = normalizeFlashcardText;
 exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
     '#',
-    '-',
-    '+',
     '>',
 ];
 const cleanFlashcardSpecialChars = (text) => {
-    if (/^\d+\./.test(text)) {
-        return text.replace('.', '\\.');
-    }
-    if (/^\d+\)/.test(text)) {
-        return text.replace(')', '\\)');
-    }
-    if (/^\s*([-+*])\s$/.test(text)) {
-        return '\\' + text;
-    }
     if (text.startsWith('---') || text.startsWith('___')) {
         return '\\' + text;
     }
@@ -87,6 +79,11 @@ const getFlashcardSerializerExtensions = () => {
         new Doc_1.default(),
         new Paragraph_1.default(),
         new Text_1.default(),
+        new BulletList_1.default(),
+        new OrderedList_1.default(),
+        new ListItem_1.default({
+            includeDrag: false,
+        }),
         new OrangeHighlight_1.default(),
         new YellowHighlight_1.default(),
         new BlueHighlight_1.default(),
@@ -168,6 +165,11 @@ const getFlashcardEditorExtensions = (input = {}) => {
             new Doc_1.default(),
             new Paragraph_1.default(),
             new Text_1.default(),
+            new BulletList_1.default(),
+            new OrderedList_1.default(),
+            new ListItem_1.default({
+                includeDrag: false,
+            }),
             new OrangeHighlight_1.default(),
             new YellowHighlight_1.default(),
             new BlueHighlight_1.default(),
