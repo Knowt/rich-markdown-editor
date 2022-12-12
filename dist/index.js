@@ -51,7 +51,6 @@ const client_1 = require("./client");
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
 const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
-const BulletList_1 = __importDefault(require("./nodes/BulletList"));
 const CodeBlock_1 = __importDefault(require("./nodes/CodeBlock"));
 const CodeFence_1 = __importDefault(require("./nodes/CodeFence"));
 const CheckboxList_1 = __importDefault(require("./nodes/CheckboxList"));
@@ -332,7 +331,6 @@ class RichMarkdownEditor extends React.PureComponent {
             new CheckboxList_1.default(),
             new OrderedList_1.default(),
             new CheckboxItem_1.default(),
-            new BulletList_1.default(),
             new Embed_1.default({
                 embeds: this.props.embeds,
             }),

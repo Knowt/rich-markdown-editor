@@ -171,6 +171,7 @@ exports.Persisted.args = {
     defaultValue: (_a = localStorage.getItem("saved")) !== null && _a !== void 0 ? _a : "",
     onChange: debounce_1.default((value) => {
         const text = value();
+        console.log(text);
         localStorage.setItem("saved", text);
     }, 250),
 };

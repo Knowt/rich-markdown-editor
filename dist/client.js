@@ -47,16 +47,13 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '>',
 ];
 const cleanFlashcardSpecialChars = (text) => {
-    if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
-        return '\\' + text;
-    }
-    if (/^\d\./.test(text)) {
+    if (/^\d+\./.test(text)) {
         return text.replace('.', '\\.');
     }
-    if (/^\d\)/.test(text)) {
+    if (/^\d+\)/.test(text)) {
         return text.replace(')', '\\)');
     }
-    if (/^\s*([-+*])\s$/.test(text) || text.startsWith('* ')) {
+    if (/^\s*([-+*])\s$/.test(text)) {
         return '\\' + text;
     }
     if (text.startsWith('---') || text.startsWith('___')) {
@@ -78,6 +75,9 @@ const cleanFlashcardSpecialChars = (text) => {
     }
     if (text.startsWith('![')) {
         return text.replace('![', '!\\[');
+    }
+    if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
+        return '\\' + text;
     }
     return text;
 };
