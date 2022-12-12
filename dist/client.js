@@ -56,7 +56,7 @@ const cleanFlashcardSpecialChars = (text) => {
     if (/^\d\)/.test(text)) {
         return text.replace(')', '\\)');
     }
-    if (/^\s*([-+*])\s$/.test(text)) {
+    if (/^\s*([-+*])\s$/.test(text) || text.startsWith('* ')) {
         return '\\' + text;
     }
     if (text.startsWith('---') || text.startsWith('___')) {
