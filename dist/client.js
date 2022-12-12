@@ -123,7 +123,7 @@ const flashcardMdToHTMLDoc = (input) => {
         doc = markdownParser.parse(markdown);
     }
     catch (_a) {
-        doc = markdownParser.parse(exports.cleanFlashcardSpecialChars(markdown));
+        doc = markdownParser.parse(exports.normalizeFlashcardText(markdown));
     }
     return domSerializer.serializeFragment(doc.content, {
         document,
