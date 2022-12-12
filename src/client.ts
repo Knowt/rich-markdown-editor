@@ -83,6 +83,7 @@ export const cleanFlashcardSpecialChars = (text: string) => {
       }
       else {
         newText += text.slice(i+1);
+        break;
       }
     }
 
