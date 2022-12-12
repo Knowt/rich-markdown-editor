@@ -25,7 +25,7 @@ import SmartText from "./plugins/SmartText";
 import PasteHandler from "./plugins/PasteHandler";
 export declare const normalizeFlashcardText: (text: string) => string;
 export declare const FLASHCARD_QUIZLET_SPECIAL_CHARS: string[];
-export declare const cleanFlashcardSpecialChars: (rawText: string) => string;
+export declare const cleanFlashcardSpecialChars: (text: string) => string;
 export declare const getFlashcardSerializerExtensions: () => ExtensionManager;
 export declare const getFlashCardMdToHtmlInput: () => {
     domSerializer: DOMSerializer;

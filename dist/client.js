@@ -32,11 +32,12 @@ const PasteHandler_1 = __importDefault(require("./plugins/PasteHandler"));
 const normalizeFlashcardText = (text) => {
     let newText = '';
     for (const line of text.split('\n')) {
-        if (line === "") {
+        const trimmedLine = line.trim();
+        if (trimmedLine === "") {
             newText += "\n";
         }
         else {
-            newText += exports.cleanFlashcardSpecialChars(line);
+            newText += exports.cleanFlashcardSpecialChars(trimmedLine);
         }
     }
     return newText;
@@ -47,8 +48,7 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '#',
     '>',
 ];
-const cleanFlashcardSpecialChars = (rawText) => {
-    const text = rawText.replace(/\#+/, '\\#');
+const cleanFlashcardSpecialChars = (text) => {
     if (text.startsWith('---') || text.startsWith('___')) {
         return '\\' + text;
     }
