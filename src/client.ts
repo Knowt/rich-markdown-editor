@@ -51,7 +51,8 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '>',
 ];
 
-export const cleanFlashcardSpecialChars = (text: string) => {
+export const cleanFlashcardSpecialChars = (rawText: string) => {
+  const text = rawText.replace(/\#+/, '\\#' );
   // // ordered lists
   // if ( /^\d+\./.test(text) ) {
   //   return text.replace( '.', '\\.')
