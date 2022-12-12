@@ -69,9 +69,7 @@ export const cleanFlashcardSpecialChars = (text: string) => {
   if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
     return '\\' + text;
   }
-
-  // horizontal stars
-  if ( /\*+/.test(text) ) {
+  if ( text.startsWith( '***' ) ) {
     let newText = '';
     for ( let i=0; i < text.length; i++ ) {
       const c = text[i];
