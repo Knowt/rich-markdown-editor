@@ -32,12 +32,14 @@ export const normalizeFlashcardText = (text: string) => {
   let newText = '';
 
   for (const line of text.split('\n')) {
-      if (line === "") {
-          newText += "\n";
-      }
-      else {
-          newText += cleanFlashcardSpecialChars(line);
-      }
+    const trimmedLine = line.trim();
+
+    if (trimmedLine === "") {
+        newText += "\n";
+    }
+    else {
+        newText += cleanFlashcardSpecialChars(trimmedLine);
+    }
   }
 
   return newText;
@@ -51,21 +53,7 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '>',
 ];
 
-export const cleanFlashcardSpecialChars = (rawText: string) => {
-  const text = rawText.replace(/\#+/, '\\#' );
-  // // ordered lists
-  // if ( /^\d+\./.test(text) ) {
-  //   return text.replace( '.', '\\.')
-  // }
-  // if( /^\d+\)/.test(text) ) {
-  //   return text.replace( ')','\\)' )
-  // }
-
-  // // bullet list
-  // if ( /^\s*([-+*])\s$/.test(text) ) {
-  //   return '\\' + text;
-  // }
-
+export const cleanFlashcardSpecialChars = (text: string) => {
   // horizontal
   if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
     return '\\' + text;
