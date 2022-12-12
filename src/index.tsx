@@ -145,6 +145,7 @@ export type Props = {
   disableLinkToolbar?: boolean;
   disableBackgroundMarksInToolbar?: boolean;
   disableFocusTrap?: boolean;
+  isFlashcardEditor?: boolean;
 };
 
 type State = {
@@ -546,8 +547,12 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     try {
       return this.mdParser.parse(content) ?? undefined;
     }
-    catch {
-      return this.mdParser.parse(normalizeFlashcardText(content)) ?? undefined;
+    catch (error) {
+      if (this.props.isFlashcardEditor) {
+        return this.mdParser.parse(normalizeFlashcardText(content)) ?? undefined;
+      }
+      
+      throw( error );
     }
   }
 
