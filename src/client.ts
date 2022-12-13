@@ -49,11 +49,14 @@ export const normalizeFlashcardText = (text: string) => {
 // we need to make sure those special characters are escaped prior to import.
 export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
   '[',
-  '#',
-  '>',
 ];
 
-export const cleanFlashcardSpecialChars = (text: string) => {
+export const cleanFlashcardSpecialChars = (rawText: string) => {
+  // insert a backslash where each occurence of one or more '#' and '>' 
+  const text = rawText.replace(/(\#+)|(\>+)/g, '\\$&')
+              // same concept for things that look like an image
+              .replace(/(!\[)+/g, '!\\[');
+
   // horizontal
   if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
     return '\\' + text;
@@ -72,10 +75,6 @@ export const cleanFlashcardSpecialChars = (text: string) => {
     }
 
     return newText;
-  }
-
-  if ( text.startsWith( '![' ) ) {
-    return text.replace( '![', '!\\[' );
   }
 
   if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
