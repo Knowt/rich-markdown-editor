@@ -45,10 +45,10 @@ const normalizeFlashcardText = (text) => {
 exports.normalizeFlashcardText = normalizeFlashcardText;
 exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
-    '#',
-    '>',
 ];
-const cleanFlashcardSpecialChars = (text) => {
+const cleanFlashcardSpecialChars = (rawText) => {
+    const text = rawText.replace(/(\#+)|(\>+)/g, '\\$&')
+        .replace(/(!\[)+/g, '!\\[');
     if (text.startsWith('---') || text.startsWith('___')) {
         return '\\' + text;
     }
@@ -65,9 +65,6 @@ const cleanFlashcardSpecialChars = (text) => {
             }
         }
         return newText;
-    }
-    if (text.startsWith('![')) {
-        return text.replace('![', '!\\[');
     }
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
         return '\\' + text;
