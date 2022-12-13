@@ -50,6 +50,7 @@ const react_device_detect_1 = require("react-device-detect");
 const client_1 = require("./client");
 const Doc_1 = __importDefault(require("./nodes/Doc"));
 const Text_1 = __importDefault(require("./nodes/Text"));
+const Blockquote_1 = __importDefault(require("./nodes/Blockquote"));
 const BulletList_1 = __importDefault(require("./nodes/BulletList"));
 const CodeBlock_1 = __importDefault(require("./nodes/CodeBlock"));
 const CodeFence_1 = __importDefault(require("./nodes/CodeFence"));
@@ -317,6 +318,7 @@ class RichMarkdownEditor extends React.PureComponent {
             new Doc_1.default(),
             new HardBreak_1.default(),
             new Paragraph_1.default(),
+            new Blockquote_1.default(),
             new CodeBlock_1.default({
                 dictionary,
                 onShowToast: this.props.onShowToast,
