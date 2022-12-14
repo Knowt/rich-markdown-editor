@@ -52,30 +52,30 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
 ];
 
 export const cleanFlashcardSpecialChars = (rawText: string) => {
-  // insert a backslash where each occurence of one or more '#' and '>' 
-  const text = rawText.replace(/(\#+)|(\>+)|(`)/g, '\\$&')
+  // insert a backslash where each occurence of these special characters occur
+  const text = rawText.replace(/(\#+)|(\>+)|(`)|(\_{3,})|(\*{3,})|(\-{3,})/g, '\\$&')
               // same concept for things that look like an image
               .replace(/(!\[)+/g, '!\\[');
 
-  // horizontal
-  if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
-    return '\\' + text;
-  }
-  if ( text.startsWith( '***' ) ) {
-    let newText = '';
-    for ( let i=0; i < text.length; i++ ) {
-      const c = text[i];
-      if ( c === "*" ) {
-        newText += "\\*";
-      }
-      else {
-        newText += text.slice(i+1);
-        break;
-      }
-    }
+  // // horizontal
+  // if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
+  //   return '\\' + text;
+  // }
+  // if ( text.startsWith( '***' ) ) {
+  //   let newText = '';
+  //   for ( let i=0; i < text.length; i++ ) {
+  //     const c = text[i];
+  //     if ( c === "*" ) {
+  //       newText += "\\*";
+  //     }
+  //     else {
+  //       newText += text.slice(i+1);
+  //       break;
+  //     }
+  //   }
 
-    return newText;
-  }
+  //   return newText;
+  // }
 
   if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
     return '\\' + text;

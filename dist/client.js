@@ -47,25 +47,8 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
 ];
 const cleanFlashcardSpecialChars = (rawText) => {
-    const text = rawText.replace(/(\#+)|(\>+)|(`)/g, '\\$&')
+    const text = rawText.replace(/(\#+)|(\>+)|(`)|(\_{3,})|(\*{3,})|(\-{3,})/g, '\\$&')
         .replace(/(!\[)+/g, '!\\[');
-    if (text.startsWith('---') || text.startsWith('___')) {
-        return '\\' + text;
-    }
-    if (text.startsWith('***')) {
-        let newText = '';
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i];
-            if (c === "*") {
-                newText += "\\*";
-            }
-            else {
-                newText += text.slice(i + 1);
-                break;
-            }
-        }
-        return newText;
-    }
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
         return '\\' + text;
     }
