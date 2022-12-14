@@ -57,26 +57,6 @@ export const cleanFlashcardSpecialChars = (rawText: string) => {
               // same concept for things that look like an image
               .replace(/(!\[)+/g, '!\\[');
 
-  // // horizontal
-  // if ( text.startsWith( '---' ) || text.startsWith( '___' ) ) {
-  //   return '\\' + text;
-  // }
-  // if ( text.startsWith( '***' ) ) {
-  //   let newText = '';
-  //   for ( let i=0; i < text.length; i++ ) {
-  //     const c = text[i];
-  //     if ( c === "*" ) {
-  //       newText += "\\*";
-  //     }
-  //     else {
-  //       newText += text.slice(i+1);
-  //       break;
-  //     }
-  //   }
-
-  //   return newText;
-  // }
-
   if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
     return '\\' + text;
   }
