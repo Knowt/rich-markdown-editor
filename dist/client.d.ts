@@ -42,12 +42,11 @@ export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => strin
 export declare const flashcardMdToText: (input: FlashcardMdToHtmlInput) => string;
 declare type GetFlashcardEditorExtensionsInput = {
     maxLength?: number;
-    disableLinkPaste?: boolean;
-    disableCodePaste?: boolean;
 };
 export declare const getFlashcardEditorExtensions: (input?: GetFlashcardEditorExtensionsInput) => {
-    baseExtensions: (Doc | Text | BulletList | HardBreak | ListItem | OrderedList | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText | PasteHandler)[];
+    baseExtensions: (Doc | Text | BulletList | HardBreak | ListItem | OrderedList | Paragraph | Bold | RedHighlight | OrangeHighlight | YellowHighlight | GreenHighlight | BlueHighlight | Italic | Strikethrough | TemplatePlaceholder | Underline | History | MaxLength | SmartText)[];
     getPlaceholderExtension: (placeholder: string) => Placeholder;
 };
+export declare const getFlashcardPasteHandlerExtension: () => PasteHandler;
 export {};
 //# sourceMappingURL=client.d.ts.map

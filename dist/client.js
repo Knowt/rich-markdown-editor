@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanFlashcardSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
+exports.getFlashcardPasteHandlerExtension = exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanFlashcardSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
 const Bold_1 = __importDefault(require("./marks/Bold"));
@@ -140,7 +140,7 @@ const flashcardMdToText = (input) => {
 };
 exports.flashcardMdToText = flashcardMdToText;
 const getFlashcardEditorExtensions = (input = {}) => {
-    const { maxLength, disableCodePaste = true, disableLinkPaste = true } = input;
+    const { maxLength } = input;
     return {
         baseExtensions: [
             new Doc_1.default(),
@@ -163,10 +163,6 @@ const getFlashcardEditorExtensions = (input = {}) => {
             new Placeholder_1.default(),
             new History_1.default(),
             new SmartText_1.default(),
-            new PasteHandler_1.default({
-                disableCodePaste,
-                disableLinkPaste,
-            }),
             new HardBreak_1.default(),
             new MaxLength_1.default({
                 maxLength,
@@ -178,4 +174,11 @@ const getFlashcardEditorExtensions = (input = {}) => {
     };
 };
 exports.getFlashcardEditorExtensions = getFlashcardEditorExtensions;
+const getFlashcardPasteHandlerExtension = () => {
+    return new PasteHandler_1.default({
+        disableCodePaste: true,
+        disableLinkPaste: true,
+    });
+};
+exports.getFlashcardPasteHandlerExtension = getFlashcardPasteHandlerExtension;
 //# sourceMappingURL=client.js.map
