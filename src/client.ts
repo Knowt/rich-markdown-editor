@@ -167,16 +167,12 @@ export const flashcardMdToText = (input: FlashcardMdToHtmlInput) => {
 
 type GetFlashcardEditorExtensionsInput = {
   maxLength?: number;
-  disableLinkPaste?: boolean;
-  disableCodePaste?: boolean;
 }
 
 export const getFlashcardEditorExtensions = (
   input: GetFlashcardEditorExtensionsInput={},
 ) => {
-  const { maxLength, 
-    disableCodePaste=true,
-    disableLinkPaste=true } = input;
+  const { maxLength } = input;
 
   return {
       baseExtensions: [
@@ -200,10 +196,6 @@ export const getFlashcardEditorExtensions = (
         new TemplatePlaceholder(),
         new History(),
         new SmartText(),
-        new PasteHandler({
-          disableCodePaste,
-          disableLinkPaste,
-        }),
         new HardBreak(),
         new MaxLength({
           maxLength,
@@ -215,4 +207,11 @@ export const getFlashcardEditorExtensions = (
       })
     ),
   }
+}
+
+export const getFlashcardPasteHandlerExtension = () => {
+  return new PasteHandler({
+    disableCodePaste: true,
+    disableLinkPaste: true,
+  });
 }
