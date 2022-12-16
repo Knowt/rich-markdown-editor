@@ -111,10 +111,15 @@ type FlashcardMdToHtmlInput = {
   domSerializer: DOMSerializer;
   markdownParser: MarkdownParser;
   markdown: string;
+  document: Document;
 }
 
 export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
-  const { markdownParser, domSerializer, markdown } = input;
+  const { markdownParser, 
+    domSerializer,
+    markdown,
+    document: serverDocument } = input;
+
   let doc: ProsemirrorNode;
   try {
     doc = markdownParser.parse(markdown) as ProsemirrorNode;
@@ -124,12 +129,15 @@ export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
   }
 
   return domSerializer.serializeFragment(doc.content, {
-    document,
+    document: serverDocument || document
   });
 }
 
-export const flashcardDocToHtmlString = (doc: HTMLElement | DocumentFragment) => {
-  const throwAwayDiv = document.createElement("div");
+export const flashcardDocToHtmlString = (
+  doc: HTMLElement | DocumentFragment, 
+  serverDocument: Document,
+) => {
+  const throwAwayDiv = (serverDocument || document).createElement("div");
   throwAwayDiv.appendChild(doc);
 
   return throwAwayDiv.innerHTML;
@@ -139,7 +147,7 @@ export const flashcardMdToHtml = (
   input: FlashcardMdToHtmlInput,
 ) => {
   const doc = flashcardMdToHTMLDoc(input);
-  return flashcardDocToHtmlString(doc);
+  return flashcardDocToHtmlString(doc, input.document);
 }
 
 // new lines are treated as spaces
