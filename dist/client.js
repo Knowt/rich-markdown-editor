@@ -37,7 +37,7 @@ const normalizeFlashcardText = (text) => {
             newText += '\n';
         }
         else {
-            newText += exports.cleanFlashcardSpecialChars(trimmedLine) + '\\n';
+            newText += exports.cleanFlashcardSpecialChars(trimmedLine) + '\n';
         }
     }
     return newText;
