@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFlashcardPasteHandlerExtension = exports.getFlashcardEditorExtensions = exports.flashcardMdToText = exports.flashcardMdToHtml = exports.flashcardDocToHtmlString = exports.flashcardMdToHTMLDoc = exports.getFlashCardMdToHtmlInput = exports.getFlashcardSerializerExtensions = exports.cleanFlashcardSpecialChars = exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = exports.normalizeFlashcardText = void 0;
 const prosemirror_model_1 = require("prosemirror-model");
 const ExtensionManager_1 = __importDefault(require("./lib/ExtensionManager"));
+const jsdom_1 = require("jsdom");
 const Bold_1 = __importDefault(require("./marks/Bold"));
 const RedHighlight_1 = __importDefault(require("./marks/highlights/RedHighlight"));
 const OrangeHighlight_1 = __importDefault(require("./marks/highlights/OrangeHighlight"));
@@ -106,12 +107,12 @@ const flashcardMdToHTMLDoc = (input) => {
         doc = markdownParser.parse(exports.normalizeFlashcardText(markdown));
     }
     return domSerializer.serializeFragment(doc.content, {
-        document,
+        document: document || new jsdom_1.JSDOM().window.document,
     });
 };
 exports.flashcardMdToHTMLDoc = flashcardMdToHTMLDoc;
 const flashcardDocToHtmlString = (doc) => {
-    const throwAwayDiv = document.createElement("div");
+    const throwAwayDiv = (document || new jsdom_1.JSDOM().window.document).createElement("div");
     throwAwayDiv.appendChild(doc);
     return throwAwayDiv.innerHTML;
 };
