@@ -97,7 +97,7 @@ const getFlashCardMdToHtmlInput = () => {
 };
 exports.getFlashCardMdToHtmlInput = getFlashCardMdToHtmlInput;
 const flashcardMdToHTMLDoc = (input) => {
-    const { markdownParser, domSerializer, markdown } = input;
+    const { markdownParser, domSerializer, markdown, document: serverDocument } = input;
     let doc;
     try {
         doc = markdownParser.parse(markdown);
@@ -106,19 +106,19 @@ const flashcardMdToHTMLDoc = (input) => {
         doc = markdownParser.parse(exports.normalizeFlashcardText(markdown));
     }
     return domSerializer.serializeFragment(doc.content, {
-        document,
+        document: serverDocument || document
     });
 };
 exports.flashcardMdToHTMLDoc = flashcardMdToHTMLDoc;
-const flashcardDocToHtmlString = (doc) => {
-    const throwAwayDiv = document.createElement("div");
+const flashcardDocToHtmlString = (doc, serverDocument) => {
+    const throwAwayDiv = (serverDocument || document).createElement("div");
     throwAwayDiv.appendChild(doc);
     return throwAwayDiv.innerHTML;
 };
 exports.flashcardDocToHtmlString = flashcardDocToHtmlString;
 const flashcardMdToHtml = (input) => {
     const doc = exports.flashcardMdToHTMLDoc(input);
-    return exports.flashcardDocToHtmlString(doc);
+    return exports.flashcardDocToHtmlString(doc, input.document);
 };
 exports.flashcardMdToHtml = flashcardMdToHtml;
 const flashcardMdToText = (input) => {
