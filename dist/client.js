@@ -33,11 +33,11 @@ const normalizeFlashcardText = (text) => {
     let newText = '';
     for (const line of text.split('\n')) {
         const trimmedLine = line.trim();
-        if (trimmedLine === "") {
-            newText += "\n";
+        if (trimmedLine === '') {
+            newText += '\n';
         }
         else {
-            newText += exports.cleanFlashcardSpecialChars(trimmedLine);
+            newText += exports.cleanFlashcardSpecialChars(trimmedLine) + '\\n';
         }
     }
     return newText;
