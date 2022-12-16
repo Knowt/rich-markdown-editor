@@ -1,7 +1,6 @@
 import { Schema, Node as ProsemirrorNode, DOMSerializer } from 'prosemirror-model';
 import { MarkdownParser } from 'prosemirror-markdown';
 import ExtensionManager from "./lib/ExtensionManager";
-import { JSDOM } from "jsdom";
 // marks
 import Bold from "./marks/Bold";
 import RedHighlight from "./marks/highlights/RedHighlight";
@@ -125,12 +124,12 @@ export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
   }
 
   return domSerializer.serializeFragment(doc.content, {
-    document: document || new JSDOM().window.document,
+    document,
   });
 }
 
 export const flashcardDocToHtmlString = (doc: HTMLElement | DocumentFragment) => {
-  const throwAwayDiv = (document || new JSDOM().window.document).createElement("div");
+  const throwAwayDiv = document.createElement("div");
   throwAwayDiv.appendChild(doc);
 
   return throwAwayDiv.innerHTML;
