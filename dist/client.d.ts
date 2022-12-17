@@ -35,10 +35,10 @@ declare type FlashcardMdToHtmlInput = {
     domSerializer: DOMSerializer;
     markdownParser: MarkdownParser;
     markdown: string;
-    document: Document;
+    document?: Document;
 };
 export declare const flashcardMdToHTMLDoc: (input: FlashcardMdToHtmlInput) => HTMLElement | DocumentFragment;
-export declare const flashcardDocToHtmlString: (doc: HTMLElement | DocumentFragment, serverDocument: Document) => string;
+export declare const flashcardDocToHtmlString: (doc: HTMLElement | DocumentFragment, serverDocument?: Document | undefined) => string;
 export declare const flashcardMdToHtml: (input: FlashcardMdToHtmlInput) => string;
 export declare const flashcardMdToText: (input: FlashcardMdToHtmlInput) => string;
 declare type GetFlashcardEditorExtensionsInput = {
