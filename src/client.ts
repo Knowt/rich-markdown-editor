@@ -111,7 +111,7 @@ type FlashcardMdToHtmlInput = {
   domSerializer: DOMSerializer;
   markdownParser: MarkdownParser;
   markdown: string;
-  document: Document;
+  document?: Document;
 }
 
 export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
@@ -135,7 +135,7 @@ export const flashcardMdToHTMLDoc = (input: FlashcardMdToHtmlInput) => {
 
 export const flashcardDocToHtmlString = (
   doc: HTMLElement | DocumentFragment, 
-  serverDocument: Document,
+  serverDocument?: Document,
 ) => {
   const throwAwayDiv = (serverDocument || document).createElement("div");
   throwAwayDiv.appendChild(doc);
