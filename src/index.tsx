@@ -835,16 +835,18 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
     return (
       <Flex
+        id={id}
         onKeyDown={onKeyDown}
         align="flex-start"
         justify="center"
         dir={dir}
         column
+        spellCheck={typeof this.props.spellCheck === 'boolean' ?
+          this.props.spellCheck : true}
       >
         <ThemeProvider theme={this.theme()}>
           <React.Fragment>
             <StyledEditor
-              id={id}
               style={style}
               className={className}
               ref={(ref) => (this.element = ref)}
@@ -852,8 +854,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
               rtl={isRTL}
               readOnly={readOnly}
               readOnlyWriteCheckboxes={readOnlyWriteCheckboxes}
-              spellCheck={typeof this.props.spellCheck === 'boolean' ?
-                this.props.spellCheck : true}
             />
             {!readOnly && this.view && (
               <React.Fragment>
