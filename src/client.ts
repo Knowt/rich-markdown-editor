@@ -60,6 +60,9 @@ export const cleanFlashcardSpecialChars = (rawText: string) => {
   if ( FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0]) ) {
     return '\\' + text;
   }
+  if (text === '-') {
+    return '\\'  + text;
+  }
 
   return text;
 }
