@@ -585,15 +585,15 @@ class RichMarkdownEditor extends React.PureComponent {
         }
     }
     render() {
-        const { dir, readOnly, readOnlyWriteCheckboxes, style, className, onKeyDown, fontScale, } = this.props;
+        const { id, dir, readOnly, readOnlyWriteCheckboxes, style, className, onKeyDown, fontScale, } = this.props;
         const { isRTL } = this.state;
         const dictionary = this.dictionary(this.props.dictionary);
         const deviceType = react_device_detect_1.isMacOs ? "mac" : react_device_detect_1.isWindows ? "windows" : undefined;
-        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, align: "flex-start", justify: "center", dir: dir, column: true, spellCheck: typeof this.props.spellCheck === 'boolean' ?
-                this.props.spellCheck : true },
+        return (React.createElement(Flex_1.default, { onKeyDown: onKeyDown, align: "flex-start", justify: "center", dir: dir, column: true },
             React.createElement(styled_components_1.ThemeProvider, { theme: this.theme() },
                 React.createElement(React.Fragment, null,
-                    React.createElement(editor_1.StyledEditor, { style: style, className: className, ref: (ref) => (this.element = ref), fontScale: fontScale !== null && fontScale !== void 0 ? fontScale : 1, rtl: isRTL, readOnly: readOnly, readOnlyWriteCheckboxes: readOnlyWriteCheckboxes }),
+                    React.createElement(editor_1.StyledEditor, { id: id, style: style, className: className, ref: (ref) => (this.element = ref), fontScale: fontScale !== null && fontScale !== void 0 ? fontScale : 1, rtl: isRTL, readOnly: readOnly, readOnlyWriteCheckboxes: readOnlyWriteCheckboxes, spellCheck: typeof this.props.spellCheck === 'boolean' ?
+                            this.props.spellCheck : true }),
                     !readOnly && this.view && (React.createElement(React.Fragment, null,
                         React.createElement(SelectionToolbar_1.default, { view: this.view, dictionary: dictionary, commands: this.commands, rtl: isRTL, isTemplate: this.props.template === true, onOpen: this.handleOpenSelectionMenu, onClose: this.handleCloseSelectionMenu, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onCreateLink: this.props.onCreateLink, isDarkMode: this.props.dark, deviceType: deviceType, defaultHighlight: this.state.defaultHighlight || constants_1.DEFAULT_HIGHLIGHT, defaultBackground: this.state.defaultBackground || constants_1.DEFAULT_BACKGROUND, setDefaultHighlight: this.setDefaultHighlight, setDefaultBackground: this.setDefaultBackground, disableBackgroundMarksInToolbar: this.props.disableBackgroundMarksInToolbar }),
                         !this.props.disableLinkToolbar ? (React.createElement(LinkToolbar_1.default, { view: this.view, dictionary: dictionary, isActive: this.state.linkMenuOpen, onCreateLink: this.props.onCreateLink, onSearchLink: this.props.onSearchLink, onClickLink: this.props.onClickLink, onShowToast: this.props.onShowToast, onClose: this.handleCloseLinkMenu })) : '',
