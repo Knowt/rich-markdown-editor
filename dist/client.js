@@ -47,12 +47,12 @@ exports.FLASHCARD_QUIZLET_SPECIAL_CHARS = [
     '[',
 ];
 const cleanFlashcardSpecialChars = (rawText) => {
-    const text = rawText.replace(/(\#+)|(\>+)|(`)|(~{3,})|(\_{3,})|(\*{3,})|(\-{3,})|(\=+)/g, '\\$&')
+    const text = rawText.replace(/(\#+)|(\>+)|(`)|(~{3,})|(\_{3,})|(\*{3,})|(\-{3,})|(\=+)|(\-\s)+/g, '\\$&')
         .replace(/(!\[)+/g, '!\\[');
     if (exports.FLASHCARD_QUIZLET_SPECIAL_CHARS.includes(text[0])) {
         return '\\' + text;
     }
-    if (text === '-' || text === '- - -') {
+    if (text === '-') {
         return '\\' + text;
     }
     return text;
