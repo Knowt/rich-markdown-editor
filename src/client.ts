@@ -53,7 +53,7 @@ export const FLASHCARD_QUIZLET_SPECIAL_CHARS = [
 
 export const cleanFlashcardSpecialChars = (rawText: string) => {
   // insert a backslash where each occurence of these special characters occur
-  const text = rawText.replace(/(\#+)|(\>+)|(`)|(~{3,})|(\_{3,})|(\*{3,})|(\-{3,})|(\=+)|(\-\s\-\s\-)+/g, '\\$&')
+  const text = rawText.replace(/(\#+)|(\>+)|(`)|(~{3,})|(\_{3,})|(\*{3,})|(\-{3,})|(\=+)|(\-\s\-)+/g, '\\$&')
               // same concept for things that look like an image
               .replace(/(!\[)+/g, '!\\[');
 
