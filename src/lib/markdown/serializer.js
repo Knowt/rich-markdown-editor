@@ -169,6 +169,21 @@ export class MarkdownSerializerState {
       const subText = lines[i];
       this.write();
 
+      // TODO - temp fix
+      // handles case where a special character is marked, causing enclosed text to have no ending mark
+      if ( this.textInEscapedMark && i === lines.length - 1 ) {
+        buildOut(
+          this.textInEscapedMark + subText,
+          startOfLine,
+          i,
+        );
+
+        this.escapedMarksCount = {};
+        this.lastEscapedMarks = [];
+        this.textInEscapedMark = '';
+
+        break;
+      }
       // We need to escape certain marks (allow it to default to true),
       // otherwise a bug occurs where text is double wrapped when marks are mixed.
       // For marks that don't disable escape,
