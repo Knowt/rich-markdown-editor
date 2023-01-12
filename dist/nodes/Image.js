@@ -161,13 +161,13 @@ class Image extends Node_1.default {
             const resizableWrapperRef = React.useRef(null);
             useResizeObserver_1.default(resizableWrapperRef, (entry) => {
                 this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
-            });
+            }, this.options.readOnly);
             return (React.createElement("div", { contentEditable: false, className: "image", onClick: () => this.handleSelect(props)(), role: 'button' },
                 React.createElement(ImageWrapper, { draggable: true, className: isSelected ? "ProseMirror-selectednode" : "", onDragStartCapture: (event) => {
                         this.handleSelect(props)();
                         event.dataTransfer.effectAllowed = 'move';
                     } },
-                    React.createElement(ResizableWrapper, Object.assign({}, { width, height }),
+                    React.createElement(ResizableWrapper, Object.assign({ ref: resizableWrapperRef }, { width, height }),
                         React.createElement("img", { width: width, height: height, src: src, alt: alt, title: title }),
                         React.createElement(ResizeButtonContainer, null,
                             React.createElement(ResizeIconContainer, null, resizeIcon)))),

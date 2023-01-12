@@ -352,6 +352,7 @@ class RichMarkdownEditor extends React.PureComponent {
                 onImageUploadStart: this.props.onImageUploadStart,
                 onImageUploadStop: this.props.onImageUploadStop,
                 onShowToast: this.props.onShowToast,
+                readOnly: this.props.readOnly,
             }),
             new Table_1.default(),
             new TableCell_1.default({
