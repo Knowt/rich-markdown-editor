@@ -270,7 +270,7 @@ export default class Image extends Node {
 
             event.dataTransfer.effectAllowed = 'move';
           }}>
-          <ResizableWrapper ref={resizableWrapperRef} 
+          <ResizableWrapper
             {...{ width, height }}
           >
             <img width={width} height={height}
