@@ -273,7 +273,8 @@ export default class Image extends Node {
           <ResizableWrapper ref={resizableWrapperRef} 
             {...{ width, height }}
           >
-            <img src={src} alt={alt} title={title} />
+            <img width={width} height={height}
+              src={src} alt={alt} title={title} />
             <ResizeButtonContainer>
               <ResizeIconContainer>{resizeIcon}</ResizeIconContainer>
             </ResizeButtonContainer>
