@@ -3,16 +3,17 @@ import ResizeObserver from "resize-observer-polyfill";
 
 export default function useResizeObserver(
     ref: RefObject<HTMLElement>,
-    callback: (entry: DOMRectReadOnly) => void
+    callback: (entry: DOMRectReadOnly) => void,
+    readOnly?: boolean,
 ): void {
-    const callbackRef = useRef(callback)
+    const callbackRef = useRef(callback);
 
     useEffect(() => {
         callbackRef.current = callback;
-    }, [callback])
+    }, [callback]);
 
     useLayoutEffect(() => {
-        if (!ref.current) return;
+        if (!ref.current || readOnly) return;
 
         const ro = new ResizeObserver((entries) => {
             if (!Array.isArray(entries)) return;

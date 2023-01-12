@@ -258,7 +258,7 @@ export default class Image extends Node {
 
     useResizeObserver(resizableWrapperRef, (entry) => {
       this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
-    });
+    }, this.options.readOnly);
 
     return (
       <div contentEditable={false} className="image"
@@ -270,7 +270,7 @@ export default class Image extends Node {
 
             event.dataTransfer.effectAllowed = 'move';
           }}>
-          <ResizableWrapper
+          <ResizableWrapper ref={resizableWrapperRef} 
             {...{ width, height }}
           >
             <img width={width} height={height}
