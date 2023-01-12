@@ -48,7 +48,7 @@ const UnderlineIcon = ({ color, width = 18 }) => {
 exports.UnderlineIcon = UnderlineIcon;
 const ItalicIcon = ({ color, width = 22 }) => {
     return (react_1.default.createElement("svg", { fill: color, width: width, viewBox: "0 0 24 24" },
-        react_1.default.createElement("g", { "clip-rule": "evenodd", "fill-rule": "evenodd" },
+        react_1.default.createElement("g", { "clip-rule": "evenodd", fillRule: "evenodd" },
             react_1.default.createElement("path", { d: "m10 5c0-.55228.4477-1 1-1h6c.5523 0 1 .44772 1 1s-.4477 1-1 1h-6c-.5523 0-1-.44772-1-1z" }),
             react_1.default.createElement("path", { d: "m6 19c0-.5523.44772-1 1-1h6c.5523 0 1 .4477 1 1s-.4477 1-1 1h-6c-.55228 0-1-.4477-1-1z" }),
             react_1.default.createElement("path", { d: "m14.2747 4.03849c.5311.15172.8386.70521.6868 1.23624l-4 13.99997c-.1517.5311-.7052.8386-1.23621.6868-.53103-.1517-.83852-.7052-.6868-1.2362l4.00001-14.00001c.1517-.53103.7052-.83852 1.2362-.6868z" }))));
