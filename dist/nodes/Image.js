@@ -167,7 +167,7 @@ class Image extends Node_1.default {
                         this.handleSelect(props)();
                         event.dataTransfer.effectAllowed = 'move';
                     } },
-                    React.createElement(ResizableWrapper, Object.assign({ ref: resizableWrapperRef }, { width, height }),
+                    React.createElement(ResizableWrapper, Object.assign({}, { width, height }),
                         React.createElement("img", { width: width, height: height, src: src, alt: alt, title: title }),
                         React.createElement(ResizeButtonContainer, null,
                             React.createElement(ResizeIconContainer, null, resizeIcon)))),
