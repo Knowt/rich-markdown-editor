@@ -171,6 +171,7 @@ export class MarkdownSerializerState {
 
       // TODO - temp fix
       // handles case where a special character is marked, causing enclosed text to have no ending mark
+      // example: **fhdsjkafhaksdhfjkh**** - *fhdjsafhsadkjfhksdf*
       if ( this.textInEscapedMark && i === lines.length - 1 ) {
         buildOut(
           this.textInEscapedMark + subText,
