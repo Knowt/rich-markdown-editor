@@ -832,7 +832,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     } = this.props;
     const { isRTL } = this.state;
     const dictionary = this.dictionary(this.props.dictionary);
-    const deviceType = isMacOs ? "mac" : isWindows ? "windows" : undefined;
+    const deviceType = isMacOs ? 'mac' : isWindows ? 'windows' : undefined;
 
     return (
       <Flex
