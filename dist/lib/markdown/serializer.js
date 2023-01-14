@@ -96,13 +96,6 @@ class MarkdownSerializerState {
             const startOfLine = this.atBlank() || this.closed;
             const subText = lines[i];
             this.write();
-            if (this.textInEscapedMark && i === lines.length - 1) {
-                buildOut(this.textInEscapedMark + subText, startOfLine, i);
-                this.escapedMarksCount = {};
-                this.lastEscapedMarks = [];
-                this.textInEscapedMark = '';
-                break;
-            }
             if (this.ESACPED_MARKS.includes(subText)) {
                 this.escapedMarksCount[subText] = (this.escapedMarksCount[subText] || 0) + 1;
                 if (this.escapedMarksCount[subText] > 1) {
