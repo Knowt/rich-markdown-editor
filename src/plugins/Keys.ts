@@ -79,7 +79,7 @@ export default class Keys extends Extension {
 
             if (event.key === "Escape") {
               event.preventDefault();
-              this.options.onCancel();
+              this.options?.onCancel();
               return true;
             }
 
