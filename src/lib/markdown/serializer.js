@@ -179,38 +179,40 @@ export class MarkdownSerializerState {
       // causing a the actual text to be rendered rather than the desired style.
       // For example, "}}Hello! }}" would literally be rendered in the editor instead of
       // the text "Hello!" in a green background
-      if ( this.ESACPED_MARKS.includes( subText ) ) {
-        this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
+      // if ( this.ESACPED_MARKS.includes( subText ) ) {
+      //   this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
 
-        // found closing mark - wrap text in mark ensuring no trailing whitespace
-        if ( this.escapedMarksCount[subText] > 1 ) {
-          buildOut(
-            // subText here will be the closing mark
-            this.removeTrailingSpaces( this.textInEscapedMark ) + subText, 
-            startOfLine,
-            isAtEnd,
-          );
+      //   // found closing mark - wrap text in mark ensuring no trailing whitespace
+      //   if ( this.escapedMarksCount[subText] > 1 ) {
+      //     buildOut(
+      //       // subText here will be the closing mark
+      //       this.removeTrailingSpaces( this.textInEscapedMark ) + subText, 
+      //       startOfLine,
+      //       isAtEnd,
+      //     );
 
-          this.escapedMarksCount[subText] = 0;
-          this.lastEscapedMarks.pop();
-          this.textInEscapedMark = '';
+      //     this.escapedMarksCount[subText] = 0;
+      //     this.lastEscapedMarks.pop();
+      //     this.textInEscapedMark = '';
 
-          continue;
-        }
-        // first mark symbol found
-        else {
-          this.lastEscapedMarks.push( subText );
-        }
-      }
+      //     continue;
+      //   }
+      //   // first mark symbol found
+      //   else {
+      //     this.lastEscapedMarks.push( subText );
+      //   }
+      // }
 
-      // in a mark
-      if ( this.escapedMarksCount[this.lastEscapedMarks[this.lastEscapedMarks.length - 1]] ) {
-        this.textInEscapedMark += subText;
-      }
-      // not in a mark - build out string normally
-      else {
-        buildOut(subText, startOfLine, isAtEnd);
-      }
+      // // in a mark
+      // if ( this.escapedMarksCount[this.lastEscapedMarks[this.lastEscapedMarks.length - 1]] ) {
+      //   this.textInEscapedMark += subText;
+      // }
+      // // not in a mark - build out string normally
+      // else {
+      //   buildOut(subText, startOfLine, isAtEnd);
+      // }
+
+      buildOut(subText, startOfLine, isAtEnd);
     }
   }
 
@@ -319,7 +321,7 @@ export class MarkdownSerializerState {
       if (leading) this.text(leading);
       // handles case where special characters have no closing mark
       // example: **fhdsjkafhaksdhfjkh**** - *fhdjsafhsadkjfhksdf*
-      if (this.textInEscapedMark) this.text(this.textInEscapedMark);
+      // if (this.textInEscapedMark) this.text(this.textInEscapedMark);
 
       // Open the marks that need to be opened
       if (node) {
