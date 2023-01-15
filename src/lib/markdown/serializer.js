@@ -159,32 +159,18 @@ export class MarkdownSerializerState {
   text(text, escape) {
     const lines = text.split("\n");
 
-    const buildOut = (subText, startOfLine, i) => {
+    const buildOut = (subText, startOfLine, isAtEnd) => {
       this.out += escape !== false ? this.esc(subText, startOfLine) : subText;
-      if (i !== lines.length - 1) this.out += "\n";
+      if (!isAtEnd) this.out += "\n";
     }
     
     for (let i = 0; i < lines.length; i++) {
+      const isAtEnd = i === lines.length - 1;
       const startOfLine = this.atBlank() || this.closed;
       const subText = lines[i];
       this.write();
 
-      // TODO - temp fix
-      // handles case where a special character is marked, causing enclosed text to have no ending mark
-      // example: **fhdsjkafhaksdhfjkh**** - *fhdjsafhsadkjfhksdf*
-      // if ( this.textInEscapedMark && i === lines.length - 1 ) {
-      //   buildOut(
-      //     this.textInEscapedMark + subText,
-      //     startOfLine,
-      //     i,
-      //   );
-
-      //   this.escapedMarksCount = {};
-      //   this.lastEscapedMarks = [];
-      //   this.textInEscapedMark = '';
-
-      //   break;
-      // }
+      // TLDR - we need to make sure marks dont have trailing spaces - this code handles that - escape false splits the string into new lines to allow for custom parsing
       // We need to escape certain marks (allow it to default to true),
       // otherwise a bug occurs where text is double wrapped when marks are mixed.
       // For marks that don't disable escape,
@@ -193,15 +179,16 @@ export class MarkdownSerializerState {
       // causing a the actual text to be rendered rather than the desired style.
       // For example, "}}Hello! }}" would literally be rendered in the editor instead of
       // the text "Hello!" in a green background
-      // To bypass this, we check the background marks for trailing spaces prior to saving.
       if ( this.ESACPED_MARKS.includes( subText ) ) {
         this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
 
+        // found closing mark - wrap text in mark ensuring no trailing whitespace
         if ( this.escapedMarksCount[subText] > 1 ) {
           buildOut(
+            // subText here will be the closing mark
             this.removeTrailingSpaces( this.textInEscapedMark ) + subText, 
             startOfLine,
-            i,
+            isAtEnd,
           );
 
           this.escapedMarksCount[subText] = 0;
@@ -210,16 +197,19 @@ export class MarkdownSerializerState {
 
           continue;
         }
+        // first mark symbol found
         else {
           this.lastEscapedMarks.push( subText );
         }
       }
-      
+
+      // in a mark
       if ( this.escapedMarksCount[this.lastEscapedMarks[this.lastEscapedMarks.length - 1]] ) {
         this.textInEscapedMark += subText;
       }
+      // not in a mark - build out string normally
       else {
-        buildOut(subText, startOfLine, i);
+        buildOut(subText, startOfLine, isAtEnd);
       }
     }
   }
@@ -327,6 +317,9 @@ export class MarkdownSerializerState {
 
       // Output any previously expelled trailing whitespace outside the marks
       if (leading) this.text(leading);
+      // handles case where special characters have no closing mark
+      // example: **fhdsjkafhaksdhfjkh**** - *fhdjsafhsadkjfhksdf*
+      if (this.textInEscapedMark) this.text(this.textInEscapedMark);
 
       // Open the marks that need to be opened
       if (node) {
