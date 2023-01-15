@@ -87,19 +87,20 @@ class MarkdownSerializerState {
     }
     text(text, escape) {
         const lines = text.split("\n");
-        const buildOut = (subText, startOfLine, i) => {
+        const buildOut = (subText, startOfLine, isAtEnd) => {
             this.out += escape !== false ? this.esc(subText, startOfLine) : subText;
-            if (i !== lines.length - 1)
+            if (!isAtEnd)
                 this.out += "\n";
         };
         for (let i = 0; i < lines.length; i++) {
+            const isAtEnd = i === lines.length - 1;
             const startOfLine = this.atBlank() || this.closed;
             const subText = lines[i];
             this.write();
             if (this.ESACPED_MARKS.includes(subText)) {
                 this.escapedMarksCount[subText] = (this.escapedMarksCount[subText] || 0) + 1;
                 if (this.escapedMarksCount[subText] > 1) {
-                    buildOut(this.removeTrailingSpaces(this.textInEscapedMark) + subText, startOfLine, i);
+                    buildOut(this.removeTrailingSpaces(this.textInEscapedMark) + subText, startOfLine, isAtEnd);
                     this.escapedMarksCount[subText] = 0;
                     this.lastEscapedMarks.pop();
                     this.textInEscapedMark = '';
@@ -113,7 +114,7 @@ class MarkdownSerializerState {
                 this.textInEscapedMark += subText;
             }
             else {
-                buildOut(subText, startOfLine, i);
+                buildOut(subText, startOfLine, isAtEnd);
             }
         }
     }
@@ -189,6 +190,8 @@ class MarkdownSerializerState {
                 this.text(this.markString(active.pop(), false, parent, index), false);
             if (leading)
                 this.text(leading);
+            if (this.textInEscapedMark)
+                this.text(this.textInEscapedMark);
             if (node) {
                 while (active.length < len) {
                     const add = marks[active.length];
