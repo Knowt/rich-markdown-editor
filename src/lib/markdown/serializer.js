@@ -67,25 +67,25 @@ export class MarkdownSerializerState {
     this.closed = false;
     this.inTightList = false;
 
-    this.ESACPED_MARKS = [ 
-      ']]', 
-      '<<', 
-      '}}', 
-      '[[', 
-      '{{', 
-      '**', 
-      '@@',
-      '^^',
-      '%%',
-      '==',
-      '$$',
-      '*',
-      '~~',
-      '__'
+    this.ESCAPED_MARKS = [
+      "]]",
+      "<<",
+      "}}",
+      "[[",
+      "{{",
+      "**",
+      "@@",
+      "^^",
+      "%%",
+      "==",
+      "$$",
+      "*",
+      "~~",
+      "__",
     ];
     this.escapedMarksCount = {};
     this.lastEscapedMarks = [];
-    this.textInEscapedMark = '';
+    this.textInEscapedMark = "";
 
     // :: Object
     // The options passed to the serializer.
@@ -162,56 +162,51 @@ export class MarkdownSerializerState {
     const buildOut = (subText, startOfLine, isAtEnd) => {
       this.out += escape !== false ? this.esc(subText, startOfLine) : subText;
       if (!isAtEnd) this.out += "\n";
-    }
-    
+    };
+
+    const findMarkedIndexes = (foundMarks) => {
+      for (const mark in Object.keys(foundMarks)) {
+        // There is a matching pair, and we can filter accidental italics (if it was bold, italics === 4)
+        if (foundMarks[mark]?.length === 2) {
+          return foundMarks[mark];
+        }
+      }
+    };
+
+    /**
+     * This function will be used to return the best guess for a mark in this section of text. Idealistically, we assume there is only 1 mark per section
+     * @param subText
+     */
+    const cleanMarks = (subText) => {
+      const foundMarks = {};
+      subText.split("").reduce((previous, current, index) => {
+        const potentialMark = current + previous;
+        // We need index > 0 check since all these marks are of size 2
+        if (this.ESCAPED_MARKS.includes(potentialMark) && index > 0) {
+          const positions = foundMarks?.[potentialMark] || [];
+          positions.push(index - 1);
+          foundMarks[potentialMark] = positions;
+        }
+
+        // Special case for italics
+        if (this.ESCAPED_MARKS.includes(current)) {
+          const positions = foundMarks?.[current] || [];
+          positions.push(index);
+          foundMarks[current] = positions;
+        }
+        return current;
+      }, "");
+
+      const temp = findMarkedIndexes(foundMarks);
+    };
+
     for (let i = 0; i < lines.length; i++) {
       const isAtEnd = i === lines.length - 1;
       const startOfLine = this.atBlank() || this.closed;
       const subText = lines[i];
       this.write();
-
-      // TLDR - we need to make sure marks dont have trailing spaces - this code handles that - escape false splits the string into new lines to allow for custom parsing
-      // We need to escape certain marks (allow it to default to true),
-      // otherwise a bug occurs where text is double wrapped when marks are mixed.
-      // For marks that don't disable escape,
-      // a bug occurs when marks are mixed IF they are applied to an empty string.
-      // The editor saves the empty string in between the marked text,
-      // causing a the actual text to be rendered rather than the desired style.
-      // For example, "}}Hello! }}" would literally be rendered in the editor instead of
-      // the text "Hello!" in a green background
-      // if ( this.ESACPED_MARKS.includes( subText ) ) {
-      //   this.escapedMarksCount[subText] = ( this.escapedMarksCount[subText] || 0 ) + 1;
-
-      //   // found closing mark - wrap text in mark ensuring no trailing whitespace
-      //   if ( this.escapedMarksCount[subText] > 1 ) {
-      //     buildOut(
-      //       // subText here will be the closing mark
-      //       this.removeTrailingSpaces( this.textInEscapedMark ) + subText, 
-      //       startOfLine,
-      //       isAtEnd,
-      //     );
-
-      //     this.escapedMarksCount[subText] = 0;
-      //     this.lastEscapedMarks.pop();
-      //     this.textInEscapedMark = '';
-
-      //     continue;
-      //   }
-      //   // first mark symbol found
-      //   else {
-      //     this.lastEscapedMarks.push( subText );
-      //   }
-      // }
-
-      // // in a mark
-      // if ( this.escapedMarksCount[this.lastEscapedMarks[this.lastEscapedMarks.length - 1]] ) {
-      //   this.textInEscapedMark += subText;
-      // }
-      // // not in a mark - build out string normally
-      // else {
-      //   buildOut(subText, startOfLine, isAtEnd);
-      // }
-
+      const marks = cleanMarks(subText);
+      console.log(subText, marks);
       buildOut(subText, startOfLine, isAtEnd);
     }
   }
@@ -243,7 +238,7 @@ export class MarkdownSerializerState {
       // (FIXME it'd be nice if we had a schema-agnostic way to
       // identify nodes that serialize as hard breaks)
       if (node && node.type.name === "hard_break")
-        marks = marks.filter(m => {
+        marks = marks.filter((m) => {
           if (index + 1 === parent.childCount) return false;
           const next = parent.child(index + 1);
           return (
@@ -258,7 +253,7 @@ export class MarkdownSerializerState {
       if (
         node &&
         node.isText &&
-        marks.some(mark => {
+        marks.some((mark) => {
           const info = this.marks[mark.type.name];
           return info && info.expelEnclosingWhitespace;
         })
@@ -390,7 +385,7 @@ export class MarkdownSerializerState {
       row.forEach((cell, _, j) => {
         this.out += j === 0 ? "| " : " | ";
 
-        cell.forEach(para => {
+        cell.forEach((para) => {
           // just padding the output so that empty cells take up the same space
           // as headings.
           // TODO: Ideally we'd calc the longest cell length and use that
@@ -452,12 +447,11 @@ export class MarkdownSerializerState {
 
   removeTrailingSpaces(str) {
     let going = true;
-    
-    while ( going ) {
-      if ( str[str.length - 1] === ' ' ) {
+
+    while (going) {
+      if (str[str.length - 1] === " ") {
         str = str.substring(0, str.length - 1);
-      }
-      else {
+      } else {
         going = false;
       }
     }
