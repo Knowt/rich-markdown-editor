@@ -176,7 +176,7 @@ const ToolbarItem = ({
         aria-pressed={isActive}
         aria-describedby={id}
         onClick={() => {
-          console.log("CLICK");
+          console.log("commands", commands);
           defaultMarkClick({
             item,
             commands,

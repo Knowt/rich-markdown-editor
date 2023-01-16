@@ -1,4 +1,4 @@
-import { Schema } from "prosemirror-model";
+import { Schema, Slice } from "prosemirror-model";
 import { keymap } from "prosemirror-keymap";
 import { MarkdownParser } from "prosemirror-markdown";
 import { MarkdownSerializer } from "./markdown/serializer";
@@ -173,6 +173,15 @@ export default class ExtensionManager {
         });
 
         const apply = (callback, attrs) => {
+          const text = view.state.selection.$head.parent.textContent;
+          const {
+            $from: { pos: from },
+            $to: { pos: to },
+          } = view.state.selection.ranges[0];
+          console.log(text.slice(from - 1, to - 1).trim());
+          if (text.slice(from - 1, to - 1).trim() === "") {
+            return;
+          }
           if (!view.editable) {
             return false;
           }
