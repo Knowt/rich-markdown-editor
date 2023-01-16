@@ -2,7 +2,7 @@ import { toggleMark } from "prosemirror-commands";
 import { Plugin } from "prosemirror-state";
 import { InputRule } from "prosemirror-inputrules";
 import Mark from "./Mark";
-import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from '../lib/constants';
+import { LINK_SHORTCUT1, LINK_SHORTCUT2 } from "../lib/constants";
 
 /* CONSTANTS */
 const LINK_INPUT_REGEX = /\[([^[]+)]\((\S+)\)$/;
@@ -39,12 +39,12 @@ export default class Link extends Mark {
     };
   }
 
-  private handleLinkShortcut( type, state, dispatch ) {
+  private handleLinkShortcut(type, state, dispatch) {
     if (state.selection.empty) {
       this.options.onKeyboardShortcut();
       return true;
     }
-  
+
     return toggleMark(type, { href: "" })(state, dispatch);
   }
 
@@ -72,15 +72,12 @@ export default class Link extends Mark {
   }
 
   keys({ type }) {
-    const linkShortcutFn = (state, dispatch) => this.handleLinkShortcut(
-      type,
-      state,
-      dispatch,
-    );
+    const linkShortcutFn = (state, dispatch) =>
+      this.handleLinkShortcut(type, state, dispatch);
 
     return {
-      [ LINK_SHORTCUT1 ]: linkShortcutFn,
-      [ LINK_SHORTCUT2 ]: linkShortcutFn,
+      [LINK_SHORTCUT1]: linkShortcutFn,
+      [LINK_SHORTCUT2]: linkShortcutFn,
     };
   }
 

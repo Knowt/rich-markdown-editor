@@ -5,13 +5,13 @@ import ToolbarButton from "./ToolbarButton";
 import ToolbarSeparator from "./ToolbarSeparator";
 import theme from "../styles/theme";
 import { MenuItem, SubMenuItems } from "../types";
-import { defaultMarkClick } from '../commands/defaultMarkClick';
-import Tooltip from './Tooltip';
+import { defaultMarkClick } from "../commands/defaultMarkClick";
+import Tooltip from "./Tooltip";
 import { EditorState } from "prosemirror-state";
-import { ChevronIcon } from '../icons';
-import ToolbarPopout from './ToolbarPopout';
-import { getIconClasses } from '../lib/getIconClasses';
-import { CUSTOM_ICON_YELLOW } from '../lib/constants';
+import { ChevronIcon } from "../icons";
+import ToolbarPopout from "./ToolbarPopout";
+import { getIconClasses } from "../lib/getIconClasses";
+import { CUSTOM_ICON_YELLOW } from "../lib/constants";
 
 const FlexibleWrapper = styled.div`
   display: flex;
@@ -30,12 +30,12 @@ const MainIconWrapper = styled.div`
       .shortcut {
         font-size: 85%;
         margin-top: 2px;
-        color: ${props => props.theme.toolbarShortcutText};
+        color: ${(props) => props.theme.toolbarShortcutText};
       }
     }
   }
 
-  @media screen and ( max-width: 800px ) {
+  @media screen and (max-width: 800px) {
     .tooltip-wrapper {
       display: none;
     }
@@ -52,68 +52,80 @@ interface ToolbarSubItemsProps {
   commands: Record<string, any>;
   shouldLightIcon: boolean;
 }
-const ToolbarSubItems = ( {
+const ToolbarSubItems = ({
   id,
   subItems,
   theme,
   commands,
   shouldLightIcon,
-}: ToolbarSubItemsProps ) => {
+}: ToolbarSubItemsProps) => {
   const { orientation, tooltip, items } = subItems;
 
-  const [ isActive, setIsActive ] = useState<boolean>( false );
-  const ref = useRef<HTMLButtonElement>( null );
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const ref = useRef<HTMLButtonElement>(null);
 
   const toggleActive = () => {
-    setIsActive( state => !state );
-  }
+    setIsActive((state) => !state);
+  };
 
   const closePopout = () => {
-    setIsActive( false );
-  }
+    setIsActive(false);
+  };
 
   const ariaControls = `${id}-popout`;
 
   return (
     <>
-      <ToolbarButton ref={ref}
-        className='chevron-toolbar-button'
-        type='button'
+      <ToolbarButton
+        ref={ref}
+        className="chevron-toolbar-button"
+        type="button"
         showBackgroundOnActive={true}
         onClick={toggleActive}
         aria-label={tooltip}
         aria-pressed={isActive}
         aria-controls={ariaControls}
         active={isActive}
-        aria-describedby={id}>
-        <span style={orientation === 'left' ? {
-          transform: 'rotate(180deg)',
-          } : {}}>
+        aria-describedby={id}
+      >
+        <span
+          style={
+            orientation === "left"
+              ? {
+                  transform: "rotate(180deg)",
+                }
+              : {}
+          }
+        >
           <ChevronIcon fill={theme.blockToolbarExpandArrowColor} />
         </span>
-        {
-          tooltip ? (
-            <Tooltip id={id} ref={ref}
-              delayShowTime={TOOLTIP_DELAY} position='top'>
-                <p className='item-name'>
-                  {tooltip}
-                </p>
-            </Tooltip>
-          ) : ''
-        }
+        {tooltip ? (
+          <Tooltip
+            id={id}
+            ref={ref}
+            delayShowTime={TOOLTIP_DELAY}
+            position="top"
+          >
+            <p className="item-name">{tooltip}</p>
+          </Tooltip>
+        ) : (
+          ""
+        )}
       </ToolbarButton>
-      <ToolbarPopout id={ariaControls}
+      <ToolbarPopout
+        id={ariaControls}
         ref={ref}
         position={orientation}
         items={items}
-        isActive={isActive} 
+        isActive={isActive}
         close={closePopout}
         commands={commands}
         theme={theme}
-        shouldLightIcon={shouldLightIcon} />
+        shouldLightIcon={shouldLightIcon}
+      />
     </>
   );
-}
+};
 
 interface ToolbarItemProps {
   item: MenuItem;
@@ -125,75 +137,80 @@ interface ToolbarItemProps {
   index: number;
 }
 
-const ToolbarItem = ( {
+const ToolbarItem = ({
   item,
   theme,
   commands,
   state,
   isDarkMode,
   index,
-}: ToolbarItemProps ) => {
+}: ToolbarItemProps) => {
   /* HOOKS */
-  const ref = useRef<HTMLButtonElement>( null );
-
+  const ref = useRef<HTMLButtonElement>(null);
   const Icon = item.icon as typeof Component;
   const isActive = item.active ? item.active(state) : false;
   const id = `${item.name}${index}`;
-  const shouldLightIcon = !!( !isDarkMode && 
-    ( item.iconColor || item?.iconSVGProps?.fill ) );
+  const shouldLightIcon = !!(
+    !isDarkMode &&
+    (item.iconColor || item?.iconSVGProps?.fill)
+  );
 
   return (
     <MainIconWrapper>
-      {
-          item.subItems?.orientation === 'left' ? (
-            <ToolbarSubItems id={`${item.name}-left${index}`}
-              subItems={item.subItems}
-              theme={theme}
-              commands={commands}
-              shouldLightIcon={shouldLightIcon} />
-          ) : ''
-      }
+      {item.subItems?.orientation === "left" ? (
+        <ToolbarSubItems
+          id={`${item.name}-left${index}`}
+          subItems={item.subItems}
+          theme={theme}
+          commands={commands}
+          shouldLightIcon={shouldLightIcon}
+        />
+      ) : (
+        ""
+      )}
       <ToolbarButton
-        className='toolbar-selection-item-button'
+        className="toolbar-selection-item-button"
         ref={ref}
         active={isActive}
-        type='button'
+        type="button"
         aria-pressed={isActive}
         aria-describedby={id}
-        onClick={() => defaultMarkClick( {
-          item,
-          commands,
-        })}
+        onClick={() => {
+          console.log("CLICK");
+          defaultMarkClick({
+            item,
+            commands,
+          });
+        }}
       >
-        <Icon className={getIconClasses( shouldLightIcon )}
-          color={item.name === 'highlight_yellow ' ?
-            CUSTOM_ICON_YELLOW : item.iconColor || theme.toolbarItem}
-          {...item.iconSVGProps} />
-           <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position='top'>
-              <p className='item-name'>
-                {item.tooltip}
-              </p>
-              {
-                item.shortcut ? (
-                  <p className='shortcut'>
-                    {item.shortcut}
-                  </p>
-                ) : ''
-              }
-          </Tooltip>
+        <Icon
+          className={getIconClasses(shouldLightIcon)}
+          color={
+            item.name === "highlight_yellow "
+              ? CUSTOM_ICON_YELLOW
+              : item.iconColor || theme.toolbarItem
+          }
+          {...item.iconSVGProps}
+        />
+        <Tooltip id={id} ref={ref} delayShowTime={TOOLTIP_DELAY} position="top">
+          <p className="item-name">{item.tooltip}</p>
+          {item.shortcut ? <p className="shortcut">{item.shortcut}</p> : ""}
+        </Tooltip>
       </ToolbarButton>
-      {
-        item.subItems?.orientation === 'right' ? (
-          <ToolbarSubItems id={`${item.name}-right${index}`}
-            subItems={item.subItems}
-            theme={theme}
-            commands={commands}
-            shouldLightIcon={shouldLightIcon} />
-        ) : ''
-      }
+      {item.subItems?.orientation === "right" ? (
+        <ToolbarSubItems
+          id={`${item.name}-right${index}`}
+          subItems={item.subItems}
+          theme={theme}
+          commands={commands}
+          shouldLightIcon={shouldLightIcon}
+        />
+      ) : (
+        ""
+      )}
     </MainIconWrapper>
   );
-}
+};
 
 type Props = {
   commands: Record<string, any>;
@@ -207,7 +224,6 @@ class ToolbarMenu extends React.Component<Props> {
   render() {
     const { view, items } = this.props;
     const { state } = view;
-
     return (
       <FlexibleWrapper>
         {items.map((item, index) => {
@@ -215,16 +231,20 @@ class ToolbarMenu extends React.Component<Props> {
             return <ToolbarSeparator key={index} />;
           }
           if (item.visible === false || !item.icon) {
-            return '';
+            return "";
           }
 
           return (
-            <ToolbarItem key={index}
-              item={item} theme={this.props.theme}
+            <ToolbarItem
+              key={index}
+              item={item}
+              theme={this.props.theme}
               commands={this.props.commands}
-              view={view} state={state}
+              view={view}
+              state={state}
               isDarkMode={this.props.isDarkMode}
-              index={index} />
+              index={index}
+            />
           );
         })}
       </FlexibleWrapper>

@@ -2,7 +2,7 @@ import { toggleMark } from "prosemirror-commands";
 import markInputRule from "../lib/markInputRule";
 import Mark from "./Mark";
 import underlinesRule from "../rules/underlines";
-import { UNDERLINE_SHORTCUT1, UNDERLINE_SHORTCUT2 } from '../lib/constants';
+import { UNDERLINE_SHORTCUT1, UNDERLINE_SHORTCUT2 } from "../lib/constants";
 
 export default class Underline extends Mark {
   get name() {
@@ -33,8 +33,8 @@ export default class Underline extends Mark {
 
   keys({ type }) {
     return {
-      [ UNDERLINE_SHORTCUT1 ]: toggleMark(type),
-      [ UNDERLINE_SHORTCUT2 ]: toggleMark(type),
+      [UNDERLINE_SHORTCUT1]: toggleMark(type),
+      [UNDERLINE_SHORTCUT2]: toggleMark(type),
     };
   }
 
