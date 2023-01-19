@@ -54,7 +54,8 @@ const insertFiles = function(
   let complete = 0;
 
   // the user might have dropped multiple images at once, we need to loop
-  for (const file of images) {
+  for (let i=0; i< images.length; i++) {
+    const file = images[i];
     const id = `upload-${uploadId++}`;
 
     const { tr } = view.state;
