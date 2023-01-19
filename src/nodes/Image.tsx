@@ -8,6 +8,7 @@ import insertFiles from "../commands/insertFiles";
 import Node from "./Node";
 import useResizeObserver from "../hooks/useResizeObserver";
 import imsizeRule from "../rules/imsize";
+import { useIsSafari } from '../hooks/useIsSafari';
 
 /**
  * Matches following attributes in Markdown-typed image: [, alt, src, class]
@@ -255,6 +256,7 @@ export default class Image extends Node {
     const { alt, src, title, width, height } = node.attrs;
 
     const resizableWrapperRef = React.useRef(null);
+    const isSafari = useIsSafari();
 
     useResizeObserver(resizableWrapperRef, (entry) => {
       this.resizeImage({ node, getPos, width: entry.width, height: entry.height });
@@ -275,9 +277,12 @@ export default class Image extends Node {
           >
             <img width={width} height={height}
               src={src} alt={alt} title={title} />
-            <ResizeButtonContainer>
-              <ResizeIconContainer>{resizeIcon}</ResizeIconContainer>
-            </ResizeButtonContainer>
+            {/** Safari has a bug where the icon prevents resizing */}
+            {!isSafari && (
+              <ResizeButtonContainer>
+                <ResizeIconContainer>{resizeIcon}</ResizeIconContainer>
+              </ResizeButtonContainer>
+            )}
           </ResizableWrapper>
         </ImageWrapper>
         <Caption
