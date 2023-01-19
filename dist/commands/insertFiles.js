@@ -37,7 +37,8 @@ const insertFiles = function (view, event, pos, files, options) {
         onImageUploadStart();
     const { schema } = view.state;
     let complete = 0;
-    for (const file of images) {
+    for (let i = 0; i < images.length; i++) {
+        const file = images[i];
         const id = `upload-${uploadId++}`;
         const { tr } = view.state;
         tr.setMeta(uploadPlaceholder_1.default, {

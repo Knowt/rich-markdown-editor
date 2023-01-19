@@ -20,6 +20,7 @@ class Keys extends Extension_1.default {
                         focus: this.options.onFocus,
                     },
                     handleKeyDown: (view, event) => {
+                        var _a;
                         const { state, dispatch } = view;
                         if (state.selection instanceof prosemirror_state_1.AllSelection) {
                             if (event.key === "ArrowUp") {
@@ -55,7 +56,7 @@ class Keys extends Extension_1.default {
                         }
                         if (event.key === "Escape") {
                             event.preventDefault();
-                            this.options.onCancel();
+                            (_a = this.options) === null || _a === void 0 ? void 0 : _a.onCancel();
                             return true;
                         }
                         return false;
